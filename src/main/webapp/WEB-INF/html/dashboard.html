@@ -1,0 +1,260 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/responsive-tables.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+</head>
+<body>
+<div class="row">
+    <div class="columns">
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a href="#" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="#" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="#" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="#" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a href="#" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="#" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="#" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="#" id="supplier-off" class="canvas">Supplier</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a href="#" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
+                                        <li><a href="#" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
+                                        <li><a href="#" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
+                                        <li><a href="#" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li><a href="#" id="address-off" class="canvas" data-mapping="/system/address">Address</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body">
+                    <div class="row main-section-row" id="crud-body">
+                        <div class="row main-section-row">
+                            <div class="small-12 text-align-center">
+                                <h4>Dashboard</h4>
+                            </div>
+                        </div>
+                        <div class="small-4 large-3  columns search-panel" id="crud-search">
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <label>Input Label
+                                        <input type="text" placeholder="large-12.columns" />
+                                    </label>
+                                    <label>Input Label
+                                        <input type="text" placeholder="large-12.columns" />
+                                    </label>
+                                    <label>Select Box
+                                        <select>
+                                            <option value="husker">Husker</option>
+                                            <option value="starbuck">Starbuck</option>
+                                            <option value="hotdog">Hot Dog</option>
+                                            <option value="apollo">Apollo</option>
+                                        </select>
+                                    </label>
+                                    <div class="switch round">
+                                        <p>Active</p>
+                                        <input id="exampleCheckboxSwitch" type="checkbox">
+                                        <label for="exampleCheckboxSwitch">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="rows">
+                                        <a href="#" class="button expand" id="search-search-crud-btn">Search</a>
+                                        <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying 1 to 20 of 256 records (0.042 seconds)</small></span>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="responsive max-width" id="crud-table">
+                                        <thead>
+                                        <tr>
+                                            <th>header</th>
+                                            <th>header</th>
+                                            <th>header</th>
+                                            <th>header</th>
+                                            <th style="width:10%"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>
+                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" data-tooltip aria-haspopup="true" title="Edit"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>
+                                                <i class="fa fa-pencil has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Edit"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Delete"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>
+                                                <i class="fa fa-pencil has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Edit"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Delete"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>data</td>
+                                            <td>
+                                                <i class="fa fa-pencil has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Edit"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius" data-tooltip aria-haspopup="true" title="Delete"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                        <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
+                                        <li class="current"><a href="">1</a></li>
+                                        <li><a href="">2</a></li>
+                                        <li><a href="">3</a></li>
+                                        <li><a href="">4</a></li>
+                                        <li class="unavailable" aria-disabled="true"><a href="">&hellip;</a></li>
+                                        <li><a href="">12</a></li>
+                                        <li><a href="">13</a></li>
+                                        <li class="arrow"><a href="">Next &raquo;</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                        <h3 id="crud-title">Add New Reference Look Up.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="crud-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>CATEGORY <small>required</small>
+                                            <input type="text" placeholder="Category" name="category" required></label>
+                                        <small class="error">Category is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>KEY <small>required</small>
+                                            <input type="text" placeholder="Key" name="key" required></label>
+                                        <small class="error">Key is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>VALUE <small>required</small>
+                                            <input type="text" placeholder="Value" name="value" required></label>
+                                        <small class="error">Value is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>NUMBER VALUE <small>required</small>
+                                            <input type="text" placeholder="Number Value" name="numberValue" required pattern="number"></label>
+                                        <small class="error">Number Value is required.</small>
+                                    </div>
+                                    <div class="switch round">
+                                        <p>Active</p>
+                                        <input id="active" type="checkbox" name="isActive">
+                                        <label for="active">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-add-btn">Add</button>
+                                        <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+    </script>
+</footer>
+</html>

@@ -1,0 +1,13 @@
+package org.pos.coffee.dao;
+
+import org.pos.coffee.bean.ReferenceLookUp;
+
+import java.util.List;
+
+/**
+ * Created by Laurie on 11/5/2015.
+ */
+public interface ReferenceLookUpDao extends BaseEntityDao<ReferenceLookUp,Long> {
+
+    public List<String> getAllCategory();
+}

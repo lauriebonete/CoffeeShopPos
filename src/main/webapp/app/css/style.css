@@ -1,0 +1,74 @@
+.search-panel {
+	background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    top: 0;
+}
+
+.row {
+	max-width: none !important;
+}
+
+.main-section-row {
+	margin: 0 !important;
+	padding-top: 1rem;
+}
+
+.max-width {
+	width:100%;
+}
+
+.reveal-modal.crud-modal {
+	width:40%;
+}
+
+.clearfix {
+	clear: both;
+}
+
+.switch-on {
+  position: absolute;
+  left: -55px;
+  top: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 9px; 
+}
+
+.switch-off {
+  position: absolute;
+  left: -25px;
+  top: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 9px; 
+ }
+ 
+ .button-group {
+  position: relative;
+  display: inline-block;
+  margin: 1rem 0; 
+ }
+
+ .button-group:before {
+    content: attr(data-grouptype);
+    z-index: 99999;
+    color: #999;
+    display: block;
+    font-size: 1rem;
+    padding: 0.25em;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    left: 42.5%;
+    top: 0.35rem; 
+}
+
+.button-group button + button {
+    margin-left: 5px; 
+}
+
+.text-align-center {
+    text-align: center;
+}
