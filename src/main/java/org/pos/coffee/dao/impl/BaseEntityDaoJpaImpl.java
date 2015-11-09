@@ -35,6 +35,17 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
+    public void delete(Long id) {
+        T entity = getEntityManager().find(getEntityBeanType(), id);
+        deleteEntity(entity);
+    }
+
+    public void deleteEntity(final T entity){
+        getEntityManager().remove(entity);
+        getEntityManager().flush();
+    }
+
+    @Override
     public List<Object> findEntity(T entity) {
         Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
         return query.getResultList();

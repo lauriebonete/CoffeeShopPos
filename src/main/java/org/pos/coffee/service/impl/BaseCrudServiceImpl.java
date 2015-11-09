@@ -41,6 +41,11 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     }
 
     @Override
+    public void delete(Long id) {
+        baseEntityDao.delete(id);
+    }
+
+    @Override
     public BaseEntityDao<T,Long> getDao() {
         return baseEntityDao;
     }

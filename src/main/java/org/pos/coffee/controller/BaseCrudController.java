@@ -11,9 +11,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
@@ -62,8 +60,25 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     @RequestMapping(method= RequestMethod.POST, produces = "application/json")
     public final @ResponseBody String create(T entity) {
         _log.info(entity);
-        createEntity(entity);
+        try {
+            createEntity(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "here";
+    }
+
+    @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public final @ResponseBody Map<String,Object> delete(@PathVariable("id")Long id){
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        if(id != null && id>0){
+            deleteEntity(id);
+        }
+
+        map.put("message", "success");
+        return map;
     }
 
     @RequestMapping(value = "/findEntity", method = RequestMethod.GET, produces = "application/json")
@@ -84,11 +99,20 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
-    private final void createEntity(final T command){
+    private final void createEntity(final T command) throws Exception{
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
               baseCrudService.save(command);
+            }
+        });
+    }
+
+    private final void deleteEntity(final Long id){
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+               baseCrudService.delete(id);
             }
         });
     }

@@ -4109,7 +4109,7 @@ blockquote p {
 .reveal-modal {
   border-radius: 3px;
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   visibility: hidden;
   width: 100%;
@@ -4137,7 +4137,7 @@ blockquote p {
       width: 80%; } }
   @media only screen and (min-width: 40.0625em) {
     .reveal-modal {
-      top: 6.25rem; } }
+      top: 0.25rem; } }
   .reveal-modal.radius {
     box-shadow: none;
     border-radius: 3px; }

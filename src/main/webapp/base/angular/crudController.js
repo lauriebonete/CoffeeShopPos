@@ -17,5 +17,28 @@ crudApp.controller("crudController",function($scope, $http){
 
         })
     }
+
+   $scope.editAction = function(id) {
+       angular.forEach($scope.records,function(value,key){
+           if(value.id == id) {
+               $scope.recordFound = value;
+               return;
+           }
+       });
+    }
+
+    $scope.deleteAction = function(id,url) {
+        var deleteEntity = {
+            method: "DELETE",
+            url: url+"/"+id
+        };
+
+        $http(deleteEntity).then(function successCallback(response){
+            $('#delete-modal').foundation('reveal', 'close');
+        }, function errorCallback(response) {
+
+        })
+    }
 });
+
 

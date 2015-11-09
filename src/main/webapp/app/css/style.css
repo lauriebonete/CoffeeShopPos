@@ -1,3 +1,19 @@
+.main-body {
+    padding-left: 0.5%;
+}
+
+.center-modal {
+    margin-top: 15%;
+}
+
+.float-right {
+    float:right;
+}
+
+.float-left {
+    float: left;
+}
+
 .search-panel {
 	background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
@@ -71,4 +87,8 @@
 
 .text-align-center {
     text-align: center;
+}
+
+.reveal-modal.open {
+    top: 0 !important;
 }

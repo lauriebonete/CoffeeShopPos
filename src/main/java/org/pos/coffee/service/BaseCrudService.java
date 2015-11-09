@@ -11,6 +11,7 @@ import java.util.List;
 public interface BaseCrudService<T extends BaseEntity> extends BaseService {
 
     public void save(T entity);
+    public void delete(Long id);
     public List<Object> findEntity(T entity);
     public List<Object> findAll();
 
