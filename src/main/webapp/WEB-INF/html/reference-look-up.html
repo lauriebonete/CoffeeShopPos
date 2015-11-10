@@ -24,7 +24,7 @@
 <body>
 <div class="row">
     <div>
-        <div class="off-canvas-wrap" data-offcanvas>
+        <div class="off-canvas-wrap sticky" data-offcanvas>
             <div class="inner-wrap">
                 <nav class="tab-bar">
                     <section class="left-small">
@@ -95,31 +95,33 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="small-12 columns">
-                                    <label>Key
-                                        <input id="key" type="text" placeholder="Input Key"/>
-                                    </label>
-                                    <label>Value
-                                        <input id="value" type="text" placeholder="Input Value"/>
-                                    </label>
-                                    <label>Category
-                                        <select id="category" ng-init="loadDropDown('/reference/findAllCategory')">
-                                            <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                        </select>
-                                    </label>
-                                    <div class="switch round">
-                                        <p>Active</p>
-                                        <input id="isActive" type="checkbox">
-                                        <label for="isActive">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>Key
+                                            <input id="key" type="text" placeholder="Input Key" name="key"/>
                                         </label>
+                                        <label>Value
+                                            <input id="value" type="text" placeholder="Input Value" name="value"/>
+                                        </label>
+                                        <label>Category
+                                            <select id="category" ng-init="loadDropDown('/reference/findAllCategory')" name="category">
+                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            </select>
+                                        </label>
+                                        <div class="switch round">
+                                            <p>Active</p>
+                                            <input id="isActive" type="checkbox" name="isActive" checked>
+                                            <label for="isActive">
+                                                <span class="switch-on">YES</span>
+                                                <span class="switch-off">NO</span>
+                                            </label>
+                                        </div>
+                                        <div class="rows">
+                                            <button class="button expand" id="search-search-crud-btn" ng-click="test()">Search</button>
+                                            <button class="button secondary expand clear-button">Clear</button>
+                                        </div>
                                     </div>
-                                    <div class="rows">
-                                        <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
-                                        <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div class="small-8 large-9 columns crud-result" ng-init="loadTable('/reference/findAll')">
@@ -206,7 +208,7 @@
                                     </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-add-btn">Add</button>
-                                        <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
+                                        <button class="button secondary expand clear-button">Clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +256,7 @@
                                     </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-update-btn">Update</button>
-                                        <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
+                                        <a class="button secondary expand edit-clear-button" ng-click="editClear()">Clear</a>
                                     </div>
                                 </div>
                             </div>
@@ -269,6 +271,10 @@
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
+            <div id="display-modal" data-alert class="alert-box success radius display-message hide">
+                <span class="message"></span>
+                <a href="#" class="close">&#215;</a>
+            </div>
         </div>
     </div>
 </div>
@@ -277,7 +283,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
 
     </script>
 </footer>
