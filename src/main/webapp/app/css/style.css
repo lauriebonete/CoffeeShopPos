@@ -1,3 +1,7 @@
+.absolute-modal {
+    position: absolute !important;
+}
+
 .main-body {
     padding-left: 0.5%;
 }

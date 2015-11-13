@@ -5,6 +5,8 @@ import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.service.BaseCrudService;
 import org.pos.coffee.utility.NamingUtil;
 import org.pos.coffee.utility.StringUtil;
+import org.pos.coffee.web.json.ResponseScope;
+import org.pos.coffee.web.json.Scope;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -12,6 +14,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.ParameterizedType;
@@ -50,6 +53,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
             this.baseCrudService = (BaseCrudService<T>) beanFactory.getBean(serviceBean);
         }
         if(StringUtil.isEmpty(htmlPage)) {
+            /*this.htmlPage = "redirect:html/"+NamingUtil.toCreatePath(attributeName)+".html";*/
             this.htmlPage = "html/"+NamingUtil.toCreatePath(attributeName)+".html";
         }
 
@@ -112,7 +116,8 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/loadTable", method = RequestMethod.GET, produces = "application/json")
+    @ResponseScope(Scope.Search.class)
     public final @ResponseBody Map<String, Object> findAll() {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> results = new ArrayList<Object>();
@@ -145,8 +150,8 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping
-    public String loadHtml(){
+    public ModelAndView loadHtml(){
         _log.info("LOADING "+attributeName);
-        return htmlPage;
+        return new ModelAndView(htmlPage);
     }
 }

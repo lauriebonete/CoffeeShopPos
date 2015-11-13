@@ -57,6 +57,16 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
        return baseEntityDao.load(id);
     }
 
+    @Override
+    public T load(String id) {
+        try{
+            return baseEntityDao.load(Long.parseLong(id));
+        }catch (Exception e) {
+
+        }
+        return null;
+    }
+
     @PostConstruct
     public void setProperties() {
         this.entityBeanType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];

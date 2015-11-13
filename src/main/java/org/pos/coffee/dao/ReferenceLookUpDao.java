@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReferenceLookUpDao extends BaseEntityDao<ReferenceLookUp,Long> {
 
     public List<String> getAllCategory();
+    public List<ReferenceLookUp> getReferenceByCategory(String category);
 }

@@ -30,6 +30,27 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.recordFound = null;
     }
 
+    $scope.loadGroup = function(url,dom) {
+        $http.get("/reference/findReferenceLookUpByCategory/"+url).then(function successCallback(data) {
+            var option = [];
+
+            $.each($(data).attr("data"),function(i,val){
+                option.push({value: $(val).attr("value"), id: $(val).attr("id")});
+            });
+
+            $(dom).selectize({
+                persist: false,
+                maxItems: null,
+                valueField: 'id',
+                labelField: 'value',
+                searchField: ['value'],
+                options: option
+            });
+        }, function errorCallback(response) {
+
+        });
+    }
+
     $scope.deleteAction = function (id, url) {
         var deleteEntity = {
             method: "DELETE",

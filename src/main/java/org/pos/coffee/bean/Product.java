@@ -1,28 +1,32 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import org.pos.coffee.web.json.Scope;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name="PRODUCT")
-public final class Product extends BaseEntity {
+public class Product extends BaseEntity {
 
+	@JsonView(Scope.Search.class)
 	@Column(name="PRODUCT_NAME")
 	private String productName;
 
-	@ManyToMany
-	@JoinTable(name="RECIPE",
-			joinColumns = {@JoinColumn(name="PRODUCT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = @JoinColumn(name="INGREDIENT")
-	)
+	@JsonView(Scope.Form.class)
+	@OneToMany(mappedBy = "product")
 	private List<Ingredient> ingredientList;
 
-	@ManyToMany
-	@JoinTable(name="PRODUCT_GROUP",
-			joinColumns = {@JoinColumn(name="PRODUCT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = @JoinColumn(name="GROUP", referencedColumnName = "KEY_")
-	)
+	@JsonView(Scope.Form.class)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="PRODUCT_GROUP")
 	private List<ReferenceLookUp> productGroupList;
+
+	@JsonView(Scope.Form.class)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name="PROMO_GROUP")
+	private List<ReferenceLookUp> promoGroup;
 
 	public String getProductName() {
 		return productName;
@@ -42,5 +46,10 @@ public final class Product extends BaseEntity {
 	public void setProductGroupList(List<ReferenceLookUp> productGroupList) {
 		this.productGroupList = productGroupList;
 	}
-	
+	public List<ReferenceLookUp> getPromoGroup() {
+		return promoGroup;
+	}
+	public void setPromoGroup(List<ReferenceLookUp> promoGroup) {
+		this.promoGroup = promoGroup;
+	}
 }

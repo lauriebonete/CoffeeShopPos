@@ -2,6 +2,7 @@ package org.pos.coffee.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -13,8 +14,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.log4j.Logger;
 import org.pos.coffee.persistence.EntityListener;
+import org.pos.coffee.web.json.Scope;
 
 /*
  * Base class for all objects contains basic attributes
@@ -32,6 +35,7 @@ public class BaseEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
+	@JsonView(Scope.Search.class)
 	private Long id;
 	
 	@Column(name = "CREATEDATE")

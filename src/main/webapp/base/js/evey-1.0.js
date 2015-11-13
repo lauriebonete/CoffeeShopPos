@@ -96,19 +96,6 @@ var evey = (function () {
 
             var home = evey.getHome();
 
-            $.each($(offCanvas).find("li a.canvas"), function (i, a) {
-                var $reference = $(a).data("mapping");
-                $(a).on("click", function () {
-                    $.ajax({
-                        url: home + $reference,
-                        type: "GET",
-                        success: function (data) {
-                            window.location = data;
-                        }
-                    })
-                });
-            });
-
             $(crudForm).on("valid.fndtn.abide", function () {
                 var path = evey.getPath();
 

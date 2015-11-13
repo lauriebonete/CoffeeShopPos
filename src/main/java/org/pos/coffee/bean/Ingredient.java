@@ -15,6 +15,14 @@ public class Ingredient extends BaseEntity {
 
 	@Column(name="QUANTITY")
 	private Double quantity;
+
+	@ManyToOne
+	@JoinColumn(name="PRODUCT", referencedColumnName = "ID")
+	private Product product;
+
+	@ManyToOne
+	@JoinColumn(name="SIZE_ID", referencedColumnName = "ID")
+	private ReferenceLookUp size;
 	
 	public Item getItem() {
 		return item;
@@ -28,12 +36,22 @@ public class Ingredient extends BaseEntity {
 	public void setQuantity(Double quantity) {
 		this.quantity = quantity;
 	}
-
 	public Long getItemId() {
 		return itemId;
 	}
-
 	public void setItemId(Long itemId) {
 		this.itemId = itemId;
+	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	public ReferenceLookUp getSize() {
+		return size;
+	}
+	public void setSize(ReferenceLookUp size) {
+		this.size = size;
 	}
 }

@@ -18,4 +18,11 @@ public class ReferenceLookUpDaoImpl extends BaseEntityDaoJpaImpl<ReferenceLookUp
         Query query = getEntityManager().createQuery("select distinct (obj.category) from ReferenceLookUp obj");
         return query.getResultList();
     }
+
+    @Override
+    public List<ReferenceLookUp> getReferenceByCategory(String category) {
+        Query query = getEntityManager().createQuery("select obj from ReferenceLookUp obj where obj.category=:category");
+        query.setParameter("category",category);
+        return query.getResultList();
+    }
 }

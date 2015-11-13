@@ -16,6 +16,7 @@ public interface BaseCrudService<T extends BaseEntity> extends BaseService {
     public List<Object> findAll();
 
     public T load(Long id);
+    public T load(String id);
 
     public BaseEntityDao<T,Long> getDao();
 }

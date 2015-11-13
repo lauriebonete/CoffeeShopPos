@@ -22,7 +22,17 @@
 								type="annotation" />
 	</context:component-scan>
 	
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.pos.coffee.web.json.ScopeAwareJsonMessageConverter"
+				  p:objectMapper-ref="objectMapper" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean id="objectMapper"
+		  class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+		  p:simpleDateFormat="${date.format}">
+	</bean>
 
 	<mvc:resources location="/base/angular/" mapping="/angular/**" />
 	<mvc:resources location="/WEB-INF/html/" mapping="/html/**" />
@@ -30,7 +40,9 @@
 	<mvc:resources location="/app/js/,/base/js/" mapping="/js/**" />
 	<mvc:resources location="/app/img/,/base/img/" mapping="/img/**" />
 	<mvc:resources location="/app/font/,/base/font/" mapping="/font/**" />
-	
+
+	<bean class="org.pos.coffee.web.json.JsonScopeSupportFactoryBean" />
+
 	<bean
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter">
 	</bean>

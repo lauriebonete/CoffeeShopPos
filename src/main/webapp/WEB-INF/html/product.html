@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/selectize.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -16,6 +18,8 @@
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
     <script src="js/angular-resource.js"></script>
+    <script src="js/selectize.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
@@ -47,11 +51,16 @@
                 <aside class="left-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Coffee Shop POS</label></li>
-                        <li><a href="#" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
-                        <li><a href="#" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
-                        <li><a href="#" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
-                        <li><a href="#" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
-                        <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li><a href="#" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp
+                            Dashboard</a></li>
+                        <li><a href="#" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp
+                            Orders</a></li>
+                        <li><a href="#" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp
+                            Inventory</a></li>
+                        <li><a href="#" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp
+                            Purchase</a></li>
+                        <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp
+                            Reports</a></li>
                         <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
                             <ul class="left-submenu">
                                 <li class="back"><a href="#">Back</a></li>
@@ -71,10 +80,10 @@
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
                                         <li><a href="/item" id="item-off">Item</a></li>
-                                        <li><a href="/product" id="product-off" >Product</a></li>
-                                        <li><a href="/meal" id="meal-off" >Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" >Reference</a></li>
-                                        <li><a href="/address" id="address-off" >Address</a></li>
+                                        <li><a href="/product" id="product-off">Product</a></li>
+                                        <li><a href="/meal" id="meal-off">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off">Reference</a></li>
+                                        <li><a href="/address" id="address-off">Address</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -85,10 +94,10 @@
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
-                                <h4>Reference Look Up</h4>
+                                <h4>Product</h4>
                             </div>
                         </div>
-                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                        <div class="small-4 large-3  columns search-panel" id="crud-search">
                             <div class="row">
                                 <div class="small-12 columns bar">
                                     <h4><i class="fa fa-search"></i>&nbsp Search</h4>
@@ -97,17 +106,22 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Key
-                                            <input id="key" type="text" placeholder="Input Key" name="key"/>
+                                        <label>Product Name
+                                            <input id="key" type="text" placeholder="Product Name" name="productName"/>
                                         </label>
-                                        <label>Value
-                                            <input id="value" type="text" placeholder="Input Value" name="value"/>
+                                        <label>Description
+                                            <input id="value" type="text" placeholder="Description" name="description"/>
                                         </label>
                                         <label>Category
-                                            <select id="category" ng-init="loadDropDown('/reference/findAllCategory')" name="category">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            <select id="category"
+                                                    ng-init="loadDropDown('/reference/findReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')"
+                                                    name="category">
+                                                <option></option>
+                                                <option ng-repeat="rec in dropdown" value="{{rec.id}}">{{rec.value}}
+                                                </option>
                                             </select>
                                         </label>
+
                                         <div class="switch round">
                                             <p>Active</p>
                                             <input id="isActive" type="checkbox" name="isActive" checked>
@@ -117,37 +131,48 @@
                                             </label>
                                         </div>
                                         <div class="rows">
-                                            <button class="button expand" id="search-search-crud-btn" ng-click="test()">Search</button>
+                                            <button class="button expand" id="search-search-crud-btn" ng-click="test()">
+                                                Search
+                                            </button>
                                             <button class="button secondary expand clear-button">Clear</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="small-8 large-9 columns crud-result" ng-init="loadTable('/reference/loadTable')">
+                        <div class="small-8 large-9 columns crud-result" ng-init="loadTable('/product/loadTable')">
                             <div class="rows">
                                 <span> <small>Displaying 1 to 20 of 256 records (0.042 seconds)</small></span>
-                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal"><i
+                                        class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
                                     <table class="responsive max-width" id="crud-table">
                                         <thead>
                                         <tr>
-                                            <th>Category</th>
-                                            <th>Key</th>
-                                            <th>value</th>
+                                            <th>Product Name</th>
+                                            <th>Description</th>
+                                            <th>Group</th>
                                             <th style="width:10%"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
-                                            <td>{{record.category}}</td>
-                                            <td>{{record.key}}</td>
-                                            <td>{{record.value}}</td>
+                                            <td>{{record.productName}}</td>
+                                            <td>{{record.description}}</td>
+                                            <td>{{record.productGroup.value}}</td>
                                             <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-pencil has-tip tip-top radius edit-action"
+                                                   ng-click="editAction(record.id)" ng-class="id" data-tooltip
+                                                   aria-haspopup="true" title="Edit" data-id="{{record.id}}"
+                                                   data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip
+                                                   aria-haspopup="true" title="Delete" data-id="{{record.id}}"
+                                                   data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-cutlery has-tip tip-top radius" data-tooltip
+                                                   aria-haspopup="true" title="Ingredients" data-id="{{record.id}}"
+                                                   data-reveal-id="ingredient-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -158,7 +183,8 @@
                             <div class="rows">
                                 <div class="pagination-centered">
                                     <ul class="pagination" role="menubar" aria-label="Pagination">
-                                        <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
+                                        <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo;
+                                            Previous</a></li>
                                         <li class="current"><a href="">1</a></li>
                                         <li><a href="">2</a></li>
                                         <li><a href="">3</a></li>
@@ -172,31 +198,36 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title"
+                         aria-hidden="true" role="dialog">
                         <h3 id="crud-title">Add New Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
-                                        <select name="category">
-                                            <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                        </select>
+                                        <label>Product Name
+                                            <small>required</small>
+                                            <input type="text" placeholder="Product Name" name="productName"
+                                                   required></label>
+                                        <small class="error">Please provide name for product.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" required></label>
-                                        <small class="error">Key is required.</small>
+                                        <label>Description
+                                            <input ng type="text" placeholder="Description" name="description"></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" required></label>
-                                        <small class="error">Value is required.</small>
+                                        <label>Product Group
+                                            <input class="productGroup"
+                                                   ng-init="loadGroup('CATEGORY_PRODUCT_GROUP','.productGroup')"
+                                                   type="text" name="productGroup"></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                        <label>Promo Group
+                                            <input class="promoGroup"
+                                                   ng-init="loadGroup('CATEGORY_PROMO_GROUP','.promoGroup')" type="text"
+                                                   name="promoGroup"></label>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -207,66 +238,91 @@
                                         </label>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-add-btn">Add</button>
+                                        <button type="submit" class="button expand success" id="form-add-btn">Add
+                                        </button>
                                         <button class="button secondary expand clear-button">Clear</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title"
+                         aria-hidden="true" role="dialog">
                         <h3 id="update-title">Update Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+
                         <form data-abide="ajax" id="update-form">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row">
-                                      <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Category
-                                            <select id="update-category" ng-model="recordFound.category" name="category">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            <select id="update-category" ng-model="recordFound.category"
+                                                    name="category">
+                                                <option ng-repeat="value in dropdown" value="{{value}}">{{value}}
+                                                </option>
                                             </select>
                                         </label>
                                         <small class="error">Category is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}" required></label>
+                                        <label>KEY
+                                            <small>required</small>
+                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}"
+                                                   required></label>
                                         <small class="error">Key is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" value="{{recordFound.value}}" required></label>
+                                        <label>VALUE
+                                            <small>required</small>
+                                            <input type="text" placeholder="Value" name="value"
+                                                   value="{{recordFound.value}}" required></label>
                                         <small class="error">Value is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" value="{{recordFound.numberValue}}" pattern="number"></label>
+                                        <label>NUMBER VALUE
+                                            <small>required</small>
+                                            <input type="text" placeholder="Number Value" name="numberValue"
+                                                   value="{{recordFound.numberValue}}" pattern="number"></label>
                                         <small class="error">Number Value is required.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
-                                        <input id="activeUpdate" type="checkbox" name="isActive" ng-model="recordFound.isActive">
+                                        <input id="activeUpdate" type="checkbox" name="isActive"
+                                               ng-model="recordFound.isActive">
                                         <label for="activeUpdate">
                                             <span class="switch-on">YES</span>
                                             <span class="switch-off">NO</span>
                                         </label>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
+                                        <button type="submit" class="button expand success" id="form-update-btn">
+                                            Update
+                                        </button>
                                         <a class="button secondary expand edit-clear-button" ng-click="editClear()">Clear</a>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
+                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal
+                         aria-labelledby="delete-title" aria-hidden="true" role="dialog">
                         <h3 id="delete-title">Are you sure you want to delete?</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <button class="button alert remove-record">Remove</button>
                         <button class="button secondary float-right">Cancel</button>
+                    </div>
+                    <div id="ingredient-modal" class="reveal-modal crud-modal absolute-modal" data-reveal
+                         aria-labelledby="ingredient-title" aria-hidden="true" role="dialog">
+                        <h3 id="ingredient-title">Recipe</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <div class="row main-row-ingredient">
+
+                        </div>
+                        <a id="add-ing"><i class="fa fa-plus"></i> Add more ingredient</a>
+                        <a class="float-right"><i class="fa fa-plus"></i> Add new size</a>
                     </div>
                 </section>
                 <a class="exit-off-canvas"></a>
@@ -284,6 +340,32 @@
         $(document).foundation();
         $(document).EVEYfy();
 
+        $('#add-ing').on("click", function () {
+            var column1Label = $('<label>').text("Ingredient")
+            var input = $('<input id="test" class="typeahead" type="text" placeholder="Ingredient" name="item">');
+            $(input).autocomplete({
+                source: states
+            })
+            var column1 = $('<div class="small-7 columns">').append($(column1Label).append($(input)));
+            var column2 = $('<div class="small-3 columns">').append($('<label>').text("Qty").append($('<input type="text" placeholder="Qty" name="quantity">')));
+            var column3 = $('<div class="small-2 columns">').append($('<label>').text("UOM").append($('<span class="uom">').text("(g) Grams")));
+
+            var x = $('<div class="row">').append($('<div class="row">').append($(column1)).append($(column2)).append($(column3)))
+                    .append($('<div class="row">').append($('<a class="tiny float-right button">').text("Add")));
+            $('.main-row-ingredient').append($(x));
+        });
+
+
+        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+            'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+            'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+            'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
     </script>
 </footer>
 </html>

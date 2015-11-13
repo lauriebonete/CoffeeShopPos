@@ -1,5 +1,8 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import org.pos.coffee.web.json.Scope;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,13 +16,16 @@ import javax.persistence.Table;
 public class ReferenceLookUp extends BaseEntity {
 
 	private static final long serialVersionUID = -6121332155380808473L;
-	
+
+	@JsonView(Scope.Search.class)
 	@Column(name = "CATEGORY_", nullable = false)
 	private String category;
-	
+
+	@JsonView(Scope.Search.class)
 	@Column(name = "KEY_", unique = true, nullable = false)
 	private String key;
-	
+
+	@JsonView(Scope.Search.class)
 	@Column(name = "VALUE_", nullable = false)
 	private String value;
 	
