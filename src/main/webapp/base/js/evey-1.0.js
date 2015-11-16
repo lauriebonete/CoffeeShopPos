@@ -3,27 +3,28 @@
  */
 
 
-var evey = (function () {
+var evey = (function(){
 
     return {
-        getPath: function () {
+        getPath : function() {
             var path = window.location.pathname.replace(/\/$/, '');
             return window.location.protocol + '//' + window.location.host + path;
         },
 
-        getHome: function () {
+        getHome : function() {
             return window.location.protocol;
         },
 
-        getMapping: function () {
+        getMapping : function(){
             return window.location.pathname.replace(/\/$/, '');
         },
 
-        JSONnify: function (form) {
+        JSONnify : function(form) {
             var jsonObject = new Object();
-            $.each($(form).find("input"), function (i, input) {
-                if ($(input).is(":checkbox")) {
-                    if ($(input).is(":checked")) {
+            console.log($(form).find("input"));
+            $.each($(form).find("input"),function(i,input){
+                if($(input).is(":checkbox")) {
+                    if($(input).val() == "on") {
                         jsonObject[$(input).attr("name")] = true;
                     } else {
                         jsonObject[$(input).attr("name")] = false;
@@ -33,10 +34,11 @@ var evey = (function () {
                 }
             });
 
-            $.each($(form).find("select"), function (i, select) {
+            $.each($(form).find("select"),function(i,select){
                 jsonObject[$(select).attr("name")] = $(select).val();
             });
-            return jsonObject;
+<<<<<<< HEAD
+            return JSON.stringify(jsonObject);
         },
 
         clearForm: function (form) {
@@ -53,36 +55,35 @@ var evey = (function () {
             $.each($(form).find("select"), function (i, select) {
                 $(select).val($(select).find('option:first').val());
             });
+=======
+            return jsonObject;
+>>>>>>> parent of 3984252... latest commit
         }
     }
 })();
 
-(function ($) {
-    $.fn.EVEYfy = function (options) {
+(function($){
+    $.fn.EVEYfy = function(options) {
 
         var settings = $.extend({
-            'search': '#crud-search',
-            'search-action' : '#search-search-crud-btn',
-            'form': '#crud-form',
-            'view': '#view-body',
-            'results': '#crud-result',
-            'status': '.status',
-            'pagination': '.pagination',
-            'add': '#form-add-btn',
-            'edit': '.edit-action',
-            'display': '.display-action',
-            'remove': '.delete-action',
-            'saveCallback': null,
-            'showFormCallback': null,
-            'offCanvas': '.off-canvas-list',
-            'mainBody': '.main-body',
-            'updateForm': '#update-form',
-            'clear' : '.clear-button'
+            'search'     : '#crud-search',
+            'form'       : '#crud-form',
+            'view'       : '#view-body',
+            'results'    : '#crud-result',
+            'status'     : '.status',
+            'pagination' : '.pagination',
+            'add'        : '#form-add-btn',
+            'edit'       : '.edit-action',
+            'display'    : '.display-action',
+            'remove'     : '.delete-action',
+            'saveCallback' : null,
+            'showFormCallback' : null,
+            'offCanvas'    : '.off-canvas-list',
+            'mainBody' : '.main-body',
+            'updateForm' : '#update-form'
         }, options);
 
-        return this.each(function () {
-
-            Object.getPrototypeOf(document.createComment('')).getAttribute = function() {}
+        return this.each(function(){
 
             var crudForm = $(this).find(settings['form']);
 
@@ -96,20 +97,20 @@ var evey = (function () {
 
             var home = evey.getHome();
 
-            $.each($(offCanvas).find("li a.canvas"), function (i, a) {
+            $.each($(offCanvas).find("li a.canvas"),function(i, a){
                 var $reference = $(a).data("mapping");
-                $(a).on("click", function () {
+                $(a).on("click", function(){
                     $.ajax({
-                        url: home + $reference,
+                        url: home+$reference,
                         type: "GET",
-                        success: function (data) {
+                        success: function(data){
                             window.location = data;
                         }
                     })
-                });
+                    });
             });
 
-            $(crudForm).on("valid.fndtn.abide", function () {
+            $(crudForm).on("valid.fndtn.abide",function(){
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(crudForm);
@@ -118,28 +119,13 @@ var evey = (function () {
                     type: "POST",
                     dataType: "JSON",
                     data: jsonForm,
-                    success: function (data) {
-                        $('#display-modal .message').html($(data).attr("message"));
-                        if($(data).attr("status")) {
-                            $('#display-modal').addClass("success");
-                            evey.clearForm(crudForm);
-                            angular.element(".main-body").scope().addEntityToRecords(data);
-                            angular.element(".main-body").scope().$apply();
-                            $('#crud-modal').foundation('reveal', 'close');
-                        } else {
-                            $('#display-modal').addClass("alert");
-                        }
-
-                        $('#display-modal').removeClass('hide');
-                        $('#display-modal').delay(3500).queue(function () {
-                            $(this).removeClass("success").removeClass("alert");
-                            $(this).addClass("hide").dequeue();
-                        });
+                    success : function(data) {
+                        console.log(data);
                     }
                 });
             });
 
-            $(updateForm).on("valid.fndtn.abide", function () {
+            $(updateForm).on("valid.fndtn.abide",function(){
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(updateForm);
@@ -148,31 +134,16 @@ var evey = (function () {
                     type: "POST",
                     dataType: "JSON",
                     data: jsonForm,
-                    success: function (data) {
-                        $('#display-modal .message').html($(data).attr("message"));
-                        if($(data).attr("status")) {
-                            $('#display-modal').addClass("success");
-                            evey.clearForm(crudForm);
-                            angular.element(".main-body").scope().addEntityToRecords(data);
-                            angular.element(".main-body").scope().$apply();
-                            $('#crud-modal').foundation('reveal', 'close');
-                        } else {
-                            $('#display-modal').addClass("alert");
-                        }
-
-                        $('#display-modal').removeClass('hide');
-                        $('#display-modal').delay(3500).queue(function () {
-                            $(this).removeClass("success").removeClass("alert");
-                            $(this).addClass("hide").dequeue();
-                        });
+                    success : function(data) {
+                        console.log(data);
                     }
                 });
             });
 
-            $(this).on("click", settings['remove'], function () {
+            $(this).on("click", settings['remove'], function(){
                 var deleteId = $(this).data("id");
-                $(".remove-record").on('click', function () {
-                    angular.element(".main-body").scope().deleteAction(deleteId, evey.getMapping());
+                $(".remove-record").on('click',function(){
+                    angular.element(".main-body").scope().deleteAction(deleteId,evey.getMapping());
                     angular.element(".main-body").scope().$apply();
                 });
             });
@@ -183,8 +154,9 @@ var evey = (function () {
                 $.ajax({
                     url: path+"/findEntity",
                     data: jsonForm,
-                    type: "GET",
+                    type: "POST",
                     dataType:"JSON",
+                    contentType: "application/json",
                     success: function(data) {
                         angular.element(".main-body").scope().searchEntity(data);
                         angular.element(".main-body").scope().$apply();

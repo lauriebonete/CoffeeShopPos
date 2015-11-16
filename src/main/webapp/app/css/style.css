@@ -14,18 +14,6 @@
     float: left;
 }
 
-.hide {
-    display: none;
-}
-
-.display-message {
-    position: absolute;
-    right: 3%;
-    top: 5%;
-    width: 20%;
-    z-index: 999999;
-}
-
 .search-panel {
 	background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;

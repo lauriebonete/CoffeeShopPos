@@ -8,7 +8,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -27,14 +26,13 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     private String attributeName;
 
     @Override
-    @Transactional
     public final void save(T entity) {
         baseEntityDao.save(entity);
     }
 
     @Override
-    public List<Object> findEntity(T entity) throws Exception{
-        return baseEntityDao.findEntity(entity);
+    public List<Object> findEntity(T entity) {
+        return null;
     }
 
     @Override
@@ -50,11 +48,6 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     @Override
     public BaseEntityDao<T,Long> getDao() {
         return baseEntityDao;
-    }
-
-    @Override
-    public T load(Long id) {
-       return baseEntityDao.load(id);
     }
 
     @PostConstruct

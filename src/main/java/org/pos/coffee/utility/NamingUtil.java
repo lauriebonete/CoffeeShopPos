@@ -37,8 +37,4 @@ public class NamingUtil {
         }
         return buffer.toString();
     }
-
-    public static String buildGetterMethodName(String property) {
-        return "get"+property.substring(0,1).toUpperCase()+property.substring(1);
-    }
 }

@@ -57,27 +57,16 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         this.transactionTemplate = new TransactionTemplate(txManager);
     }
 
-    @ExceptionHandler(Exception.class)
-    public @ResponseBody Map<String,Object> catchException(Exception e) throws Exception {
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("message", "Error encountered");
-        map.put("status", false);
-
-        e.printStackTrace();
-
-        return map;
-    }
-
     @RequestMapping(method= RequestMethod.POST, produces = "application/json")
-    public final @ResponseBody Map<String,Object> create(T entity) {
+    public final @ResponseBody String create(T entity) {
         _log.info(entity);
-        Map<String, Object> map = new HashMap<String, Object>();
+        try {
             createEntity(entity);
-            map.put("message","success");
-            map.put("record",entity);
-            map.put("status", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return map;
+        return "here";
     }
 
     @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = "application/json")
@@ -89,26 +78,14 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         }
 
         map.put("message", "success");
-        map.put("remove", id);
-        map.put("status", true);
-
         return map;
     }
 
-    @RequestMapping(value = "/findEntity", method = RequestMethod.GET, produces = "application/json")
-    public final @ResponseBody Map<String, Object> findEntity(final T entity){
+    @RequestMapping(value = "/findEntity", method = RequestMethod.POST, produces = "application/json")
+    public final @ResponseBody Map<String, Object> findEntity(@RequestBody T entity){
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> results = new ArrayList<Object>();
-        try{
-            results = baseCrudService.findEntity(entity);
-            map.put("status",true);
-            map.put("records",results);
-            map.put("message","Success");
-        }catch (Exception e){
-            map.put("message", "Error encountered");
-            map.put("status", false);
-            e.printStackTrace();
-        }
+
         return map;
     }
 
@@ -122,7 +99,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
-    private final void createEntity(final T command){
+    private final void createEntity(final T command) throws Exception{
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
