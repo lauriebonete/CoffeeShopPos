@@ -14,8 +14,8 @@ public class Item extends BaseEntity {
 	@Column(name="DESCRIPTION")
 	private String description;
 	
-	@ManyToOne
-	@JoinColumn(name="UOM", referencedColumnName = "KEY_")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="UOM")
 	private ReferenceLookUp uom;
 	
 	public String getItemName() {

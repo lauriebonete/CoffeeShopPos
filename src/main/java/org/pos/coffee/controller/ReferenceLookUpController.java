@@ -4,6 +4,7 @@ import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.service.ReferenceLookUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,14 @@ public class ReferenceLookUpController extends BaseCrudController<ReferenceLookU
     public final @ResponseBody List<String> findAllCategory() {
         List<String> results = new ArrayList<String>();
         results = referenceLookUpService.getAllCategory();
+        return results;
+    }
+
+
+    @RequestMapping(value = "/getReferenceLookUpByCategory/{category}", method = RequestMethod.GET, produces = "application/json")
+    public final @ResponseBody List<ReferenceLookUp> findReference(@PathVariable("category") String category){
+        List<ReferenceLookUp> results = new ArrayList<ReferenceLookUp>();
+        results.addAll(referenceLookUpService.getReferenceLookUpByCategory(category));
         return results;
     }
 

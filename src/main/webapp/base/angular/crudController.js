@@ -10,12 +10,15 @@ crudApp.controller("crudController",function($scope, $http){
         })
     }
 
-    $scope.loadTable = function(url) {
-        $http.get(url).then(function successCallback(response){
-            $scope.records = response.data.results;
-        }, function errorCallback(response) {
+    $scope.loadTable = function(data) {
+        $scope.fullRecords = data.completeList;
+        $scope.records = data.slice;
+    }
 
-        })
+    $scope.changePage = function(page, max){
+        var end = (page*max)-1;
+        var start = (page*max)-max;
+        $scope.records = $scope.fullRecords.slice(start,end);
     }
 
    $scope.editAction = function(id) {
@@ -27,6 +30,14 @@ crudApp.controller("crudController",function($scope, $http){
        });
     }
 
+    $scope.addAction = function(newEntity) {
+        $scope.records = $scope.records.concat(newEntity);
+    }
+
+    $scope.searchEntity = function(data) {
+        $scope.records = data.results;
+    }
+
     $scope.deleteAction = function(id,url) {
         var deleteEntity = {
             method: "DELETE",
@@ -35,9 +46,15 @@ crudApp.controller("crudController",function($scope, $http){
 
         $http(deleteEntity).then(function successCallback(response){
             $('#delete-modal').foundation('reveal', 'close');
-        }, function errorCallback(response) {
+            $scope.records.splice( $.inArray(id,$scope.records) ,1 );
 
+        }, function errorCallback(response) {
+            console.log("here");
         })
+    }
+
+    $scope.feedDropdown = function(data) {
+        $scope.dropdown = data;
     }
 });
 

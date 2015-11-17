@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.apache.log4j.Logger;
+import org.pos.coffee.annotation.UniqueField;
 import org.pos.coffee.persistence.EntityListener;
 
 /*
@@ -32,6 +33,7 @@ public class BaseEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
+	@UniqueField
 	private Long id;
 	
 	@Column(name = "CREATEDATE")

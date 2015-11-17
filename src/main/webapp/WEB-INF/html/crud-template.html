@@ -124,14 +124,14 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="small-8 large-9 columns crud-result">
+                        <div class="small-8 large-9 columns crud-result" ng-init="loadTable('/reference/findAll')">
                             <div class="rows">
                                 <span> <small>Displaying 1 to 20 of 256 records (0.042 seconds)</small></span>
                                 <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/reference/findAll">
+                                    <table class="responsive max-width" id="crud-table">
                                         <thead>
                                         <tr>
                                             <th>Category</th>
@@ -158,6 +158,15 @@
                             <div class="rows">
                                 <div class="pagination-centered">
                                     <ul class="pagination" role="menubar" aria-label="Pagination">
+                                        <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
+                                        <li class="current"><a href="">1</a></li>
+                                        <li><a href="">2</a></li>
+                                        <li><a href="">3</a></li>
+                                        <li><a href="">4</a></li>
+                                        <li class="unavailable" aria-disabled="true"><a href="">&hellip;</a></li>
+                                        <li><a href="">12</a></li>
+                                        <li><a href="">13</a></li>
+                                        <li class="arrow"><a href="">Next &raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -212,7 +221,7 @@
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row">
-                                      <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Category
@@ -270,8 +279,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
-
     </script>
 </footer>
 </html>

@@ -17,6 +17,13 @@ public class NamingUtil {
         }
     }
 
+    public static String toGetterName(String name){
+        if(!StringUtil.isEmpty(name)){
+            return "get"+name.substring(0,1).toUpperCase() + name.substring(1);
+        }
+        return "";
+    }
+
     public static String toCreatePath(String name) {
         if (StringUtil.isEmpty(name))
             return "";

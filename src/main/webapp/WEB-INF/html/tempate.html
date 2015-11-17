@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="row">
-    <div class="columns">
+    <div>
         <div class="off-canvas-wrap" data-offcanvas>
             <div class="inner-wrap">
                 <nav class="tab-bar">
@@ -64,24 +64,25 @@
                                         <li><a href="#" id="user-off" class="canvas">User Page</a></li>
                                         <li><a href="#" id="customer-off" class="canvas">Customer</a></li>
                                         <li><a href="#" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="#" id="address-off" class="canvas">Address</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a href="#" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
-                                        <li><a href="#" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
-                                        <li><a href="#" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
-                                        <li><a href="#" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
-                                        <li><a href="#" id="address-off" class="canvas" data-mapping="/system/address">Address</a></li>
+                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section main-body">
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -93,8 +94,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
-
     </script>
 </footer>
 </html>

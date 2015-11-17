@@ -85,7 +85,7 @@
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
-                                <h4>Reference Look Up</h4>
+                                <h4>Item</h4>
                             </div>
                         </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
@@ -97,15 +97,15 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Key
-                                            <input id="key" type="text" placeholder="Input Key" name="key"/>
+                                        <label>Item Name
+                                            <input type="text" placeholder="Provide Item Name" name="itemName"/>
                                         </label>
-                                        <label>Value
-                                            <input id="value" type="text" placeholder="Input Value" name="value"/>
+                                        <label>Description
+                                            <input type="text" placeholder="Provide Description" name="description"/>
                                         </label>
-                                        <label>Category
-                                            <select name="category" id="category" ng-init="loadDropDown('/reference/findAllCategory')">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                        <label>Unit of measurement
+                                            <select name="uom.id">
+                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.value}}</option>
                                             </select>
                                         </label>
                                         <div class="switch round">
@@ -131,20 +131,18 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/reference/findAll">
+                                    <table class="responsive max-width" id="crud-table" data-url="/item/findAll">
                                         <thead>
                                         <tr>
-                                            <th>Category</th>
-                                            <th>Key</th>
-                                            <th>value</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
                                             <th style="width:10%"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
-                                            <td>{{record.category}}</td>
-                                            <td>{{record.key}}</td>
-                                            <td>{{record.value}}</td>
+                                            <td>{{record.itemName}}</td>
+                                            <td>{{record.description}}</td>
                                             <td>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
@@ -170,24 +168,22 @@
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
-                                        <select name="category">
-                                            <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                        </select>
+                                        <label>Item Name <small>required</small>
+                                            <input type="text" placeholder="Item Name" name="itemName" required></label>
+                                        <small class="error">Please provide a name for the item.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" required></label>
-                                        <small class="error">Key is required.</small>
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="description" required></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" required></label>
-                                        <small class="error">Value is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                        <label>Unit of Measure
+                                            <select ng-init = "loadDropDown('/reference/getReferenceLookUpByCategory/CATEGORY_UNIT_OF_MEASURE')" required name="uom">
+                                                <option ng-repeat="record in dropdown" value="{{record.id}}">
+                                                    {{record.value}}
+                                                </option>
+                                            </select>
+                                        </label>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -212,30 +208,24 @@
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row">
-                                      <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Category
-                                            <select id="update-category" ng-model="recordFound.category" name="category">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                            </select>
-                                        </label>
-                                        <small class="error">Category is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}" required></label>
+                                        <label>Item Name <small>required</small>
+                                            <input type="text" placeholder="Item Name" name="itemName" value="{{recordFound.itemName}}" required></label>
                                         <small class="error">Key is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" value="{{recordFound.value}}" required></label>
-                                        <small class="error">Value is required.</small>
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="description" value="{{recordFound.description}}" required></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" value="{{recordFound.numberValue}}" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                        <label>Unit of Measure
+                                            <select ng-model="recordFound.uom.id" name="uom" required
+                                                    ng-options="record.id as record.value for record in dropdown">
+                                            </select>
+                                        </label>
+                                        <small class="error">Please provide unit of measure.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -270,8 +260,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
-
     </script>
 </footer>
 </html>

@@ -12,6 +12,6 @@ public interface BaseEntityDao<T extends BaseEntity, Id extends Serializable> {
 
     public void save(T entity);
     public void delete(Long id);
-    public List<Object> findEntity(T entity);
+    public List<Object> findEntity(T entity) throws IllegalAccessException;
     public List<Object> findAll();
 }

@@ -31,8 +31,8 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     }
 
     @Override
-    public List<Object> findEntity(T entity) {
-        return null;
+    public List<Object> findEntity(T entity)  throws Exception{
+        return baseEntityDao.findEntity(entity);
     }
 
     @Override

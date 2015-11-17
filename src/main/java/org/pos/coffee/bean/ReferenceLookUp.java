@@ -1,5 +1,7 @@
 package org.pos.coffee.bean;
 
+import org.pos.coffee.annotation.UniqueField;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,9 +17,11 @@ public class ReferenceLookUp extends BaseEntity {
 	private static final long serialVersionUID = -6121332155380808473L;
 	
 	@Column(name = "CATEGORY_", nullable = false)
+	@UniqueField
 	private String category;
 	
 	@Column(name = "KEY_", unique = true, nullable = false)
+	@UniqueField
 	private String key;
 	
 	@Column(name = "VALUE_", nullable = false)

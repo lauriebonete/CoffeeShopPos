@@ -21,10 +21,13 @@ var evey = (function(){
 
         JSONnify : function(form) {
             var jsonObject = new Object();
-            console.log($(form).find("input"));
             $.each($(form).find("input"),function(i,input){
+                if($(input).attr("name").contains(".")) {
+                    console.log($(input).attr("name"));
+                }
                 if($(input).is(":checkbox")) {
-                    if($(input).val() == "on") {
+                    console.log($(input).is(":checked"));
+                    if($(input).is(":checked")) {
                         jsonObject[$(input).attr("name")] = true;
                     } else {
                         jsonObject[$(input).attr("name")] = false;
@@ -35,10 +38,24 @@ var evey = (function(){
             });
 
             $.each($(form).find("select"),function(i,select){
-                jsonObject[$(select).attr("name")] = $(select).val();
+                if($(select).attr("name").contains(".")) {
+                    var dottedName = $(select).attr("name").split(".");
+                    var object = new Object();
+                    object[dottedName[1]] = $(select).val();
+
+                    var list = [];
+                    list.push(object);
+                    jsonObject[dottedName[0]]  = list;
+                } else {
+                    jsonObject[$(select).attr("name")] = $(select).val();
+                }
             });
-<<<<<<< HEAD
             return JSON.stringify(jsonObject);
+        },
+
+        buildJson: function(name){
+            var object = new Object();
+            return object[name]
         },
 
         clearForm: function (form) {
@@ -55,9 +72,19 @@ var evey = (function(){
             $.each($(form).find("select"), function (i, select) {
                 $(select).val($(select).find('option:first').val());
             });
-=======
-            return jsonObject;
->>>>>>> parent of 3984252... latest commit
+        },
+
+        paginatePage: function(data) {
+
+            var numberOfPage = data.size/data.listSize;
+            numberOfPage = Math.ceil(numberOfPage);
+
+            var json = new Object();
+            json["numberOfPage"] = numberOfPage;
+            json["completeList"] = data.results;
+            json["slice"] = data.results.slice(0,data.listSize);
+            json["maxItem"] = data.listSize;
+            return json;
         }
     }
 })();
@@ -66,7 +93,7 @@ var evey = (function(){
     $.fn.EVEYfy = function(options) {
 
         var settings = $.extend({
-            'search'     : '#crud-search',
+            'search'     : '#crud-x',
             'form'       : '#crud-form',
             'view'       : '#view-body',
             'results'    : '#crud-result',
@@ -80,10 +107,15 @@ var evey = (function(){
             'showFormCallback' : null,
             'offCanvas'    : '.off-canvas-list',
             'mainBody' : '.main-body',
-            'updateForm' : '#update-form'
+            'updateForm' : '#update-form',
+            'search-action': '#search-search-crud-btn',
+            'pagination': '.pagination',
+            'crud-table': '#crud-table'
         }, options);
 
         return this.each(function(){
+
+            Object.getPrototypeOf(document.createComment('')).getAttribute = function() {}
 
             var crudForm = $(this).find(settings['form']);
 
@@ -97,19 +129,6 @@ var evey = (function(){
 
             var home = evey.getHome();
 
-            $.each($(offCanvas).find("li a.canvas"),function(i, a){
-                var $reference = $(a).data("mapping");
-                $(a).on("click", function(){
-                    $.ajax({
-                        url: home+$reference,
-                        type: "GET",
-                        success: function(data){
-                            window.location = data;
-                        }
-                    })
-                    });
-            });
-
             $(crudForm).on("valid.fndtn.abide",function(){
                 var path = evey.getPath();
 
@@ -119,8 +138,12 @@ var evey = (function(){
                     type: "POST",
                     dataType: "JSON",
                     data: jsonForm,
+                    contentType: "application/json",
                     success : function(data) {
-                        console.log(data);
+                        if(data.status) {
+                            angular.element(".main-body").scope().searchEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+                        }
                     }
                 });
             });
@@ -140,15 +163,18 @@ var evey = (function(){
                 });
             });
 
+            var selectedDelete;
             $(this).on("click", settings['remove'], function(){
-                var deleteId = $(this).data("id");
-                $(".remove-record").on('click',function(){
-                    angular.element(".main-body").scope().deleteAction(deleteId,evey.getMapping());
-                    angular.element(".main-body").scope().$apply();
-                });
+                selectedDelete = $(this).data("id");
+            });
+
+            $(".remove-record").on('click',function(){
+                angular.element(".main-body").scope().deleteAction(selectedDelete,evey.getMapping());
+                angular.element(".main-body").scope().$apply();
             });
 
             $(this).on("click", settings['search-action'], function () {
+                console.log($(this).parents("form"));
                var jsonForm = evey.JSONnify($(this).parents("form"));
                 var path = evey.getPath();
                 $.ajax({
@@ -162,12 +188,102 @@ var evey = (function(){
                         angular.element(".main-body").scope().$apply();
                     }
                 })
-            })
+            });
 
             $(this).on("click",settings["clear"], function(){
                 evey.clearForm($(this).parents("form"));
             });
+
+            $(document).ready(function() {
+                var url = $(this).find(settings['crud-table']).data("url");
+                $.ajax({
+                    url: evey.getHome()+url,
+                    dataType: "JSON",
+                    type: "GET",
+                    success: function (data) {
+                        var paginateThis = evey.paginatePage(data);
+                        paginateThis["currentPage"] = 1;
+                        paginate(paginateThis, settings["pagination"]);
+                    }
+                });
+            });
         });
     }
+
+    var paginate = function(paginateThis, pagination){
+        var previous = $('<li>');
+        $(previous).append($('<a>&laquo; Previous</a>'));
+        $(previous).addClass("arrow");
+
+        var next = $('<li>');
+        $(next).addClass("arrow");
+        $(next).append($('<a>Next &raquo;</a>'));
+
+        if(paginateThis.currentPage == 1) {
+            $(previous).addClass("unavailable");
+            $(previous).attr("aria-disabled",true);
+        }
+
+        $(pagination).append($(previous))
+
+        for(var i=1;i<=paginateThis.numberOfPage;i++) {
+            if(Number(paginateThis.currentPage) == Number(i)) {
+                var newPage = $('<li class="current">').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+            } else {
+                var newPage = $('<li>').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+            }
+
+            $(newPage).find("a").on("click",function(){
+
+                $(this).parents("ul").find("li.current").removeClass("current");
+                $(this).parent("li").addClass("current");
+
+                var page = $(this).data("page");
+                var max = $(this).data("max");
+
+                if(Number(page) != 1) {
+                    $(previous).removeClass("unavailable");
+                    $(previous).attr("aria-disabled", false);
+                } else {
+                    $(previous).addClass("unavailable");
+                    $(previous).attr("aria-disabled", true);
+                }
+
+                if(Number(page) != Number(paginateThis.numberOfPage)) {
+                    $(next).removeClass("unavailable");
+                    $(next).attr("aria-disabled", false);
+                } else {
+                    $(next).addClass("unavailable");
+                    $(next).attr("aria-disabled", true);
+                }
+
+                angular.element(".main-body").scope().changePage(page, max);
+                angular.element(".main-body").scope().$apply();
+
+            });
+
+            $(pagination).append($(newPage));
+        }
+
+        if(paginateThis.currentPage == paginateThis.numberOfPage) {
+            $(next).addClass("unavailable");
+            $(next).attr("aria-disabled",true);
+        }
+
+        $(pagination).append($(next));
+
+
+        $(next).on("click", function(){
+            $(pagination).find("li.current").next().find("a.pages").click();
+        });
+
+        $(previous).on("click", function(){
+            $(pagination).find("li.current").prev().find("a.pages").click();
+        });
+
+        angular.element(".main-body").scope().loadTable(paginateThis);
+        angular.element(".main-body").scope().$apply();
+    }
+
 })(jQuery);
 
