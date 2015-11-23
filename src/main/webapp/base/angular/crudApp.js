@@ -1,2 +1,2 @@
-var crudApp = angular.module("crudApp", []);
+var crudApp = angular.module("crudApp", ['selectize']);
 

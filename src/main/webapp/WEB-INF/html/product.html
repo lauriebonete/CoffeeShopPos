@@ -18,6 +18,7 @@
     <script src="js/angular.js"></script>
     <script src="js/angular-resource.js"></script>
     <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
@@ -128,7 +129,7 @@
                         </div>
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
-                                <span> <small>Displaying 1 to 20 of 256 records (0.042 seconds)</small></span>
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
                                 <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
@@ -147,8 +148,8 @@
                                         <tr ng-repeat="record in records">
                                             <td>{{record.productName}}</td>
                                             <td>{{record.description}}</td>
-                                            <td> </td>
-                                            <td> </td>
+                                            <td>{{record.displayProductGroup}}</td>
+                                            <td>{{record.displayPromoGroup}}</td>
                                             <td>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
@@ -184,12 +185,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <input class="product-group" type="text">
+                                            <selectize data-attr="id" name="productGroupList" config='selectizeConfig' options='productGroupOption' ng-model="productGroup"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Promo Group
-                                            <input class="promo-group" type="text">
+                                            <selectize data-attr="id" name="promoGroupList" config='selectizeConfig' options='promoGroupOption' ng-model="promoGroup"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -228,12 +229,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <input class="product-group" type="text">
+                                            <selectize config='selectizeConfig' options='productGroupOption' ng-model="recordFound.displayProductGroupList"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Promo Group
-                                            <input class="promo-group" type="text">
+                                            <selectize config='selectizeConfig' options='promoGroupOption' ng-model="recordFound.displayPromoGroupList"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -278,8 +279,10 @@
                 success: function(data){
 
                     angular.element(".main-body").scope().feedDropdown(data);
+                    angular.element(".main-body").scope().loadProductGroup(data);
+                    angular.element(".main-body").scope().$apply();
 
-                    $('.product-group').selectize({
+                    /*$('.product-group').selectize({
                         plugins: ['remove_button'],
                         persist: false,
                         maxItems: null,
@@ -287,7 +290,7 @@
                         labelField: 'value',
                         searchField: ['value'],
                         options: data
-                    });
+                    });*/
                 }
             });
 
@@ -296,7 +299,11 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    $('.promo-group').selectize({
+
+                    angular.element(".main-body").scope().loadPromoGroup(data);
+                    angular.element(".main-body").scope().$apply();
+
+                    /*$('.promo-group').selectize({
                         plugins: ['remove_button'],
                         persist: false,
                         maxItems: null,
@@ -304,7 +311,7 @@
                         labelField: 'value',
                         searchField: ['value'],
                         options: data
-                    });
+                    });*/
                 }
             });
         });

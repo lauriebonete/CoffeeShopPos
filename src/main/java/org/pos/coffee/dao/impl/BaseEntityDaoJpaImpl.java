@@ -1,5 +1,6 @@
 package org.pos.coffee.dao.impl;
 
+import org.pos.coffee.annotation.JoinList;
 import org.pos.coffee.annotation.UniqueField;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.bean.QueryHelper;
@@ -57,6 +58,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     public List<Object> findEntity(T entity) throws IllegalAccessException{
         StringBuffer queryBuilder = new StringBuffer();
         queryBuilder.append(buildSelectQuery());
+        queryBuilder.append(buildJoinQuery(getEntityBeanType(),entity));
         List<QueryHelper> fieldAndValueList = getFields(getEntityBeanType(),entity);
         queryBuilder.append(buildWhereQuery(fieldAndValueList));
 
@@ -88,6 +90,21 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         return queryBuffer.toString();
     }
 
+    private String buildJoinQuery(Class<?> type, T entity) {
+        StringBuffer queryBuffer = new StringBuffer();
+
+        for(Field field : type.getDeclaredFields()) {
+            field.setAccessible(true);
+
+            //if JoinList annotation is present Join should be added on JPA query
+            if(field.isAnnotationPresent(JoinList.class)) {
+                queryBuffer.append(" LEFT JOIN obj."+field.getName()+" "+field.getName());
+            }
+        }
+
+        return queryBuffer.toString();
+    }
+
     private String buildWhereQuery(List<QueryHelper> queryHelper) throws IllegalAccessException{
         StringBuffer queryBuffer = new StringBuffer();
 
@@ -101,7 +118,8 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             }
 
             if(List.class.isAssignableFrom(query.getEntityType())){
-                queryBuffer.append("obj."+query.getFieldName()+" in (:"+query.getFieldName()+") ");
+                String[] field = query.getFieldName().split("\\.");
+                queryBuffer.append(query.getFieldName()+" in (:"+field[0]+ NamingUtil.upperCaseFirstChar(field[1])+") ");
             } else if((
                     Boolean.class.isAssignableFrom(query.getEntityType()) ||
                             Long.class.isAssignableFrom(query.getEntityType()) ||
@@ -137,12 +155,12 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                     Method method = type.getMethod(NamingUtil.toGetterName(field.getName()));
                     Object value = method.invoke(entity);
                     boolean isList = false;
-                    if(List.class.isAssignableFrom(method.invoke(entity).getClass())) {
+                    if(field.isAnnotationPresent(JoinList.class)
+                            && List.class.isAssignableFrom(method.invoke(entity).getClass())){
                         List list = (List)method.invoke(entity);
                         value = (T) list.get(0);
                         isList = true;
                     }
-
                     if(BaseEntity.class.isAssignableFrom(value.getClass())){
                         List<QueryHelper> innerValue = getFields(value.getClass(), (T)value);
                         for(QueryHelper baseEntity:innerValue){
@@ -179,13 +197,16 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
 
     private Query createParameters(Query query, List<QueryHelper> queryHelper) {
         for(QueryHelper helper:queryHelper){
-            if((!Boolean.class.isAssignableFrom(helper.getEntityType()) ||
-               !Long.class.isAssignableFrom(helper.getEntityType()) ||
+            if((!Boolean.class.isAssignableFrom(helper.getEntityType()) &&
+               !Long.class.isAssignableFrom(helper.getEntityType()) &&
                !Integer.class.isAssignableFrom(helper.getEntityType())
                 )
                 && !(helper.getIsUnique()!=null && helper.getIsUnique())
                 && !List.class.isAssignableFrom(helper.getEntityType())) {
                 query.setParameter(helper.getFieldName(),"%"+helper.getValue()+"%");
+            } else if(List.class.isAssignableFrom(helper.getEntityType())) {
+                String[] field = helper.getFieldName().split("\\.");
+                query.setParameter(field[0]+ NamingUtil.upperCaseFirstChar(field[1]),helper.getValue());
             } else {
                 query.setParameter(helper.getFieldName(),helper.getValue());
             }

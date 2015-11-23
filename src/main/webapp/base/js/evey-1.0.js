@@ -22,19 +22,29 @@ var evey = (function(){
         JSONnify : function(form) {
             var jsonObject = new Object();
             $.each($(form).find("input"),function(i,input){
-                if($(input).attr("name").contains(".")) {
-                    console.log($(input).attr("name"));
-                }
-                if($(input).is(":checkbox")) {
-                    console.log($(input).is(":checked"));
-                    if($(input).is(":checked")) {
-                        jsonObject[$(input).attr("name")] = true;
+                if($(input).parent("div.selectize-input").length<=0) {
+                    if($(input).is(":checkbox")) {
+                        if($(input).is(":checked")) {
+                            jsonObject[$(input).attr("name")] = true;
+                        } else {
+                            jsonObject[$(input).attr("name")] = false;
+                        }
                     } else {
-                        jsonObject[$(input).attr("name")] = false;
+                        jsonObject[$(input).attr("name")] = $(input).val();
                     }
-                } else {
-                    jsonObject[$(input).attr("name")] = $(input).val();
                 }
+            });
+
+            $.each($(form).find("selectize"), function (i,selectize) {
+                $(selectize).attr("name");
+                var list = [];
+                var values = $(selectize).val().split("|");
+                for(var i = 0; i<=values.length-1;i++){
+                    var object = new Object();
+                    object[$(selectize).data("attr")] = values[i];
+                    list.push(object);
+                }
+                jsonObject[$(selectize).attr("name")]= list;
             });
 
             $.each($(form).find("select"),function(i,select){
@@ -133,6 +143,7 @@ var evey = (function(){
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(crudForm);
+                console.log(jsonForm);
                 $.ajax({
                     url: path,
                     type: "POST",
@@ -174,7 +185,6 @@ var evey = (function(){
             });
 
             $(this).on("click", settings['search-action'], function () {
-                console.log($(this).parents("form"));
                var jsonForm = evey.JSONnify($(this).parents("form"));
                 var path = evey.getPath();
                 $.ajax({
@@ -184,8 +194,9 @@ var evey = (function(){
                     dataType:"JSON",
                     contentType: "application/json",
                     success: function(data) {
-                        angular.element(".main-body").scope().searchEntity(data);
-                        angular.element(".main-body").scope().$apply();
+                        var paginateThis = evey.paginatePage(data);
+                        paginateThis["currentPage"] = 1;
+                        paginate(paginateThis, settings["pagination"]);
                     }
                 })
             });
@@ -211,6 +222,9 @@ var evey = (function(){
     }
 
     var paginate = function(paginateThis, pagination){
+
+        $(pagination).find("li").remove();
+
         var previous = $('<li>');
         $(previous).append($('<a>&laquo; Previous</a>'));
         $(previous).addClass("arrow");

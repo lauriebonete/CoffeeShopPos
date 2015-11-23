@@ -17,6 +17,17 @@ public class NamingUtil {
         }
     }
 
+    public static  String upperCaseFirstChar(String string){
+        if(StringUtil.isEmpty(string)){
+            return "";
+        }
+        if(string.length()>=2){
+            return string.substring(0,1).toUpperCase()+string.substring(1);
+        } else {
+            return string.toUpperCase();
+        }
+    }
+
     public static String toGetterName(String name){
         if(!StringUtil.isEmpty(name)){
             return "get"+name.substring(0,1).toUpperCase() + name.substring(1);

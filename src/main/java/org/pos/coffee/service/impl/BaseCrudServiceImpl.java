@@ -18,6 +18,8 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
 
     private Class<T> entityBeanType;
 
+    private BaseCrudService baseCrudServiceLoader;
+
     @Autowired
     private BeanFactory beanFactory;
 
@@ -59,5 +61,9 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
         if(baseEntityDao==null && beanFactory.containsBean(daoName)) {
             this.baseEntityDao = (BaseEntityDao) beanFactory.getBean(daoName);
         }
+    }
+
+    private void preloadEntity(T entity){
+        /*this.baseCrudServiceLoader = (BaseCrudService<T>) beanFactory.getBean(serviceBean);*/
     }
 }
