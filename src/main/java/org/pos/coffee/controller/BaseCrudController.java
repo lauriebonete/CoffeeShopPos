@@ -41,46 +41,46 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     private Integer entityListSize = 10;
 
     @PostConstruct
-    public void setProperties(){
+    public void setProperties() {
         this.entityBeanType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
-        attributeName = NamingUtil.toAttributeName(this.entityBeanType .getSimpleName());
+        attributeName = NamingUtil.toAttributeName(this.entityBeanType.getSimpleName());
         String serviceBean = attributeName + "Service";
 
         System.out.println(serviceBean);
-        if(this.baseCrudService == null
+        if (this.baseCrudService == null
                 && beanFactory.containsBean(serviceBean)) {
             this.baseCrudService = (BaseCrudService<T>) beanFactory.getBean(serviceBean);
         }
-        if(StringUtil.isEmpty(htmlPage)) {
-            this.htmlPage = "html/"+NamingUtil.toCreatePath(attributeName)+".html";
+        if (StringUtil.isEmpty(htmlPage)) {
+            this.htmlPage = "html/" + NamingUtil.toCreatePath(attributeName) + ".html";
         }
 
         PlatformTransactionManager txManager = (PlatformTransactionManager) beanFactory.getBean("transactionManager");
         this.transactionTemplate = new TransactionTemplate(txManager);
     }
 
-    @RequestMapping(method= RequestMethod.POST, produces = "application/json")
-    public final @ResponseBody Map<String,Object> create(@RequestBody T entity) {
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    public final
+    @ResponseBody
+    Map<String, Object> create(@RequestBody T entity) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         _log.info(entity);
-        try {
-            createEntity(entity);
-            map.put("message", "success");
-            map.put("status", true);
-            map.put("result", entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        createEntity(entity);
+        map.put("message", "success");
+        map.put("status", true);
+        map.put("result", entity);
 
         return map;
     }
 
-    @RequestMapping(value="{id}", method = RequestMethod.DELETE, produces = "application/json")
-    public final @ResponseBody Map<String,Object> delete(@PathVariable("id")Long id){
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public final
+    @ResponseBody
+    Map<String, Object> delete(@PathVariable("id") Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        if(id != null && id>0){
+        if (id != null && id > 0) {
             deleteEntity(id);
         }
 
@@ -89,12 +89,14 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(value = "/findEntity", method = RequestMethod.POST, produces = "application/json")
-    public final @ResponseBody Map<String, Object> findEntity(@RequestBody T entity) throws Exception{
+    public final
+    @ResponseBody
+    Map<String, Object> findEntity(@RequestBody T entity) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> results = new ArrayList<Object>();
         results.addAll(baseCrudService.findEntity(entity));
 
-        map.put("message","success");
+        map.put("message", "success");
         map.put("status", true);
         map.put("results", results);
         map.put("size", results.size());
@@ -103,11 +105,13 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = "application/json")
-    public final @ResponseBody Map<String, Object> findAll() {
+    public final
+    @ResponseBody
+    Map<String, Object> findAll() {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> results = new ArrayList<Object>();
         results = baseCrudService.findAll();
-        map.put("message","success");
+        map.put("message", "success");
         map.put("status", true);
         map.put("results", results);
         map.put("size", results.size());
@@ -115,20 +119,20 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
-    private final void createEntity(final T command) throws Exception{
+    private final void createEntity(final T command) throws Exception {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-              baseCrudService.save(command);
+                baseCrudService.save(command);
             }
         });
     }
 
-    private final void deleteEntity(final Long id){
+    private final void deleteEntity(final Long id) {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-               baseCrudService.delete(id);
+                baseCrudService.delete(id);
             }
         });
     }
@@ -138,8 +142,8 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping
-    public ModelAndView loadHtml(){
-        _log.info("LOADING "+attributeName);
+    public ModelAndView loadHtml() {
+        _log.info("LOADING " + attributeName);
         return new ModelAndView(htmlPage);
     }
 

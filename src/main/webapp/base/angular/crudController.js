@@ -21,7 +21,7 @@ crudApp.controller("crudController", function ($scope, $http) {
     $scope.changePage = function (page, max) {
         var end = (page * max) - 1;
         var start = (page * max) - max;
-        $scope.records = $scope.fullRecords.slice(start, end);
+        $scope.records = $scope.fullRecords.slice(start, end+1);
         $scope.startIndex = start + 1;
         if ($scope.fullRecords.length < end + 1) {
             $scope.maxItem = $scope.fullRecords.length;
@@ -44,7 +44,7 @@ crudApp.controller("crudController", function ($scope, $http) {
     }
 
     $scope.searchEntity = function (data) {
-        $scope.records = data.results;
+        $scope.records.push(data);
     }
 
     $scope.deleteAction = function (id, url) {
@@ -80,6 +80,7 @@ crudApp.controller("crudController", function ($scope, $http) {
         labelField : 'value',
         delimiter : '|',
         placeholder : 'Pick something',
+        plugins: ['remove_button'],
         onInitialize : function (selectize) {
             // receives the selectize object as an argument
         }

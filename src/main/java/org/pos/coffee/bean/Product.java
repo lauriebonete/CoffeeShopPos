@@ -26,12 +26,17 @@ public final class Product extends BaseEntity {
 	)
 	private List<ReferenceLookUp> productGroupList;
 
+	@JoinList
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="PROMO_GROUP",
 			joinColumns = {@JoinColumn(name="PRODUCT_ID", referencedColumnName = "ID")},
 			inverseJoinColumns = @JoinColumn(name="P_GROUP", referencedColumnName = "ID")
 	)
 	private List<ReferenceLookUp> promoGroupList;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "IMAGE", referencedColumnName = "ID")
+	private FileDetail productImage;
 
 	public String getProductName() {
 		return productName;
@@ -60,55 +65,50 @@ public final class Product extends BaseEntity {
 		this.promoGroupList = promoGroupList;
 	}
 
+	public FileDetail getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(FileDetail productImage) {
+		this.productImage = productImage;
+	}
+
 	@JsonView
 	public String displayProductGroup(){
 		StringBuffer buffer = new StringBuffer();
-		boolean first = true;
 		for(ReferenceLookUp group: this.productGroupList){
-			if(!first){
-				buffer.append(", ");
-			}
-			buffer.append(group.getValue());
+			buffer.append(group.getValue()+", ");
 		}
-		return buffer.toString();
+		String value = buffer.toString();
+		return value.substring(0, value.length()>0 ? value.length()-2:value.length());
 	}
 
 	@JsonView
 	public String displayPromoGroup(){
 		StringBuffer buffer = new StringBuffer();
-		boolean first = true;
 		for(ReferenceLookUp group: this.promoGroupList){
-			if(!first){
-				buffer.append(", ");
-			}
-			buffer.append(group.getValue());
+			buffer.append(group.getValue()+", ");
 		}
-		return buffer.toString();
+		String value = buffer.toString();
+		return value.substring(0, value.length() > 0 ? value.length() - 2 : value.length());
 	}
 
 
 	@JsonView
 	public String displayProductGroupList(){
 		StringBuffer buffer = new StringBuffer();
-		boolean first = true;
 		for(ReferenceLookUp group: this.productGroupList){
-			if(!first){
-				buffer.append("|");
-			}
-			buffer.append(group.getId());
+			buffer.append(group.getId()+"|");
 		}
-		return buffer.toString();
+		String value = buffer.toString();
+		return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
 	}
 
 	@JsonView
 	public String displayPromoGroupList(){
 		StringBuffer buffer = new StringBuffer();
-		boolean first = true;
 		for(ReferenceLookUp group: this.promoGroupList){
-			if(!first){
-				buffer.append("|");
-			}
-			buffer.append(group.getId());
+			buffer.append(group.getId()+"|");
 		}
 		return buffer.toString();
 	}

@@ -63,7 +63,6 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         queryBuilder.append(buildWhereQuery(fieldAndValueList));
 
         Query query = getEntityManager().createQuery(queryBuilder.toString());
-        createParameters(query,fieldAndValueList).getResultList();
         return createParameters(query,fieldAndValueList).getResultList();
     }
 
@@ -71,6 +70,19 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     public List<Object> findAll() {
          Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
         return query.getResultList();
+    }
+
+    @Override
+    public List<Object> findByListOfIds(List<Long> ids) {
+        Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj where obj.id in (:ids)");
+        query.setParameter("ids",ids);
+        return query.getResultList();
+    }
+
+    @Override
+    public Object load(Long id) {
+        T entity = getEntityManager().find(getEntityBeanType(), id);
+        return entity;
     }
 
     protected EntityManager getEntityManager() {
@@ -118,17 +130,16 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             }
 
             if(List.class.isAssignableFrom(query.getEntityType())){
-                String[] field = query.getFieldName().split("\\.");
-                queryBuffer.append(query.getFieldName()+" in (:"+field[0]+ NamingUtil.upperCaseFirstChar(field[1])+") ");
+                queryBuffer.append(query.getFieldName()+" in (:"+NamingUtil.toParamName(query.getFieldName()) + ") ");
             } else if((
                     Boolean.class.isAssignableFrom(query.getEntityType()) ||
                             Long.class.isAssignableFrom(query.getEntityType()) ||
                             Integer.class.isAssignableFrom(query.getEntityType())
             ) || (query.getIsUnique()!=null &&
                     query.getIsUnique() )){
-                queryBuffer.append("obj."+query.getFieldName()+" = :"+query.getFieldName());
+                queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
             } else {
-                queryBuffer.append("lower(obj."+query.getFieldName()+") like :"+query.getFieldName());
+                queryBuffer.append("lower(obj."+query.getFieldName()+") like :"+NamingUtil.toParamName(query.getFieldName()));
             }
         }
 
@@ -203,12 +214,11 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                 )
                 && !(helper.getIsUnique()!=null && helper.getIsUnique())
                 && !List.class.isAssignableFrom(helper.getEntityType())) {
-                query.setParameter(helper.getFieldName(),"%"+helper.getValue()+"%");
+                query.setParameter(NamingUtil.toParamName(helper.getFieldName()),"%"+helper.getValue()+"%");
             } else if(List.class.isAssignableFrom(helper.getEntityType())) {
-                String[] field = helper.getFieldName().split("\\.");
-                query.setParameter(field[0]+ NamingUtil.upperCaseFirstChar(field[1]),helper.getValue());
+                query.setParameter(NamingUtil.toParamName(helper.getFieldName()), helper.getValue());
             } else {
-                query.setParameter(helper.getFieldName(),helper.getValue());
+                query.setParameter(NamingUtil.toParamName(helper.getFieldName()),helper.getValue());
             }
         }
         return query;

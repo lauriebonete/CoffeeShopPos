@@ -53,9 +53,13 @@ var evey = (function(){
                     var object = new Object();
                     object[dottedName[1]] = $(select).val();
 
-                    var list = [];
-                    list.push(object);
-                    jsonObject[dottedName[0]]  = list;
+                    if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
+                        jsonObject[dottedName[0]] = object;
+                    } else {
+                        var list = [];
+                        list.push(object);
+                        jsonObject[dottedName[0]]  = list;
+                    }
                 } else {
                     jsonObject[$(select).attr("name")] = $(select).val();
                 }
@@ -143,7 +147,6 @@ var evey = (function(){
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(crudForm);
-                console.log(jsonForm);
                 $.ajax({
                     url: path,
                     type: "POST",
@@ -154,6 +157,7 @@ var evey = (function(){
                         if(data.status) {
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
+                            $('#crud-modal').foundation('reveal', 'close');
                         }
                     }
                 });

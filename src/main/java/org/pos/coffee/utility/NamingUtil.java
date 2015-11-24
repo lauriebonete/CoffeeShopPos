@@ -35,6 +35,24 @@ public class NamingUtil {
         return "";
     }
 
+    public static String toSetterName(String name){
+        if(!StringUtil.isEmpty(name)){
+            return "set"+name.substring(0,1).toUpperCase() + name.substring(1);
+        }
+        return "";
+    }
+
+    public static String toParamName(String name){
+        if(StringUtil.isEmpty(name)){
+            return "";
+        }
+        String[] parsed = name.split("\\.");
+        for(int i=1; i<=parsed.length-1;i++){
+            parsed[0] += NamingUtil.upperCaseFirstChar(parsed[i]);
+        }
+        return parsed[0];
+    }
+
     public static String toCreatePath(String name) {
         if (StringUtil.isEmpty(name))
             return "";

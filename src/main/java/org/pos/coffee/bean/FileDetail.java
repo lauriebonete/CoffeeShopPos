@@ -1,8 +1,13 @@
 package org.pos.coffee.bean;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Created by Laurie on 11/23/2015.
  */
+@Entity
+@Table(name = "FILE_DETAIL")
 public class FileDetail extends BaseEntity {
     private String fileName;
     private String filePath;
