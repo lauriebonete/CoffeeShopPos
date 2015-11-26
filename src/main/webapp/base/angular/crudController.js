@@ -75,7 +75,6 @@ crudApp.controller("crudController", function ($scope, $http) {
 
     $scope.selectizeConfig =
     {
-        create: true,
         valueField : 'id',
         labelField : 'value',
         delimiter : '|',

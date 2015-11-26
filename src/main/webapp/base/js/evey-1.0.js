@@ -64,6 +64,7 @@ var evey = (function(){
                     jsonObject[$(select).attr("name")] = $(select).val();
                 }
             });
+            console.log(jsonObject);
             return JSON.stringify(jsonObject);
         },
 

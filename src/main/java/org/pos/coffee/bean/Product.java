@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -16,6 +17,7 @@ public final class Product extends BaseEntity {
 	private String productName;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Ingredient> ingredientList;
 
 	@JoinList
@@ -110,6 +112,7 @@ public final class Product extends BaseEntity {
 		for(ReferenceLookUp group: this.promoGroupList){
 			buffer.append(group.getId()+"|");
 		}
-		return buffer.toString();
+		String value = buffer.toString();
+		return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
 	}
 }

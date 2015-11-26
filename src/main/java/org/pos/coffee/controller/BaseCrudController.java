@@ -88,6 +88,13 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
+    @RequestMapping(value = "/addList", method = RequestMethod.POST, produces = "application/json")
+    public final void addList(@RequestBody List<T> entityList) throws Exception{
+        for(T entity: entityList){
+            createEntity(entity);
+        }
+    }
+
     @RequestMapping(value = "/findEntity", method = RequestMethod.POST, produces = "application/json")
     public final
     @ResponseBody

@@ -52,7 +52,7 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     }
 
     @Override
-    public Object load(Long id) {
+    public T load(Long id) {
         return baseEntityDao.load(id);
     }
 
@@ -96,14 +96,16 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
                         for(Object object:list){
                             //search for loadable objects
                             BaseEntity baseEntity = (BaseEntity) object;
-                            if(baseEntity.getId()!=null && baseEntity.getVersion()==null){
+                            if(baseEntity.getId()!=null){
                                 idList.add(baseEntity.getId());
                             }
                         }
-                        String serviceName=NamingUtil.toAttributeName(list.get(0).getClass().getSimpleName());
-                        BaseCrudService baseCrudServiceLoader = (BaseCrudService) beanFactory.getBean(serviceName + "Service");
-                        List foundList = baseCrudServiceLoader.findByListOfIds(idList);
-                        BeanUtils.setProperty(entity,field.getName(),foundList);
+                        if(list.size()>0){
+                            String serviceName=NamingUtil.toAttributeName(list.get(0).getClass().getSimpleName());
+                            BaseCrudService baseCrudServiceLoader = (BaseCrudService) beanFactory.getBean(serviceName + "Service");
+                            List foundList = baseCrudServiceLoader.findByListOfIds(idList);
+                            BeanUtils.setProperty(entity,field.getName(),foundList);
+                        }
                     } else {
                         if (BaseEntity.class.isAssignableFrom(value.getClass())) {
                             BaseEntity baseEntity = (BaseEntity) value;

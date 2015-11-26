@@ -14,7 +14,8 @@
     float: left;
 }
 
-.search-panel {
+.search-panel,
+.each-size {
 	background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -91,4 +92,17 @@
 
 .reveal-modal.open {
     top: 0 !important;
+}
+
+.each-size {
+    margin-bottom: .25rem;
+    padding: .25rem;
+}
+
+.half-modal{
+    width: 50%;
+}
+
+.margin-top-one-rem {
+    margin-top: 1rem;
 }

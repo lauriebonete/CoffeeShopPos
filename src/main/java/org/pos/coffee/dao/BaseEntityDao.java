@@ -15,5 +15,5 @@ public interface BaseEntityDao<T extends BaseEntity, Id extends Serializable> {
     public List<Object> findEntity(T entity) throws IllegalAccessException;
     public List<Object> findAll();
     public List<Object> findByListOfIds(List<Long> ids);
-    public Object load(Long id);
+    public T load(Long id);
 }

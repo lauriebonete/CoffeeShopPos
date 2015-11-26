@@ -7,6 +7,7 @@ import org.pos.coffee.bean.QueryHelper;
 import org.pos.coffee.dao.BaseEntityDao;
 import org.pos.coffee.utility.CrudUtil;
 import org.pos.coffee.utility.NamingUtil;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +35,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
+    @Transactional
     public void save(T entity) {
         if(entity.isNew()) {
             getEntityManager().persist(entity);
@@ -80,7 +82,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
-    public Object load(Long id) {
+    public T load(Long id) {
         T entity = getEntityManager().find(getEntityBeanType(), id);
         return entity;
     }

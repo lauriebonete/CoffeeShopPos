@@ -10,17 +10,20 @@
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
+    <link rel="stylesheet" href="css/dropzone.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/responsive-tables.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
-    <script src="js/angular-resource.js"></script>
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
+    <script src="js/dropzone.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
+    <script src="angular/productAngular.js"></script>
+    <script src="angular/productAngularController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
@@ -151,8 +154,8 @@
                                             <td>{{record.displayProductGroup}}</td>
                                             <td>{{record.displayPromoGroup}}</td>
                                             <td>
-                                                <i class="fa fa-camera has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
-                                                <i class="fa fa-cutlery has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-reveal-id="image-modal"></i>
+                                                <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}" data-reveal-id="ingredient-modal"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
@@ -261,6 +264,29 @@
                         <button class="button alert remove-record">Remove</button>
                         <button class="button secondary float-right">Cancel</button>
                     </div>
+                    <div id="image-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="image-title" aria-hidden="true" role="dialog">
+                        <h3 id="image-title">Product Image</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form action="/file/upload" method="POST" enctype="multipart/form-data" class="dropzone" id="dropZone">
+                        </form>
+                    </div>
+                    <div id="ingredient-modal"
+                         class="reveal-modal crud-modal half-modal"
+                         data-reveal
+                         aria-labelledby="ingredient-title"
+                         aria-hidden="true"
+                         role="dialog"
+                         ng-controller="productController">
+                        <h3 id="ingredient-title">Ingredients</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <div class="sizing-location">
+
+                        </div>
+                        <div>
+                            <button id="save-ingredient" class="button success max-width">Save Ingredient</button>
+                        </div>
+                        <a class="float-right" id="add-size" aria-label="Add"><i class="fa fa-plus-circle"></i> Add Size</a>
+                    </div>
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -269,10 +295,72 @@
 </div>
 </body>
 <footer>
+
+    <script type="text/html" id="item-template">
+        <div class="item-row row">
+            <div class="columns small-6">
+                <select class="item-dropdown"></select>
+            </div>
+            <div class="columns small-2">
+                <input type="text" class="quantity" placeholder="QTY">
+            </div>
+            <div class="columns small-3">
+                <span class="uom"></span>
+            </div>
+            <div class="columns small-1">
+                <a class="add-item"><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="added-item-template">
+        <div class="row">
+            <div class="details-holder"></div>
+            <div class="columns small-7">
+                <span class="item"></span>
+            </div>
+            <div class="columns small-4">
+                <span class="qty"></span>
+            </div>
+            <div class="columns small-1">
+                <a aria-label="Remove" class="remove-ingredient"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="size-template">
+        <div class="each-size row">
+            <div class="columns small-12">
+                <div class="row">
+                    <div class="columns small-12">
+                        <label>Size
+                            <select class="size"></select>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns small-12 added-item-location">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns small-12 item-location">
+
+                    </div>
+                </div>
+                <div class="row margin-top-one-rem">
+                    <a aria-label="Add" class="add-ingredient"><i class="fa fa-plus-circle"></i> Add Ingredient</a>
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script>
         $(document).foundation();
         $(document).EVEYfy();
 
+        var items = null;
+        var sizes = null;
         $(document).ready(function(){
             $.ajax({
                 url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP",
@@ -283,16 +371,6 @@
                     angular.element(".main-body").scope().feedDropdown(data);
                     angular.element(".main-body").scope().loadProductGroup(data);
                     angular.element(".main-body").scope().$apply();
-
-                    /*$('.product-group').selectize({
-                        plugins: ['remove_button'],
-                        persist: false,
-                        maxItems: null,
-                        valueField: 'id',
-                        labelField: 'value',
-                        searchField: ['value'],
-                        options: data
-                    });*/
                 }
             });
 
@@ -304,19 +382,116 @@
 
                     angular.element(".main-body").scope().loadPromoGroup(data);
                     angular.element(".main-body").scope().$apply();
-
-                    /*$('.promo-group').selectize({
-                        plugins: ['remove_button'],
-                        persist: false,
-                        maxItems: null,
-                        valueField: 'id',
-                        labelField: 'value',
-                        searchField: ['value'],
-                        options: data
-                    });*/
                 }
             });
+
+            $.ajax({
+                url: evey.getHome()+"/reference/getReferenceLookUpByCategory/CATEGORY_SIZING",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    sizes = data;
+                }
+            });
+
+            $.ajax({
+                url: evey.getHome()+"/item/findAll",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    items = data.results;
+                }
+            })
+
+        }).on("click",".image-action", function(){
+            console.log($(this).data("id"));
+        }).on("click","#add-size", function(){
+            $('#ingredient-modal .sizing-location').append($("#size-template").html());
+            $(this).parent().find(".sizing-location select.size").last().selectize({
+                valueField: 'id',
+                labelField: 'value',
+                searchField: 'value',
+                options: sizes,
+            });
+        }).on("click", ".add-ingredient", function(){
+            var template = $("#item-template").html();
+            $(this).parents(".each-size").find(".item-location").append($(template));
+            $(this).parents(".each-size").find(".item-location .item-dropdown").last().selectize({
+                valueField: 'id',
+                labelField: 'itemName',
+                searchField: 'itemName',
+                options:items,
+                render: {
+                    option:function(items){
+                        return "<option value='"+items.id+"' data-uom='"+items.uom.value+"'>"+items.itemName+"</option>"
+                    }
+                }
+            });
+        }).on("change", ".item-dropdown", function(){
+            $(this).parents(".item-row").find("span").text($(this).parent().find(".selectize-dropdown-content option.selected").data("uom"));
+        }).on("click", ".add-item", function(){
+            var itemId = $(this).parents(".item-row").find("select option:selected").val();
+            var itemName = $(this).parents(".item-row").find("select option:selected").text();
+            var qty = $(this).parents(".item-row").find("input.quantity").val();
+            var uom = $(this).parents(".item-row").find("span.uom").text();
+
+            var addedItem = $("#added-item-template").html();
+            var location = $(this).parents(".each-size").find(".added-item-location");
+            $(location).append($(addedItem));
+
+            var lastRow = $(location).find("div.row").last();
+            $(lastRow).find("div.details-holder").attr("data-id", itemId);
+            $(lastRow).find("div.details-holder").attr("data-qty", qty);
+            $(lastRow).find("span.item").text(itemName);
+            $(lastRow).find("span.qty").text(qty+" "+uom);
+            $(this).parents(".item-row").remove();
+
+        }).on("click", ".remove-ingredient", function(){
+            $(this).parent().parent().remove();
+        }).on("click", "#save-ingredient",function(){
+            var ingredientList = [];
+            $.each($(".sizing-location .each-size"), function(){
+                var eachSize = $(this);
+                $.each($(eachSize).find(".added-item-location .details-holder"),function(i,detail){
+                    var ingredient = new Object;
+                    ingredient["size"] = {"id":Number($(eachSize).find("select.size option:selected").val())};
+                    ingredient["item"] = {"id":$(detail).data("id")};
+                    ingredient["quantity"] = $(detail).data("qty");
+                    ingredient["product"] = {"id":$("#ingredient-modal").data("product")};
+
+                    ingredientList.push(ingredient);
+                });
+            });
+            console.log(JSON.stringify(ingredientList));
+
+            $.ajax({
+                url: evey.getHome()+"/ingredient/addList",
+                data: JSON.stringify(ingredientList),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function(){
+
+                }
+            });
+
+        }).on("click",".ingredient-action", function(){
+            $("#ingredient-modal").attr("data-product", $(this).data("id"));
         });
+
+        Dropzone.options.dropZone = {
+            maxFiles: 1,
+            accept: function(file, done) {
+                console.log("uploaded");
+                done();
+            },
+            init: function() {
+                this.on("maxfilesexceeded", function(file){
+                    alert("No more files please!");
+                });
+            }
+        };
+
     </script>
 </footer>
 </html>

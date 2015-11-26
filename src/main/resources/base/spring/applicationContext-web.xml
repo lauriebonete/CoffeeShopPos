@@ -24,13 +24,13 @@
 	
 	<mvc:annotation-driven />
 
-	<mvc:resources location="/base/angular/" mapping="/angular/**" />
+	<mvc:resources location="/app/angular/,/base/angular/" mapping="/angular/**" />
 	<mvc:resources location="/WEB-INF/html/" mapping="/html/**" />
 	<mvc:resources location="/app/css/,/base/css/" mapping="/css/**" />
 	<mvc:resources location="/app/js/,/base/js/" mapping="/js/**" />
 	<mvc:resources location="/app/img/,/base/img/" mapping="/img/**" />
 	<mvc:resources location="/app/font/,/base/font/" mapping="/font/**" />
-	<mvc:default-servlet-handler/>
+	<!--<mvc:default-servlet-handler/>-->
 	
 	<bean
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter">

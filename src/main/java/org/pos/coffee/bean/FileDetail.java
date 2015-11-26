@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class FileDetail extends BaseEntity {
     private String fileName;
     private String filePath;
-    private Integer fileSize;
+    private Long fileSize;
     private String fileType;
 
     public String getFileName() {
@@ -30,11 +30,11 @@ public class FileDetail extends BaseEntity {
         this.filePath = filePath;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 
