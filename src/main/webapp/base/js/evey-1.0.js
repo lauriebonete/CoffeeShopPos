@@ -64,7 +64,6 @@ var evey = (function(){
                     jsonObject[$(select).attr("name")] = $(select).val();
                 }
             });
-            console.log(jsonObject);
             return JSON.stringify(jsonObject);
         },
 
@@ -211,17 +210,20 @@ var evey = (function(){
             });
 
             $(document).ready(function() {
+
                 var url = $(this).find(settings['crud-table']).data("url");
-                $.ajax({
-                    url: evey.getHome()+url,
-                    dataType: "JSON",
-                    type: "GET",
-                    success: function (data) {
-                        var paginateThis = evey.paginatePage(data);
-                        paginateThis["currentPage"] = 1;
-                        paginate(paginateThis, settings["pagination"]);
-                    }
-                });
+                if(url!=undefined && url!=null && url!="") {
+                    $.ajax({
+                        url: evey.getHome()+url,
+                        dataType: "JSON",
+                        type: "GET",
+                        success: function (data) {
+                            var paginateThis = evey.paginatePage(data);
+                            paginateThis["currentPage"] = 1;
+                            paginate(paginateThis, settings["pagination"]);
+                        }
+                    });
+                }
             });
         });
     }

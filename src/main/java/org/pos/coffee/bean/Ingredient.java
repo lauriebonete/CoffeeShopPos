@@ -20,7 +20,6 @@ public class Ingredient extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT_ID")
-	@JsonBackReference
 	private Product product;
 
 	@Column(name = "PRODUCT_ID", insertable = false, updatable = false)
@@ -29,6 +28,9 @@ public class Ingredient extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SIZE_ID")
 	private ReferenceLookUp size;
+
+	@Column(name = "SIZE_ID", insertable = false, updatable = false)
+	private Long sizeId;
 	
 	public Item getItem() {
 		return item;
@@ -73,5 +75,13 @@ public class Ingredient extends BaseEntity {
 
 	public void setProductId(Long productId) {
 		this.productId = productId;
+	}
+
+	public Long getSizeId() {
+		return sizeId;
+	}
+
+	public void setSizeId(Long sizeId) {
+		this.sizeId = sizeId;
 	}
 }

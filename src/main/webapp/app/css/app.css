@@ -1,0 +1,267 @@
+.icon-bar {
+    max-height: 80vh;
+    overflow: hidden;
+    overflow-y:auto;
+    margin: 0;
+    padding: 0;
+}
+
+.icon-bar a {
+    width:100px;
+}
+
+.icon-bar a label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.side-nav {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    width: 60%;
+    float: left;
+    display: block;
+    padding: 5px;
+    max-height: 85vh;
+    overflow: hidden;
+    overflow-y: auto;
+    margin-left: 5px;
+    position: relative;
+}
+
+.cartBig {
+    float: left;
+    width: 27.5%;
+    display: block;
+    padding: 10px;
+    margin-left: 5px;
+    max-height: 80vh;
+}
+
+#cartSmall-container {
+    max-height: 60vh;
+    position: relative;
+}
+
+#cartSmall-container .cartSmall-icon {
+    position: absolute;
+    top: 5vh;
+    right: 0;
+    z-index: 1;
+    background: #222;
+    border-radius: 30px 0px 0px 30px;
+    -moz-border-radius: 30px 0px 0px 30px;
+    -webkit-border-radius: 30px 0px 0px 30px;
+    padding: 5px 10px 5px 10px;
+    transition: right 1s cubic-bezier(0.17, 0.04, 0.03, 0.94);
+}
+
+#cartSmall-container * {
+    color: white;
+}
+
+#cartSmall-container .cartSmall-content {
+    position: absolute;
+    width: 70vw;
+    right: -70vw;
+    top: 5vh;
+    height: 85vh;
+    z-index: 1;
+    background: #222;
+    padding: 5px 10px 5px 10px;
+    transition: right 1s cubic-bezier(0.17, 0.04, 0.03, 0.94);
+}
+
+#cartSmall-container .cartSmall-content .orderSummary {
+    max-height: 60vh;
+    position: relative;
+}
+
+#cartSmall-container .cartSmall-content .orderSummary .items {
+    padding: 10px;
+    width: 100%;
+    height: 40vh;
+    overflow: hidden;
+    overflow-y: auto;
+    margin-bottom: 10vh;
+    border: 1px solid;
+}
+
+#cartSmall-container .cartSmall-content .orderSummary .totalPrice {
+    width: 100%;
+    border: 1px solid;
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+}
+
+#cartSmall-container .cartSmall-content .orderSummary .items * {
+    word-break: break-all;
+}
+
+.cartBig .orderSummary {
+    max-height: 60vh;
+    position: relative;
+}
+
+.cartBig .orderSummary .items {
+    padding: 10px;
+    width: 100%;
+    height: 40vh;
+    overflow: hidden;
+    overflow-y: auto;
+    border: 1px solid;
+    margin-bottom: 10vh;
+}
+
+.cartBig .orderSummary .totalPrice {
+    width: 100%;
+    border: 1px solid;
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+}
+
+.cartBig .orderSummary .items * {
+    word-break: break-all;
+}
+
+.contentHolder {
+    position: relative;
+}
+
+.contentHolder * {
+    text-align: center;
+}
+
+.contentList li {
+    padding: 2px;
+}
+
+.contentImg {
+    height:100%;
+    width:100%;
+}
+
+.addToCart {
+    position: absolute;
+    right: +5%;
+    top: +5%;
+    color: white;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.addOn {
+    border: 1px solid;
+}
+
+.addOn *{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#modifyOrder {
+    position: absolute;
+    top: +5vh;
+}
+/* ---Scrollbar CSS--- */
+.icon-bar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.icon-bar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.icon-bar::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.content::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.items::-webkit-scrollbar {
+    width: 10px;
+}
+
+.items::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.items::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.receipt::-webkit-scrollbar {
+    width: 10px;
+}
+
+.receipt::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.receipt::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.payment::-webkit-scrollbar {
+    width: 10px;
+}
+
+.payment::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.payment::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.receipt {
+    width: 40%;
+    float: left;
+    max-height: 85vh;
+    padding: 20px;
+    overflow: hidden;
+    overflow-y:auto;
+}
+
+.payment {
+    width: 60%;
+    float: left;
+    max-height: 85vh;
+    padding: 20px;
+    overflow: hidden;
+    overflow-y:auto;
+}

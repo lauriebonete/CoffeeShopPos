@@ -17,12 +17,26 @@
 			type="annotation" />
 	</context:component-scan>
 
+	<context:component-scan base-package="org.evey.controller"
+							use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller"
+								type="annotation" />
+	</context:component-scan>
+
 	<context:component-scan base-package="org.pos.coffee">
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 								type="annotation" />
 	</context:component-scan>
 	
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="org.evey.web.json.HibernateAwareObjectMapper" />
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 	<mvc:resources location="/app/angular/,/base/angular/" mapping="/angular/**" />
 	<mvc:resources location="/WEB-INF/html/" mapping="/html/**" />

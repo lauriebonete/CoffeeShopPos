@@ -1,4 +1,4 @@
-package org.pos.coffee.utility;
+package org.evey.utility;
 
 import org.pos.coffee.bean.BaseEntity;
 

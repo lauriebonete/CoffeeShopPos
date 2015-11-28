@@ -3,8 +3,8 @@ package org.pos.coffee.controller;
 import org.apache.log4j.Logger;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.service.BaseCrudService;
-import org.pos.coffee.utility.NamingUtil;
-import org.pos.coffee.utility.StringUtil;
+import org.evey.utility.NamingUtil;
+import org.evey.utility.StringUtil;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -61,9 +61,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public final
-    @ResponseBody
-    Map<String, Object> create(@RequestBody T entity) throws Exception {
+    public final @ResponseBody Map<String, Object> create(@RequestBody T entity) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         _log.info(entity);
         createEntity(entity);
@@ -75,9 +73,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = "application/json")
-    public final
-    @ResponseBody
-    Map<String, Object> delete(@PathVariable("id") Long id) {
+    public final @ResponseBody Map<String, Object> delete(@PathVariable("id") Long id) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (id != null && id > 0) {
@@ -88,11 +84,23 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
+    @RequestMapping(value = "/getEntityById", method = RequestMethod.GET, produces = "application/json")
+    public final @ResponseBody T getEntityById(Long entityId){
+        T entity = baseCrudService.load(entityId);
+        return entity;
+    }
+
     @RequestMapping(value = "/addList", method = RequestMethod.POST, produces = "application/json")
-    public final void addList(@RequestBody List<T> entityList) throws Exception{
+    public final @ResponseBody Map<String,Object> addList(@RequestBody T[] entityList) throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
         for(T entity: entityList){
             createEntity(entity);
         }
+
+        returnMap.put("message", "success");
+        returnMap.put("status", true);
+
+        return returnMap;
     }
 
     @RequestMapping(value = "/findEntity", method = RequestMethod.POST, produces = "application/json")
@@ -116,7 +124,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     @ResponseBody
     Map<String, Object> findAll() {
         Map<String, Object> map = new HashMap<String, Object>();
-        List<Object> results = new ArrayList<Object>();
+        List<T> results = new ArrayList<T>();
         results = baseCrudService.findAll();
         map.put("message", "success");
         map.put("status", true);

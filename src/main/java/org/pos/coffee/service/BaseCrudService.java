@@ -12,8 +12,8 @@ public interface BaseCrudService<T extends BaseEntity> extends BaseService {
 
     public void save(T entity);
     public void delete(Long id);
-    public List<Object> findEntity(T entity) throws Exception;
-    public List<Object> findAll();
+    public List<T> findEntity(T entity) throws Exception;
+    public List<T> findAll();
     public List<Object> findByListOfIds(List<Long> ids);
     public T load(Long id);
 

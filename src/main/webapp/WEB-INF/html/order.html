@@ -1,0 +1,441 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/responsive-tables.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-resource.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap sticky" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="/user/profile" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="/user/logout" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section">
+                    <div class="side-nav">
+                        <div class="icon-bar vertical five-up">
+                            <a class="item">
+                                <label>Iced</label>
+                            </a>
+                            <a class="item">
+                                <label>Frappucino</label>
+                            </a>
+                            <a class="item">
+                                <label>Hot</label>
+                            </a>
+                            <a class="item">
+                                <label>Dessert</label>
+                            </a>
+                            <a class="item">
+                                <label>Food</label>
+                            </a>
+                            <a class="item">
+                                <label>Yoghurt</label>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x" data-reveal-id="modifyOrder"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contentHolder">
+                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <h5>Iced Latte</h5>
+                                    <div class="addToCart">
+                                        <i class="fa fa-cart-plus fa-2x"></i>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="cartBig show-for-large-up">
+                        <h5 class="left">Order Summary</h5>
+                        <h5 class="right">(0)</h5>
+                        <div class="orderSummary">
+                            <div class="items">
+                                <div class="row">
+                                    <div class="small-6 columns">
+                                        <p>Item</p>
+                                    </div>
+                                    <div class="small-6 columns">
+                                        <p class="right">Qty * Price</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="totalPrice">
+                                <div class="row">
+                                    <div class="small-6 columns">
+                                        <p class="left">Total</p>
+                                    </div>
+                                    <div class="small-6 columns">
+                                        <p class="right">PHP 0.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="index2.html" class="button expand">Continue</a>
+                    </div>
+                    <div id="cartSmall-container">
+                        <div class="cartSmall-icon show-for-medium-down">
+                            <i class="fa fa-shopping-cart fa-2x"></i>
+                        </div>
+                        <div class="cartSmall-content show-for-medium-down">
+                            <h5 class="left">Order Summary</h5>
+                            <h5 class="right">(0)</h5>
+                            <div class="orderSummary">
+                                <div class="items">
+                                    <div class="row">
+                                        <div class="small-6 columns">
+                                            <p>Item</p>
+                                        </div>
+                                        <div class="small-6 columns">
+                                            <p class="right">Qty * Price</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="totalPrice">
+                                    <div class="row">
+                                        <div class="small-6 columns">
+                                            <p class="left">Total</p>
+                                        </div>
+                                        <div class="small-6 columns">
+                                            <p class="right">PHP 0.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="index2.html" class="button expand">Continue</a>
+                        </div>
+                    </div>
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+            <!--<div id="display-modal" data-alert class="alert-box success radius display-message hide">
+                <span class="message"></span>
+                <a href="#" class="close">&#215;</a>
+            </div>-->
+        </div>
+    </div>
+</div>
+<div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h2 id="modalTitle">Iced Latte</h2>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+    <div class="row">
+        <div class="small-4 columns">
+            <p>Base</p>
+        </div>
+        <div class="small-8 columns">
+            <div class="right">
+                <p>Soy Whole Milk Non-fat</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-6 columns">
+            <p>Quantity</p>
+        </div>
+        <div class="small-6 columns">
+            <p class="right"><i class="fa fa-minus"></i> <i class="fa fa-plus"></i><p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-4 columns">
+            <p>Size</p>
+        </div>
+        <div class="small-8 columns">
+            <div class="right">
+                <p>Tall Grande Venti</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-4 columns">
+            <p>Add-ons</p>
+        </div>
+        <div class="small-8 columns">
+        </div>
+    </div>
+    <div class="row">
+        <ul class="addOnList small-block-grid-2 medium-block-grid-4 large-block-grid-6">
+            <li>
+                <div class="addOn">
+                    <p>Whipped Cream</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="addOn">
+                    <p>Espresso Shot</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="addOn">
+                    <p>Caramel Syrup</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="addOn">
+                    <p>Vanila Syrup</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="addOn">
+                    <p>Sugar</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="addOn">
+                    <p>Chocolate</p>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-minus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p><i class="fa fa-plus"></i></p>
+                        </div>
+                        <div class="small-4 columns">
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            </ul>
+    </div>
+    <div class="row">
+        <div class="small-6 columns">
+            <a href="#" class="button left">Reset Default</a>
+        </div>
+        <div class="small-6 columns">
+            <a href="#" class="button right">Add to Cart</a>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+    </script>
+</footer>
+</html>

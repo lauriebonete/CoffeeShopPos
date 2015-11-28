@@ -22,8 +22,6 @@
     <script src="js/dropzone.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
-    <script src="angular/productAngular.js"></script>
-    <script src="angular/productAngularController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
@@ -53,10 +51,10 @@
                 <aside class="left-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Coffee Shop POS</label></li>
-                        <li><a href="#" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
-                        <li><a href="#" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
-                        <li><a href="#" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
-                        <li><a href="#" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
                         <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
                         <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
                             <ul class="left-submenu">
@@ -66,11 +64,11 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>Account Maintenance</label></li>
-                                        <li><a href="#" id="person-off" class="canvas">People Maintenance</a></li>
-                                        <li><a href="#" id="user-off" class="canvas">User Page</a></li>
-                                        <li><a href="#" id="customer-off" class="canvas">Customer</a></li>
-                                        <li><a href="#" id="supplier-off" class="canvas">Supplier</a></li>
-                                        <li><a href="#" id="address-off" class="canvas">Address</a></li>
+                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
@@ -154,8 +152,8 @@
                                             <td>{{record.displayProductGroup}}</td>
                                             <td>{{record.displayPromoGroup}}</td>
                                             <td>
-                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-reveal-id="image-modal"></i>
-                                                <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}" data-reveal-id="ingredient-modal"></i>
+                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}" data-reveal-id="image-modal"></i>
+                                                <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
@@ -275,8 +273,7 @@
                          data-reveal
                          aria-labelledby="ingredient-title"
                          aria-hidden="true"
-                         role="dialog"
-                         ng-controller="productController">
+                         role="dialog">
                         <h3 id="ingredient-title">Ingredients</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <div class="sizing-location">
@@ -395,16 +392,41 @@
             });
 
             $.ajax({
-                url: evey.getHome()+"/item/findAll",
+                url: evey.getHome()+"/item/getAllBypassLazy",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    items = data.results;
+                    items = data;
                 }
             })
 
         }).on("click",".image-action", function(){
-            console.log($(this).data("id"));
+            var imageId = $(this).data("image");
+            productImage.removeAllFiles();
+            if(imageId != undefined &&
+            imageId != null &&
+            imageId != "") {
+                $.ajax({
+                    url: evey.getHome()+"/file/getEntityById",
+                    data: {"entityId": imageId},
+                    dataType: "JSON",
+                    type: "GET",
+                    success:function(data){
+                        var upload = {bytesSent: data.fileSize};
+
+                        /// again fake the size..
+                        var mockFile = {name: data.fileName, size: data.fileSize, accepted: true};
+
+                        mockFile.upload = upload;
+                        mockFile.kind = "file";
+                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile);
+                        Dropzone.forElement("#dropZone").files.push(mockFile);
+                        Dropzone.forElement("#dropZone").emit("thumbnail", mockFile, "/file/viewImage/"+data.id);
+                        Dropzone.forElement("#dropZone").emit("complete", mockFile)
+                        Dropzone.forElement("#dropZone").emit("success", mockFile, data.id);
+                    }
+                });
+            }
         }).on("click","#add-size", function(){
             $('#ingredient-modal .sizing-location').append($("#size-template").html());
             $(this).parent().find(".sizing-location select.size").last().selectize({
@@ -462,7 +484,6 @@
                     ingredientList.push(ingredient);
                 });
             });
-            console.log(JSON.stringify(ingredientList));
 
             $.ajax({
                 url: evey.getHome()+"/ingredient/addList",
@@ -470,24 +491,68 @@
                 type: "POST",
                 dataType: "JSON",
                 contentType: "application/json",
-                success: function(){
-
+                success: function(data){
+                    if(data.status!=null && data.status){
+                        $('#ingredient-modal').foundation('reveal', 'close');
+                    }
                 }
             });
 
         }).on("click",".ingredient-action", function(){
             $("#ingredient-modal").attr("data-product", $(this).data("id"));
+            $("#ingredient-modal .sizing-location .each-size").remove();
+
+            $.ajax({
+                url: evey.getHome()+"/ingredient/getIngredient",
+                data: {"productId": $(this).data("id")},
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var group = {};
+                    $.each(data, function(i,val){
+                        if(group[val.sizeId] == null){
+                            group[val.sizeId] = [];
+                        }
+                        group[val.sizeId].push(val);
+                    });
+
+                    $.each(group, function(i,val){
+                        $('#ingredient-modal .sizing-location').append($("#size-template").html());
+                        var size = $('#ingredient-modal .sizing-location select.size').last().selectize({
+                            valueField: 'id',
+                            labelField: 'value',
+                            searchField: 'value',
+                            options: sizes,
+                        });
+                        size[0].selectize.setValue(i);
+                        $.each(val, function(i,item){
+                            var addedItem = $("#added-item-template").html();
+                            var location = $('.each-size').last().find(".added-item-location");
+                            $(location).append($(addedItem));
+
+                            var lastRow = $(location).find("div.row").last();
+                            $(lastRow).find("div.details-holder").attr("data-id", item.itemId);
+                            $(lastRow).find("div.details-holder").attr("data-qty", item.quantity);
+                            $(lastRow).find("span.item").text(item.item.itemName);
+                            $(lastRow).find("span.qty").text(item.quantity+" "+item.item.uom.value);
+                        });
+                    });
+                    $('#ingredient-modal').foundation('reveal', 'open');
+                }
+            });
         });
 
-        Dropzone.options.dropZone = {
+        var productImage = null;
+         Dropzone.options.dropZone = {
             maxFiles: 1,
             accept: function(file, done) {
-                console.log("uploaded");
                 done();
             },
             init: function() {
+                productImage = this;
                 this.on("maxfilesexceeded", function(file){
-                    alert("No more files please!");
+                    this.removeAllFiles();
+                    this.addFile(file);
                 });
             }
         };

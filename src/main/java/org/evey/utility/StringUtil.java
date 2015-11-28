@@ -1,4 +1,4 @@
-package org.pos.coffee.utility;
+package org.evey.utility;
 
 /**
  * Created by Laurie on 11/5/2015.

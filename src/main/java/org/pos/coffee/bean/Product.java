@@ -17,7 +17,6 @@ public final class Product extends BaseEntity {
 	private String productName;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-	@JsonManagedReference
 	private List<Ingredient> ingredientList;
 
 	@JoinList
@@ -39,6 +38,9 @@ public final class Product extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "IMAGE", referencedColumnName = "ID")
 	private FileDetail productImage;
+
+	@Column(name = "IMAGE", insertable = false, updatable = false)
+	private Long productImageId;
 
 	public String getProductName() {
 		return productName;
@@ -73,6 +75,14 @@ public final class Product extends BaseEntity {
 
 	public void setProductImage(FileDetail productImage) {
 		this.productImage = productImage;
+	}
+
+	public Long getProductImageId() {
+		return productImageId;
+	}
+
+	public void setProductImageId(Long productImageId) {
+		this.productImageId = productImageId;
 	}
 
 	@JsonView

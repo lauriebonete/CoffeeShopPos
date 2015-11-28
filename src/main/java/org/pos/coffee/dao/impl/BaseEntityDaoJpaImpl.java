@@ -5,8 +5,7 @@ import org.pos.coffee.annotation.UniqueField;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.bean.QueryHelper;
 import org.pos.coffee.dao.BaseEntityDao;
-import org.pos.coffee.utility.CrudUtil;
-import org.pos.coffee.utility.NamingUtil;
+import org.evey.utility.NamingUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -57,7 +56,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
-    public List<Object> findEntity(T entity) throws IllegalAccessException{
+    public List<T> findEntity(T entity) throws IllegalAccessException{
         StringBuffer queryBuilder = new StringBuffer();
         queryBuilder.append(buildSelectQuery());
         queryBuilder.append(buildJoinQuery(getEntityBeanType(),entity));
@@ -69,7 +68,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
-    public List<Object> findAll() {
+    public List<T> findAll() {
          Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
         return query.getResultList();
     }

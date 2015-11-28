@@ -1,12 +1,11 @@
 package org.pos.coffee.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.pos.coffee.annotation.JoinList;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.dao.BaseEntityDao;
 import org.pos.coffee.service.BaseCrudService;
-import org.pos.coffee.utility.NamingUtil;
+import org.evey.utility.NamingUtil;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,12 +36,12 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     }
 
     @Override
-    public List<Object> findEntity(T entity)  throws Exception{
+    public List<T> findEntity(T entity)  throws Exception{
         return baseEntityDao.findEntity(entity);
     }
 
     @Override
-    public List<Object> findAll() {
+    public List<T> findAll() {
         return baseEntityDao.findAll();
     }
 
