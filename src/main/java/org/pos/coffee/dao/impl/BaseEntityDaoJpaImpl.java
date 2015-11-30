@@ -1,7 +1,7 @@
 package org.pos.coffee.dao.impl;
 
-import org.pos.coffee.annotation.JoinList;
-import org.pos.coffee.annotation.UniqueField;
+import org.evey.annotation.JoinList;
+import org.evey.annotation.UniqueField;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.bean.QueryHelper;
 import org.pos.coffee.dao.BaseEntityDao;

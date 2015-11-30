@@ -1,7 +1,7 @@
 package org.pos.coffee.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.pos.coffee.annotation.JoinList;
+import org.evey.annotation.JoinList;
 import org.pos.coffee.bean.BaseEntity;
 import org.pos.coffee.dao.BaseEntityDao;
 import org.pos.coffee.service.BaseCrudService;

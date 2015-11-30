@@ -1,4 +1,4 @@
-package org.pos.coffee.annotation;
+package org.evey.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

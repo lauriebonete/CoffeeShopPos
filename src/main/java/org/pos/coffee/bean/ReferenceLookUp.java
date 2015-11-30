@@ -1,6 +1,6 @@
 package org.pos.coffee.bean;
 
-import org.pos.coffee.annotation.UniqueField;
+import org.evey.annotation.UniqueField;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

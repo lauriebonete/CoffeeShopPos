@@ -48,7 +48,7 @@ var evey = (function(){
             });
 
             $.each($(form).find("select"),function(i,select){
-                if($(select).attr("name").contains(".")) {
+                if($(select).attr("name").indexOf (".")!= -1) {
                     var dottedName = $(select).attr("name").split(".");
                     var object = new Object();
                     object[dottedName[1]] = $(select).val();
@@ -64,6 +64,8 @@ var evey = (function(){
                     jsonObject[$(select).attr("name")] = $(select).val();
                 }
             });
+
+            console.log(JSON.stringify(jsonObject));
             return JSON.stringify(jsonObject);
         },
 

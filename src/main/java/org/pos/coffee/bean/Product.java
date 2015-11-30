@@ -1,10 +1,7 @@
 package org.pos.coffee.bean;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.pos.coffee.annotation.JoinList;
+import org.evey.annotation.JoinList;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +12,9 @@ public final class Product extends BaseEntity {
 
 	@Column(name="PRODUCT_NAME")
 	private String productName;
+
+	@Column(name="DESCRIPTION")
+	private String description;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	private List<Ingredient> ingredientList;
@@ -83,6 +83,14 @@ public final class Product extends BaseEntity {
 
 	public void setProductImageId(Long productImageId) {
 		this.productImageId = productImageId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@JsonView

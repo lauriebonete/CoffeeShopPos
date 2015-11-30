@@ -104,9 +104,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(value = "/findEntity", method = RequestMethod.POST, produces = "application/json")
-    public final
-    @ResponseBody
-    Map<String, Object> findEntity(@RequestBody T entity) throws Exception {
+    public final @ResponseBody Map<String, Object> findEntity(@RequestBody T entity) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Object> results = new ArrayList<Object>();
         results.addAll(baseCrudService.findEntity(entity));
@@ -120,9 +118,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = "application/json")
-    public final
-    @ResponseBody
-    Map<String, Object> findAll() {
+    public final @ResponseBody Map<String, Object> findAll() {
         Map<String, Object> map = new HashMap<String, Object>();
         List<T> results = new ArrayList<T>();
         results = baseCrudService.findAll();
@@ -161,5 +157,6 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         _log.info("LOADING " + attributeName);
         return new ModelAndView(htmlPage);
     }
+
 
 }

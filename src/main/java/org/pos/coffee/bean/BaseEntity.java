@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.apache.log4j.Logger;
-import org.pos.coffee.annotation.UniqueField;
+import org.evey.annotation.UniqueField;
 import org.pos.coffee.persistence.EntityListener;
 
 /*

@@ -152,7 +152,7 @@
                                             <td>{{record.displayProductGroup}}</td>
                                             <td>{{record.displayPromoGroup}}</td>
                                             <td>
-                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}" data-reveal-id="image-modal"></i>
+                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
                                                 <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
@@ -265,8 +265,17 @@
                     <div id="image-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="image-title" aria-hidden="true" role="dialog">
                         <h3 id="image-title">Product Image</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <form action="/file/upload" method="POST" enctype="multipart/form-data" class="dropzone" id="dropZone">
-                        </form>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <form action="/file/upload" method="POST" enctype="multipart/form-data" class="dropzone" id="dropZone">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <button class="button success margin-top-one-rem max-width" id="save-image">Save Image</button>
+                            </div>
+                        </div>
                     </div>
                     <div id="ingredient-modal"
                          class="reveal-modal crud-modal half-modal"
@@ -401,11 +410,19 @@
             })
 
         }).on("click",".image-action", function(){
+
+            $(".image-action").removeClass("picked");
+            $(this).addClass("picked");
+
+            $("#image-modal").attr("data-product", $(this).data("id"));
+
             var imageId = $(this).data("image");
+            console.log(imageId,"xxxx");
             productImage.removeAllFiles();
             if(imageId != undefined &&
             imageId != null &&
             imageId != "") {
+
                 $.ajax({
                     url: evey.getHome()+"/file/getEntityById",
                     data: {"entityId": imageId},
@@ -414,7 +431,6 @@
                     success:function(data){
                         var upload = {bytesSent: data.fileSize};
 
-                        /// again fake the size..
                         var mockFile = {name: data.fileName, size: data.fileSize, accepted: true};
 
                         mockFile.upload = upload;
@@ -423,9 +439,13 @@
                         Dropzone.forElement("#dropZone").files.push(mockFile);
                         Dropzone.forElement("#dropZone").emit("thumbnail", mockFile, "/file/viewImage/"+data.id);
                         Dropzone.forElement("#dropZone").emit("complete", mockFile)
-                        Dropzone.forElement("#dropZone").emit("success", mockFile, data.id);
+                        Dropzone.forElement("#dropZone").emit("success", mockFile, data);
+
+                        $('#image-modal').foundation('reveal', 'open');
                     }
                 });
+            } else {
+                $('#image-modal').foundation('reveal', 'open');
             }
         }).on("click","#add-size", function(){
             $('#ingredient-modal .sizing-location').append($("#size-template").html());
@@ -540,6 +560,33 @@
                     $('#ingredient-modal').foundation('reveal', 'open');
                 }
             });
+        }).on("click","#save-image",function(){
+            var fileId = $(".dz-preview").data("file");
+            var productId = $("#image-modal").data("product");
+
+            var product = new Object;
+            product["id"] = productId;
+
+            var productImage = new Object;
+            productImage["id"] = fileId;
+
+            product["productImage"] = productImage;
+
+            $.ajax({
+                url: evey.getHome()+"/product/saveImage",
+                data: JSON.stringify(product),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success:function(data){
+                    if(data.status) {
+                        $('#image-modal').foundation('reveal', 'close');
+                        console.log(data.result);
+                        $(".picked").attr("data-image", data.result.productImage.id);
+                        console.log(data.result.productImage.id);
+                    }
+                }
+            });
         });
 
         var productImage = null;
@@ -553,6 +600,20 @@
                 this.on("maxfilesexceeded", function(file){
                     this.removeAllFiles();
                     this.addFile(file);
+                });
+
+                this.on("success",function(file, response){
+                    $(".dz-preview").attr("data-file", $(response).attr("id"));
+                });
+
+                this.on("addedfile", function (file) {
+                    var img = $(file.previewTemplate).find("img");
+                    img[0].onload = function () {
+                        img.css({
+                            width: "100%",
+                            height:"100%",
+                        });
+                    };
                 });
             }
         };
