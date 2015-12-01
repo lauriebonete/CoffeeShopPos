@@ -1,5 +1,6 @@
 package org.pos.coffee.controller;
 
+import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.ReferenceLookUpService;

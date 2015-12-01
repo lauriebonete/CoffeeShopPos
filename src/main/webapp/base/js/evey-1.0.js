@@ -22,46 +22,77 @@ var evey = (function(){
         JSONnify : function(form) {
             var jsonObject = new Object();
             $.each($(form).find("input"),function(i,input){
-                if($(input).parent("div.selectize-input").length<=0) {
-                    if($(input).is(":checkbox")) {
-                        if($(input).is(":checked")) {
-                            jsonObject[$(input).attr("name")] = true;
+                if($(input).attr("name") != null &&
+                    $(input).attr("name") != undefined &&
+                    $(input).attr("name") != "" &&
+                    !$(input).is(":disabled")) {
+                    if($(input).parent("div.selectize-input").length<=0) {
+                        if($(input).attr("name").indexOf (".")!= -1) {
+                            var dottedName = $(input).attr("name").split(".");
+                            var object = new Object();
+
+                            if($(input).is(":checkbox")) {
+                                if($(input).is(":checked")) {
+                                    object[dottedName[1]] = true;
+                                } else {
+                                    object[dottedName[1]] = false;
+                                }
+                            } else {
+                                object[dottedName[1]] = $(input).val();
+                            }
+                            jsonObject[dottedName[0]] = object;
+
                         } else {
-                            jsonObject[$(input).attr("name")] = false;
+                            if($(input).is(":checkbox")) {
+                                if($(input).is(":checked")) {
+                                    jsonObject[$(input).attr("name")] = true;
+                                } else {
+                                    jsonObject[$(input).attr("name")] = false;
+                                }
+                            } else {
+                                jsonObject[$(input).attr("name")] = $(input).val();
+                            }
                         }
-                    } else {
-                        jsonObject[$(input).attr("name")] = $(input).val();
                     }
                 }
             });
 
             $.each($(form).find("selectize"), function (i,selectize) {
-                $(selectize).attr("name");
-                var list = [];
-                var values = $(selectize).val().split("|");
-                for(var i = 0; i<=values.length-1;i++){
-                    var object = new Object();
-                    object[$(selectize).data("attr")] = values[i];
-                    list.push(object);
+                if($(selectize).attr("name")!= null &&
+                    $(selectize).attr("name")!= undefined &&
+                    $(selectize).attr("name")!= "" &&
+                    !$(selectize).is(":disabled")) {
+                    var list = [];
+                    var values = $(selectize).val().split("|");
+                    for (var i = 0; i <= values.length - 1; i++) {
+                        var object = new Object();
+                        object[$(selectize).data("attr")] = values[i];
+                        list.push(object);
+                    }
+                    jsonObject[$(selectize).attr("name")] = list;
                 }
-                jsonObject[$(selectize).attr("name")]= list;
             });
 
             $.each($(form).find("select"),function(i,select){
-                if($(select).attr("name").indexOf (".")!= -1) {
-                    var dottedName = $(select).attr("name").split(".");
-                    var object = new Object();
-                    object[dottedName[1]] = $(select).val();
+                if($(select).attr("name") != null &&
+                    $(select).attr("name") != undefined &&
+                    $(select).attr("name") != "" &&
+                    !$(select).is(":disabled")) {
+                    if($(select).attr("name").indexOf (".")!= -1) {
+                        var dottedName = $(select).attr("name").split(".");
+                        var object = new Object();
+                        object[dottedName[1]] = $(select).val();
 
-                    if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
-                        jsonObject[dottedName[0]] = object;
+                        if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
+                            jsonObject[dottedName[0]] = object;
+                        } else {
+                            var list = [];
+                            list.push(object);
+                            jsonObject[dottedName[0]]  = list;
+                        }
                     } else {
-                        var list = [];
-                        list.push(object);
-                        jsonObject[dottedName[0]]  = list;
+                        jsonObject[$(select).attr("name")] = $(select).val();
                     }
-                } else {
-                    jsonObject[$(select).attr("name")] = $(select).val();
                 }
             });
 

@@ -106,3 +106,43 @@
 .margin-top-one-rem {
     margin-top: 1rem !important;
 }
+
+input[data-toggle] {
+    display: none;
+}
+
+input[data-toggle]:checked + label,
+input[data-toggle]:checked + label:active {
+    background-color: salmon;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.button-group.toggle li:not(first-child) {
+    margin: 0 -0.9rem;
+}
+
+
+.search-panel-flat {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    margin-bottom: .5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    top: 0;
+    padding-top: .5rem;
+}
+
+.center{
+    text-align: center;
+}
+
+.side-nav {
+    height: 100vh;
+}
+
+.icon-bar-100vh {
+    max-height: 100vh !important;
+}
+
+.margin-top-side {
+    margin-top: .45rem !important;
+}

@@ -1,4 +1,4 @@
-package org.pos.coffee.controller;
+package org.evey.controller;
 
 import org.apache.log4j.Logger;
 import org.pos.coffee.bean.BaseEntity;

@@ -15,8 +15,9 @@
     <script src="js/responsive-tables.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
-    <script src="js/angular-resource.js"></script>
     <script src="js/vendor/modernizr.js"></script>
+    <script src="angular/orderApp.js"></script>
+    <script src="angular/orderController.js"></script>
 
 </head>
 <body>
@@ -73,32 +74,26 @@
                                         <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
                                         <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
                                         <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section">
+                <section class="main-section" ng-app="orderApp" ng-controller="orderController">
                     <div class="side-nav">
-                        <div class="icon-bar vertical five-up">
-                            <a class="item">
-                                <label>Iced</label>
-                            </a>
-                            <a class="item">
-                                <label>Frappucino</label>
-                            </a>
-                            <a class="item">
-                                <label>Hot</label>
-                            </a>
-                            <a class="item">
-                                <label>Dessert</label>
-                            </a>
-                            <a class="item">
-                                <label>Food</label>
-                            </a>
-                            <a class="item">
-                                <label>Yoghurt</label>
+                        <div class="icon-bar vertical five-up icon-bar-100vh margin-top-side" ng-init="loadSideNav('/reference/getActiveReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')">
+                            <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}">
+                                <img src="img/hot51.png"/>
+                                <label>{{group.value}}</label>
                             </a>
                         </div>
                     </div>
@@ -435,6 +430,13 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click",".group", function(){
+            $(".group").removeClass("active");
+            $(this).addClass("active");
+        });
 
     </script>
 </footer>

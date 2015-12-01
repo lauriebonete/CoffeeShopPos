@@ -1,7 +1,7 @@
 package org.pos.coffee.controller;
 
+import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Ingredient;
-import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.service.IngredientService;
 import org.pos.coffee.service.ReferenceLookUpService;
 import org.springframework.beans.factory.annotation.Autowired;

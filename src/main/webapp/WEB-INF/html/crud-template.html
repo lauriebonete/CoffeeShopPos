@@ -47,11 +47,11 @@
                 <aside class="left-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Coffee Shop POS</label></li>
-                        <li><a href="#" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
-                        <li><a href="#" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
-                        <li><a href="#" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
-                        <li><a href="#" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
-                        <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
                         <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
                             <ul class="left-submenu">
                                 <li class="back"><a href="#">Back</a></li>
@@ -60,11 +60,11 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>Account Maintenance</label></li>
-                                        <li><a href="#" id="person-off" class="canvas">People Maintenance</a></li>
-                                        <li><a href="#" id="user-off" class="canvas">User Page</a></li>
-                                        <li><a href="#" id="customer-off" class="canvas">Customer</a></li>
-                                        <li><a href="#" id="supplier-off" class="canvas">Supplier</a></li>
-                                        <li><a href="#" id="address-off" class="canvas">Address</a></li>
+                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
@@ -75,6 +75,14 @@
                                         <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
                                         <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
                                         <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -124,14 +132,14 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="small-8 large-9 columns crud-result" ng-init="loadTable('/reference/findAll')">
+                        <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
-                                <span> <small>Displaying 1 to 20 of 256 records (0.042 seconds)</small></span>
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
                                 <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table">
+                                    <table class="responsive max-width" id="crud-table" data-url="/price/findAll">
                                         <thead>
                                         <tr>
                                             <th>Category</th>
@@ -158,15 +166,6 @@
                             <div class="rows">
                                 <div class="pagination-centered">
                                     <ul class="pagination" role="menubar" aria-label="Pagination">
-                                        <li class="arrow unavailable" aria-disabled="true"><a href="">&laquo; Previous</a></li>
-                                        <li class="current"><a href="">1</a></li>
-                                        <li><a href="">2</a></li>
-                                        <li><a href="">3</a></li>
-                                        <li><a href="">4</a></li>
-                                        <li class="unavailable" aria-disabled="true"><a href="">&hellip;</a></li>
-                                        <li><a href="">12</a></li>
-                                        <li><a href="">13</a></li>
-                                        <li class="arrow"><a href="">Next &raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>

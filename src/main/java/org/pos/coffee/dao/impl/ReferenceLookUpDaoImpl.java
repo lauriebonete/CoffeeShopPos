@@ -25,4 +25,11 @@ public class ReferenceLookUpDaoImpl extends BaseEntityDaoJpaImpl<ReferenceLookUp
         query.setParameter("category", category);
         return query.getResultList();
     }
+
+    @Override
+    public List<ReferenceLookUp> getActiveReferenceLookUpByCategory(String category) {
+        Query query = getEntityManager().createQuery("select obj from ReferenceLookUp obj where obj.category = :category and obj.isActive = true");
+        query.setParameter("category", category);
+        return query.getResultList();
+    }
 }

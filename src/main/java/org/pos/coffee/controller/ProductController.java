@@ -1,6 +1,6 @@
 package org.pos.coffee.controller;
 
-import org.pos.coffee.bean.FileDetail;
+import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Product;
 import org.pos.coffee.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,21 +1,23 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="MENU")
-public class Menu extends BaseEntity {
+@Table(name="LIST_PRICE")
+public class ListPrice extends BaseEntity {
 
-	@ManyToOne
-	@JoinColumn(name="PRODUCT", referencedColumnName = "ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="PRODUCT")
 	private Product product;
 
 	@Column(name = "PRODUCT", insertable = false, updatable = false)
 	private Long productId;
 
-	@ManyToOne
-	@JoinColumn(name="MEAL", referencedColumnName = "ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="MEAL")
 	private Meal meal;
 
 	@Column(name = "MEAL", insertable = false, updatable = false)
@@ -31,6 +33,13 @@ public class Menu extends BaseEntity {
 	@Column(name="END_DATE")
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SIZE")
+	private ReferenceLookUp size;
+
+	@Column(name = "SIZE", insertable = false, updatable = false)
+	private Long sizeId;
 
 	public Product getProduct() {
 		return product;
@@ -77,5 +86,30 @@ public class Menu extends BaseEntity {
 
 	public void setMealId(Long mealId) {
 		this.mealId = mealId;
+	}
+
+	public ReferenceLookUp getSize() {
+		return size;
+	}
+
+	public void setSize(ReferenceLookUp size) {
+		this.size = size;
+	}
+
+	public Long getSizeId() {
+		return sizeId;
+	}
+
+	public void setSizeId(Long sizeId) {
+		this.sizeId = sizeId;
+	}
+	@JsonView
+	public String displayName(){
+		if(productId!=null){
+			return product.getProductName();
+		} else if(mealId!=null){
+			return meal.getMealName();
+		}
+		return "";
 	}
 }
