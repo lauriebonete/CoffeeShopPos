@@ -8,7 +8,7 @@ crudApp.controller("crudController", function ($scope, $http) {
         }, function errorCallback(response) {
 
         })
-    }
+    };
 
     $scope.loadTable = function (data) {
         $scope.fullRecords = data.completeList;
@@ -16,6 +16,10 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.listSize = data.completeList.length;
         $scope.startIndex = 1;
         $scope.maxItem = data.slice.length;
+    };
+
+    $scope.returnData = function(){
+        return $scope.fullRecords;
     }
 
     $scope.changePage = function (page, max) {
@@ -28,24 +32,25 @@ crudApp.controller("crudController", function ($scope, $http) {
         } else {
             $scope.maxItem = end + 1;
         }
-    }
+    };
 
     $scope.editAction = function (id) {
         angular.forEach($scope.records, function (value, key) {
             if (value.id == id) {
                 $scope.recordFound = value;
+                console.log($scope.recordFound);
                 return;
             }
         });
-    }
+    };
 
     $scope.addAction = function (newEntity) {
         $scope.records = $scope.records.concat(newEntity);
-    }
+    };
 
     $scope.searchEntity = function (data) {
         $scope.records.push(data);
-    }
+    };
 
     $scope.deleteAction = function (id, url) {
         var deleteEntity = {
@@ -59,19 +64,19 @@ crudApp.controller("crudController", function ($scope, $http) {
 
         }, function errorCallback(response) {
         })
-    }
+    };
 
     $scope.feedDropdown = function (data) {
         $scope.dropdown = data;
-    }
+    };
 
     $scope.loadProductGroup = function(data) {
         $scope.productGroupOption = data;
-    }
+    };
 
     $scope.loadPromoGroup = function(data) {
         $scope.promoGroupOption = data;
-    }
+    };
 
     $scope.selectizeConfig =
     {

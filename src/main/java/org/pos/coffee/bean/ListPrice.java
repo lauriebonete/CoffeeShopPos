@@ -1,5 +1,7 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ public class ListPrice extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT")
+	@JsonBackReference
 	private Product product;
 
 	@Column(name = "PRODUCT", insertable = false, updatable = false)
@@ -33,13 +36,6 @@ public class ListPrice extends BaseEntity {
 	@Column(name="END_DATE")
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SIZE")
-	private ReferenceLookUp size;
-
-	@Column(name = "SIZE", insertable = false, updatable = false)
-	private Long sizeId;
 
 	public Product getProduct() {
 		return product;
@@ -88,21 +84,6 @@ public class ListPrice extends BaseEntity {
 		this.mealId = mealId;
 	}
 
-	public ReferenceLookUp getSize() {
-		return size;
-	}
-
-	public void setSize(ReferenceLookUp size) {
-		this.size = size;
-	}
-
-	public Long getSizeId() {
-		return sizeId;
-	}
-
-	public void setSizeId(Long sizeId) {
-		this.sizeId = sizeId;
-	}
 	@JsonView
 	public String displayName(){
 		if(productId!=null){

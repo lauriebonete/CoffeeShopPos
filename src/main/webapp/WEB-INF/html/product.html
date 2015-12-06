@@ -22,6 +22,7 @@
     <script src="js/dropzone.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
+    <script src="angular/productController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
@@ -179,7 +180,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog" >
                         <h3 id="crud-title">Add New Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
@@ -212,6 +213,27 @@
                                             <span class="switch-off">NO</span>
                                         </label>
                                     </div>
+                                    <div class="switch round">
+                                        <p>Show on Order page</p>
+                                        <input id="isDisplayOnOrder" type="checkbox" name="isDisplayOnOrder" checked>
+                                        <label for="isDisplayOnOrder">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Parent Product
+                                            <select class="parent" placeHolder = "Select Parent Product" name="parentProduct.id" data-list="false"></select>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius product-controller" ng-controller="productController">
+                                        <label>Size
+                                            <select class="size" placeHolder = "Select size" name="size.id" data-list="false" >
+                                                <option></option>
+                                                <option ng-repeat="size in size" value="{{size.id}}">{{size.value}}</option>
+                                            </select>
+                                        </label>
+                                    </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-add-btn">Add</button>
                                         <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
@@ -220,7 +242,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" ng-controller="productController">
                         <h3 id="update-title">Update Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -254,6 +276,27 @@
                                         <label for="activeUpdate">
                                             <span class="switch-on">YES</span>
                                             <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="switch round">
+                                        <p>Show on Order page</p>
+                                        <input id="isDisplayOnOrderUpdate" type="checkbox" name="isDisplayOnOrder" ng-model="recordFound.isDisplayOnOrder">
+                                        <label for="isDisplayOnOrderUpdate">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Parent Product
+                                            <select class="parent" placeHolder = "Select Parent Product" name="parentProduct.id" data-list="false"></select>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius product-controller" ng-controller="productController">
+                                        <label>Size
+                                            <select class="size" placeHolder = "Select size" name="size.id" data-list="false">
+                                                <option></option>
+                                                <option ng-repeat="size in size" value="{{size.id}}" ng-selected = "{{recordFound.sizeId == size.id}}">{{size.value}}</option>
+                                            </select>
                                         </label>
                                     </div>
                                     <div class="rows">
@@ -293,13 +336,20 @@
                          role="dialog">
                         <h3 id="ingredient-title">Ingredients</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <div class="sizing-location">
+                        <div class="row">
+                            <div class="columns small-12 added-item-location">
 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12 item-location">
+
+                            </div>
                         </div>
                         <div>
                             <button id="save-ingredient" class="button success max-width">Save Ingredient</button>
                         </div>
-                        <a class="float-right" id="add-size" aria-label="Add"><i class="fa fa-plus-circle"></i> Add Size</a>
+                        <a aria-label="Add" class="add-ingredient"><i class="fa fa-plus-circle"></i> Add Ingredient</a>
                     </div>
                 </section>
                 <a class="exit-off-canvas"></a>
@@ -374,7 +424,7 @@
         $(document).EVEYfy();
 
         var items = null;
-        var sizes = null;
+        var product = null;
         $(document).ready(function(){
             $.ajax({
                 url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP",
@@ -404,7 +454,8 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    sizes = data;
+                    angular.element(".product-controller").scope().loadSizes(data);
+                    angular.element(".product-controller").scope().$apply();
                 }
             });
 
@@ -415,8 +466,7 @@
                 success: function(data){
                     items = data;
                 }
-            })
-
+            });
         }).on("click",".image-action", function(){
 
             $(".image-action").removeClass("picked");
@@ -424,8 +474,7 @@
 
             $("#image-modal").attr("data-product", $(this).data("id"));
 
-            var imageId = $(this).data("image");
-            console.log(imageId,"xxxx");
+            var imageId = $(this).attr("data-image");
             productImage.removeAllFiles();
             if(imageId != undefined &&
             imageId != null &&
@@ -455,18 +504,12 @@
             } else {
                 $('#image-modal').foundation('reveal', 'open');
             }
-        }).on("click","#add-size", function(){
-            $('#ingredient-modal .sizing-location').append($("#size-template").html());
-            $(this).parent().find(".sizing-location select.size").last().selectize({
-                valueField: 'id',
-                labelField: 'value',
-                searchField: 'value',
-                options: sizes,
-            });
         }).on("click", ".add-ingredient", function(){
             var template = $("#item-template").html();
-            $(this).parents(".each-size").find(".item-location").append($(template));
-            $(this).parents(".each-size").find(".item-location .item-dropdown").last().selectize({
+
+            var location = $("#ingredient-modal .item-location");
+            $(location).append($(template));
+            $(location).find(".item-dropdown").last().selectize({
                 valueField: 'id',
                 labelField: 'itemName',
                 searchField: 'itemName',
@@ -477,6 +520,7 @@
                     }
                 }
             });
+
         }).on("change", ".item-dropdown", function(){
             $(this).parents(".item-row").find("span").text($(this).parent().find(".selectize-dropdown-content option.selected").data("uom"));
         }).on("click", ".add-item", function(){
@@ -486,7 +530,7 @@
             var uom = $(this).parents(".item-row").find("span.uom").text();
 
             var addedItem = $("#added-item-template").html();
-            var location = $(this).parents(".each-size").find(".added-item-location");
+            var location = $("#ingredient-modal .added-item-location");
             $(location).append($(addedItem));
 
             var lastRow = $(location).find("div.row").last();
@@ -500,17 +544,12 @@
             $(this).parent().parent().remove();
         }).on("click", "#save-ingredient",function(){
             var ingredientList = [];
-            $.each($(".sizing-location .each-size"), function(){
-                var eachSize = $(this);
-                $.each($(eachSize).find(".added-item-location .details-holder"),function(i,detail){
-                    var ingredient = new Object;
-                    ingredient["size"] = {"id":Number($(eachSize).find("select.size option:selected").val())};
-                    ingredient["item"] = {"id":$(detail).data("id")};
-                    ingredient["quantity"] = $(detail).data("qty");
-                    ingredient["product"] = {"id":$("#ingredient-modal").data("product")};
-
-                    ingredientList.push(ingredient);
-                });
+            $.each($(".added-item-location .row .details-holder"), function(i, detail){
+                var ingredient = new Object;
+                ingredient["item"] = {"id":$(detail).data("id")};
+                ingredient["quantity"] = $(detail).data("qty");
+                ingredient["product"] = {"id":$("#ingredient-modal").data("product")};
+                ingredientList.push(ingredient);
             });
 
             $.ajax({
@@ -528,7 +567,6 @@
 
         }).on("click",".ingredient-action", function(){
             $("#ingredient-modal").attr("data-product", $(this).data("id"));
-            $("#ingredient-modal .sizing-location .each-size").remove();
 
             $.ajax({
                 url: evey.getHome()+"/ingredient/getIngredient",
@@ -536,34 +574,17 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    var group = {};
-                    $.each(data, function(i,val){
-                        if(group[val.sizeId] == null){
-                            group[val.sizeId] = [];
-                        }
-                        group[val.sizeId].push(val);
-                    });
 
-                    $.each(group, function(i,val){
-                        $('#ingredient-modal .sizing-location').append($("#size-template").html());
-                        var size = $('#ingredient-modal .sizing-location select.size').last().selectize({
-                            valueField: 'id',
-                            labelField: 'value',
-                            searchField: 'value',
-                            options: sizes,
-                        });
-                        size[0].selectize.setValue(i);
-                        $.each(val, function(i,item){
-                            var addedItem = $("#added-item-template").html();
-                            var location = $('.each-size').last().find(".added-item-location");
-                            $(location).append($(addedItem));
+                    $.each(data,function(i,item){
+                        var addedItem = $("#added-item-template").html();
+                        var location = $("#ingredient-modal .added-item-location");
+                        $(location).append($(addedItem));
 
-                            var lastRow = $(location).find("div.row").last();
-                            $(lastRow).find("div.details-holder").attr("data-id", item.itemId);
-                            $(lastRow).find("div.details-holder").attr("data-qty", item.quantity);
-                            $(lastRow).find("span.item").text(item.item.itemName);
-                            $(lastRow).find("span.qty").text(item.quantity+" "+item.item.uom.value);
-                        });
+                        var lastRow = $(location).find("div.row").last();
+                        $(lastRow).find("div.details-holder").attr("data-id", item.itemId);
+                        $(lastRow).find("div.details-holder").attr("data-qty", item.quantity);
+                        $(lastRow).find("span.item").text(item.item.itemName);
+                        $(lastRow).find("span.qty").text(item.quantity+" "+item.item.uom.value);
                     });
                     $('#ingredient-modal').foundation('reveal', 'open');
                 }
@@ -589,12 +610,29 @@
                 success:function(data){
                     if(data.status) {
                         $('#image-modal').foundation('reveal', 'close');
-                        console.log(data.result);
                         $(".picked").attr("data-image", data.result.productImage.id);
-                        console.log(data.result.productImage.id);
                     }
                 }
             });
+        }).ajaxStop(function(){
+            product = angular.element(".main-body").scope().returnData();
+            angular.element(".main-body").scope().$apply();
+
+            $(".parent").selectize({
+                valueField: 'id',
+                labelField: 'productName',
+                searchField: 'productName',
+                options:product,
+                plugins: ['remove_button'],
+                render: {
+                    option:function(products){
+                        return "<option value='"+products.id+"'>"+products.productName+"</option>"
+                    }
+                }
+            });
+
+            $(this).unbind("ajaxStop");
+
         });
 
         var productImage = null;

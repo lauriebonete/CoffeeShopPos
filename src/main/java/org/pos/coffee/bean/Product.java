@@ -1,14 +1,18 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.annotation.JoinList;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="PRODUCT")
-public final class Product extends BaseEntity {
+public class Product extends BaseEntity {
 
 	@Column(name="PRODUCT_NAME")
 	private String productName;
@@ -16,6 +20,7 @@ public final class Product extends BaseEntity {
 	@Column(name="DESCRIPTION")
 	private String description;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	private List<Ingredient> ingredientList;
 
@@ -41,6 +46,33 @@ public final class Product extends BaseEntity {
 
 	@Column(name = "IMAGE", insertable = false, updatable = false)
 	private Long productImageId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="SIZE", referencedColumnName = "ID")
+	private ReferenceLookUp size;
+
+	@Column(name = "SIZE", insertable = false, updatable = false)
+	private Long sizeId;
+
+	@JsonManagedReference
+	@OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+	private ListPrice price;
+
+	@Column(name = "SHOW_PRODUCT")
+	private Boolean isDisplayOnOrder;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PARENT", referencedColumnName = "ID")
+	@JsonBackReference
+	private Product parentProduct;
+
+	@Column(name = "PARENT", insertable = false, updatable = false)
+	private Long parentProductId;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "parentProduct", fetch = FetchType.LAZY)
+	private List<Product> productUnder;
+
 
 	public String getProductName() {
 		return productName;
@@ -132,5 +164,61 @@ public final class Product extends BaseEntity {
 		}
 		String value = buffer.toString();
 		return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
+	}
+
+	public ReferenceLookUp getSize() {
+		return size;
+	}
+
+	public void setSize(ReferenceLookUp size) {
+		this.size = size;
+	}
+
+	public Long getSizeId() {
+		return sizeId;
+	}
+
+	public void setSizeId(Long sizeId) {
+		this.sizeId = sizeId;
+	}
+
+	public Boolean getIsDisplayOnOrder() {
+		return isDisplayOnOrder;
+	}
+
+	public void setIsDisplayOnOrder(Boolean isDisplayOnOrder) {
+		this.isDisplayOnOrder = isDisplayOnOrder;
+	}
+
+	public Product getParentProduct() {
+		return parentProduct;
+	}
+
+	public void setParentProduct(Product parentProduct) {
+		this.parentProduct = parentProduct;
+	}
+
+	public Long getParentProductId() {
+		return parentProductId;
+	}
+
+	public void setParentProductId(Long parentProductId) {
+		this.parentProductId = parentProductId;
+	}
+
+	public List<Product> getProductUnder() {
+		return productUnder;
+	}
+
+	public void setProductUnder(List<Product> productUnder) {
+		this.productUnder = productUnder;
+	}
+
+	public ListPrice getPrice() {
+		return price;
+	}
+
+	public void setPrice(ListPrice price) {
+		this.price = price;
 	}
 }

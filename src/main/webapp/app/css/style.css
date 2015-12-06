@@ -131,6 +131,15 @@ input[data-toggle]:checked + label:active {
     padding-top: .5rem;
 }
 
+.panel-flat {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    margin-bottom: .5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    top: 0;
+    padding-top: .5rem;
+}
+
 .center{
     text-align: center;
 }
@@ -145,4 +154,12 @@ input[data-toggle]:checked + label:active {
 
 .margin-top-side {
     margin-top: .45rem !important;
+}
+
+.margin-bottom-half-rem {
+    margin-bottom: 0.55rem !important;
+}
+
+.reveal-modal-absolute {
+    position: absolute !important;
 }

@@ -1,6 +1,7 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -20,18 +21,13 @@ public class Ingredient extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT_ID")
+	@JsonBackReference
 	private Product product;
 
 	@Column(name = "PRODUCT_ID", insertable = false, updatable = false)
 	private Long productId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="SIZE_ID")
-	private ReferenceLookUp size;
 
-	@Column(name = "SIZE_ID", insertable = false, updatable = false)
-	private Long sizeId;
-	
 	public Item getItem() {
 		return item;
 	}
@@ -61,14 +57,6 @@ public class Ingredient extends BaseEntity {
 		this.product = product;
 	}
 
-	public ReferenceLookUp getSize() {
-		return size;
-	}
-
-	public void setSize(ReferenceLookUp size) {
-		this.size = size;
-	}
-
 	public Long getProductId() {
 		return productId;
 	}
@@ -77,11 +65,4 @@ public class Ingredient extends BaseEntity {
 		this.productId = productId;
 	}
 
-	public Long getSizeId() {
-		return sizeId;
-	}
-
-	public void setSizeId(Long sizeId) {
-		this.sizeId = sizeId;
-	}
 }

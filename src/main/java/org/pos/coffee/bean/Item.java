@@ -17,6 +17,9 @@ public class Item extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="UOM")
 	private ReferenceLookUp uom;
+
+	@Column(name = "UOM", insertable = false, updatable = false)
+	private Long uomId;
 	
 	public String getItemName() {
 		return itemName;
@@ -36,6 +39,12 @@ public class Item extends BaseEntity {
 	public void setUom(ReferenceLookUp uom) {
 		this.uom = uom;
 	}
-	
-	
+
+	public Long getUomId() {
+		return uomId;
+	}
+
+	public void setUomId(Long uomId) {
+		this.uomId = uomId;
+	}
 }

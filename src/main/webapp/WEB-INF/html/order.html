@@ -20,7 +20,7 @@
     <script src="angular/orderController.js"></script>
 
 </head>
-<body>
+<body ng-app="orderApp" ng-controller="orderController">
 <div class="row">
     <div>
         <div class="off-canvas-wrap sticky" data-offcanvas>
@@ -88,10 +88,10 @@
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section" ng-app="orderApp" ng-controller="orderController">
+                <section class="main-section">
                     <div class="side-nav">
                         <div class="icon-bar vertical five-up icon-bar-100vh margin-top-side" ng-init="loadSideNav('/reference/getActiveReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')">
-                            <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}">
+                            <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
                                 <img src="img/hot51.png"/>
                                 <label>{{group.value}}</label>
                             </a>
@@ -99,112 +99,11 @@
                     </div>
                     <div class="content">
                         <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x" data-reveal-id="modifyOrder"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="contentHolder">
-                                    <img src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <h5>Iced Latte</h5>
-                                    <div class="addToCart">
-                                        <i class="fa fa-cart-plus fa-2x"></i>
-                                    </div>
+                            <li ng-repeat="product in productFound">
+                                <div class="contentHolder" data-id="{{product.id}}">
+                                    <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <img ng-if="product.productImageId != null && product.productImageId != ''" src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
+                                    <h5>{{product.productName}}</h5>
                                 </div>
                             </li>
                         </ul>
@@ -215,21 +114,34 @@
                         <div class="orderSummary">
                             <div class="items">
                                 <div class="row">
-                                    <div class="small-6 columns">
-                                        <p>Item</p>
+                                    <div class="columns small-6">
+                                        <h5>Items</h5>
                                     </div>
-                                    <div class="small-6 columns">
-                                        <p class="right">Qty * Price</p>
+                                    <div class="columns small-4">
+                                        <h5>Qty * Price</h5>
                                     </div>
+                                    <div class="columns small-2">
+
+                                    </div>
+                                </div>
+                                <div class="order-holder">
                                 </div>
                             </div>
                             <div class="totalPrice">
                                 <div class="row">
                                     <div class="small-6 columns">
-                                        <p class="left">Total</p>
+                                        <div class="row">
+                                            <div class="columns">
+                                                Total
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="small-6 columns">
-                                        <p class="right">PHP 0.00</p>
+                                        <div class="row">
+                                            <div class="columns">
+                                                <span class="total-price"></span>php
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -246,21 +158,34 @@
                             <div class="orderSummary">
                                 <div class="items">
                                     <div class="row">
-                                        <div class="small-6 columns">
-                                            <p>Item</p>
+                                        <div class="columns small-6">
+                                            <h5>Items</h5>
                                         </div>
-                                        <div class="small-6 columns">
-                                            <p class="right">Qty * Price</p>
+                                        <div class="columns small-4">
+                                            <h5>Qty * Price</h5>
                                         </div>
+                                        <div class="columns small-2">
+
+                                        </div>
+                                    </div>
+                                    <div class="order-holder">
                                     </div>
                                 </div>
                                 <div class="totalPrice">
                                     <div class="row">
                                         <div class="small-6 columns">
-                                            <p class="left">Total</p>
+                                            <div class="row">
+                                                <div class="columns">
+                                                    Total
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="small-6 columns">
-                                            <p class="right">PHP 0.00</p>
+                                            <div class="row">
+                                                <div class="columns">
+                                                    <span class="total-price"></span>php
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -278,150 +203,107 @@
         </div>
     </div>
 </div>
-<div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <h2 id="modalTitle">Iced Latte</h2>
+<div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-pid="{{selectedProduct.id}}" data-pname="{{selectedProduct.productName}}">
+    <h2 id="modalTitle">{{selectedProduct.productName}}</h2>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     <div class="row">
-        <div class="small-4 columns">
-            <p>Base</p>
+
+        <div class="columns small-6">
+            <div class="row">
+                <div class="small-4 columns">
+                    <p>Base</p>
+                </div>
+                <div class="small-8 columns">
+                    <div class="right">
+                        <p>Soy Whole Milk Non-fat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row  panel-flat">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="small-6 columns">
+                            <h4>Quantity</h4>
+                        </div>
+                        <div class="small-6 columns">
+                            <h4><span id="modify-quantity">1</span></h4>
+                        </div>
+                    </div>
+                    <div class="small-12 columns">
+                        <div class="row">
+                            <div class="center">
+                                <ul class="button-group">
+                                    <li><button class="button small max-width modify-quan-btn disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
+                                    <li><button class="button small max-width modify-quan-btn" data-action="inc"><i class="fa fa-plus"></i></button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row panel-flat sizes" ng-if="sizeSelection">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="columns small-12">
+                            <h4>Size</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="center">
+                            <ul class="button-group toggle" data-toggle="buttons-radio">
+                                <li ng-repeat="product in selectedProduct.productUnder">
+                                    <input type="radio" id="{{product.id}}" name="size-group" data-price="{{product.price.price}}" data-toggle="button">
+                                    <label class="button" for="{{product.id}}">{{product.size.value}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12">
+                    <h4 class="price" ng-if="sizeSelection"></h4>
+                    <h4 class="price" ng-if="!sizeSelection" data-price="{{selectedProduct.price.price}}">{{selectedProduct.price.price}}php</h4>
+                </div>
+            </div>
         </div>
-        <div class="small-8 columns">
-            <div class="right">
-                <p>Soy Whole Milk Non-fat</p>
+        <div class="columns small-6">
+            <div class="row">
+                <div class="small-12 columns">
+                    <h4>Add-ons</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <ul class="addOnList small-block-grid-2 medium-block-grid-3  large-block-grid-3">
+                        <li ng-repeat="productAddOn in productAddOn">
+                            <div class="addOn" data-id={{productAddOn.id}}>
+                                <p>{{productAddOn.productName}}</p>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p><i class="fa fa-minus"></i></p>
+                                    </div>
+                                    <div class="small-4 columns">
+                                        <p><i class="fa fa-plus"></i></p>
+                                    </div>
+                                    <div class="small-4 columns">
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="small-6 columns">
-            <p>Quantity</p>
-        </div>
-        <div class="small-6 columns">
-            <p class="right"><i class="fa fa-minus"></i> <i class="fa fa-plus"></i><p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-4 columns">
-            <p>Size</p>
-        </div>
-        <div class="small-8 columns">
-            <div class="right">
-                <p>Tall Grande Venti</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-4 columns">
-            <p>Add-ons</p>
-        </div>
-        <div class="small-8 columns">
-        </div>
-    </div>
-    <div class="row">
-        <ul class="addOnList small-block-grid-2 medium-block-grid-4 large-block-grid-6">
-            <li>
-                <div class="addOn">
-                    <p>Whipped Cream</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="addOn">
-                    <p>Espresso Shot</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="addOn">
-                    <p>Caramel Syrup</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="addOn">
-                    <p>Vanila Syrup</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="addOn">
-                    <p>Sugar</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="addOn">
-                    <p>Chocolate</p>
-                    <div class="row">
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-minus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p><i class="fa fa-plus"></i></p>
-                        </div>
-                        <div class="small-4 columns">
-                            <p>0</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            </ul>
-    </div>
+
     <div class="row">
         <div class="small-6 columns">
             <a href="#" class="button left">Reset Default</a>
         </div>
         <div class="small-6 columns">
-            <a href="#" class="button right">Add to Cart</a>
+            <a class="button right" id="add-to-cart">Add to Cart</a>
         </div>
     </div>
 </div>
@@ -432,12 +314,129 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
-
+            $(".cartSmall-icon").on("click",function(){
+                $('.cartSmall-icon').css("right", "+70vw" );
+                $('.cartSmall-content').css("right", "+1vw" );
+            });
         }).on("click",".group", function(){
             $(".group").removeClass("active");
             $(this).addClass("active");
+
+            angular.element("body").scope().changeGroup($(this).data("id"));
+            angular.element("body").scope().$apply();
+
+        }).on("click",".contentHolder", function(){
+            angular.element("body").scope().selectProduct($(this).data("id"));
+            angular.element("body").scope().$apply();
+
+            $("#modifyOrder #modify-quantity").text("1");
+            $('#modifyOrder').foundation('reveal', 'open');
+
+        }).on("click",".modify-quan-btn",function(){
+            if($(this).data("action")=="dec"){
+                if(Number($("#modify-quantity").text())<=1){
+                    $(this).attr("disabled");
+                    $(this).addClass("disabled");
+                } else {
+                    $("#modify-quantity").text(Number($("#modify-quantity").text())-1);
+                    if(Number($("#modify-quantity").text())<=1){
+                        $(this).attr("disabled");
+                        $(this).addClass("disabled");
+                    }
+                }
+
+            } else if($(this).data("action") == "inc"){
+                if(Number($("#modify-quantity").text())+1>1){
+                    $(".modify-quan-btn.dec").removeAttr("disabled");
+                    $(".modify-quan-btn.dec").removeClass("disabled");
+                }
+                $("#modify-quantity").text(Number($("#modify-quantity").text())+1);
+            }
+        }).on("click", "#add-to-cart", function(){
+            var productId = null;
+            var quantity = null;
+            var price = null;
+            var sizeName = null;
+
+
+            var scope = angular.element("body").scope();
+            if(scope.sizeSelection) {
+                productId = $("#modifyOrder input[name=size-group]:checked").attr("id");
+                sizeName = $("#modifyOrder input[name=size-group]:checked").parent().find("label").text();
+            } else {
+                productId = $("#modifyOrder").attr("data-pid");
+                price = Number($('#modifyOrder .price').attr("data-price"));
+            }
+
+            var productName = $("#modifyOrder").attr("data-pname");
+            var quantity = Number($("#modifyOrder #modify-quantity").text());;
+            var price = Number($('#modifyOrder .price').attr("data-price"));;
+
+
+            var template = $("#cart-template").html();
+            $(".order-holder").prepend($(template));
+            var addedTemplate = $(".order-holder").find("div.added:first-child");
+            $(addedTemplate).attr("data-id", productId);
+            $(addedTemplate).find(".product-name").text(productName);
+            $(addedTemplate).find(".size-name").text(sizeName);
+            $(addedTemplate).find(".quantity-price").text(quantity +" x "+price+"php");
+            var subtotal = (Number(quantity)*price);
+            $(addedTemplate).attr("data-subtotal", subtotal);
+            $(addedTemplate).find(".subtotal").text(subtotal+"php");
+
+
+            var totalPrice = Number($(".cartBig .total-price").text());
+            totalPrice += subtotal;
+            $(".total-price").text(totalPrice);
+            $(".total-price").attr("data-total",totalPrice);
+
+            $('#modifyOrder').foundation('reveal', 'close');
+
+        }).on("click","#modifyOrder input[name=size-group]",function(){
+            if($(this).is(":checked")){
+
+                var price = $(this).attr("data-price");
+                $("#modifyOrder .price").attr("data-price",Number(price));
+                $("#modifyOrder .price").text(Number(price)+"php");
+                $("#modifyOrder .price").removeClass("hide");
+            }
+        }).on("click", ".remove-cart", function(){
+            var addedRow = $(this).parents(".added");
+            var subtotal = Number($(addedRow).attr("data-subtotal"));
+
+            var totalHolder = $(".totalPrice .total-price");
+            var total = Number($(totalHolder).attr("data-total")) - subtotal;
+            $(totalHolder).attr("data-total",total);
+            $(totalHolder).text(total);
+
+            $(addedRow).remove();
         });
 
     </script>
+
+    <script type="text/html" id="cart-template">
+        <div class="row added margin-bottom-half-rem">
+            <div class="columns small-6">
+                <div class="row">
+                    <div class="columns product-name"></div>
+                </div>
+                <div class="row">
+                    <div class="columns size-name"></div>
+                </div>
+            </div>
+            <div class="columns small-4">
+                <div class="row">
+                    <div class="columns quantity-price"></div>
+                </div>
+                <div class="row">
+                    <div class="columns subtotal"></div>
+                </div>
+            </div>
+            <div class="columns small-2">
+                <a><i class="fa fa-minus-circle remove-cart"></i></a>
+            </div>
+        </div>
+    </script>
+
 </footer>
 </html>
