@@ -1,5 +1,6 @@
 package org.pos.coffee.service;
 
+import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.ReferenceLookUp;
 
 import java.util.List;

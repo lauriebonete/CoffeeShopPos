@@ -1,0 +1,448 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/selectize.default.css">
+    <link rel="stylesheet" href="css/foundation-datepicker.min.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/foundation-datepicker.min.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                    <div class="row main-section-row" id="crud-body">
+                        <div class="row main-section-row">
+                            <div class="small-12 text-align-center">
+                                <h4>Price Set</h4>
+                            </div>
+                        </div>
+                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>Price Set Name
+                                            <input id="priceSetName" type="text" placeholder="Input Key" name="priceSetName"/>
+                                        </label>
+                                        <div class="switch round">
+                                            <p>Active</p>
+                                            <input id="isActive" type="checkbox" name="isActive" checked>
+                                            <label for="isActive">
+                                                <span class="switch-on">YES</span>
+                                                <span class="switch-off">NO</span>
+                                            </label>
+                                        </div>
+                                        <div class="rows">
+                                            <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
+                                            <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="responsive max-width" id="crud-table" data-url="/priceSet/findAll">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th style="width:10%"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="record in records">
+                                            <td>{{record.priceSetName}}</td>
+                                            <td>{{record.displayStartDate}}</td>
+                                            <td>{{record.displayEndDate}}</td>
+                                            <td>
+                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-80 reveal-modal-absolute" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                        <h3 id="crud-title">Add New Price Set.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="crud-form">
+                            <div class="row">
+                                <div class="columns small-4">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Price Set Name <small>required</small>
+                                            <input type="text" placeholder="Price Set Name" name="priceSetName" required></label>
+                                        <small class="error">Please provide name for the price set.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <div class="small-3 columns">
+                                            <span class="prefix"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <div class="small-9 columns">
+                                            <input class="fcalendar" type="text" placeholder="Start Date" name="startDate">
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <div class="small-3 columns">
+                                            <span class="prefix"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <div class="small-9 columns">
+                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Set as active?</p>
+                                                <input id="active" type="checkbox" name="isActive" checked>
+                                                <label for="active">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Apply on line?</p>
+                                                <input id="isForLine" type="checkbox" name="isForLine" checked>
+                                                <label for="isForLine">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Apply as discount?</p>
+                                                <input id="isDiscount" type="checkbox" name="isDiscount" checked>
+                                                <label for="isDiscount">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Stop other price set</p>
+                                                <input id="stopOtherPriceSet" type="checkbox" name="stopOtherPriceSet" checked>
+                                                <label for="stopOtherPriceSet">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="columns small-4">
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Triggered by Product</p>
+                                                <input id="isTriggeredByProduct" type="checkbox" name="isTriggeredByProduct" checked>
+                                                <label for="isTriggeredByProduct">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Modifier <small>required</small>
+                                                <selectize data-attr="id" name="product" config='productConfig' options='productOption' ng-model="product"></selectize></label>
+                                        </div>
+                                    </div>
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Triggered By Promo Group</p>
+                                                <input id="isTriggeredByPromoGroup" type="checkbox" name="isTriggeredByPromoGroup" checked>
+                                                <label for="isTriggeredByPromoGroup">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Promo Group <small>required</small>
+                                                <selectize data-attr="id" name="promoGroup" config='selectizeConfig' options='promoGroupOption' ng-model="promoGroup"></selectize></label>
+                                        </div>
+                                    </div>
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Triggered By Quantity</p>
+                                                <input id="isQuantityTriggered" type="checkbox" name="isQuantityTriggered" checked>
+                                                <label for="isQuantityTriggered">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Modifier <small>required</small>
+                                                <input type="text" placeholder="New Price/Percentage" name="minQuantity"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="columns small-4">
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Triggered By Price</p>
+                                                <input id="isPriceTriggered" type="checkbox" name="isPriceTriggered" checked>
+                                                <label for="isPriceTriggered">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Modifier <small>required</small>
+                                                <input type="text" placeholder="New Price/Percentage" name="minPrice"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Triggered By Voucher</p>
+                                                <input id="isVoucherTriggered" type="checkbox" name="isVoucherTriggered" checked>
+                                                <label for="isVoucherTriggered">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Modifier <small>required</small>
+                                                <input type="text" placeholder="New Price/Percentage" name="voucherCode"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row panel-flat margin-panel-flat">
+                                        <div class="columns small-4">
+                                            <div class="switch round">
+                                                <p>Percentage?</p>
+                                                <input id="isPercentage" type="checkbox" name="isPercentage" checked>
+                                                <label for="isPercentage">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-8">
+                                            <label>Modifier <small>required</small>
+                                                <input type="text" placeholder="New Price/Percentage" name="priceSetModifier"></label>
+                                            <small class="error">Please provide modifier for the price set.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="submit" class="button expand success" id="form-add-btn">Add</button>
+                                <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Update Reference Look Up.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="update-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Category
+                                            <select id="update-category" ng-model="recordFound.category" name="category">
+                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            </select>
+                                        </label>
+                                        <small class="error">Category is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>KEY <small>required</small>
+                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}" required></label>
+                                        <small class="error">Key is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>VALUE <small>required</small>
+                                            <input type="text" placeholder="Value" name="value" value="{{recordFound.value}}" required></label>
+                                        <small class="error">Value is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>NUMBER VALUE <small>required</small>
+                                            <input type="text" placeholder="Number Value" name="numberValue" value="{{recordFound.numberValue}}" pattern="number"></label>
+                                        <small class="error">Number Value is required.</small>
+                                    </div>
+                                    <div class="switch round">
+                                        <p>Active</p>
+                                        <input id="activeUpdate" type="checkbox" name="isActive" ng-model="recordFound.isActive">
+                                        <label for="activeUpdate">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
+                                        <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
+                        <h3 id="delete-title">Are you sure you want to delete?</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <button class="button alert remove-record">Remove</button>
+                        <button class="button secondary float-right">Cancel</button>
+                    </div>
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(".fcalendar").fdatepicker({
+            format: 'mm-dd-yyyy',
+            disableDblClickSelection: true,
+            closeButton: true
+        });
+
+        $(document).ready(function(){
+
+            $.ajax({
+                url: evey.getHome()+"/reference/getActiveReferenceLookUpByCategory/CATEGORY_PROMO_GROUP",
+                type: "GET",
+                dataType: "JSON",
+                success: function (data) {
+                    angular.element(".main-body").scope().loadPromoGroup(data);
+                    angular.element(".main-body").scope().$apply();
+                }
+            });
+
+            $.ajax({
+                url: evey.getHome()+"/product/findAllActive",
+                type: "GET",
+                dataType: "JSON",
+                success: function (data) {
+                    angular.element(".main-body").scope().loadProduct(data.results);
+                    angular.element(".main-body").scope().$apply();
+                }
+            });
+
+        });
+    </script>
+</footer>
+</html>

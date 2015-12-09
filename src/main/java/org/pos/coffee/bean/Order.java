@@ -1,6 +1,10 @@
 package org.pos.coffee.bean;
 
+import org.evey.annotation.JoinList;
+import org.evey.bean.BaseEntity;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="ORDER")
@@ -28,6 +32,14 @@ public class Order extends BaseEntity {
 	private Long mealId;
 
 	@ManyToOne
+	@JoinColumn(name="LIST_PRICE", referencedColumnName = "ID")
+	private ListPrice listPrice;
+
+	@Column(name = "LIST_PRICE", insertable = false, updatable = false)
+	private Long listPriceId;
+
+
+	@ManyToOne
 	@JoinColumn(name="ADD_ON", referencedColumnName = "ID")
 	private Ingredient additional;
 
@@ -35,10 +47,27 @@ public class Order extends BaseEntity {
 	private Long additionalId;
 
 	@Column(name="QUANTITY")
-	private Double quantity;
+	private Long quantity;
+
+	@JoinList
+	@ManyToMany
+	@JoinTable(name="ORD_PRICE_ADJST",
+			joinColumns = {@JoinColumn(name="ORDER_ID", referencedColumnName = "ID")},
+			inverseJoinColumns = @JoinColumn(name="PRICE_SET_ID", referencedColumnName = "ID")
+	)
+	private List<PriceSet> appliedPriceSet;
 
 	@Column(name="LINE_PRICE")
 	private Double totalLinePrice;
+
+	@Column(name = "GROSS_PRICE")
+	private Double grossLinePrice;
+
+	@Column(name = "TOTAL_DISC")
+	private Double totalPriceSetDisc;
+
+	@Column(name = "TOTAL_SUR")
+	private Double totalPriceSetSur;
 
 	@Column(name="LINE_EXPENSE")
 	private Double totalLineExpense;
@@ -61,12 +90,15 @@ public class Order extends BaseEntity {
 	public void setMeal(Meal meal) {
 		this.meal = meal;
 	}
-	public Double getQuantity() {
+
+	public Long getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(Double quantity) {
+
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
+
 	public Double getTotalLinePrice() {
 		return totalLinePrice;
 	}
@@ -118,5 +150,53 @@ public class Order extends BaseEntity {
 
 	public void setAdditionalId(Long additionalId) {
 		this.additionalId = additionalId;
+	}
+
+	public List<PriceSet> getAppliedPriceSet() {
+		return appliedPriceSet;
+	}
+
+	public void setAppliedPriceSet(List<PriceSet> appliedPriceSet) {
+		this.appliedPriceSet = appliedPriceSet;
+	}
+
+	public ListPrice getListPrice() {
+		return listPrice;
+	}
+
+	public void setListPrice(ListPrice listPrice) {
+		this.listPrice = listPrice;
+	}
+
+	public Long getListPriceId() {
+		return listPriceId;
+	}
+
+	public void setListPriceId(Long listPriceId) {
+		this.listPriceId = listPriceId;
+	}
+
+	public Double getGrossLinePrice() {
+		return grossLinePrice;
+	}
+
+	public void setGrossLinePrice(Double grossLinePrice) {
+		this.grossLinePrice = grossLinePrice;
+	}
+
+	public Double getTotalPriceSetDisc() {
+		return totalPriceSetDisc;
+	}
+
+	public void setTotalPriceSetDisc(Double totalPriceSetDisc) {
+		this.totalPriceSetDisc = totalPriceSetDisc;
+	}
+
+	public Double getTotalPriceSetSur() {
+		return totalPriceSetSur;
+	}
+
+	public void setTotalPriceSetSur(Double totalPriceSetSur) {
+		this.totalPriceSetSur = totalPriceSetSur;
 	}
 }

@@ -1,11 +1,11 @@
-package org.pos.coffee.persistence;
+package org.evey.persistence;
 
 import java.util.Date;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import org.pos.coffee.bean.BaseEntity;
+import org.evey.bean.BaseEntity;
 
 public class EntityListener {
 

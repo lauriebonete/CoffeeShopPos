@@ -1,7 +1,5 @@
 package org.evey.bean;
 
-import org.pos.coffee.bean.BaseEntity;
-
 import java.util.ArrayList;
 
 /**

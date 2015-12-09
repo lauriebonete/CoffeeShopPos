@@ -1,8 +1,8 @@
 package org.evey.controller;
 
 import org.apache.log4j.Logger;
-import org.pos.coffee.bean.BaseEntity;
-import org.pos.coffee.service.BaseCrudService;
+import org.evey.bean.BaseEntity;
+import org.evey.service.BaseCrudService;
 import org.evey.utility.NamingUtil;
 import org.evey.utility.StringUtil;
 import org.springframework.beans.factory.BeanFactory;
@@ -130,6 +130,19 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
+    @RequestMapping(value = "/findAllActive", method = RequestMethod.GET, produces = "application/json")
+    public final @ResponseBody Map<String, Object> findAllActive() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<T> results = new ArrayList<T>();
+        results = baseCrudService.findAllActive();
+        map.put("message", "success");
+        map.put("status", true);
+        map.put("results", results);
+        map.put("size", results.size());
+        map.put("listSize", entityListSize);
+        return map;
+    }
+
     private final void createEntity(final T command) throws Exception {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
@@ -158,5 +171,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return new ModelAndView(htmlPage);
     }
 
-
+    public static Logger get_log() {
+        return _log;
+    }
 }

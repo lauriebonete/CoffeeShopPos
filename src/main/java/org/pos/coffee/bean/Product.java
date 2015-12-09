@@ -3,12 +3,11 @@ package org.pos.coffee.bean;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.annotation.JoinList;
+import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="PRODUCT")
@@ -132,7 +131,10 @@ public class Product extends BaseEntity {
 			buffer.append(group.getValue()+", ");
 		}
 		String value = buffer.toString();
-		return value.substring(0, value.length()>0 ? value.length()-2:value.length());
+		if(value.length()>0){
+			return value.substring(0, value.length()-2);
+		}
+		return "";
 	}
 
 	@JsonView
@@ -142,7 +144,10 @@ public class Product extends BaseEntity {
 			buffer.append(group.getValue()+", ");
 		}
 		String value = buffer.toString();
-		return value.substring(0, value.length() > 0 ? value.length() - 2 : value.length());
+		if(value.length()>0){
+			return value.substring(0, value.length()-2);
+		}
+		return "";
 	}
 
 

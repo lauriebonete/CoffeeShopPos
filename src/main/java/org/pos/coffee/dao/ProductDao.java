@@ -1,5 +1,6 @@
 package org.pos.coffee.dao;
 
+import org.evey.dao.BaseEntityDao;
 import org.pos.coffee.bean.Product;
 
 /**

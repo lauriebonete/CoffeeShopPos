@@ -163,3 +163,11 @@ input[data-toggle]:checked + label:active {
 .reveal-modal-absolute {
     position: absolute !important;
 }
+
+.reveal-modal-80 {
+    width: 80% !important;
+}
+
+.margin-panel-flat {
+    margin: 0.1rem !important;
+}

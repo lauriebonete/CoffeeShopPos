@@ -9,16 +9,6 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
-
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script src="js/responsive-tables.js"></script>
-    <script src="js/evey-1.0.js"></script>
-    <script src="js/angular.js"></script>
-    <script src="js/vendor/modernizr.js"></script>
-    <script src="angular/orderApp.js"></script>
-    <script src="angular/orderController.js"></script>
-
 </head>
 <body ng-app="orderApp" ng-controller="orderController">
 <div class="row">
@@ -89,70 +79,27 @@
                     </ul>
                 </aside>
                 <section class="main-section">
-                    <div class="side-nav">
-                        <div class="icon-bar vertical five-up icon-bar-100vh margin-top-side" ng-init="loadSideNav('/reference/getActiveReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')">
-                            <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
-                                <img src="img/hot51.png"/>
-                                <label>{{group.value}}</label>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
-                            <li ng-repeat="product in productFound">
-                                <div class="contentHolder" data-id="{{product.id}}">
-                                    <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                    <img ng-if="product.productImageId != null && product.productImageId != ''" src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
-                                    <h5>{{product.productName}}</h5>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="cartBig show-for-large-up">
-                        <h5 class="left">Order Summary</h5>
-                        <h5 class="right">(0)</h5>
-                        <div class="orderSummary">
-                            <div class="items">
-                                <div class="row">
-                                    <div class="columns small-6">
-                                        <h5>Items</h5>
-                                    </div>
-                                    <div class="columns small-4">
-                                        <h5>Qty * Price</h5>
-                                    </div>
-                                    <div class="columns small-2">
-
-                                    </div>
-                                </div>
-                                <div class="order-holder">
-                                </div>
-                            </div>
-                            <div class="totalPrice">
-                                <div class="row">
-                                    <div class="small-6 columns">
-                                        <div class="row">
-                                            <div class="columns">
-                                                Total
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="small-6 columns">
-                                        <div class="row">
-                                            <div class="columns">
-                                                <span class="total-price"></span>php
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="order-page">
+                        <div class="side-nav">
+                            <div class="icon-bar vertical five-up icon-bar-100vh margin-top-side" ng-init="loadSideNav('/reference/getActiveReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')">
+                                <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
+                                    <img src="img/hot51.png"/>
+                                    <label>{{group.value}}</label>
+                                </a>
                             </div>
                         </div>
-                        <a href="index2.html" class="button expand">Continue</a>
-                    </div>
-                    <div id="cartSmall-container">
-                        <div class="cartSmall-icon show-for-medium-down">
-                            <i class="fa fa-shopping-cart fa-2x"></i>
+                        <div class="content">
+                            <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+                                <li ng-repeat="product in productFound">
+                                    <div class="contentHolder product" data-id="{{product.id}}">
+                                        <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                        <img ng-if="product.productImageId != null" ng-src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
+                                        <h5>{{product.productName}}</h5>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="cartSmall-content show-for-medium-down">
+                        <div class="cartBig show-for-large-up">
                             <h5 class="left">Order Summary</h5>
                             <h5 class="right">(0)</h5>
                             <div class="orderSummary">
@@ -190,7 +137,191 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="index2.html" class="button expand">Continue</a>
+                            <a class="button expand continue">Continue</a>
+                        </div>
+                        <div id="cartSmall-container">
+                            <div class="cartSmall-icon show-for-medium-down">
+                                <i class="fa fa-shopping-cart fa-2x"></i>
+                            </div>
+                            <div class="cartSmall-content show-for-medium-down">
+                                <h5 class="left">Order Summary</h5>
+                                <h5 class="right">(0)</h5>
+                                <div class="orderSummary">
+                                    <div class="items">
+                                        <div class="row">
+                                            <div class="columns small-6">
+                                                <h5>Items</h5>
+                                            </div>
+                                            <div class="columns small-4">
+                                                <h5>Qty * Price</h5>
+                                            </div>
+                                            <div class="columns small-2">
+
+                                            </div>
+                                        </div>
+                                        <div class="order-holder">
+                                        </div>
+                                    </div>
+                                    <div class="totalPrice">
+                                        <div class="row">
+                                            <div class="small-6 columns">
+                                                <div class="row">
+                                                    <div class="columns">
+                                                        Total
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="small-6 columns">
+                                                <div class="row">
+                                                    <div class="columns">
+                                                        <span class="total-price"></span>php
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="button expand continue">Continue</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment-page hide">
+                        <div class="row">
+                            <div class="columns medium-3 receipt show-for-medium-up small-0" id="receipt">
+                                <div class="row">
+                                    <div class="column small-12">
+                                        <div class="panel-flat">
+                                            <div class="row">
+                                                <div class="column small-12">
+                                                    <h3>Orders</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row header">
+                                                <div class="columns small-4">
+                                                    Product Name
+                                                </div>
+                                                <div class="columns small-2">
+                                                    Quantity
+                                                </div>
+                                                <div class="columns small-3">
+                                                    Price
+                                                </div>
+                                                <div class="columns small-3">
+                                                    Total
+                                                </div>
+                                            </div>
+                                            <div class="cart-holder">
+                                            </div>
+                                            <div class="total-order">
+                                                <div class="row">
+                                                    <div class="columns small-6"><strong>TOTAL</strong></div>
+                                                    <div class="columns small-6 total-sale">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns medium-9 small-12 payment">
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p>Total Balance</p>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <p class="right">PHP 0</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p>Tax</p>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <p class="right">PHP 0</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p>Payment</p>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <p class="right">Cash/Check</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p>Discount</p>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <p class="right"><a href="#" class="button expand">Apply Discount</a></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <div class="row collapse">
+                                            <div class="small-10 columns">
+                                                <input type="text" placeholder="0">
+                                            </div>
+                                            <div class="small-2 columns">
+                                                <a href="#" class="button postfix">PHP</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <ul class="small-block-grid-3 medium-block-grid-3 large-block-grid-3">
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P20new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P50new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P100new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P200new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P500new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="contentHolder">
+                                                <img src="img/P1000new.jpg" alt="" class="moneyBill"/>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <p>Change Due</p>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <p class="right">PHP 0</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-4 columns">
+                                        <a class="button left back-to-order">Back</a>
+                                    </div>
+                                    <div class="small-4 columns">
+                                        <a href="#" class="button left">Hold Order</a>
+                                    </div>
+                                    <div class="small-4 columns">
+                                        <a href="#" class="button right">Punch Order</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -252,7 +383,7 @@
                         <div class="center">
                             <ul class="button-group toggle" data-toggle="buttons-radio">
                                 <li ng-repeat="product in selectedProduct.productUnder">
-                                    <input type="radio" id="{{product.id}}" name="size-group" data-price="{{product.price.price}}" data-toggle="button">
+                                    <input type="radio" id="{{product.id}}" name="size-group" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
                                     <label class="button" for="{{product.id}}">{{product.size.value}}</label>
                                 </li>
                             </ul>
@@ -263,7 +394,7 @@
             <div class="row">
                 <div class="columns small-12">
                     <h4 class="price" ng-if="sizeSelection"></h4>
-                    <h4 class="price" ng-if="!sizeSelection" data-price="{{selectedProduct.price.price}}">{{selectedProduct.price.price}}php</h4>
+                    <h4 class="price" ng-if="!sizeSelection" data-list-id="{{selectedProduct.price.id}}" data-price="{{selectedProduct.price.price}}">{{selectedProduct.price.price}}php</h4>
                 </div>
             </div>
         </div>
@@ -275,7 +406,7 @@
             </div>
             <div class="row">
                 <div class="small-12 columns">
-                    <ul class="addOnList small-block-grid-2 medium-block-grid-3  large-block-grid-3">
+                    <ul class="addOnList small-block-grid-1 medium-block-grid-2 large-block-3">
                         <li ng-repeat="productAddOn in productAddOn">
                             <div class="addOn" data-id={{productAddOn.id}}>
                                 <p>{{productAddOn.productName}}</p>
@@ -309,110 +440,13 @@
 </div>
 </body>
 <footer>
-    <script>
-        $(document).foundation();
-        $(document).EVEYfy();
-
-        $(document).ready(function(){
-            $(".cartSmall-icon").on("click",function(){
-                $('.cartSmall-icon').css("right", "+70vw" );
-                $('.cartSmall-content').css("right", "+1vw" );
-            });
-        }).on("click",".group", function(){
-            $(".group").removeClass("active");
-            $(this).addClass("active");
-
-            angular.element("body").scope().changeGroup($(this).data("id"));
-            angular.element("body").scope().$apply();
-
-        }).on("click",".contentHolder", function(){
-            angular.element("body").scope().selectProduct($(this).data("id"));
-            angular.element("body").scope().$apply();
-
-            $("#modifyOrder #modify-quantity").text("1");
-            $('#modifyOrder').foundation('reveal', 'open');
-
-        }).on("click",".modify-quan-btn",function(){
-            if($(this).data("action")=="dec"){
-                if(Number($("#modify-quantity").text())<=1){
-                    $(this).attr("disabled");
-                    $(this).addClass("disabled");
-                } else {
-                    $("#modify-quantity").text(Number($("#modify-quantity").text())-1);
-                    if(Number($("#modify-quantity").text())<=1){
-                        $(this).attr("disabled");
-                        $(this).addClass("disabled");
-                    }
-                }
-
-            } else if($(this).data("action") == "inc"){
-                if(Number($("#modify-quantity").text())+1>1){
-                    $(".modify-quan-btn.dec").removeAttr("disabled");
-                    $(".modify-quan-btn.dec").removeClass("disabled");
-                }
-                $("#modify-quantity").text(Number($("#modify-quantity").text())+1);
-            }
-        }).on("click", "#add-to-cart", function(){
-            var productId = null;
-            var quantity = null;
-            var price = null;
-            var sizeName = null;
-
-
-            var scope = angular.element("body").scope();
-            if(scope.sizeSelection) {
-                productId = $("#modifyOrder input[name=size-group]:checked").attr("id");
-                sizeName = $("#modifyOrder input[name=size-group]:checked").parent().find("label").text();
-            } else {
-                productId = $("#modifyOrder").attr("data-pid");
-                price = Number($('#modifyOrder .price').attr("data-price"));
-            }
-
-            var productName = $("#modifyOrder").attr("data-pname");
-            var quantity = Number($("#modifyOrder #modify-quantity").text());;
-            var price = Number($('#modifyOrder .price').attr("data-price"));;
-
-
-            var template = $("#cart-template").html();
-            $(".order-holder").prepend($(template));
-            var addedTemplate = $(".order-holder").find("div.added:first-child");
-            $(addedTemplate).attr("data-id", productId);
-            $(addedTemplate).find(".product-name").text(productName);
-            $(addedTemplate).find(".size-name").text(sizeName);
-            $(addedTemplate).find(".quantity-price").text(quantity +" x "+price+"php");
-            var subtotal = (Number(quantity)*price);
-            $(addedTemplate).attr("data-subtotal", subtotal);
-            $(addedTemplate).find(".subtotal").text(subtotal+"php");
-
-
-            var totalPrice = Number($(".cartBig .total-price").text());
-            totalPrice += subtotal;
-            $(".total-price").text(totalPrice);
-            $(".total-price").attr("data-total",totalPrice);
-
-            $('#modifyOrder').foundation('reveal', 'close');
-
-        }).on("click","#modifyOrder input[name=size-group]",function(){
-            if($(this).is(":checked")){
-
-                var price = $(this).attr("data-price");
-                $("#modifyOrder .price").attr("data-price",Number(price));
-                $("#modifyOrder .price").text(Number(price)+"php");
-                $("#modifyOrder .price").removeClass("hide");
-            }
-        }).on("click", ".remove-cart", function(){
-            var addedRow = $(this).parents(".added");
-            var subtotal = Number($(addedRow).attr("data-subtotal"));
-
-            var totalHolder = $(".totalPrice .total-price");
-            var total = Number($(totalHolder).attr("data-total")) - subtotal;
-            $(totalHolder).attr("data-total",total);
-            $(totalHolder).text(total);
-
-            $(addedRow).remove();
-        });
-
-    </script>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="angular/orderApp.js"></script>
+    <script src="angular/orderController.js"></script>
 
     <script type="text/html" id="cart-template">
         <div class="row added margin-bottom-half-rem">
@@ -438,5 +472,287 @@
         </div>
     </script>
 
+    <script type="text/html" id="payment-product-cart">
+        <div class="row items">
+            <div class="columns small-12">
+                <div class="row">
+                    <div class="columns small-4">
+                        <div class="product-name"></div>
+                    </div>
+                    <div class="columns small-2">
+                        <div class="quantity"></div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="price"></div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="total"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns price-set"></div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns gross-line"></div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="payment-price-set">
+        <div class="row set">
+            <div class="columns small-6">
+                <div class="price-set-name"></div>
+            </div>
+            <div class="columns small-6">
+                <div class="effect"></div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="payment-gross">
+        <div class="row gross">
+            <div class="columns small-6">
+                <div>Subtotal</div>
+            </div>
+            <div class="columns small-6">
+                <div class="gross-total"></div>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(document).ready(function(){
+            $(".cartSmall-icon").on("click",function(){
+                $('.cartSmall-icon').css("right", "+70vw" );
+                $('.cartSmall-content').css("right", "+1vw" );
+            });
+        }).on("click",".group", function(){
+            $(".group").removeClass("active");
+            $(this).addClass("active");
+
+            angular.element("body").scope().changeGroup($(this).data("id"));
+            angular.element("body").scope().$apply();
+
+        }).on("click",".product", function(){
+            angular.element("body").scope().selectProduct($(this).attr("data-id"));
+            angular.element("body").scope().$apply();
+
+            $("#modify-quantity").text("1");
+            $('#modifyOrder').foundation('reveal', 'open');
+
+        }).on("click",".modify-quan-btn",function(){
+            if($(this).data("action")=="dec"){
+                if(Number($("#modify-quantity").text())<=1){
+                    $(this).attr("disabled");
+                    $(this).addClass("disabled");
+                } else {
+                    $("#modify-quantity").text(Number($("#modify-quantity").text())-1);
+                    if(Number($("#modify-quantity").text())<=1){
+                        $(this).attr("disabled");
+                        $(this).addClass("disabled");
+                    }
+                }
+
+            } else if($(this).data("action") == "inc"){
+                if(Number($("#modify-quantity").text())+1>1){
+                    $(".modify-quan-btn.dec").removeAttr("disabled");
+                    $(".modify-quan-btn.dec").removeClass("disabled");
+                }
+                $("#modify-quantity").text(Number($("#modify-quantity").text())+1);
+            }
+        }).on("click", "#add-to-cart", function(){
+            var productId = null;
+            var price = null;
+            var sizeName = null;
+
+
+            var scope = angular.element("body").scope();
+            if(scope.sizeSelection) {
+                var selected = $("#modifyOrder input[name=size-group]:checked");
+                productId = $(selected).attr("id");
+                sizeName = $(selected).parent().find("label").text();
+            } else {
+                productId = $("#modifyOrder").attr("data-pid");
+                price = Number($('#modifyOrder .price').attr("data-price"));
+            }
+
+            var productName = $("#modifyOrder").attr("data-pname");
+            var quantity = Number($("#modifyOrder #modify-quantity").text());
+            price = Number($('#modifyOrder .price').attr("data-price"));
+            var listId = $("#modifyOrder .price").attr("data-list-id");
+
+
+            var template = $("#cart-template").html();
+            $(".order-holder").prepend($(template));
+            var addedTemplate = $(".order-holder").find("div.added:first-child");
+            $(addedTemplate).attr("data-id", productId);
+            $(addedTemplate).find(".product-name").text(productName);
+            $(addedTemplate).find(".size-name").text(sizeName);
+
+            var classQuantityPrice = $(addedTemplate).find(".quantity-price");
+            $(classQuantityPrice).text(quantity +" x "+price+"php");
+            $(classQuantityPrice).attr("data-list-id",listId);
+            $(classQuantityPrice).attr("data-quantity",quantity);
+            $(classQuantityPrice).attr("data-price",price);
+            var subtotal = (Number(quantity)*price);
+            $(addedTemplate).attr("data-subtotal", subtotal);
+            $(addedTemplate).find(".subtotal").text(subtotal+"php");
+
+
+            var totalPrice = Number($(".cartBig .total-price").text());
+            totalPrice += subtotal;
+
+            var classTotalPrice = $(".total-price");
+            $(classTotalPrice).text(totalPrice);
+            $(classTotalPrice).attr("data-total",totalPrice);
+
+            $('#modifyOrder').foundation('reveal', 'close');
+
+        }).on("click","#modifyOrder input[name=size-group]",function(){
+            if($(this).is(":checked")){
+
+                var price = $(this).attr("data-price");
+                var priceClass = $("#modifyOrder .price");
+                $(priceClass).attr("data-list-id", $(this).attr("data-list-id"));
+                $(priceClass).attr("data-price",Number(price));
+                $(priceClass).text(Number(price)+"php");
+                $(priceClass).removeClass("hide");
+            }
+        }).on("click", ".remove-cart", function(){
+            var addedRow = $(this).parents(".added");
+            var subtotal = Number($(addedRow).attr("data-subtotal"));
+            var index = $(addedRow).index()+1;
+
+
+            var totalHolder = $(".totalPrice .total-price");
+            var total = Number($(totalHolder).attr("data-total")) - subtotal;
+            $(totalHolder).attr("data-total",total);
+            $(totalHolder).text(total);
+
+            $(".order-holder div.added:nth-child("+index+")").remove();
+        }).on("click", ".continue",function(){
+            var detail = getCartDetail();
+            $.ajax({
+                url: evey.getHome()+"/order/getPriceSet",
+                data: JSON.stringify(detail.orderHelper),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function(data){
+                    displayData(data.results);
+                    $(".payment-page").toggleClass("hide");
+                    $(".order-page").toggleClass("hide");
+                },
+                error: function(data){
+                    alert(JSON.stringify(data));
+                }
+            })
+
+        }).on("click", ".back-to-order", function(){
+            $(".payment-page").toggleClass("hide");
+            $(".order-page").toggleClass("hide");
+        });
+
+        var displayData = function(data){
+
+            $("#receipt .items").remove();
+
+            $.each(data.orders,function(i,order){
+                var cartHolder = $("#receipt .cart-holder");
+                $(cartHolder).append($("#payment-product-cart").html());
+                var cartTemplate = $(cartHolder).find(".items").last();
+                $(cartTemplate).find(".product-name").text(order.product.productName);
+                $(cartTemplate).find(".quantity").text(order.quantity);
+                $(cartTemplate).find(".price").text(order.listPrice.price);
+                $(cartTemplate).find(".total").text(order.totalLinePrice);
+
+                var priceSetHolder = $(cartTemplate).find(".price-set");
+                $.each(order.appliedPriceSet, function(i, priceSet){
+                    $(priceSetHolder).append($("#payment-price-set").html());
+                    var priceSetTemplate = $(priceSetHolder).find(".set").last();
+                    $(priceSetTemplate).find(".price-set-name").text(priceSet.priceSetName);
+
+                    var moreOrLess = null;
+                    if(priceSet.isDiscount!= null &&
+                            priceSet.isDiscount!= undefined &&
+                            priceSet.isDiscount){
+                        moreOrLess = "LESS";
+                    } else {
+                        moreOrLess = "ADD";
+                    }
+
+                    var percentOrPhp = null;
+                    if(priceSet.isPercentage!= null &&
+                            priceSet.isPercentage!= undefined &&
+                            priceSet.isPercentage){
+                        percentOrPhp = "%";
+                    } else {
+                        percentOrPhp = "php"
+                    }
+
+                    $(priceSetTemplate).find(".effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
+                    $(priceSetTemplate).find(".gross").text(order.grossLinePrice);
+                });
+
+                if(order.appliedPriceSet != null &&
+                    order.appliedPriceSet != undefined &&
+                    order.appliedPriceSet.length > 0){
+                    var grossHolder = $(cartTemplate).find(".gross-line");
+                    $(grossHolder).append($("#payment-gross").html());
+                    var grossTemplate = $(grossHolder).find(".gross").last();
+                    $(grossTemplate).find(".gross-total").text(order.grossLinePrice);
+                }
+
+
+                $(".total-sale").text(data.totalSale);
+            });
+        };
+
+
+        var getCartDetail = function(){
+
+            var cart = [];
+            var orderHelper = [];
+            $.each($(".cartBig .order-holder .added"),function(i,added){
+                var product = $(added).attr("data-id");
+                var subtotal = $(added).attr("data-subtotal");
+                var productName = $(added).find(".product-name").text();
+                var sizeName = $(added).find(".size-name").text();
+                var quantity = $(added).find(".quantity-price").attr("data-quantity");
+                var price = $(added).find(".quantity-price").attr("data-price");
+                var listId = $(added).find(".quantity-price").attr("data-list-id");
+
+                var row = {
+                    "product": product,
+                    "subtotal": subtotal,
+                    "productName": productName,
+                    "sizeName": sizeName,
+                    "quantity": quantity,
+                    "price": price,
+                    "listId": listId
+                };
+
+                var helper = {
+                    "productId": product,
+                    "quantity": quantity,
+                    "price": price,
+                    "listId": listId
+                };
+
+                cart.push(row);
+                orderHelper.push(helper);
+            });
+
+            var returnThis = {
+                "cart": cart,
+                "orderHelper": orderHelper,
+            };
+
+            return returnThis;
+        };
+
+    </script>
 </footer>
 </html>

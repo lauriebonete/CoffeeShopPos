@@ -1,4 +1,4 @@
-package org.pos.coffee.service;
+package org.evey.service;
 
 /**
  * Created by Laurie on 11/5/2015.

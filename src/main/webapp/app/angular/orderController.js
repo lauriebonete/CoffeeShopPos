@@ -68,7 +68,6 @@ orderApp.controller("orderController", function ($scope, $http) {
         angular.forEach($scope.product, function (value, key) {
             if(value.id == id){
                 $scope.selectedProduct = value;
-                console.log(value);
                 if(value.productUnder != null &&
                     value.productUnder.length >0){
                     $scope.sizeSelection = true;

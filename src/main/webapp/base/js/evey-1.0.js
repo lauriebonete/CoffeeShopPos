@@ -66,8 +66,13 @@ var evey = (function(){
                     var values = $(selectize).val().split("|");
                     for (var i = 0; i <= values.length - 1; i++) {
                         var object = new Object();
-                        object[$(selectize).data("attr")] = values[i];
-                        list.push(object);
+                        if(values[i] != null &&
+                            values[i] != "" &&
+                            values[i] != undefined &&
+                            values[i].length > 0) {
+                            object[$(selectize).data("attr")] = values[i];
+                            list.push(object);
+                        }
                     }
                     jsonObject[$(selectize).attr("name")] = list;
                 }
@@ -77,7 +82,10 @@ var evey = (function(){
                 if($(select).attr("name") != null &&
                     $(select).attr("name") != undefined &&
                     $(select).attr("name") != "" &&
-                    !$(select).is(":disabled")) {
+                    !$(select).is(":disabled") &&
+                    $(select).val() != "" &&
+                    $(select).val() != null &&
+                    $(select).val() != undefined) {
                     if($(select).attr("name").indexOf (".")!= -1) {
                         var dottedName = $(select).attr("name").split(".");
                         var object = new Object();
@@ -205,6 +213,7 @@ var evey = (function(){
                     type: "POST",
                     dataType: "JSON",
                     data: jsonForm,
+                    contentType: "application/json",
                     success : function(data) {
                         console.log(data);
                     }

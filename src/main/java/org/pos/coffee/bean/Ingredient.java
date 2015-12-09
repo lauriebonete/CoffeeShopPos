@@ -1,7 +1,7 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
 

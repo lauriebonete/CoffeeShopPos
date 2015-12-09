@@ -1,5 +1,7 @@
 package org.pos.coffee.bean;
 
+import org.evey.bean.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 

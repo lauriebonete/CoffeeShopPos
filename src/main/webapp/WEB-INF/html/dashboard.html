@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
-    <link rel="stylesheet" href="css/chartist.min.css">
-
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script src="js/responsive-tables.js"></script>
-    <script src="js/evey-1.0.js"></script>
-    <script src="js/angular.js"></script>
-    <script src="js/chartist.min.js"></script>
-    <script src="js/vendor/modernizr.js"></script>
 </head>
 <body>
 <div class="row">
@@ -87,15 +78,32 @@
                     </ul>
                 </aside>
                 <section class="main-section main-body">
-                    <div class="row">
+                    <div class="row show-for-medium-up">
                         <div class="columns small-4">
-                            <div class="ct-chart ct-perfect-fourth"></div>
+                            <canvas class="chart-line-area"/>
                         </div>
                         <div class="columns small-4">
-                            <div class="ct-chart-pie ct-perfect-fourth"></div>
+                            <canvas class="chart-pie-area"/>
                         </div>
                         <div class="columns small-4">
-                            <div class="ct-chart-bar ct-perfect-fourth"></div>
+                            <canvas class="chart-bar-area"/>
+                        </div>
+                    </div>
+                    <div class="row show-for-small-only">
+                        <div class="row">
+                            <div class="columns small-12">
+                                <canvas class="chart-line-area"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <canvas class="chart-pie-area"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <canvas class="chart-bar-area"/>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -106,74 +114,104 @@
 </div>
 </body>
 <footer>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
     <script>
         $(document).foundation();
         $(document).EVEYfy();
 
-        new Chartist.Line('.ct-chart', {
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            series: [
-                [2, 1, 3.5, 7, 3],
+        var data = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
             ]
-        }, {
-            fullWidth: true,
-            chartPadding: {
-                right: 40
-            }
+        };
+
+        $.each($(".chart-line-area"),function(i,line){
+            var ctx = line.getContext("2d");
+            var myNewChart = new Chart(ctx).Line(data);
         });
 
         var data = {
-            labels: ['Latte', 'Coffee', 'Cake', 'Others'],
-            series: [20, 15, 40, 2]
-        };
-
-        var options = {
-            labelInterpolationFnc: function(value) {
-                return value[0]
-            }
-        };
-
-        var responsiveOptions = [
-            ['screen and (min-width: 640px)', {
-                chartPadding: 30,
-                labelOffset: 100,
-                labelDirection: 'explode',
-                labelInterpolationFnc: function(value) {
-                    return value;
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,0.8)",
+                    highlightFill: "rgba(151,187,205,0.75)",
+                    highlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
                 }
-            }],
-            ['screen and (min-width: 1024px)', {
-                labelOffset: 80,
-                chartPadding: 20
-            }]
-        ];
-
-        new Chartist.Pie('.ct-chart-pie', data, options, responsiveOptions);
-
-        var data = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            series: [
-                [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
-                [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
             ]
         };
 
-        var options = {
-            seriesBarDistance: 10
-        };
+        $.each($(".chart-bar-area"),function(i,bar){
+            var ctx = bar.getContext("2d");
+            var myNewChart = new Chart(ctx).Bar(data);
+        });
 
-        var responsiveOptions = [
-            ['screen and (max-width: 640px)', {
-                seriesBarDistance: 5,
-                axisX: {
-                    labelInterpolationFnc: function (value) {
-                        return value[0];
-                    }
-                }
-            }]
+        var data = [
+            {
+                value: 300,
+                color:"#F7464A",
+                highlight: "#FF5A5E",
+                label: "Red"
+            },
+            {
+                value: 50,
+                color: "#46BFBD",
+                highlight: "#5AD3D1",
+                label: "Green"
+            },
+            {
+                value: 100,
+                color: "#FDB45C",
+                highlight: "#FFC870",
+                label: "Yellow"
+            }
         ];
 
-        new Chartist.Bar('.ct-chart-bar', data, options, responsiveOptions);
+        $.each($(".chart-pie-area"),function(i,pie){
+            var ctx = pie.getContext("2d");
+            var myNewChart = new Chart(ctx).Pie(data);
+        });
+
+
+
+
     </script>
 </footer>
 </html>

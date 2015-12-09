@@ -1,10 +1,12 @@
-package org.pos.coffee.dao.impl;
+package org.evey.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.evey.annotation.JoinList;
+import org.evey.annotation.JoinSet;
 import org.evey.annotation.UniqueField;
-import org.pos.coffee.bean.BaseEntity;
+import org.evey.bean.BaseEntity;
 import org.pos.coffee.bean.QueryHelper;
-import org.pos.coffee.dao.BaseEntityDao;
+import org.evey.dao.BaseEntityDao;
 import org.evey.utility.NamingUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +16,14 @@ import javax.persistence.Query;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Laurie on 11/5/2015.
  */
 public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable> implements BaseEntityDao<T,Id> {
+
+    private static Logger _log = Logger.getLogger(BaseEntityDaoJpaImpl.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -61,15 +62,27 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         queryBuilder.append(buildSelectQuery());
         queryBuilder.append(buildJoinQuery(getEntityBeanType(),entity));
         List<QueryHelper> fieldAndValueList = getFields(getEntityBeanType(),entity);
-        queryBuilder.append(buildWhereQuery(fieldAndValueList));
+        String whereClause = buildWhereQuery(fieldAndValueList);
+        queryBuilder.append(whereClause);
+        queryBuilder.append(appendToWhere(whereClause, entity));
+
+        _log.warn(queryBuilder.toString());
 
         Query query = getEntityManager().createQuery(queryBuilder.toString());
-        return createParameters(query,fieldAndValueList).getResultList();
+        createParameters(query,fieldAndValueList);
+        appendToParameters(query,entity);
+        return query.getResultList();
     }
 
     @Override
     public List<T> findAll() {
-         Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
+        Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<T> findAllActive() {
+        Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj where obj.isActive = true");
         return query.getResultList();
     }
 
@@ -78,6 +91,19 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj where obj.id in (:ids)");
         query.setParameter("ids",ids);
         return query.getResultList();
+    }
+
+    @Override
+    public Set<Object> findBySetOfIds(Set<Long> ids) {
+        Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj where obj.id in (:ids)");
+        query.setParameter("ids",ids);
+
+        Set<Object> result = new HashSet<>();
+        for(Object object:  query.getResultList()) {
+            result.add(object);
+        }
+
+        return result;
     }
 
     @Override
@@ -110,7 +136,8 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             field.setAccessible(true);
 
             //if JoinList annotation is present Join should be added on JPA query
-            if(field.isAnnotationPresent(JoinList.class)) {
+            if(field.isAnnotationPresent(JoinList.class) ||
+                    field.isAnnotationPresent(JoinSet.class)) {
                 queryBuffer.append(" LEFT JOIN obj."+field.getName()+" "+field.getName());
             }
         }
@@ -130,12 +157,14 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                 first = false;
             }
 
-            if(List.class.isAssignableFrom(query.getEntityType())){
+            if(List.class.isAssignableFrom(query.getEntityType()) ||
+                    Set.class.isAssignableFrom(query.getEntityType())){
                 queryBuffer.append(query.getFieldName()+" in (:"+NamingUtil.toParamName(query.getFieldName()) + ") ");
-            } else if((
-                    Boolean.class.isAssignableFrom(query.getEntityType()) ||
+            } else if(
+                    (Boolean.class.isAssignableFrom(query.getEntityType()) ||
                             Long.class.isAssignableFrom(query.getEntityType()) ||
-                            Integer.class.isAssignableFrom(query.getEntityType())
+                            Integer.class.isAssignableFrom(query.getEntityType()) ||
+                            Date.class.isAssignableFrom(query.getEntityType())
             ) || (query.getIsUnique()!=null &&
                     query.getIsUnique() )){
                 queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
@@ -173,12 +202,23 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                         value = (T) list.get(0);
                         isList = true;
                     }
+
+                    boolean isSet = false;
+                    if(field.isAnnotationPresent(JoinSet.class) &&
+                            Set.class.isAssignableFrom(method.invoke(entity).getClass())) {
+                        Set set = (Set)method.invoke(entity);
+                        value = (T) set.iterator().next();
+                        isSet = true;
+                    }
+
                     if(BaseEntity.class.isAssignableFrom(value.getClass())){
                         List<QueryHelper> innerValue = getFields(value.getClass(), (T)value);
                         for(QueryHelper baseEntity:innerValue){
                             baseEntity.setFieldName(field.getName()+"."+baseEntity.getFieldName());
                             if(isList){
                                 baseEntity.setEntityType(List.class);
+                            } else if(isSet) {
+                                baseEntity.setEntityType(Set.class);
                             }
                         }
                         queryHelper.addAll(innerValue);
@@ -187,6 +227,8 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                         query.setFieldName(field.getName());
                         if(isList){
                             query.setEntityType(List.class);
+                        } else if(isSet){
+                            query.setEntityType(Set.class);
                         } else {
                             query.setEntityType(value.getClass());
                         }
@@ -223,5 +265,15 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             }
         }
         return query;
+    }
+
+    @Override
+    public String appendToWhere(String whereClause, T entity) {
+       return "";
+    }
+
+    @Override
+    public Query appendToParameters(Query query, T entity) {
+        return null;
     }
 }

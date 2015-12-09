@@ -78,6 +78,10 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.promoGroupOption = data;
     };
 
+    $scope.loadProduct = function(data){
+        $scope.productOption = data;
+    }
+
     $scope.selectizeConfig =
     {
         valueField : 'id',
@@ -90,8 +94,21 @@ crudApp.controller("crudController", function ($scope, $http) {
         }
     };
 
+    $scope.productConfig =
+    {
+        valueField : 'id',
+        labelField : 'productName',
+        delimiter : '|',
+        placeholder : 'Pick something',
+        plugins: ['remove_button'],
+        onInitialize : function (selectize) {
+            // receives the selectize object as an argument
+        }
+    };
+
     $scope.productGroup = 0;
     $scope.promoGroup = 0;
+    $scope.product = 0;
 
 });
 

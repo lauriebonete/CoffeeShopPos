@@ -1,10 +1,11 @@
-package org.pos.coffee.service.impl;
+package org.evey.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.evey.annotation.JoinList;
-import org.pos.coffee.bean.BaseEntity;
-import org.pos.coffee.dao.BaseEntityDao;
-import org.pos.coffee.service.BaseCrudService;
+import org.evey.annotation.JoinSet;
+import org.evey.bean.BaseEntity;
+import org.evey.dao.BaseEntityDao;
+import org.evey.service.BaseCrudService;
 import org.evey.utility.NamingUtil;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import javax.annotation.PostConstruct;
 import javax.persistence.Transient;
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Laurie on 11/5/2015.
@@ -41,6 +44,11 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     }
 
     @Override
+    public List<T> findAllActive() {
+        return baseEntityDao.findAllActive();
+    }
+
+    @Override
     public List<T> findAll() {
         return baseEntityDao.findAll();
     }
@@ -63,6 +71,11 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     @Override
     public List<Object> findByListOfIds(List<Long> ids) {
         return baseEntityDao.findByListOfIds(ids);
+    }
+
+    @Override
+    public Set<Object> findBySetOfIds(Set<Long> ids) {
+        return baseEntityDao.findBySetOfIds(ids);
     }
 
     @PostConstruct
@@ -103,6 +116,23 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
                             String serviceName=NamingUtil.toAttributeName(list.get(0).getClass().getSimpleName());
                             BaseCrudService baseCrudServiceLoader = (BaseCrudService) beanFactory.getBean(serviceName + "Service");
                             List foundList = baseCrudServiceLoader.findByListOfIds(idList);
+                            BeanUtils.setProperty(entity,field.getName(),foundList);
+                        }
+                    } else if (field.isAnnotationPresent(JoinSet.class)
+                            && Set.class.isAssignableFrom(getterMethod.invoke(entity).getClass())){
+                        Set set = (Set)getterMethod.invoke(entity);
+                        Set<Long> idSet = new HashSet<>();
+                        for(Object object:set){
+                            //search for loadable objects
+                            BaseEntity baseEntity = (BaseEntity) object;
+                            if(baseEntity.getId()!=null){
+                                idSet.add(baseEntity.getId());
+                            }
+                        }
+                        if(set.size()>0){
+                            String serviceName=NamingUtil.toAttributeName(set.iterator().next().getClass().getSimpleName());
+                            BaseCrudService baseCrudServiceLoader = (BaseCrudService) beanFactory.getBean(serviceName + "Service");
+                            Set foundList = baseCrudServiceLoader.findBySetOfIds(idSet);
                             BeanUtils.setProperty(entity,field.getName(),foundList);
                         }
                     } else {

@@ -1,4 +1,4 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +15,7 @@ import javax.persistence.Version;
 
 import org.apache.log4j.Logger;
 import org.evey.annotation.UniqueField;
-import org.pos.coffee.persistence.EntityListener;
+import org.evey.persistence.EntityListener;
 
 /*
  * Base class for all objects contains basic attributes

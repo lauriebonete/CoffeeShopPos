@@ -1,5 +1,6 @@
 package org.pos.coffee.service.impl;
 
+import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.service.ItemService;
 import org.springframework.stereotype.Service;
