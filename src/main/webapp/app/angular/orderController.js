@@ -31,12 +31,22 @@ orderApp.controller("orderController", function ($scope, $http) {
 
     $scope.loadProduct = function(url){
         $http.get(url).then(function successCallback(response) {
-            $scope.product = response.data;
-            $scope.loadAddOn(response.data);
+            $scope.product = response.data.results;
+            $scope.loadAddOn(response.data.results);
+            $scope.allProduct = response.data.all;
             displayFirstGroup();
         }, function errorCallback(response) {
 
         });
+    };
+
+    $scope.retrieveProduct = function(id){
+        for(var i=0; i<=$scope.allProduct.length-1;i++){
+            if($scope.allProduct[i].id == id){
+                $scope.addToCart = $scope.allProduct[i];
+                break;
+            }
+        }
     };
 
     $scope.loadAddOn = function(data){

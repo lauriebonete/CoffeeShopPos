@@ -36,9 +36,9 @@ public abstract class BaseCrudController<T extends BaseEntity> {
 
     protected String attributeName;
 
-    private TransactionTemplate transactionTemplate;
+    protected TransactionTemplate transactionTemplate;
 
-    private Integer entityListSize = 10;
+    protected Integer entityListSize = 10;
 
     @PostConstruct
     public void setProperties() {

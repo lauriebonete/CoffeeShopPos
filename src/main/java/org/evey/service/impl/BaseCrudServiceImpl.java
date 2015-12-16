@@ -9,6 +9,7 @@ import org.evey.service.BaseCrudService;
 import org.evey.utility.NamingUtil;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Transient;
@@ -33,6 +34,7 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     private String attributeName;
 
     @Override
+    @Transactional
     public final void save(T entity) {
         preloadEntity(entity);
         baseEntityDao.save(entity);

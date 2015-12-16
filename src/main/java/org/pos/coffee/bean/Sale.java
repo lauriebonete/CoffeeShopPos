@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import org.evey.annotation.JoinList;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -46,6 +47,14 @@ public class Sale extends BaseEntity {
 
 	@Column(name = "CUSTOMER", insertable = false, updatable = false)
 	private Long customerId;
+
+	@JoinList
+	@ManyToMany
+	@JoinTable(name="SALE_PRICE_ADJST",
+			joinColumns = {@JoinColumn(name="SALE_ID", referencedColumnName = "ID")},
+			inverseJoinColumns = @JoinColumn(name="PRICE_SET_ID", referencedColumnName = "ID")
+	)
+	private List<PriceSet> appliedPriceSet;
 
 	public List<Order> getOrders() {
 		return orders;
@@ -116,5 +125,13 @@ public class Sale extends BaseEntity {
 
 	public void setServerId(Long serverId) {
 		this.serverId = serverId;
+	}
+
+	public List<PriceSet> getAppliedPriceSet() {
+		return appliedPriceSet;
+	}
+
+	public void setAppliedPriceSet(List<PriceSet> appliedPriceSet) {
+		this.appliedPriceSet = appliedPriceSet;
 	}
 }

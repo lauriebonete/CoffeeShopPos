@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +45,12 @@ public class ProductController extends BaseCrudController<Product> {
         returnMap.put("result", saveToThis);
 
         return returnMap;
+    }
+
+    @RequestMapping(value = "/findParent", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Product findParent(Long id) {
+        Product product = productService.load(id);
+        return product;
     }
 
 }

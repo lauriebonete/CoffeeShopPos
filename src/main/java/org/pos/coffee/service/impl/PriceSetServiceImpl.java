@@ -2,6 +2,7 @@ package org.pos.coffee.service.impl;
 
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.*;
+import org.pos.coffee.bean.helper.OrderHelper;
 import org.pos.coffee.service.PriceSetService;
 import org.pos.coffee.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +113,50 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
 
     @Override
     public Sale applyPriceSets(List<PriceSet> priceSetList, Double total, Double totalDiscount, Double totalSurcharge) {
-        return null;
+        Sale sale = new Sale();
+        List<PriceSet> appliedPriceSet = new ArrayList<>();
+        for(PriceSet priceSet: priceSetList){
+            if(priceSet.getIsPriceTriggered() != null &&
+                    priceSet.getIsPriceTriggered()){
+                if(priceSet.getMinPrice()<=total){
+                    if(priceSet.getIsDiscount() != null &&
+                            priceSet.getIsDiscount()){
+
+                        double discount = 0;
+                        if(priceSet.getIsPercentage() != null &&
+                                priceSet.getIsPercentage()){
+                            discount = total  * (priceSet.getPriceSetModifier()/100);
+                            total -= discount;
+                        } else {
+                            discount = priceSet.getPriceSetModifier();
+                            total -= discount;
+                        }
+                        totalDiscount += discount;
+                    } else {
+                        double surcharge = 0;
+                        if(priceSet.getIsPercentage() != null &&
+                                priceSet.getIsPercentage()){
+                            surcharge = total  * (priceSet.getPriceSetModifier()/100);
+                            total -= surcharge;
+                        } else {
+                            surcharge = priceSet.getPriceSetModifier();
+                            total -= surcharge;
+                        }
+                        totalSurcharge += surcharge;
+                    }
+
+                    if(priceSet.getStopOtherPriceSet() != null &&
+                            priceSet.getStopOtherPriceSet()){
+                        break;
+                    }
+                    appliedPriceSet.add(priceSet);
+                }
+            }
+        }
+        sale.setTotalSurcharge(totalSurcharge);
+        sale.setTotalDiscount(totalDiscount);
+        sale.setAppliedPriceSet(appliedPriceSet);
+        return sale;
     }
 
     private boolean stopApplyingOtherPriceSet(PriceSet priceSet){

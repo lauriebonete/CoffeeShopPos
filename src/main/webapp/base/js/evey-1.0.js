@@ -89,7 +89,13 @@ var evey = (function(){
                     if($(select).attr("name").indexOf (".")!= -1) {
                         var dottedName = $(select).attr("name").split(".");
                         var object = new Object();
-                        object[dottedName[1]] = $(select).val();
+
+                        if($(select).val().indexOf(":")!=-1){
+                            object[dottedName[1]] = $(select).val().substring($(select).val().indexOf(":")+1);
+                        } else {
+                            object[dottedName[1]] = $(select).val();
+                        }
+
 
                         if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
                             jsonObject[dottedName[0]] = object;
@@ -99,7 +105,11 @@ var evey = (function(){
                             jsonObject[dottedName[0]]  = list;
                         }
                     } else {
-                        jsonObject[$(select).attr("name")] = $(select).val();
+                        if($(select).val().indexOf(":")!=-1){
+                            jsonObject[$(select).attr("name")] = $(select).val().substring($(select).val().indexOf(":")+1);
+                        } else {
+                            jsonObject[$(select).attr("name")] = $(select).val();
+                        }
                     }
                 }
             });

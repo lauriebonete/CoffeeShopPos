@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="ORDER")
+@Table(name="ORDER_LINE")
 public class Order extends BaseEntity {
 
 	@ManyToOne

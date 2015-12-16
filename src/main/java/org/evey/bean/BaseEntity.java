@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.log4j.Logger;
 import org.evey.annotation.UniqueField;
 import org.evey.persistence.EntityListener;
@@ -25,6 +26,7 @@ import org.evey.persistence.EntityListener;
 
 @MappedSuperclass
 @EntityListeners(EntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 2880646613100616928L;

@@ -21,6 +21,4 @@ public interface BaseEntityDao<T extends BaseEntity, Id extends Serializable> {
     public Set<Object> findBySetOfIds(Set<Long> ids);
     public T load(Long id);
 
-    public String appendToWhere(String whereClause, T entity);
-    public Query appendToParameters(Query query, T entity);
 }

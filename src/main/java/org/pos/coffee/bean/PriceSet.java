@@ -271,4 +271,40 @@ public class PriceSet extends BaseEntity{
 
         return "";
     }
+
+    @PrePersist
+    public void prePersist(){
+        if(this.isDiscount == null) {
+            this.isDiscount = false;
+        }
+
+        if(this.isForLine == null){
+            this.isForLine = false;
+        }
+
+        if(this.isPercentage == null){
+            this.isPercentage = false;
+        }
+
+        if(this.isPriceTriggered == null){
+            this.isPriceTriggered = false;
+        }
+
+        if(this.isQuantityTriggered == null){
+            this.isQuantityTriggered = false;
+        }
+
+        if(this.isTriggeredByProduct == null){
+            this.isTriggeredByProduct = false;
+        }
+
+        if(this.isTriggeredByPromoGroup == null){
+            this.isTriggeredByPromoGroup = false;
+        }
+
+        if(this.isVoucherTriggered == null){
+            this.isVoucherTriggered = false;
+        }
+    }
+
 }

@@ -19,8 +19,9 @@ crudApp.controller("crudController", function ($scope, $http) {
     };
 
     $scope.returnData = function(){
+        console.log($scope.fullRecords);
         return $scope.fullRecords;
-    }
+    };
 
     $scope.changePage = function (page, max) {
         var end = (page * max) - 1;
@@ -109,6 +110,10 @@ crudApp.controller("crudController", function ($scope, $http) {
     $scope.productGroup = 0;
     $scope.promoGroup = 0;
     $scope.product = 0;
+
+    $scope.loadSizes = function(data){
+        $scope.size = data;
+    };
 
 });
 

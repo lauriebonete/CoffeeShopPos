@@ -60,7 +60,7 @@ public class Product extends BaseEntity {
 	@Column(name = "SHOW_PRODUCT")
 	private Boolean isDisplayOnOrder;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "PARENT", referencedColumnName = "ID")
 	@JsonBackReference
 	private Product parentProduct;

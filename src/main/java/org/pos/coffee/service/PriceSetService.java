@@ -1,7 +1,7 @@
 package org.pos.coffee.service;
 
 import org.evey.service.BaseCrudService;
-import org.pos.coffee.bean.OrderHelper;
+import org.pos.coffee.bean.helper.OrderHelper;
 import org.pos.coffee.bean.PriceSet;
 import org.pos.coffee.bean.Sale;
 

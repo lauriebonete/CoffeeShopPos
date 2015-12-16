@@ -1,4 +1,4 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 /**
  * Created by Laurie on 11/17/2015.

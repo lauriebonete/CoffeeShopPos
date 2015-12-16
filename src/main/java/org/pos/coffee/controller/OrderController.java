@@ -2,6 +2,7 @@ package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.*;
+import org.pos.coffee.bean.helper.OrderHelper;
 import org.pos.coffee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class OrderController extends BaseCrudController<Order> {
     private ReferenceLookUpService referenceLookUpService;
 
     @Autowired
-    private IngredientService ingredientService;
+    private ItemService itemService;
 
     @Autowired
     private ListPriceService listPriceService;
@@ -40,15 +41,19 @@ public class OrderController extends BaseCrudController<Order> {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private IngredientService ingredientService;
+
 
     @RequestMapping(value = "/getAllProduct", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody List<Product> getAllProductDetails() throws Exception{
-
+    public @ResponseBody Map<String,Object> getAllProductDetails() throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
 
         Product getAll = new Product();
         getAll.setIsActive(true);
         getAll.setIsDisplayOnOrder(true);
         List<Product> results = productService.findEntity(getAll);
+        List<Product> allProduct = new ArrayList<>();
         for(Product product: results){
 
             if(product.getProductGroupList()!=null){
@@ -73,16 +78,34 @@ public class OrderController extends BaseCrudController<Order> {
                     if(productUnder.getPrice()!=null){
                         productUnder.setPrice(listPriceService.load(productUnder.getPrice().getId()));
                     }
+
+                    if(productUnder.getIngredientList()!=null &&
+                            productUnder.getIngredientList().size()>0){
+                        for(Ingredient ingredient: productUnder.getIngredientList()){
+                            ingredient = ingredientService.load(ingredient.getId());
+                        }
+                    }
+                    allProduct.add(productUnder);
+                }
+            }
+
+            if(product.getIngredientList()!=null &&
+                    product.getIngredientList().size()>0){
+                for(Ingredient ingredient: product.getIngredientList()){
+                    ingredient = ingredientService.load(ingredient.getId());
                 }
             }
 
             if(product.getPrice()!=null){
                 product.setPrice(listPriceService.load(product.getPrice().getId()));
             }
+            allProduct.add(product);
 
         }
 
-        return results;
+        returnMap.put("results", results);
+        returnMap.put("all", allProduct);
+        return returnMap;
     }
 
     @RequestMapping(value = "/getPriceSet", method = RequestMethod.POST, produces = "application/json")
@@ -94,52 +117,58 @@ public class OrderController extends BaseCrudController<Order> {
         double totalSurcharge = 0;
         for(OrderHelper orderHelper: orderHelperList){
             get_log().warn(orderHelper.getProductId()+" productId");
-            List<PriceSet> priceSetList = priceSetService.getPossiblePriceSets(orderHelper);
-            List<PriceSet> applyPriceSetList = priceSetService.getApplicablePriceSets(priceSetList, orderHelper);
+            if(orderHelper.getProductId()!=null){
+                List<PriceSet> priceSetList = priceSetService.getPossiblePriceSets(orderHelper);
+                List<PriceSet> applyPriceSetList = priceSetService.getApplicablePriceSets(priceSetList, orderHelper);
 
-            double subtotal = orderHelper.getQuantity() * orderHelper.getPrice();
-            double gross = subtotal;
-            double totalLineDiscount = 0;
-            double totalLineSurcharge = 0;
-            for(PriceSet priceSet: applyPriceSetList) {
-                get_log().warn(subtotal+" prior priceset");
-                if(priceSet.getIsDiscount()){
-                    double discount = 0;
-                    if(priceSet.getIsPercentage()){
-                        discount = subtotal * (priceSet.getPriceSetModifier()/100);
-                        gross -= discount;
+                double subtotal = orderHelper.getQuantity() * orderHelper.getPrice();
+                double gross = subtotal;
+                double totalLineDiscount = 0;
+                double totalLineSurcharge = 0;
+                for(PriceSet priceSet: applyPriceSetList) {
+                    get_log().warn(subtotal+" prior priceset");
+                    if(priceSet.getIsDiscount()){
+                        double discount = 0;
+                        if(priceSet.getIsPercentage()){
+                            discount = subtotal * (priceSet.getPriceSetModifier()/100);
+                            gross -= discount;
+                        } else {
+                            discount = priceSet.getPriceSetModifier();
+                            gross -= discount;
+                        }
+                        totalLineDiscount += discount;
+                        totalDiscount += discount;
                     } else {
-                        discount = priceSet.getPriceSetModifier();
-                        gross -= discount;
+                        double surcharge = 0;
+                        if(priceSet.getIsPercentage()){
+                            surcharge = subtotal * (priceSet.getPriceSetModifier()/100);
+                            gross += surcharge;
+                        } else {
+                            surcharge = priceSet.getPriceSetModifier();
+                            gross += surcharge;
+                        }
+                        totalLineSurcharge += surcharge;
+                        totalSurcharge += surcharge;
                     }
-                    totalLineDiscount += discount;
-                    totalDiscount += discount;
-                } else {
-                    double surcharge = 0;
-                    if(priceSet.getIsPercentage()){
-                        surcharge = subtotal * (priceSet.getPriceSetModifier()/100);
-                        gross += surcharge;
-                    } else {
-                        surcharge = priceSet.getPriceSetModifier();
-                        gross += surcharge;
-                    }
-                    totalLineSurcharge += surcharge;
-                    totalSurcharge += surcharge;
+                    get_log().warn(subtotal+" after price set");
                 }
-                get_log().warn(subtotal+" after price set");
-            }
-            Order orderLine = new Order();
-            orderLine.setProduct(productService.load(orderHelper.getProductId()));
-            orderLine.setQuantity(orderHelper.getQuantity());
-            orderLine.setTotalLinePrice(subtotal);
-            orderLine.setAppliedPriceSet(applyPriceSetList);
-            orderLine.setListPrice(listPriceService.load(orderHelper.getListId()));
-            orderLine.setTotalPriceSetDisc(totalLineDiscount);
-            orderLine.setTotalPriceSetSur(totalLineSurcharge);
-            orderLine.setGrossLinePrice(gross);
+                Order orderLine = new Order();
+                orderLine.setProduct(orderHelper.getProduct());
+                orderLine.setQuantity(orderHelper.getQuantity());
+                orderLine.setTotalLinePrice(subtotal);
+                orderLine.setAppliedPriceSet(applyPriceSetList);
 
-            orderList.add(orderLine);
-            total += gross;
+                if(orderHelper.getListId()!=null){
+                    orderLine.setListPrice(listPriceService.load(orderHelper.getListId()));
+                }
+
+                orderLine.setTotalPriceSetDisc(totalLineDiscount);
+                orderLine.setTotalPriceSetSur(totalLineSurcharge);
+                orderLine.setGrossLinePrice(gross);
+
+                orderList.add(orderLine);
+                total += gross;
+            }
         }
 
 
@@ -161,6 +190,5 @@ public class OrderController extends BaseCrudController<Order> {
 
         return returnMap;
     }
-
 
 }

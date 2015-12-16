@@ -1,4 +1,6 @@
-package org.pos.coffee.bean;
+package org.pos.coffee.bean.helper;
+
+import org.pos.coffee.bean.Product;
 
 /**
  * Created by Laurie on 12/7/2015.
@@ -9,6 +11,7 @@ public class OrderHelper {
     private Long quantity;
     private Long listId;
     private Double price;
+    private Product product;
 
     public Long getProductId() {
         return productId;
@@ -40,5 +43,13 @@ public class OrderHelper {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

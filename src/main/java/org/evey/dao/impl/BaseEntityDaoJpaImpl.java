@@ -5,8 +5,9 @@ import org.evey.annotation.JoinList;
 import org.evey.annotation.JoinSet;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
-import org.pos.coffee.bean.QueryHelper;
+import org.evey.bean.QueryHelper;
 import org.evey.dao.BaseEntityDao;
+import org.evey.utility.CrudUtil;
 import org.evey.utility.NamingUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +36,14 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
-    @Transactional
     public void save(T entity) {
         if(entity.isNew()) {
             getEntityManager().persist(entity);
         } else {
+
+            if(entity.getVersion()==null){
+                entity = (T)CrudUtil.setProperties(load(entity.getId()),entity);
+            }
             getEntityManager().merge(entity);
             getEntityManager().flush();
         }
@@ -267,12 +271,10 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         return query;
     }
 
-    @Override
     public String appendToWhere(String whereClause, T entity) {
        return "";
     }
 
-    @Override
     public Query appendToParameters(Query query, T entity) {
         return null;
     }

@@ -187,7 +187,7 @@
                     </div>
                     <div class="payment-page hide">
                         <div class="row">
-                            <div class="columns medium-3 receipt show-for-medium-up small-0" id="receipt">
+                            <div class="columns medium-3 small-7 receipt" id="receipt">
                                 <div class="row">
                                     <div class="column small-12">
                                         <div class="panel-flat">
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="columns medium-9 small-12 payment">
+                            <div class="columns medium-9 small-5 payment">
                                 <div class="row">
                                     <div class="small-4 columns">
                                         <p>Total Balance</p>
@@ -315,10 +315,10 @@
                                         <a class="button left back-to-order">Back</a>
                                     </div>
                                     <div class="small-4 columns">
-                                        <a href="#" class="button left">Hold Order</a>
+                                        <a class="button left" id="hold-order">Hold Order</a>
                                     </div>
                                     <div class="small-4 columns">
-                                        <a href="#" class="button right">Punch Order</a>
+                                        <a class="button right" id="confirm-order">Punch Order</a>
                                     </div>
                                 </div>
                             </div>
@@ -578,6 +578,11 @@
                 price = Number($('#modifyOrder .price').attr("data-price"));
             }
 
+            angular.element("body").scope().retrieveProduct(productId);
+            angular.element("body").scope().$apply();
+            console.log(scope.addToCart);
+
+
             var productName = $("#modifyOrder").attr("data-pname");
             var quantity = Number($("#modifyOrder #modify-quantity").text());
             price = Number($('#modifyOrder .price').attr("data-price"));
@@ -588,6 +593,7 @@
             $(".order-holder").prepend($(template));
             var addedTemplate = $(".order-holder").find("div.added:first-child");
             $(addedTemplate).attr("data-id", productId);
+            $(addedTemplate).attr("data-product",JSON.stringify(scope.addToCart));
             $(addedTemplate).find(".product-name").text(productName);
             $(addedTemplate).find(".size-name").text(sizeName);
 
@@ -642,6 +648,8 @@
                 contentType: "application/json",
                 success: function(data){
                     displayData(data.results);
+                    confirmOrderFunc(data.results);
+                    holderOrderFunc(data.results);
                     $(".payment-page").toggleClass("hide");
                     $(".order-page").toggleClass("hide");
                 },
@@ -655,6 +663,27 @@
             $(".order-page").toggleClass("hide");
         });
 
+        var confirmOrderFunc = function(data){
+            $("#confirm-order").on("click", function(){
+                $.ajax({
+                    url: evey.getHome()+"/sale/confirm",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function(data){
+
+                    }
+                })
+            });
+        };
+
+        var holderOrderFunc = function(data){
+            $("#hold-oder").on("click", function () {
+                console.log(data);
+            });
+        };
+
         var displayData = function(data){
 
             $("#receipt .items").remove();
@@ -665,7 +694,16 @@
                 var cartTemplate = $(cartHolder).find(".items").last();
                 $(cartTemplate).find(".product-name").text(order.product.productName);
                 $(cartTemplate).find(".quantity").text(order.quantity);
-                $(cartTemplate).find(".price").text(order.listPrice.price);
+
+                if(order.listPrice !=null &&
+                        order.listPrice != null &&
+                        order.listPrice.price != null &&
+                    order.listPrice.price != undefined) {
+                    $(cartTemplate).find(".price").text(order.listPrice.price);
+                } else {
+                    $(cartTemplate).find(".price").text(0);
+                }
+
                 $(cartTemplate).find(".total").text(order.totalLinePrice);
 
                 var priceSetHolder = $(cartTemplate).find(".price-set");
@@ -716,16 +754,18 @@
             var cart = [];
             var orderHelper = [];
             $.each($(".cartBig .order-holder .added"),function(i,added){
-                var product = $(added).attr("data-id");
+                var productId = $(added).attr("data-id");
                 var subtotal = $(added).attr("data-subtotal");
                 var productName = $(added).find(".product-name").text();
                 var sizeName = $(added).find(".size-name").text();
                 var quantity = $(added).find(".quantity-price").attr("data-quantity");
                 var price = $(added).find(".quantity-price").attr("data-price");
                 var listId = $(added).find(".quantity-price").attr("data-list-id");
+                var product = $(added).attr("data-product");
+                console.log(product);
 
                 var row = {
-                    "product": product,
+                    "product": productId,
                     "subtotal": subtotal,
                     "productName": productName,
                     "sizeName": sizeName,
@@ -735,10 +775,11 @@
                 };
 
                 var helper = {
-                    "productId": product,
+                    "productId": productId,
                     "quantity": quantity,
                     "price": price,
-                    "listId": listId
+                    "listId": listId,
+                    "product": $.parseJSON(product)
                 };
 
                 cart.push(row);
@@ -747,7 +788,7 @@
 
             var returnThis = {
                 "cart": cart,
-                "orderHelper": orderHelper,
+                "orderHelper": orderHelper
             };
 
             return returnThis;
