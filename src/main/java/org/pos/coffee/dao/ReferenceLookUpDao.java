@@ -14,4 +14,6 @@ public interface ReferenceLookUpDao extends BaseEntityDao<ReferenceLookUp,Long> 
 
     public List<ReferenceLookUp> getReferenceLookUpByCategory(String category);
     public List<ReferenceLookUp> getActiveReferenceLookUpByCategory(String category);
+
+    public ReferenceLookUp getReferenceLookUpByKey(String key);
 }

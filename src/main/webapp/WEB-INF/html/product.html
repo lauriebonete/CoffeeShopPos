@@ -56,7 +56,7 @@
                         <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
                         <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
                         <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
-                        <li><a href="#" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
                         <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
                             <ul class="left-submenu">
                                 <li class="back"><a href="#">Back</a></li>
@@ -76,16 +76,17 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
-                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
                                         <li class="has-submenu"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
                                                 <li class="back"><a href="#">Back</a></li>
                                                 <li><label>Price Maintenance</label></li>
-                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
-                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -118,7 +119,7 @@
                                         </label>
                                         <label>Category
                                             <select name="productGroupList.id">
-                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.value}}</option>
+                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.productGroupName}}</option>
                                             </select>
                                         </label>
                                         <div class="switch round">
@@ -165,6 +166,7 @@
                                                 <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-camera test" data-id="{{record.id}}"></i>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -180,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog" >
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute product-controller" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog" ng-controller="productController">
                         <h3 id="crud-title">Add New Product.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
@@ -197,7 +199,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <selectize data-attr="id" name="productGroupList" config='selectizeConfig' options='productGroupOption' ng-model="productGroup"></selectize>
+                                            <selectize data-attr="id" name="productGroupList" config='productGroupConfig' options='productGroupOption' ng-model="productGroup"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -223,10 +225,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Parent Product
-                                            <select class="parent" placeHolder = "Select Parent Product" name="parentProduct.id" data-list="false"></select>
+                                            <div ng-if='fullRecords.length'>
+                                                <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
+                                            </div>
                                         </label>
                                     </div>
-                                    <div class="row collapse prefix-radius product-controller" ng-controller="productController">
+                                    <div class="row collapse prefix-radius">
                                         <label>Size
                                             <select class="size" placeHolder = "Select size" name="size.id" data-list="false" >
                                                 <option></option>
@@ -242,7 +246,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" ng-controller="productController">
+                    <div id="update-modal" class="reveal-modal crud-modal reveal-modal-absolute product-controller" ng-controller="productController" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" ng-controller="productController">
                         <h3 id="update-title">Update Product.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -262,7 +266,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <selectize config='selectizeConfig' options='productGroupOption' ng-model="recordFound.displayProductGroupList"></selectize>
+                                            <selectize config='productGroupConfig' options='productGroupOption' ng-model="recordFound.displayProductGroupList"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -288,11 +292,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Parent Product
-                                            <select ng-model="recordFound.parentProductId" ng-options="product.id as product.productName for product in fullRecords">
-                                            </select>
+                                            <div ng-if='fullRecords.length'>
+                                                <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
+                                            </div>
                                         </label>
                                     </div>
-                                    <div class="row collapse prefix-radius product-controller" ng-controller="productController">
+                                    <div class="row collapse prefix-radius">
                                         <label>Size
                                             <select class="size" placeHolder = "Select size" name="size.id" data-list="false" ng-options="size.id as size.value for size in size" ng-model="recordFound.sizeId">
                                             </select>
@@ -427,14 +432,18 @@
         var parent = null;
         $(document).ready(function(){
             $.ajax({
-                url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP",
+                url: evey.getHome() +"/productGroup/getProductGroups",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
 
                     angular.element(".main-body").scope().feedDropdown(data);
-                    angular.element(".main-body").scope().loadProductGroup(data);
                     angular.element(".main-body").scope().$apply();
+
+                    $.each(angular.element(".product-controller"),function(){
+                        $(this).scope().loadProductGroup(data);
+                        $(this).scope().$apply();
+                    });
                 }
             });
 
@@ -443,8 +452,10 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    angular.element(".main-body").scope().loadPromoGroup(data);
-                    angular.element(".main-body").scope().$apply();
+                    $.each(angular.element(".product-controller"),function(){
+                        $(this).scope().loadPromoGroup(data);
+                        $(this).scope().$apply();
+                    });
                 }
             });
 
@@ -615,25 +626,17 @@
                     }
                 }
             });
-        }).ajaxStop(function () {
+        }).on("click",".test",function(){
+            console.log($(this).data("id"));
+            $.ajax({
+                url: evey.getHome()+"/product/test",
+                data: {"id": $(this).data("id")},
+                type: "POST",
+                dataType: "JSON",
+                success:function(data){
 
-            product = angular.element(".main-body").scope().returnData();
-            angular.element(".main-body").scope().$apply();
-
-            parent = $(".parent").selectize({
-                valueField: 'id',
-                labelField: 'productName',
-                searchField: 'productName',
-                options:product,
-                plugins: ['remove_button'],
-                render: {
-                    option:function(products){
-                        return "<option value='"+products.id+"'>"+products.productName+"</option>"
-                    }
                 }
             });
-
-            $(document).unbind("ajaxStop");
         });
 
         var productImage = null;

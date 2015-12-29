@@ -13,4 +13,5 @@ public interface ReferenceLookUpService extends BaseCrudService<ReferenceLookUp>
     public List<String> getAllCategory();
     public List<ReferenceLookUp> getReferenceLookUpByCategory(String category);
     public List<ReferenceLookUp> getActiveReferenceLookUpByCategory(String category);
+    public ReferenceLookUp getReferenceLookUpByKey(String key);
 }

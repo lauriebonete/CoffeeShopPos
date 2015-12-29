@@ -22,6 +22,7 @@
     <script src="js/angular-selectize.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
+    <script src="angular/priceListController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
@@ -75,16 +76,17 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
-                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
                                         <li class="has-submenu"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
                                                 <li class="back"><a href="#">Back</a></li>
                                                 <li><label>Price Maintenance</label></li>
-                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
-                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -191,20 +193,31 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal price-list-controller" ng-controller="priceListController" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
                         <h3 id="crud-title">Add New Pricing.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
-                                    <div class="row collapse prefix-radius">
+                                    <div class="switch round">
+                                        <p>Product?</p>
+                                        <input id="isProductCreate" type="checkbox" checked>
+                                        <label for="isProductCreate">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius" ng-init="loadProducts()">
                                         <label>Product Name <small>required</small>
-                                            <input type="text" placeholder="Product Name" name="product.id"></label>
+                                            <div ng-if='products.length'>
+                                                <selectize id="product" config='productsConfig' options='products' ng-model="productSelected" name="product" data-attr="id" data-list="false"></selectize>
+                                            </div>
+                                        </label>
                                         <small class="error">Please provide the name of Product</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Meal Name <small>required</small>
-                                            <input type="text" placeholder="Meal Name" name="meal.id" required></label>
+                                            <input type="text" placeholder="Meal Name" name="meal.id" id="meal" disabled></label>
                                         <small class="error">Please provide the name of Meal</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -217,7 +230,7 @@
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="Effective Date">
+                                            <input class="fcalendar" type="text" name="effectivityDate" placeholder="Effective Date">
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -225,7 +238,7 @@
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="End Date">
+                                            <input class="fcalendar" type="text" name="endDate" placeholder="End Date">
                                         </div>
                                     </div>
                                     <div class="switch round">
@@ -244,8 +257,8 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
-                        <h3 id="update-title">Update Reference Look Up.</h3>
+                    <div id="update-modal" class="reveal-modal crud-modal price-list-controller" ng-controller="priceListController" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Update Pricing.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
                             <div class="row">
@@ -253,9 +266,20 @@
                                     <div class="row">
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
-                                    <div class="row collapse prefix-radius">
+                                    <div class="switch round">
+                                        <p>Product?</p>
+                                        <input id="isProductUpdate" type="checkbox" ng-model="recordFound.isProduct">
+                                        <label for="isProductUpdate">
+                                            <span class="switch-on">YES</span>
+                                            <span class="switch-off">NO</span>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius" ng-init="loadProducts()">
                                         <label>Product Name <small>required</small>
-                                            <input type="text" placeholder="Product Name" name="product.id" value="{{recordFound.productId}}"></label>
+                                            <div ng-if='products.length'>
+                                                <selectize id="product" config='productsConfig' options='products' ng-model="recordFound.productId" name="product" data-attr="id" data-list="false"></selectize>
+                                            </div>
+                                        </label>
                                         <small class="error">Please provide the name of Product</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -273,16 +297,15 @@
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="Effective Date" value="{{recordFound.effectiveDate}}">
+                                            <input class="fcalendar" type="text" placeholder="Effective Date" name="effectivityDate" value="{{recordFound.effectivityDate}}">
                                         </div>
-                                        <small class="error">Please provide pricing.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <div class="small-3 columns">
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="End Date"  value="{{recordFound.endDate}}">
+                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate" value="{{recordFound.endDate}}">
                                         </div>
                                     </div>
                                     <div class="switch round">
@@ -327,6 +350,16 @@
                 } else {
                     $("#crud-search #productName").attr("disabled",true);
                     $("#crud-search #mealName").removeAttr("disabled");
+                }
+            });
+
+            $("#isProductCreate").on("change",function(){
+                if($(this).is(":checked")){
+                    $("#crud-modal #meal").attr("disabled",true);
+                    $("#crud-modal #product").removeAttr("disabled");
+                } else {
+                    $("#crud-modal #product").attr("disabled",true);
+                    $("#crud-modal #meal").removeAttr("disabled");
                 }
             });
         });

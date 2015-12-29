@@ -59,16 +59,17 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
-                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
                                         <li class="has-submenu"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
                                                 <li class="back"><a href="#">Back</a></li>
                                                 <li><label>Price Maintenance</label></li>
-                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
-                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -78,32 +79,13 @@
                     </ul>
                 </aside>
                 <section class="main-section main-body">
-                    <div class="row show-for-medium-up">
-                        <div class="columns small-4">
-                            <canvas class="chart-line-area"/>
-                        </div>
-                        <div class="columns small-4">
-                            <canvas class="chart-pie-area"/>
-                        </div>
-                        <div class="columns small-4">
-                            <canvas class="chart-bar-area"/>
-                        </div>
-                    </div>
-                    <div class="row show-for-small-only">
-                        <div class="row">
-                            <div class="columns small-12">
-                                <canvas class="chart-line-area"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="columns small-12">
-                                <canvas class="chart-pie-area"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="columns small-12">
-                                <canvas class="chart-bar-area"/>
-                            </div>
+                    <div class="row">
+                        <div class="column small-12">
+                            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+                                <li><canvas class="chart-line-area"/></li>
+                                <li><canvas class="chart-pie-area"/></li>
+                                <li><canvas class="chart-bar-area"/></li>
+                            </ul>
                         </div>
                     </div>
                 </section>

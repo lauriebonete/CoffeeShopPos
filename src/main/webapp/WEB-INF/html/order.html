@@ -11,10 +11,9 @@
     <link rel="stylesheet" href="css/responsive-tables.css">
 </head>
 <body ng-app="orderApp" ng-controller="orderController">
-<div class="row">
-    <div>
-        <div class="off-canvas-wrap sticky" data-offcanvas>
-            <div class="inner-wrap">
+<div class="row height-full">
+        <div class="off-canvas-wrap sticky height-full" data-offcanvas>
+            <div class="inner-wrap height-full">
                 <nav class="tab-bar">
                     <section class="left-small">
                         <a class="left-off-canvas-toggle menu-icon"><span></span></a>
@@ -60,16 +59,17 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a href="/item" id="item-off" class="canvas" data-mapping="/system/item">Item</a></li>
-                                        <li><a href="/product" id="product-off" class="canvas" data-mapping="/system/product">Product</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas" data-mapping="/system/meal">Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" class="canvas" data-mapping="/reference">Reference</a></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
                                         <li class="has-submenu"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
                                                 <li class="back"><a href="#">Back</a></li>
                                                 <li><label>Price Maintenance</label></li>
-                                                <li><a href="/price" class="canvas" data-mapping="/system/item">Price List</a></li>
-                                                <li><a href="/priceSet" class="canvas" data-mapping="/system/product">Price Set</a></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -78,13 +78,14 @@
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section">
-                    <div class="order-page">
+                <section class="main-section height-full">
+                    <div class="order-page height-full height-full">
                         <div class="side-nav">
-                            <div class="icon-bar vertical five-up icon-bar-100vh margin-top-side" ng-init="loadSideNav('/reference/getActiveReferenceLookUpByCategory/CATEGORY_PRODUCT_GROUP')">
+                            <div class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
                                 <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
-                                    <img src="img/hot51.png"/>
-                                    <label>{{group.value}}</label>
+                                    <img ng-if="group.groupImageId == null" src="img/hot51.png" alt=""/>
+                                    <img ng-if="group.groupImageId != null" ng-src="file/viewImage/{{group.groupImageId}}" alt=""/>
+                                    <label class="show-for-medium-up">{{group.productGroupName}}</label>
                                 </a>
                             </div>
                         </div>
@@ -185,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="payment-page hide">
+                    <div class="payment-page hide height-full">
                         <div class="row">
                             <div class="columns medium-3 small-7 receipt" id="receipt">
                                 <div class="row">
@@ -332,7 +333,6 @@
                 <a href="#" class="close">&#215;</a>
             </div>-->
         </div>
-    </div>
 </div>
 <div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-pid="{{selectedProduct.id}}" data-pname="{{selectedProduct.productName}}">
     <h2 id="modalTitle">{{selectedProduct.productName}}</h2>

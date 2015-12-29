@@ -1,6 +1,7 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.evey.bean.BaseEntity;
 
@@ -30,12 +31,17 @@ public class ListPrice extends BaseEntity {
 	private Double price;
 
 	@Column(name="EFFECTIVITY_DATE")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date effectivityDate;
 
 	@Column(name="END_DATE")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
+
+	@Column(name="IS_PRODUCT")
+	private Boolean isProduct;
 
 	public Product getProduct() {
 		return product;
@@ -84,6 +90,14 @@ public class ListPrice extends BaseEntity {
 		this.mealId = mealId;
 	}
 
+	public Boolean getIsProduct() {
+		return isProduct;
+	}
+
+	public void setIsProduct(Boolean isProduct) {
+		this.isProduct = isProduct;
+	}
+
 	@JsonView
 	public String displayName(){
 		if(productId!=null){
@@ -92,5 +106,14 @@ public class ListPrice extends BaseEntity {
 			return meal.getMealName();
 		}
 		return "";
+	}
+
+	@PrePersist
+	public void prePersist(){
+		if(this.product != null){
+			this.isProduct = true;
+		} else if(this.product == null && this.meal !=null){
+			this.isProduct = false;
+		}
 	}
 }

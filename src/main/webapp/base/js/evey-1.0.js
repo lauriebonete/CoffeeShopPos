@@ -25,7 +25,10 @@ var evey = (function(){
                 if($(input).attr("name") != null &&
                     $(input).attr("name") != undefined &&
                     $(input).attr("name") != "" &&
-                    !$(input).is(":disabled")) {
+                    !$(input).is(":disabled") &&
+                    $(input).val() != null &&
+                    $(input).val() != undefined) {
+                    console.log($(input).val());
                     if($(input).parent("div.selectize-input").length<=0) {
                         if($(input).attr("name").indexOf (".")!= -1) {
                             var dottedName = $(input).attr("name").split(".");
@@ -62,19 +65,26 @@ var evey = (function(){
                     $(selectize).attr("name")!= undefined &&
                     $(selectize).attr("name")!= "" &&
                     !$(selectize).is(":disabled")) {
-                    var list = [];
-                    var values = $(selectize).val().split("|");
-                    for (var i = 0; i <= values.length - 1; i++) {
+
+                    if($(selectize).data("list") != null && $(selectize).data("list") != undefined && !$(selectize).data("list")){
                         var object = new Object();
-                        if(values[i] != null &&
-                            values[i] != "" &&
-                            values[i] != undefined &&
-                            values[i].length > 0) {
-                            object[$(selectize).data("attr")] = values[i];
-                            list.push(object);
+                        object[$(selectize).data("attr")] = $(selectize).val();
+                        jsonObject[$(selectize).attr("name")] = object;
+                    } else {
+                        var list = [];
+                        var values = $(selectize).val().split("|");
+                        for (var i = 0; i <= values.length - 1; i++) {
+                            var object = new Object();
+                            if(values[i] != null &&
+                                values[i] != "" &&
+                                values[i] != undefined &&
+                                values[i].length > 0) {
+                                object[$(selectize).data("attr")] = values[i];
+                                list.push(object);
+                            }
                         }
+                        jsonObject[$(selectize).attr("name")] = list;
                     }
-                    jsonObject[$(selectize).attr("name")] = list;
                 }
             });
 
@@ -86,29 +96,35 @@ var evey = (function(){
                     $(select).val() != "" &&
                     $(select).val() != null &&
                     $(select).val() != undefined) {
-                    if($(select).attr("name").indexOf (".")!= -1) {
-                        var dottedName = $(select).attr("name").split(".");
-                        var object = new Object();
 
-                        if($(select).val().indexOf(":")!=-1){
-                            object[dottedName[1]] = $(select).val().substring($(select).val().indexOf(":")+1);
-                        } else {
-                            object[dottedName[1]] = $(select).val();
-                        }
+                    if($(select).val()!=null &&
+                        $(select).val()!=undefined) {
+                        if($(select).attr("name").indexOf (".")!= -1) {
+                            var dottedName = $(select).attr("name").split(".");
+                            var object = new Object();
 
 
-                        if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
-                            jsonObject[dottedName[0]] = object;
+                            if($(select).val().indexOf(":")!=-1){
+                                object[dottedName[1]] = $(select).val().substring($(select).val().indexOf(":")+1);
+                            } else {
+                                object[dottedName[1]] = $(select).val();
+                            }
+
+
+                            if($(select).data("list") != null && $(select).data("list") != undefined && !$(select).data("list")){
+                                jsonObject[dottedName[0]] = object;
+                            } else {
+                                var list = [];
+                                list.push(object);
+                                jsonObject[dottedName[0]]  = list;
+                            }
+
                         } else {
-                            var list = [];
-                            list.push(object);
-                            jsonObject[dottedName[0]]  = list;
-                        }
-                    } else {
-                        if($(select).val().indexOf(":")!=-1){
-                            jsonObject[$(select).attr("name")] = $(select).val().substring($(select).val().indexOf(":")+1);
-                        } else {
-                            jsonObject[$(select).attr("name")] = $(select).val();
+                            if($(select).val().indexOf(":")!=-1){
+                                jsonObject[$(select).attr("name")] = $(select).val().substring($(select).val().indexOf(":")+1);
+                            } else {
+                                jsonObject[$(select).attr("name")] = $(select).val();
+                            }
                         }
                     }
                 }

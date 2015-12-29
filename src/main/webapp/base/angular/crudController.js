@@ -18,11 +18,6 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.maxItem = data.slice.length;
     };
 
-    $scope.returnData = function(){
-        console.log($scope.fullRecords);
-        return $scope.fullRecords;
-    };
-
     $scope.changePage = function (page, max) {
         var end = (page * max) - 1;
         var start = (page * max) - max;
@@ -71,48 +66,17 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.dropdown = data;
     };
 
-    $scope.loadProductGroup = function(data) {
-        $scope.productGroupOption = data;
-    };
-
-    $scope.loadPromoGroup = function(data) {
-        $scope.promoGroupOption = data;
-    };
-
-    $scope.loadProduct = function(data){
-        $scope.productOption = data;
-    }
-
     $scope.selectizeConfig =
     {
         valueField : 'id',
         labelField : 'value',
+        searchField: ['value'],
         delimiter : '|',
         placeholder : 'Pick something',
         plugins: ['remove_button'],
         onInitialize : function (selectize) {
             // receives the selectize object as an argument
         }
-    };
-
-    $scope.productConfig =
-    {
-        valueField : 'id',
-        labelField : 'productName',
-        delimiter : '|',
-        placeholder : 'Pick something',
-        plugins: ['remove_button'],
-        onInitialize : function (selectize) {
-            // receives the selectize object as an argument
-        }
-    };
-
-    $scope.productGroup = 0;
-    $scope.promoGroup = 0;
-    $scope.product = 0;
-
-    $scope.loadSizes = function(data){
-        $scope.size = data;
     };
 
 });

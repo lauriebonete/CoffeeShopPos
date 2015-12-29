@@ -33,4 +33,12 @@ public class ReferenceLookUpDaoImpl extends BaseEntityDaoJpaImpl<ReferenceLookUp
         query.setParameter("category", category);
         return query.getResultList();
     }
+
+    @Override
+    public ReferenceLookUp getReferenceLookUpByKey(String key) {
+        Query query = getEntityManager().createQuery("select obj from ReferenceLookUp obj where obj.key = :lookKey");
+        query.setParameter("lookKey", key);
+        ReferenceLookUp found = (ReferenceLookUp) query.getSingleResult();
+        return found;
+    }
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -44,6 +46,9 @@ public class OrderController extends BaseCrudController<Order> {
     @Autowired
     private IngredientService ingredientService;
 
+    @Autowired
+    private ProductGroupService productGroupService;
+
 
     @RequestMapping(value = "/getAllProduct", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Map<String,Object> getAllProductDetails() throws Exception{
@@ -57,13 +62,13 @@ public class OrderController extends BaseCrudController<Order> {
         for(Product product: results){
 
             if(product.getProductGroupList()!=null){
-                for(ReferenceLookUp group: product.getProductGroupList()) {
-                    group = referenceLookUpService.load(group.getId());
+                for(ProductGroup group: product.getProductGroupList()) {
+                    group = productGroupService.load(group.getId());
                 }
             }
 
             if(product.getPromoGroupList() != null){
-                for(ReferenceLookUp group: product.getProductGroupList()) {
+                for(ReferenceLookUp group: product.getPromoGroupList()) {
                     group = referenceLookUpService.load(group.getId());
                 }
             }
@@ -174,7 +179,8 @@ public class OrderController extends BaseCrudController<Order> {
 
         List<PriceSet> saleLevelPriceSet = priceSetService.getPossibleSalePriceSets();
         Sale sale = new Sale();
-        if(saleLevelPriceSet != null){
+        if(saleLevelPriceSet != null &&
+                saleLevelPriceSet.size()>0){
             sale = priceSetService.applyPriceSets(saleLevelPriceSet, total, totalDiscount, totalSurcharge);
         } else {
             sale.setTotalSale(total);
@@ -183,10 +189,23 @@ public class OrderController extends BaseCrudController<Order> {
         }
         sale.setOrders(orderList);
 
+        ReferenceLookUp applyTax = referenceLookUpService.getReferenceLookUpByKey("SETTING_APPLY_VAT");
+        if(applyTax!=null &&
+                "TRUE".equals(applyTax.getValue())){
+
+            DecimalFormat df = new DecimalFormat("#.###");
+            df.setRoundingMode(RoundingMode.HALF_EVEN);
+
+            double taxRate = applyTax.getNumberValue().doubleValue()/100;
+            sale.setPreTax(Double.parseDouble(df.format(sale.getTotalSale()/(taxRate+1))));
+            sale.setTax(Double.parseDouble(df.format(sale.getTotalSale() - (sale.getTotalSale() / (taxRate + 1)))));
+        }
+
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("results", sale);
         returnMap.put("message", "success");
         returnMap.put("status", true);
+        returnMap.put("taxable", applyTax.getValue());
 
         return returnMap;
     }

@@ -148,8 +148,8 @@ input[data-toggle]:checked + label:active {
     height: 100vh;
 }
 
-.icon-bar-100vh {
-    max-height: 100vh !important;
+.max-height-none {
+    max-height: none !important;
 }
 
 .margin-top-side {
@@ -170,4 +170,8 @@ input[data-toggle]:checked + label:active {
 
 .margin-panel-flat {
     margin: 0.1rem !important;
+}
+
+.height-full {
+    height: 100%;
 }

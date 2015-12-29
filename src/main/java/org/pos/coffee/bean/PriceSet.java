@@ -21,12 +21,12 @@ public class PriceSet extends BaseEntity{
     @Column(name = "SET_NAME")
     private String priceSetName;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-YYYY")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
     @Column(name = "START_DATE")
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-YYYY")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
     @Column(name = "END_DATE")
     @Temporal(TemporalType.DATE)
     private Date endDate;

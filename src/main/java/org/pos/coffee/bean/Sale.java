@@ -41,6 +41,12 @@ public class Sale extends BaseEntity {
 	@Column(name="TOTAL_SURCHARGE")
 	private Double totalSurcharge;
 
+	@Column(name="TAX")
+	private Double tax;
+
+	@Column(name="PRE_TAX")
+	private Double preTax;
+
 	@ManyToOne
 	@JoinColumn(name="CUSTOMER", referencedColumnName = "ID")
 	private Customer customer;
@@ -133,5 +139,21 @@ public class Sale extends BaseEntity {
 
 	public void setAppliedPriceSet(List<PriceSet> appliedPriceSet) {
 		this.appliedPriceSet = appliedPriceSet;
+	}
+
+	public Double getTax() {
+		return tax;
+	}
+
+	public void setTax(Double tax) {
+		this.tax = tax;
+	}
+
+	public Double getPreTax() {
+		return preTax;
+	}
+
+	public void setPreTax(Double preTax) {
+		this.preTax = preTax;
 	}
 }

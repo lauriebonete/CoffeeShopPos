@@ -15,7 +15,7 @@ orderApp.controller("orderController", function ($scope, $http) {
     var getAddOn = function(data){
         for(var i=0;i<= data.length-1; i++){
             if(data[i] != null &&
-            data[i].key == "PGROUP_ADD"){
+            data[i].productGroupName == "Add-Ons"){
                 $scope.addOnGroup = data[i];
                 break;
             }

@@ -27,9 +27,9 @@ public class Product extends BaseEntity {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="PRODUCT_GROUP",
 			joinColumns = {@JoinColumn(name="PRODUCT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = @JoinColumn(name="P_GROUP", referencedColumnName = "ID")
+			inverseJoinColumns = @JoinColumn(name="PGROUP", referencedColumnName = "ID")
 	)
-	private List<ReferenceLookUp> productGroupList;
+	private List<ProductGroup> productGroupList;
 
 	@JoinList
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -85,10 +85,12 @@ public class Product extends BaseEntity {
 	public void setIngredientList(List<Ingredient> ingredientList) {
 		this.ingredientList = ingredientList;
 	}
-	public List<ReferenceLookUp> getProductGroupList() {
+
+	public List<ProductGroup> getProductGroupList() {
 		return productGroupList;
 	}
-	public void setProductGroupList(List<ReferenceLookUp> productGroupList) {
+
+	public void setProductGroupList(List<ProductGroup> productGroupList) {
 		this.productGroupList = productGroupList;
 	}
 
@@ -127,8 +129,8 @@ public class Product extends BaseEntity {
 	@JsonView
 	public String displayProductGroup(){
 		StringBuffer buffer = new StringBuffer();
-		for(ReferenceLookUp group: this.productGroupList){
-			buffer.append(group.getValue()+", ");
+		for(ProductGroup group: this.productGroupList){
+			buffer.append(group.getProductGroupName()+", ");
 		}
 		String value = buffer.toString();
 		if(value.length()>0){
@@ -154,7 +156,7 @@ public class Product extends BaseEntity {
 	@JsonView
 	public String displayProductGroupList(){
 		StringBuffer buffer = new StringBuffer();
-		for(ReferenceLookUp group: this.productGroupList){
+		for(ProductGroup group: this.productGroupList){
 			buffer.append(group.getId()+"|");
 		}
 		String value = buffer.toString();

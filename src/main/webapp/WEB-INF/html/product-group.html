@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/selectize.default.css">
+    <link rel="stylesheet" href="css/dropzone.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -17,6 +19,7 @@
     <script src="js/angular.js"></script>
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
+    <script src="js/dropzone.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
@@ -95,7 +98,7 @@
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
-                                <h4>Reference Look Up</h4>
+                                <h4>Product Group</h4>
                             </div>
                         </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
@@ -107,16 +110,8 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Key
-                                            <input id="key" type="text" placeholder="Input Key" name="key"/>
-                                        </label>
-                                        <label>Value
-                                            <input id="value" type="text" placeholder="Input Value" name="value"/>
-                                        </label>
-                                        <label>Category
-                                            <select name="category" id="category" ng-init="loadDropDown('/reference/findAllCategory')">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                            </select>
+                                        <label>Group Name
+                                            <input id="productGroupName" type="text" placeholder="Group Name" name="productGroupName"/>
                                         </label>
                                         <div class="switch round">
                                             <p>Active</p>
@@ -141,21 +136,18 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/priceSet/findAll">
+                                    <table class="responsive max-width" id="crud-table" data-url="/productGroup/findAll">
                                         <thead>
                                         <tr>
-                                            <th>Category</th>
-                                            <th>Key</th>
-                                            <th>value</th>
+                                            <th>Name</th>
                                             <th style="width:10%"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
-                                            <td>{{record.category}}</td>
-                                            <td>{{record.key}}</td>
-                                            <td>{{record.value}}</td>
+                                            <td>{{record.productGroupName}}</td>
                                             <td>
+                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
@@ -174,30 +166,15 @@
                         </div>
                     </div>
                     <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
-                        <h3 id="crud-title">Add New Reference Look Up.</h3>
+                        <h3 id="crud-title">Add Product Group.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
-                                        <select name="category">
-                                            <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" required></label>
-                                        <small class="error">Value is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                        <label>Group Name <small>required</small>
+                                            <input type="text" placeholder="Group Name" name="productGroupName" required></label>
+                                        <small class="error">Please provide Product Group Name.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -216,7 +193,7 @@
                         </form>
                     </div>
                     <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
-                        <h3 id="update-title">Update Reference Look Up.</h3>
+                        <h3 id="update-title">Update Product Group.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
                             <div class="row">
@@ -225,27 +202,9 @@
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Category
-                                            <select id="update-category" ng-model="recordFound.category" name="category">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                            </select>
-                                        </label>
-                                        <small class="error">Category is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" value="{{recordFound.value}}" required></label>
-                                        <small class="error">Value is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" value="{{recordFound.numberValue}}" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                        <label>Group Name <small>required</small>
+                                            <input type="text" placeholder="Number Value" name="productGroupName" value="{{recordFound.productGroupName}}" pattern="number"></label>
+                                        <small class="error">Please provide Product Group Name.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -269,6 +228,22 @@
                         <button class="button alert remove-record">Remove</button>
                         <button class="button secondary float-right">Cancel</button>
                     </div>
+                    <div id="image-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="image-title" aria-hidden="true" role="dialog">
+                        <h3 id="image-title">Product Image</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <form action="/file/upload" method="POST" enctype="multipart/form-data" class="dropzone" id="dropZone">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <button class="button success margin-top-one-rem max-width" id="save-image">Save Image</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -280,6 +255,103 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click",".image-action",function(){
+            $(".image-action").removeClass("picked");
+            $(this).addClass("picked");
+
+            $("#image-modal").attr("data-product", $(this).data("id"));
+
+            var imageId = $(this).attr("data-image");
+            productImage.removeAllFiles();
+            console.log(imageId);
+            if(imageId != undefined &&
+                    imageId != null &&
+                    imageId != "") {
+
+                $.ajax({
+                    url: evey.getHome()+"/file/getEntityById",
+                    data: {"entityId": imageId},
+                    dataType: "JSON",
+                    type: "GET",
+                    success:function(data){
+                        var upload = {bytesSent: data.fileSize};
+
+                        var mockFile = {name: data.fileName, size: data.fileSize, accepted: true};
+
+                        mockFile.upload = upload;
+                        mockFile.kind = "file";
+                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile);
+                        Dropzone.forElement("#dropZone").files.push(mockFile);
+                        Dropzone.forElement("#dropZone").emit("thumbnail", mockFile, "/file/viewImage/"+data.id);
+                        Dropzone.forElement("#dropZone").emit("complete", mockFile)
+                        Dropzone.forElement("#dropZone").emit("success", mockFile, data);
+
+                        $('#image-modal').foundation('reveal', 'open');
+                    }
+                });
+            } else {
+                $('#image-modal').foundation('reveal', 'open');
+            }
+        }).on("click","#save-image",function(){
+            var fileId = $(".dz-preview").data("file");
+            var productGroupId = $("#image-modal").data("product");
+
+            var productGroup = new Object;
+            productGroup["id"] = productGroupId;
+
+            var productImage = new Object;
+            productImage["id"] = fileId;
+
+            productGroup["groupImage"] = productImage;
+
+            $.ajax({
+                url: evey.getHome()+"/productGroup/saveImage",
+                data: JSON.stringify(productGroup),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success:function(data){
+                    if(data.status) {
+                        $('#image-modal').foundation('reveal', 'close');
+                        $(".picked").attr("data-image", data.result.productImage.id);
+                    }
+                }
+            });
+        });
+
+        var productImage = null;
+        Dropzone.options.dropZone = {
+            maxFiles: 1,
+            accept: function(file, done) {
+                done();
+            },
+            init: function() {
+                productImage = this;
+                this.on("maxfilesexceeded", function(file){
+                    this.removeAllFiles();
+                    this.addFile(file);
+                });
+
+                this.on("success",function(file, response){
+                    $(".dz-preview").attr("data-file", $(response).attr("id"));
+                });
+
+                this.on("addedfile", function (file) {
+                    var img = $(file.previewTemplate).find("img");
+                    img[0].onload = function () {
+                        img.css({
+                            width: "100%",
+                            height:"100%",
+                        });
+                    };
+                });
+            }
+        };
+
+
     </script>
 </footer>
 </html>

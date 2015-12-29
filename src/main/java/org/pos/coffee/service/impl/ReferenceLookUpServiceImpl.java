@@ -32,4 +32,9 @@ public class ReferenceLookUpServiceImpl extends BaseCrudServiceImpl<ReferenceLoo
     public List<ReferenceLookUp> getActiveReferenceLookUpByCategory(String category) {
         return referenceLookUpDao.getActiveReferenceLookUpByCategory(category);
     }
+
+    @Override
+    public ReferenceLookUp getReferenceLookUpByKey(String key) {
+        return referenceLookUpDao.getReferenceLookUpByKey(key);
+    }
 }
