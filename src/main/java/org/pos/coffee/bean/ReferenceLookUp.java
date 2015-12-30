@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import org.evey.annotation.Auditable;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="REFERENCE_LOOKUP")
+@Auditable
 public class ReferenceLookUp extends BaseEntity {
 
 	private static final long serialVersionUID = -6121332155380808473L;

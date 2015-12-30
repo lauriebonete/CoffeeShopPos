@@ -47,7 +47,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         attributeName = NamingUtil.toAttributeName(this.entityBeanType.getSimpleName());
         String serviceBean = attributeName + "Service";
 
-        System.out.println(serviceBean);
+        _log.warn("Initiating controller's service "+serviceBean);
         if (this.baseCrudService == null
                 && beanFactory.containsBean(serviceBean)) {
             this.baseCrudService = (BaseCrudService<T>) beanFactory.getBean(serviceBean);
@@ -55,6 +55,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         if (StringUtil.isEmpty(htmlPage)) {
             this.htmlPage = "html/" + NamingUtil.toCreatePath(attributeName) + ".html";
         }
+        _log.warn("Initiating HTML page "+this.htmlPage);
 
         PlatformTransactionManager txManager = (PlatformTransactionManager) beanFactory.getBean("transactionManager");
         this.transactionTemplate = new TransactionTemplate(txManager);

@@ -4,13 +4,15 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd                 
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd                 
 						http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
-						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
-
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	<context:annotation-config />
-	
+	<!--<context:load-time-weaver aspectj-weaving="on"/>-->
+
 	<context:component-scan base-package="org.pos.coffee.controller"
 		use-default-filters="false">
 		<context:include-filter expression="org.springframework.stereotype.Controller"
@@ -23,11 +25,21 @@
 								type="annotation" />
 	</context:component-scan>
 
+	<context:component-scan base-package="org.evey.service">
+		<context:exclude-filter expression="org.springframework.stereotype.Controller"
+								type="annotation" />
+	</context:component-scan>
+
+	<context:component-scan base-package="org.evey">
+		<context:exclude-filter expression="org.springframework.stereotype.Controller"
+								type="annotation" />
+	</context:component-scan>
+
 	<context:component-scan base-package="org.pos.coffee">
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 								type="annotation" />
 	</context:component-scan>
-	
+
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -37,6 +49,8 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+
+	<aop:aspectj-autoproxy />
 
 	<mvc:resources location="/app/angular/,/base/angular/" mapping="/angular/**" />
 	<mvc:resources location="/WEB-INF/html/" mapping="/html/**" />
@@ -49,4 +63,16 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter">
 	</bean>
+
+	<!--<bean id="auditLogAspect" class="org.evey.aspect.AuditLogAspect"/>
+
+	<aop:config>
+		&lt;!&ndash;<aop:aspect id="auditAspect" ref="auditLogAspect">
+			<aop:pointcut id="auditLogSave"
+						  expression="execution(* org.evey.controller.BaseCrudController.create(..))" />
+			<aop:before method="logAfter" pointcut-ref="auditLogSave" />
+		</aop:aspect>&ndash;&gt;
+	</aop:config>-->
+
+
 </beans>

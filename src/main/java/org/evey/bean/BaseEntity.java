@@ -3,15 +3,7 @@ package org.evey.bean;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.log4j.Logger;
@@ -55,6 +47,9 @@ public class BaseEntity implements Serializable{
 	
 	@Column(name="IS_ACTIVE")
 	private Boolean isActive;
+
+	@Transient
+	private Boolean skipAudit;
 	
 	public Long getId() {
 		return id;
@@ -91,6 +86,14 @@ public class BaseEntity implements Serializable{
 	}
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	public Boolean getSkipAudit() {
+		return skipAudit;
+	}
+
+	public void setSkipAudit(Boolean skipAudit) {
+		this.skipAudit = skipAudit;
 	}
 
 	@Override
