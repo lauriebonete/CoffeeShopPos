@@ -13,6 +13,9 @@ import java.util.List;
 @Table(name="PRODUCT")
 public class Product extends BaseEntity {
 
+	@Column(name = "PRODUCT_CODE", unique = true, nullable = false)
+	private String productCode;
+
 	@Column(name="PRODUCT_NAME")
 	private String productName;
 
@@ -227,5 +230,13 @@ public class Product extends BaseEntity {
 
 	public void setPrice(ListPrice price) {
 		this.price = price;
+	}
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 }
