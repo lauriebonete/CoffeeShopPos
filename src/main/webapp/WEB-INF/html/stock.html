@@ -15,6 +15,7 @@
     <script src="js/responsive-tables.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
+    <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
@@ -40,8 +41,8 @@
                 <aside class="right-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Logged In User</label></li>
-                        <li><a href="/user/profile" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
-                        <li><a href="/user/logout" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
                     </ul>
                 </aside>
                 <aside class="left-off-canvas-menu">
@@ -94,7 +95,7 @@
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
-                                <h4>Item</h4>
+                                <h4>Inventory</h4>
                             </div>
                         </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
@@ -112,22 +113,14 @@
                                         <label>Item Name
                                             <input type="text" placeholder="Provide Item Name" name="itemName"/>
                                         </label>
-                                        <label>Description
-                                            <input type="text" placeholder="Provide Description" name="description"/>
-                                        </label>
-                                        <label>Unit of measurement
-                                            <select name="uom.id" data-list="false">
-                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.value}}</option>
+                                        <label>Condition
+                                            <select name="condition" data-list="false">
+                                                <option class="good-row">Good</option>
+                                                <option class="low-row">Low</option>
+                                                <option class="critical-row">Critical</i></option>
+                                                <option>Empty</option>
                                             </select>
                                         </label>
-                                        <div class="switch round">
-                                            <p>Active</p>
-                                            <input id="isActive" type="checkbox" name="isActive" checked>
-                                            <label for="isActive">
-                                                <span class="switch-on">YES</span>
-                                                <span class="switch-off">NO</span>
-                                            </label>
-                                        </div>
                                         <div class="rows">
                                             <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
                                             <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
@@ -139,29 +132,35 @@
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
-                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/item/findAll">
+                                    <table class="responsive max-width" id="crud-table" data-url="/inventory/stockCount">
                                         <thead>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th style="width:10%"></th>
-                                        </tr>
+                                            <tr>
+                                                <th>Item Code</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Current Stock</th>
+                                                <th>Critical Level</th>
+                                                <th style="width:10%"></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="record in records">
-                                            <td>{{record.itemCode}}</td>
-                                            <td>{{record.itemName}}</td>
-                                            <td>{{record.description}}</td>
-                                            <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
-                                            </td>
-                                        </tr>
+                                            <tr ng-repeat="record in records" class="{{record.status}}-row">
+                                                <td>
+                                                    <i class="fa fa-circle {{record.status}}"></i>
+                                                    {{record.item.itemCode}}
+                                                </td>
+                                                <td>{{record.item.itemName}}</td>
+                                                <td>{{record.item.description}}</td>
+                                                <td>{{record.quantity}} {{record.item.uom.value}}</td>
+                                                <td>{{record.item.criticalLevel}} {{record.item.uom.value}}</td>
+                                                <td>
+                                                    <i class="fa fa-edit has-tip tip-top radius" aria-haspopup="true" title="Edit" data-reveal-id="update-modal"></i>
+                                                    <i class="fa fa-refresh has-tip tip-top radius" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal"></i>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -175,53 +174,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
-                        <h3 id="crud-title">Add New Reference Look Up.</h3>
-                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <form data-abide="ajax" id="crud-form">
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <div class="row collapse prefix-radius">
-                                        <label>Item Code <small>required</small>
-                                            <input type="text" placeholder="Item COde" name="itemCode" required></label>
-                                        <small class="error">Please provide a code for the item.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Item Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" required></label>
-                                        <small class="error">Please provide a name for the item.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Description
-                                            <input type="text" placeholder="Description" name="description" required></label>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Unit of Measure
-                                            <select data-list="false" ng-init = "loadDropDown('/reference/getReferenceLookUpByCategory/CATEGORY_UNIT_OF_MEASURE')" required name="uom.id">
-                                                <option ng-repeat="record in dropdown" value="{{record.id}}">
-                                                    {{record.value}}
-                                                </option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="switch round">
-                                        <p>Active</p>
-                                        <input id="active" type="checkbox" name="isActive" checked>
-                                        <label for="active">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
-                                    </div>
-                                    <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-add-btn">Add</button>
-                                        <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
-                        <h3 id="update-title">Update Reference Look Up.</h3>
+                    <div id="restock-modal" class="reveal-modal restock-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                        <h3 id="restock-title">Restock Inventory</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
                             <div class="row">
@@ -230,49 +184,87 @@
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Item Code <small>required</small>
-                                            <input type="text" placeholder="Item Code" name="itemCode" value="{{recordFound.itemCode}}" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
                                         <label>Item Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" value="{{recordFound.itemName}}" required></label>
+                                            <input type="text" placeholder="Item Name" name="itemName" value="Coffee Bean" required></label>
                                         <small class="error">Key is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Description
-                                            <input type="text" placeholder="Description" name="description" value="{{recordFound.description}}" required></label>
+                                        <label>Supplier Name <small>required</small>
+                                            <input type="text" placeholder="Item Name" name="itemName" value="Puregold" required></label>
+                                        <small class="error">Key is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Unit of Measure
-                                            <select data-list="false" name="uom.id" required ng-model="recordFound.uomId"
-                                                    ng-options="record.id as record.value for record in dropdown">
-                                            </select>
-                                        </label>
-                                        <small class="error">Please provide unit of measure.</small>
+                                        <label>Current Stock</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" placeholder="100" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">g</span>
+                                        </div>
                                     </div>
-                                    <div class="switch round">
-                                        <p>Active</p>
-                                        <input id="activeUpdate" type="checkbox" name="isActive" ng-model="recordFound.isActive">
-                                        <label for="activeUpdate">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Restock Amount</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" placeholder="" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">g</span>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Price</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" placeholder="" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">PHP </span>
+                                        </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
-                                        <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
+                                        <button type="submit" class="button expand success" id="form-update-btn">Place Order</button>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn">Purchase</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
-                        <h3 id="delete-title">Are you sure you want to delete?</h3>
+                    <div id="update-modal" class="reveal-modal update-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Inventory Details</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <button class="button alert remove-record">Remove</button>
-                        <button class="button secondary float-right">Cancel</button>
+                        <form data-abide="ajax" id="update-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Name <small>required</small>
+                                            <input type="text" placeholder="Item Name" name="itemName" value="Coffee Bean" required></label>
+                                        <small class="error">Key is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Description<small>
+                                            <input type="text" placeholder="Description" name="itemName" value="Coffee Bean" required></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Critical Level</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" placeholder="100" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">g</span>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>

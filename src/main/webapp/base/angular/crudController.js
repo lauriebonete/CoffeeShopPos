@@ -11,6 +11,7 @@ crudApp.controller("crudController", function ($scope, $http) {
     };
 
     $scope.loadTable = function (data) {
+        console.log(data);
         $scope.fullRecords = data.completeList;
         $scope.records = data.slice;
         $scope.listSize = data.completeList.length;

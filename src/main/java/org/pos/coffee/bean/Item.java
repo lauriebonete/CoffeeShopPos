@@ -28,6 +28,9 @@ public class Item extends BaseEntity {
 
 	@Column(name="CRITICAL_LEVEL")
 	private Double criticalLevel;
+
+	@Column(name="DEMARCATION")
+	private Double demarcation;
 	
 	public String getItemName() {
 		return itemName;
@@ -68,5 +71,13 @@ public class Item extends BaseEntity {
 
 	public void setCriticalLevel(Double criticalLevel) {
 		this.criticalLevel = criticalLevel;
+	}
+
+	public Double getDemarcation() {
+		return demarcation;
+	}
+
+	public void setDemarcation(Double demarcation) {
+		this.demarcation = demarcation;
 	}
 }

@@ -18,8 +18,6 @@ public class Stock extends BaseEntity {
     @Column(name = "QUANTITY")
     private Double quantity;
 
-    private transient String status;
-
     public Item getItem() {
         return item;
     }
@@ -36,16 +34,4 @@ public class Stock extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public String getStatus() {
-        if(this.item != null){
-            if(this.quantity > this.item.getCriticalLevel()){
-                return "GREEN";
-            }
-        }
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

@@ -9,6 +9,8 @@ import org.evey.bean.QueryHelper;
 import org.evey.dao.BaseEntityDao;
 import org.evey.utility.CrudUtil;
 import org.evey.utility.NamingUtil;
+import org.evey.utility.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -25,6 +27,9 @@ import java.util.*;
 public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable> implements BaseEntityDao<T,Id> {
 
     private static Logger _log = Logger.getLogger(BaseEntityDaoJpaImpl.class);
+
+    @Autowired
+    private Properties queryProperties;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -108,6 +113,14 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         }
 
         return result;
+    }
+
+    @Override
+    public List<T> findEntityByNamedQuery(String name) {
+        String queryString = getNamedQuery(name);
+        Query query = getEntityManager().createQuery(queryString);
+
+        return query.getResultList();
     }
 
     @Override
@@ -276,6 +289,16 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     public Query appendToParameters(Query query, T entity) {
+        return null;
+    }
+
+    public final String getNamedQuery(String queryName){
+        String query = (String) queryProperties.get(queryName);
+        if(!StringUtil.isEmpty(query)){
+            return query;
+        } else {
+            _log.error("NO property with name "+queryName+" found.");
+        }
         return null;
     }
 }

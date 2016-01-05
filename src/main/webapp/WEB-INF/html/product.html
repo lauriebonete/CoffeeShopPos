@@ -111,7 +111,10 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Product Name <small>required</small>
+                                        <label>Product Code
+                                            <input type="text" placeholder="Product Code" name="productCode" required/>
+                                        </label>
+                                        <label>Product Name
                                             <input type="text" placeholder="Product Name" name="productName" required/>
                                         </label>
                                         <label>Value
@@ -148,6 +151,7 @@
                                     <table class="responsive max-width" id="crud-table" data-url="/product/findAll">
                                         <thead>
                                         <tr>
+                                            <th>Code</th>
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Product Group</th>
@@ -157,6 +161,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
+                                            <td>{{record.productCode}}</td>
                                             <td>{{record.productName}}</td>
                                             <td>{{record.description}}</td>
                                             <td>{{record.displayProductGroup}}</td>
@@ -166,7 +171,6 @@
                                                 <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
-                                                <i class="fa fa-camera test" data-id="{{record.id}}"></i>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -188,6 +192,11 @@
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Product Code <small>required</small>
+                                            <input type="text" placeholder="Product Code" name="productCode" required></label>
+                                        <small class="error">Please provide a code for the product.</small>
+                                    </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Name <small>required</small>
                                             <input type="text" placeholder="Product Name" name="productName" required></label>
@@ -254,6 +263,11 @@
                                 <div class="small-12 columns">
                                     <div class="row">
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Product Code <small>required</small>
+                                            <input type="text" placeholder="Product Code" name="productCode" value="{{recordFound.productCode}}" required></label>
+                                        <small class="error">Please provide a code for the product.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Name <small>required</small>

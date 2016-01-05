@@ -149,6 +149,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
                 baseCrudService.save(command);
+                postCreate(command);
             }
         });
     }
@@ -170,6 +171,10 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     public ModelAndView loadHtml() {
         _log.info("LOADING " + attributeName);
         return new ModelAndView(htmlPage);
+    }
+
+    protected void postCreate(T command){
+
     }
 
     public static Logger get_log() {
