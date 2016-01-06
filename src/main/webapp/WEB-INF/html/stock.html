@@ -108,13 +108,14 @@
                                 <form>
                                     <div class="small-12 columns">
                                         <label>Item Code
-                                            <input type="text" placeholder="Provide Item Code" name="itemCode"/>
+                                            <input id="itemCode" type="text" placeholder="Provide Item Code" name="itemCode"/>
                                         </label>
                                         <label>Item Name
-                                            <input type="text" placeholder="Provide Item Name" name="itemName"/>
+                                            <input id="itemName" input="itemName" type="text" placeholder="Provide Item Name" name="itemName"/>
                                         </label>
                                         <label>Condition
-                                            <select name="condition" data-list="false">
+                                            <select id="status" name="status" data-list="false">
+                                                <option></option>
                                                 <option class="good-row">Good</option>
                                                 <option class="low-row">Low</option>
                                                 <option class="critical-row">Critical</i></option>
@@ -122,7 +123,7 @@
                                             </select>
                                         </label>
                                         <div class="rows">
-                                            <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
+                                            <a href="#" class="button expand" id="search-inventory-crud-btn">Search</a>
                                             <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
                                         </div>
                                     </div>
@@ -276,6 +277,111 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click","#search-inventory-crud-btn", function(){
+            var form = $(this).parents("form");
+            var stockHelper = new Object();
+            var item = new Object();
+            item["itemCode"] = $(form).find("#itemCode").val();
+            item["itemName"] = $(form).find("#itemName").val();
+            stockHelper["item"] = item;
+            stockHelper["status"] = $(form).find("#status").val();
+            console.log(stockHelper);
+
+            $.ajax({
+                url: evey.getHome()+"/inventory/findStock",
+                data: JSON.stringify(stockHelper),
+                type: "POST",
+                contentType: "application/json",
+                dataType: "JSON",
+                success:function(data){
+                    var paginateThis = evey.paginatePage(data);
+                    paginateThis["currentPage"] = 1;
+                    paginate(paginateThis, $("ul.pagination"));
+                }
+            });
+        });
+
+
+        var paginate = function(paginateThis, pagination){
+
+            $(pagination).find("li").remove();
+
+            var previous = $('<li>');
+            $(previous).append($('<a>&laquo; Previous</a>'));
+            $(previous).addClass("arrow");
+
+            var next = $('<li>');
+            $(next).addClass("arrow");
+            $(next).append($('<a>Next &raquo;</a>'));
+
+            if(paginateThis.currentPage == 1) {
+                $(previous).addClass("unavailable");
+                $(previous).attr("aria-disabled",true);
+            }
+
+            $(pagination).append($(previous))
+
+            for(var i=1;i<=paginateThis.numberOfPage;i++) {
+                if(Number(paginateThis.currentPage) == Number(i)) {
+                    var newPage = $('<li class="current">').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+                } else {
+                    var newPage = $('<li>').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+                }
+
+                $(newPage).find("a").on("click",function(){
+
+                    $(this).parents("ul").find("li.current").removeClass("current");
+                    $(this).parent("li").addClass("current");
+
+                    var page = $(this).data("page");
+                    var max = $(this).data("max");
+
+                    if(Number(page) != 1) {
+                        $(previous).removeClass("unavailable");
+                        $(previous).attr("aria-disabled", false);
+                    } else {
+                        $(previous).addClass("unavailable");
+                        $(previous).attr("aria-disabled", true);
+                    }
+
+                    if(Number(page) != Number(paginateThis.numberOfPage)) {
+                        $(next).removeClass("unavailable");
+                        $(next).attr("aria-disabled", false);
+                    } else {
+                        $(next).addClass("unavailable");
+                        $(next).attr("aria-disabled", true);
+                    }
+
+                    angular.element(".main-body").scope().changePage(page, max);
+                    angular.element(".main-body").scope().$apply();
+
+                });
+
+                $(pagination).append($(newPage));
+            }
+
+            if(paginateThis.currentPage == paginateThis.numberOfPage) {
+                $(next).addClass("unavailable");
+                $(next).attr("aria-disabled",true);
+            }
+
+            $(pagination).append($(next));
+
+
+            $(next).on("click", function(){
+                $(pagination).find("li.current").next().find("a.pages").click();
+            });
+
+            $(previous).on("click", function(){
+                $(pagination).find("li.current").prev().find("a.pages").click();
+            });
+
+            angular.element(".main-body").scope().loadTable(paginateThis);
+            angular.element(".main-body").scope().$apply();
+        }
     </script>
 </footer>
 </html>

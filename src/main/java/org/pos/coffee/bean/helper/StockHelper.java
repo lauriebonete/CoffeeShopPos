@@ -37,6 +37,12 @@ public class StockHelper {
         this.quantity = quantity;
     }
 
+    public StockHelper(Item item,Double quantity, Double criticalLevel, Double demarcation){
+        this(item,quantity);
+    }
+
+    public StockHelper() {
+    }
 
     private void setStatus(Item item, Double quantity){
         item.getUom().getValue();

@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface StockService extends BaseCrudService<Stock> {
     public List<StockHelper> getStockCount(String queryName);
+    public List<StockHelper> findStockEntity(StockHelper stockHelper);
 }

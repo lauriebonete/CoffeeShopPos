@@ -26,7 +26,7 @@ import java.util.*;
  */
 public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable> implements BaseEntityDao<T,Id> {
 
-    private static Logger _log = Logger.getLogger(BaseEntityDaoJpaImpl.class);
+    protected static Logger _log = Logger.getLogger(BaseEntityDaoJpaImpl.class);
 
     @Autowired
     private Properties queryProperties;

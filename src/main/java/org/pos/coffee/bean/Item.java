@@ -80,4 +80,14 @@ public class Item extends BaseEntity {
 	public void setDemarcation(Double demarcation) {
 		this.demarcation = demarcation;
 	}
+
+	@Override
+	protected void prePersist() {
+		if(this.criticalLevel==null){
+			this.criticalLevel = 0D;
+		}
+		if(this.demarcation==null){
+			this.demarcation = 0D;
+		}
+	}
 }

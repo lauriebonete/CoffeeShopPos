@@ -23,4 +23,9 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
     public List<StockHelper> getStockCount(String queryName) {
         return stockDao.getStockCount(queryName);
     }
+
+    @Override
+    public List<StockHelper> findStockEntity(StockHelper stockHelper) {
+        return stockDao.findStockEntity(stockHelper);
+    }
 }

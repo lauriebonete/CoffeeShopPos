@@ -129,4 +129,7 @@ public class BaseEntity implements Serializable{
 	public Boolean isNew() {
 		return this.getId() == null || this.getId() <= 0;
 	}
+
+	@PrePersist
+	protected void prePersist(){}
 }

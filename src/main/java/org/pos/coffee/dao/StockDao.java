@@ -12,4 +12,5 @@ import java.util.List;
 public interface StockDao extends BaseEntityDao<Stock,Long> {
 
     public List<StockHelper> getStockCount(String queryName);
+    public List<StockHelper> findStockEntity(StockHelper stockHelper);
 }

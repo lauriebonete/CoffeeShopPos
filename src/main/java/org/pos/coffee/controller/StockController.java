@@ -6,6 +6,7 @@ import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +39,19 @@ public class StockController extends BaseCrudController<Stock> {
         map.put("status", true);
         map.put("results", stockList);
         map.put("size", stockList.size());
+        map.put("listSize", entityListSize);
+        return map;
+    }
+
+    @RequestMapping(value = "/findStock", method = RequestMethod.POST, produces = "application/json")
+    public final @ResponseBody Map<String, Object> findStock(@RequestBody StockHelper entity) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<StockHelper> results = stockService.findStockEntity(entity);
+
+        map.put("message", "success");
+        map.put("status", true);
+        map.put("results", results);
+        map.put("size", results.size());
         map.put("listSize", entityListSize);
         return map;
     }

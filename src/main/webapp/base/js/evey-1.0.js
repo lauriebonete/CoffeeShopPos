@@ -28,7 +28,6 @@ var evey = (function(){
                     !$(input).is(":disabled") &&
                     $(input).val() != null &&
                     $(input).val() != undefined) {
-                    console.log($(input).val());
                     if($(input).parent("div.selectize-input").length<=0) {
                         if($(input).attr("name").indexOf (".")!= -1) {
                             var dottedName = $(input).attr("name").split(".");
