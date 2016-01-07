@@ -3,8 +3,12 @@ package org.pos.coffee.service;
 import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.PurchaseOrder;
 
+import java.util.List;
+
 /**
  * Created by Laurie on 1/4/2016.
  */
 public interface PurchaseOrderService extends BaseCrudService<PurchaseOrder> {
+    public Double countTotalExpense(List<PurchaseOrder> purchaseOrderList);
+    public void loadItem(List<PurchaseOrder> purchaseOrderList);
 }

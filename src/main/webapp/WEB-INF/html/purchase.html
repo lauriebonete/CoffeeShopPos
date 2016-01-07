@@ -137,7 +137,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/item/findAll">
+                                    <table class="responsive max-width" id="crud-table" data-url="/purchase/findAll">
                                         <thead>
                                             <tr>
                                                 <th>Purchase Code</th>
@@ -153,14 +153,14 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="record in records">
+                                                <td>{{record.purchaseCode}}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td>{{record.supplier}}</td>
+                                                <td>{{record.totalExpense}}</td>
                                                 <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{record.status}}</td>
                                                 <td>
                                                     <i class="fa fa-refresh has-tip tip-top radius edit-action" aria-haspopup="true" title="Update" data-reveal-id="update-modal"></i>
                                                 </td>

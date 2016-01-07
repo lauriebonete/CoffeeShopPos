@@ -1,5 +1,8 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.evey.annotation.JoinList;
+import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -13,9 +16,27 @@ import java.util.List;
 @Table(name = "PURCHASE")
 public class Purchase extends BaseEntity {
 
-    @Column(name = "PURCHASE_CODE")
+    public static enum Status {
+        FOR_APPROVAL("For Approval"),
+        IN_TRANSIT("In Transit"),
+        RECEIVED("Received");
+
+        private String status;
+
+        private Status(String status){
+            this.status = status;
+        }
+
+        public String getValue(){
+            return this.status;
+        }
+    }
+
+    @Column(name = "PURCHASE_CODE", nullable = false, unique = true)
+    @UniqueField
     private String purchaseCode;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "purchase")
     private List<PurchaseOrder> purchaseOrders;
 
@@ -28,6 +49,9 @@ public class Purchase extends BaseEntity {
 
     @Column(name = "TOTAL_EXPENSE")
     private Double totalExpense;
+
+    @Column(name = "STATUS")
+    private String status;
 
     public String getPurchaseCode() {
         return purchaseCode;
@@ -67,5 +91,13 @@ public class Purchase extends BaseEntity {
 
     public void setTotalExpense(Double totalExpense) {
         this.totalExpense = totalExpense;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

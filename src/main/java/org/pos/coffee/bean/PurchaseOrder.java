@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -12,8 +13,9 @@ import java.util.Date;
 @Table(name = "PURCHASE_ORDER")
 public class PurchaseOrder extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PURCHASE_ID", referencedColumnName = "ID")
+    @JsonBackReference
     private Purchase purchase;
 
     @Column(name = "PURCHASE_ID", insertable = false, updatable = false)

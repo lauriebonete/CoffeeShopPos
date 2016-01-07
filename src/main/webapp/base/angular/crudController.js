@@ -11,7 +11,6 @@ crudApp.controller("crudController", function ($scope, $http) {
     };
 
     $scope.loadTable = function (data) {
-        console.log(data);
         $scope.fullRecords = data.completeList;
         $scope.records = data.slice;
         $scope.listSize = data.completeList.length;
@@ -35,7 +34,15 @@ crudApp.controller("crudController", function ($scope, $http) {
         angular.forEach($scope.records, function (value, key) {
             if (value.id == id) {
                 $scope.recordFound = value;
-                console.log($scope.recordFound);
+                return;
+            }
+        });
+    };
+
+    $scope.restock = function(id){
+        angular.forEach($scope.records, function (value, key) {
+            if (value.item.id == id) {
+                $scope.stock = value;
                 return;
             }
         });

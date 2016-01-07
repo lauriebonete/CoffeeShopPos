@@ -158,8 +158,8 @@
                                                 <td>{{record.quantity}} {{record.item.uom.value}}</td>
                                                 <td>{{record.item.criticalLevel}} {{record.item.uom.value}}</td>
                                                 <td>
-                                                    <i class="fa fa-edit has-tip tip-top radius" aria-haspopup="true" title="Edit" data-reveal-id="update-modal"></i>
-                                                    <i class="fa fa-refresh has-tip tip-top radius" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal"></i>
+                                                    <i class="fa fa-edit has-tip tip-top radius" aria-haspopup="true" title="Edit" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-refresh has-tip tip-top radius" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -175,63 +175,58 @@
                             </div>
                         </div>
                     </div>
-                    <div id="restock-modal" class="reveal-modal restock-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                    <div id="restock-modal" class="reveal-modal restock-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
                         <h3 id="restock-title">Restock Inventory</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <form data-abide="ajax" id="update-form">
+                        <form data-abide="ajax" id="restock-form">
                             <div class="row">
                                 <div class="small-12 columns">
-                                    <div class="row">
-                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Name
+                                            <input id="item" type="text" placeholder="Item Name" name="itemId" data-itemId="{{stock.item.id}}" value="{{stock.item.itemName}}" disabled required></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Item Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" value="Coffee Bean" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Supplier Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" value="Puregold" required></label>
-                                        <small class="error">Key is required.</small>
+                                        <label>Supplier Name
+                                            <input id="supplier" type="text" placeholder="Supplier Name" name="supplier" value="" required></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Current Stock</label>
                                         <div class="small-9 columns">
-                                            <input type="text" placeholder="100" />
+                                            <input type="text" value="{{stock.quantity}}" disabled/>
                                         </div>
                                         <div class="small-3 columns">
-                                            <span class="postfix">g</span>
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Restock Amount</label>
                                         <div class="small-9 columns">
-                                            <input type="text" placeholder="" />
+                                            <input id="ordered-quantity" type="number" placeholder="Quantity" name="quantity"/>
                                         </div>
                                         <div class="small-3 columns">
-                                            <span class="postfix">g</span>
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Price</label>
                                         <div class="small-9 columns">
-                                            <input type="text" placeholder="" />
+                                            <input id="price" type="number" placeholder="Price" />
                                         </div>
                                         <div class="small-3 columns">
                                             <span class="postfix">PHP </span>
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Place Order</button>
+                                        <button type="submit" class="button expand success restock-btn" data-url="/purchase/inventory-order">Place Order</button>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Purchase</button>
+                                        <button type="submit" class="button expand success restock-btn" data-url="/purchase/inventory-purchase">Purchase</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal update-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal update-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Inventory Details</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -241,21 +236,29 @@
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Item Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" value="Coffee Bean" required></label>
-                                        <small class="error">Key is required.</small>
+                                        <label>Item Name
+                                            <input type="text" placeholder="Item Name" name="itemName" value="{{stock.item.itemName}}" disabled></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Description<small>
-                                            <input type="text" placeholder="Description" name="itemName" value="Coffee Bean" required></label>
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="itemName" value="{{stock.item.description}}" disabled></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Critical Level</label>
+                                        <label>Current Quantity</label>
                                         <div class="small-9 columns">
-                                            <input type="text" placeholder="100" />
+                                            <input type="text" placeholder="Current Quantity" value="{{stock.quantity}}" disabled/>
                                         </div>
                                         <div class="small-3 columns">
-                                            <span class="postfix">g</span>
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Add Quantity</label>
+                                        <div class="small-9 columns">
+                                            <input type="number" placeholder="Add Quantity" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
                                         </div>
                                     </div>
                                     <div class="rows">
@@ -288,7 +291,6 @@
             item["itemName"] = $(form).find("#itemName").val();
             stockHelper["item"] = item;
             stockHelper["status"] = $(form).find("#status").val();
-            console.log(stockHelper);
 
             $.ajax({
                 url: evey.getHome()+"/inventory/findStock",
@@ -302,8 +304,33 @@
                     paginate(paginateThis, $("ul.pagination"));
                 }
             });
-        });
+        }).on("click",".restock-btn",function(){
+            var purchase = new Object();
+            var item = new Object();
+            var purchaseOrder = new Object();
+            var purchaseOrderList = [];
 
+            item["id"] = $("#item").data("itemid");
+            purchaseOrder["orderedItem"] = item;
+            purchaseOrder["price"] = $("#price").val();
+            purchaseOrder["orderedQuantity"] = $("#ordered-quantity").val();
+            purchaseOrderList.push(purchaseOrder);
+
+            purchase["supplier"] = $("#supplier").val();
+            purchase["purchaseOrders"] = purchaseOrderList;
+
+            $.ajax({
+                url: evey.getHome()+$(this).data("url"),
+                data: JSON.stringify(purchase),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function(data){
+                    console.log(data.result.purchaseCode);
+                    $('#restock-modal').foundation('reveal', 'close');
+                }
+            });
+        });
 
         var paginate = function(paginateThis, pagination){
 
