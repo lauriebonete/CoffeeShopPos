@@ -640,17 +640,6 @@
                     }
                 }
             });
-        }).on("click",".test",function(){
-            console.log($(this).data("id"));
-            $.ajax({
-                url: evey.getHome()+"/product/test",
-                data: {"id": $(this).data("id")},
-                type: "POST",
-                dataType: "JSON",
-                success:function(data){
-
-                }
-            });
         });
 
         var productImage = null;

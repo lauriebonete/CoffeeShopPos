@@ -14,7 +14,7 @@ import java.util.Date;
 public class PurchaseOrder extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PURCHASE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "PURCHASE_ID")
     @JsonBackReference
     private Purchase purchase;
 
@@ -33,6 +33,9 @@ public class PurchaseOrder extends BaseEntity {
 
     @Column(name = "PRICE")
     private Double price;
+
+    @Column(name = "IS_RECEIVED")
+    private Boolean isReceived;
 
     public Purchase getPurchase() {
         return purchase;
@@ -74,7 +77,26 @@ public class PurchaseOrder extends BaseEntity {
         this.price = price;
     }
 
+    public Long getPurchaseId() {
+        return purchaseId;
+    }
+
     public void setPurchaseId(Long purchaseId) {
         this.purchaseId = purchaseId;
+    }
+
+    public Boolean getIsReceived() {
+        return isReceived;
+    }
+
+    public void setIsReceived(Boolean isReceived) {
+        this.isReceived = isReceived;
+    }
+
+    @Override
+    protected void prePersist() {
+        if(this.isReceived == null){
+            this.isReceived = false;
+        }
     }
 }

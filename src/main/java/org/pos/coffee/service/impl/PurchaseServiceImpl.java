@@ -5,8 +5,10 @@ import org.evey.dao.SequenceDao;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.Purchase;
 import org.pos.coffee.bean.PurchaseOrder;
+import org.pos.coffee.dao.PurchaseDao;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
+import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,12 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
     @Autowired
     private PurchaseOrderService purchaseOrderService;
 
+    @Autowired
+    private StockService stockService;
+
+    @Autowired
+    private PurchaseDao purchaseDao;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Purchase savePurchaseAndPO(Purchase purchase) {
@@ -41,6 +49,17 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
             purchaseOrderService.save(purchaseOrder);
         }
 
+        return purchase;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Purchase receivedPurchaseOrder(Purchase purchase) {
+        Purchase loadPurchase = this.load(purchase.getId());
+        purchaseOrderService.receivePurchaseOrders(loadPurchase.getPurchaseOrders(), purchase.getPurchaseOrders());
+        stockService.createInventoryForReceivingPO(loadPurchase.getPurchaseOrders());
+        loadPurchase.setStatus(Purchase.Status.RECEIVED.getValue());
+        purchaseDao.save(loadPurchase);
         return purchase;
     }
 

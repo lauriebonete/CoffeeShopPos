@@ -1,6 +1,7 @@
 package org.pos.coffee.service.impl;
 
 import org.evey.service.impl.BaseCrudServiceImpl;
+import org.pos.coffee.bean.PurchaseOrder;
 import org.pos.coffee.bean.Stock;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.dao.StockDao;
@@ -27,5 +28,16 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
     @Override
     public List<StockHelper> findStockEntity(StockHelper stockHelper) {
         return stockDao.findStockEntity(stockHelper);
+    }
+
+    @Override
+    public void createInventoryForReceivingPO(List<PurchaseOrder> purchaseOrderList) {
+        for(PurchaseOrder purchaseOrder: purchaseOrderList){
+            Stock stock = new Stock();
+            stock.setItem(purchaseOrder.getOrderedItem());
+            stock.setQuantity(purchaseOrder.getReceivedQuantity());
+            stock.setPrice(purchaseOrder.getPrice()/purchaseOrder.getReceivedQuantity());
+            stockDao.save(stock);
+        }
     }
 }

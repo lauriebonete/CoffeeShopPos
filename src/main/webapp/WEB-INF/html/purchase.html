@@ -91,7 +91,7 @@
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController" ng-init="cacheEntities('/reference//getReferenceLookUpByCategory/CATEGORY_UNIT_OF_MEASURE')">
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
@@ -141,9 +141,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Purchase Code</th>
-                                                <th>Item Code</th>
-                                                <th>Item Name</th>
-                                                <th>Restock Amount</th>
                                                 <th>Supplier</th>
                                                 <th>Price</th>
                                                 <th>Ordered By</th>
@@ -154,15 +151,12 @@
                                         <tbody>
                                             <tr ng-repeat="record in records">
                                                 <td>{{record.purchaseCode}}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
                                                 <td>{{record.supplier}}</td>
                                                 <td>{{record.totalExpense}}</td>
                                                 <td></td>
                                                 <td>{{record.status}}</td>
                                                 <td>
-                                                    <i class="fa fa-refresh has-tip tip-top radius edit-action" aria-haspopup="true" title="Update" data-reveal-id="update-modal"></i>
+                                                    <i class="fa fa-refresh has-tip tip-top radius restock-btn" aria-haspopup="true" title="Restock" ng-click = "editAction(record.id)" ng-class="id"  data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -178,55 +172,60 @@
                             </div>
                         </div>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
-                        <h3 id="update-title">Item Name: For Approval</h3>
+                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" data-receival="{{recordFound.isForReceival}}">
+                        <h3 id="update-title">Purchase: {{recordFound.purchaseCode}}</h3>
+                        <h4 class="center">{{recordFound.status}}</h4>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <form data-abide="ajax" id="update-form">
+                        <form data-abide="ajax">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row">
-                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input id="purchaseId" type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Supplier Name <small>required</small>
-                                            <input type="text" placeholder="Item Name" name="itemName" value="Puregold" required></label>
-                                        <small class="error">Key is required.</small>
+                                        <label>Supplier Name
+                                            <input type="text" placeholder="Supplier Name" name="supplierName" value="{{recordFound.supplier}}" disabled></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Current Stock</label>
-                                        <div class="small-9 columns">
-                                            <input type="text" placeholder="100" />
-                                        </div>
-                                        <div class="small-3 columns">
-                                            <span class="postfix">g</span>
-                                        </div>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Restock Amount</label>
-                                        <div class="small-9 columns">
-                                            <input type="text" placeholder="" />
-                                        </div>
-                                        <div class="small-3 columns">
-                                            <span class="postfix">g</span>
-                                        </div>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Price</label>
-                                        <div class="small-9 columns">
-                                            <input type="text" placeholder="" />
-                                        </div>
-                                        <div class="small-3 columns">
-                                            <span class="postfix">PHP </span>
+                                        <div class="column small-12">
+                                            <div class="row" ng-if="!recordFound.isForReceival">
+                                                <div class="columns small-4">
+                                                    <label class="center">Item Name</label>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <label class="center">Request Quantity</label>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <label class="center">Price</label>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-if="recordFound.isForReceival">
+                                                <div class="columns small-4">
+                                                    <label class="center">Item Name</label>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <label class="center">Request Quantity</label>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <label class="center">Price</label>
+                                                </div>
+                                                <div class="columns small-2">
+                                                    <label class="center">Received</label>
+                                                </div>
+                                            </div>
+                                            <div class="ordered-item-location">
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Purchase</button>
+                                        <button class="button expand success restock-action-btn" data-status="In Progress">Purchase</button>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Receive</button>
+                                        <button class="button expand success" id="restock-receive-btn">Receive</button>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Cancel Transaction</button>
+                                        <button class="button expand alert restock-action-btn" data-status="Cancelled">Cancel Purchase Request</button>
                                     </div>
                                 </div>
                             </div>
@@ -240,9 +239,131 @@
 </div>
 </body>
 <footer>
+
+    <script type="text/html" id="ordered-template">
+        <div class="row">
+            <div class="center columns small-4">
+                <span class="item"></span>
+            </div>
+            <div class="center columns small-4">
+                <span class="request-quantity"></span>
+            </div>
+            <div class="center columns small-4">
+                <span class="request-price"></span>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="ordered-receive-template">
+        <div class="row">
+            <div class="center columns small-4">
+                <span class="item"></span>
+            </div>
+            <div class="center columns small-3">
+                <span class="request-quantity"></span>
+            </div>
+            <div class="center columns small-3">
+                <span class="request-price"></span>
+            </div>
+            <div class="center columns small-2">
+                <input type="number" class="quantity-received"/>
+            </div>
+        </div>
+    </script>
+
     <script>
         $(document).foundation();
         $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click", ".restock-btn", function(){
+            var purchaseId = $(this).data("id");
+
+            var location = $(".ordered-item-location");
+            $(location).children("div.row").remove();
+
+            $.ajax({
+                url: evey.getHome()+"/purchase/findPO",
+                data: {"purchaseId": purchaseId},
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+
+                    var orderedItem = $("#ordered-template").html();
+                    if($("#update-modal").attr("data-receival")!=null
+                        && $("#update-modal").attr("data-receival")!=undefined
+                        && $("#update-modal").attr("data-receival")==="true") {
+                        console.log($("#update-modal").attr("data-receival"));
+                        orderedItem = $("#ordered-receive-template").html();
+                    }
+
+                    var entities = angular.element(".main-body").scope().entities[0];
+
+                    $.each(data, function(i, po){
+                        $(location).append($(orderedItem));
+                        var lastRow = $(location).find("div.row").last();
+
+                        var uom = null;
+                        for(var i=0; i<entities.length-1; i++){
+                            if(po.orderedItem.uomId == entities[i].id){
+                                uom = entities[i].value;
+                                break;
+                            }
+                        }
+
+                        $(lastRow).attr("data-id",po.id);
+                        $(lastRow).find("span.item").text(po.orderedItem.itemCode +" - "+po.orderedItem.itemName);
+                        $(lastRow).find("span.request-quantity").text(po.orderedQuantity+" "+uom);
+                        $(lastRow).find("span.request-price").text(po.price);
+                        if(po.isReceived){
+                            $(lastRow).find("input.quantity-received").val(po.receivedQuantity);
+                            $(lastRow).find("input.quantity-received").attr("disabled", true);
+                        } else{
+                            $(lastRow).find("input.quantity-received").removeAttr("disabled");
+                        }
+                    });
+                }
+            });
+        }).on("click",".restock-action-btn", function(){
+            var status = $(this).data("status");
+            var purchaseId = $("#purchaseId").val();
+
+            $.ajax({
+                url: evey.getHome()+"/purchase/update-status",
+                data : {"purchaseId":purchaseId, "status": status},
+                type: "POST",
+                dataType: "JSON",
+                success:function(data){
+                    console.log(data);
+                }
+            });
+        }).on("click", "#restock-receive-btn",function(){
+            var purchaseId = $("#purchaseId").val();
+
+            var purchase = new Object();
+            var pos = [];
+            $.each($("#update-modal .ordered-item-location div.row"),function(i,row){
+                var po = new Object();
+                po["id"] = $(row).attr("data-id");
+                po["receivedQuantity"] = $(row).find(".quantity-received").val();
+                pos.push(po);
+            });
+
+            purchase["id"] = purchaseId;
+            purchase["purchaseOrders"] = pos;
+
+            $.ajax({
+                url: evey.getHome()+"/purchase/receive-purchase",
+                data : JSON.stringify(purchase),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success:function(data){
+                    console.log(data);
+                }
+            });
+        });
     </script>
 </footer>
 </html>

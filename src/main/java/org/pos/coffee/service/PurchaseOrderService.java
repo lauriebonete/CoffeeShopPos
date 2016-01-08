@@ -11,4 +11,5 @@ import java.util.List;
 public interface PurchaseOrderService extends BaseCrudService<PurchaseOrder> {
     public Double countTotalExpense(List<PurchaseOrder> purchaseOrderList);
     public void loadItem(List<PurchaseOrder> purchaseOrderList);
+    public void receivePurchaseOrders(List<PurchaseOrder> target, List<PurchaseOrder> update);
 }

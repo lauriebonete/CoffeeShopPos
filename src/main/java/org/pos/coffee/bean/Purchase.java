@@ -19,7 +19,9 @@ public class Purchase extends BaseEntity {
     public static enum Status {
         FOR_APPROVAL("For Approval"),
         IN_TRANSIT("In Transit"),
-        RECEIVED("Received");
+        IN_PROGRESS("In Progress"),
+        RECEIVED("Received"),
+        CANCELLED("Cancelled");
 
         private String status;
 
@@ -30,6 +32,15 @@ public class Purchase extends BaseEntity {
         public String getValue(){
             return this.status;
         }
+
+        public static Status findByString(String status){
+            for(Status stat : values()){
+                if( stat.getValue().equals(status)){
+                    return stat;
+                }
+            }
+            return null;
+        }
     }
 
     @Column(name = "PURCHASE_CODE", nullable = false, unique = true)
@@ -37,7 +48,7 @@ public class Purchase extends BaseEntity {
     private String purchaseCode;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "purchase")
+    @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY)
     private List<PurchaseOrder> purchaseOrders;
 
     @Column(name="PURCHASE_DATE")
@@ -52,6 +63,21 @@ public class Purchase extends BaseEntity {
 
     @Column(name = "STATUS")
     private String status;
+
+    private transient Boolean isForReceival;
+
+    public Boolean getIsForReceival() {
+        if(Status.IN_TRANSIT.equals(Status.findByString(this.status))
+                || Status.IN_PROGRESS.equals(Status.findByString(this.status))
+                || Status.RECEIVED.equals(Status.findByString(this.status))) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setIsForReceival(Boolean isForReceival) {
+        this.isForReceival = isForReceival;
+    }
 
     public String getPurchaseCode() {
         return purchaseCode;

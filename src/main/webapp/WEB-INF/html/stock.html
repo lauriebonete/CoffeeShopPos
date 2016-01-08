@@ -158,8 +158,8 @@
                                                 <td>{{record.quantity}} {{record.item.uom.value}}</td>
                                                 <td>{{record.item.criticalLevel}} {{record.item.uom.value}}</td>
                                                 <td>
-                                                    <i class="fa fa-edit has-tip tip-top radius" aria-haspopup="true" title="Edit" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
-                                                    <i class="fa fa-refresh has-tip tip-top radius" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-edit has-tip tip-top radius fa-lg" aria-haspopup="true" title="Edit" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-refresh has-tip tip-top radius fa-2x" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -183,11 +183,11 @@
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
                                         <label>Item Name
-                                            <input id="item" type="text" placeholder="Item Name" name="itemId" data-itemId="{{stock.item.id}}" value="{{stock.item.itemName}}" disabled required></label>
+                                            <input id="item" type="text" placeholder="Item Name" name="itemId" data-itemId="{{stock.item.id}}" value="{{stock.item.itemName}}" disabled></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Supplier Name
-                                            <input id="supplier" type="text" placeholder="Supplier Name" name="supplier" value="" required></label>
+                                            <input id="supplier" type="text" placeholder="Supplier Name" name="supplier" value=""></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Current Stock</label>

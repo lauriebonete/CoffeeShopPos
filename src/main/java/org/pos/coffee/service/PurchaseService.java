@@ -9,4 +9,5 @@ import org.pos.coffee.bean.Purchase;
 public interface PurchaseService extends BaseCrudService<Purchase> {
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry);
     public Purchase savePurchaseAndPO(Purchase purchase);
+    public Purchase receivedPurchaseOrder(Purchase purchase);
 }

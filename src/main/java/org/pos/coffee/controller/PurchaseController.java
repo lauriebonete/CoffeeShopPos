@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Laurie on 1/4/2016.
@@ -25,6 +23,9 @@ public class PurchaseController extends BaseCrudController<Purchase> {
 
     @Autowired
     private PurchaseService purchaseService;
+
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
 
     @RequestMapping(value = "/inventory-order", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Map<String,Object> restockThroughInventoryOrder(@RequestBody Purchase purchase){
@@ -46,6 +47,35 @@ public class PurchaseController extends BaseCrudController<Purchase> {
 
         returnMap.put("result", purchaseSaved);
         returnMap.put("status", true);
+
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/findPO", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<PurchaseOrder> findPO(Long purchaseId){
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+
+        Purchase purchase = purchaseService.load(purchaseId);
+
+        return purchase.getPurchaseOrders();
+    }
+
+    @RequestMapping(value = "/update-status", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Purchase updateStatusPurchase(Long purchaseId, String status) throws Exception{
+        Purchase purchase = purchaseService.load(purchaseId);
+        purchase.setStatus(Purchase.Status.findByString(status).getValue());
+        purchaseService.save(purchase);
+
+        return purchase;
+    }
+
+    @RequestMapping(value = "/receive-purchase", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Map<String, Object> receivePurchase(@RequestBody Purchase purchase){
+        Map<String, Object> returnMap = new HashMap<>();
+        Purchase updated = purchaseService.receivedPurchaseOrder(purchase);
+
+        returnMap.put("result", updated);
+        returnMap.put("success", true);
 
         return returnMap;
     }
