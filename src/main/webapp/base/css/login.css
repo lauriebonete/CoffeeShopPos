@@ -1,0 +1,34 @@
+#login {
+    display: table;
+    margin: 0 auto;
+    position: fixed;
+    right: 20vw;
+}
+
+#numpad {
+    height: 360px;
+    width: 360px;
+}
+
+.numpadNumber {
+    height: 70px;
+    width: 100px;
+    float: left;
+    text-align:center;
+    background: #00887D;
+    margin: 10px;
+    border-radius: 5px 5px 5px 5px;
+    transition: all .03s ease-in-out;
+    -webkit-transition: all .03s ease-in-out;
+    box-shadow: 0 10px #27496d;
+}
+
+.numpadNumber:active {
+    box-shadow: 0 5px #27496d;
+    transform: translateY(5px);
+}
+
+.numpadNumber:hover {
+    background: #00756C;
+    cursor: pointer;
+}
