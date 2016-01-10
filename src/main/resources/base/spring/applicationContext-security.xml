@@ -1,0 +1,23 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <http auto-config="true" >
+        <intercept-url pattern="/dashboard" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/dashboard**" access="hasRole('ADMIN')" />
+        <form-login  login-page="/login"
+                     username-parameter="pinDigit"
+                     authentication-failure-url="/Access_Denied"
+                     default-target-url="/dashboard"/>
+        <csrf disabled="true"/>
+    </http>
+
+    <authentication-manager >
+        <authentication-provider ref="loginController"/>
+    </authentication-manager>
+
+    <beans:bean id="loginController" class="org.pos.coffee.controller.LoginController" />
+
+</beans:beans>
