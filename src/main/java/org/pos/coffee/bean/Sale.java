@@ -16,7 +16,7 @@ public class Sale extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "SERVER", referencedColumnName = "ID")
-	private MaestroUser server;
+	private User server;
 
 	@Column(name = "SERVER", insertable = false, updatable = false)
 	private Long serverId;
@@ -47,13 +47,6 @@ public class Sale extends BaseEntity {
 	@Column(name="PRE_TAX")
 	private Double preTax;
 
-	@ManyToOne
-	@JoinColumn(name="CUSTOMER", referencedColumnName = "ID")
-	private Customer customer;
-
-	@Column(name = "CUSTOMER", insertable = false, updatable = false)
-	private Long customerId;
-
 	@JoinList
 	@ManyToMany
 	@JoinTable(name="SALE_PRICE_ADJST",
@@ -68,10 +61,10 @@ public class Sale extends BaseEntity {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
-	public MaestroUser getServer() {
+	public User getServer() {
 		return server;
 	}
-	public void setServer(MaestroUser server) {
+	public void setServer(User server) {
 		this.server = server;
 	}
 	public ReferenceLookUp getBranch() {
@@ -109,20 +102,6 @@ public class Sale extends BaseEntity {
 	}
 	public void setTotalSurcharge(Double totalSurcharge) {
 		this.totalSurcharge = totalSurcharge;
-	}
-	public Customer getCustomer() {
-		return customer;
-	}
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	public Long getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
 	}
 
 	public Long getServerId() {
