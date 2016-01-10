@@ -9,7 +9,10 @@ import javax.persistence.*;
 public class Item extends BaseEntity {
 
 	private static final long serialVersionUID = 2776590636632885067L;
-	
+
+	@Column(name="ITEM_CODE", unique = true, nullable = false)
+	private String itemCode;
+
 	@Column(name="ITEM_NAME")
 	private String itemName;
 	
@@ -22,6 +25,12 @@ public class Item extends BaseEntity {
 
 	@Column(name = "UOM", insertable = false, updatable = false)
 	private Long uomId;
+
+	@Column(name="CRITICAL_LEVEL")
+	private Double criticalLevel;
+
+	@Column(name="DEMARCATION")
+	private Double demarcation;
 	
 	public String getItemName() {
 		return itemName;
@@ -41,12 +50,44 @@ public class Item extends BaseEntity {
 	public void setUom(ReferenceLookUp uom) {
 		this.uom = uom;
 	}
-
 	public Long getUomId() {
 		return uomId;
 	}
-
 	public void setUomId(Long uomId) {
 		this.uomId = uomId;
+	}
+
+	public String getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+
+	public Double getCriticalLevel() {
+		return criticalLevel;
+	}
+
+	public void setCriticalLevel(Double criticalLevel) {
+		this.criticalLevel = criticalLevel;
+	}
+
+	public Double getDemarcation() {
+		return demarcation;
+	}
+
+	public void setDemarcation(Double demarcation) {
+		this.demarcation = demarcation;
+	}
+
+	@Override
+	protected void prePersist() {
+		if(this.criticalLevel==null){
+			this.criticalLevel = 0D;
+		}
+		if(this.demarcation==null){
+			this.demarcation = 0D;
+		}
 	}
 }

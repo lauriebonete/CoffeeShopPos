@@ -64,15 +64,14 @@
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter">
 	</bean>
 
-	<!--<bean id="auditLogAspect" class="org.evey.aspect.AuditLogAspect"/>
-
-	<aop:config>
-		&lt;!&ndash;<aop:aspect id="auditAspect" ref="auditLogAspect">
-			<aop:pointcut id="auditLogSave"
-						  expression="execution(* org.evey.controller.BaseCrudController.create(..))" />
-			<aop:before method="logAfter" pointcut-ref="auditLogSave" />
-		</aop:aspect>&ndash;&gt;
-	</aop:config>-->
-
+	<bean id="queryProperties"
+		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>${jpql.custom.properties}</value>
+				<value>${sql.custom.properties}</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

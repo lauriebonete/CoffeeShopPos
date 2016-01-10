@@ -106,6 +106,9 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
+                                        <label>Item Code
+                                            <input type="text" placeholder="Provide Item Code" name="itemCode"/>
+                                        </label>
                                         <label>Item Name
                                             <input type="text" placeholder="Provide Item Name" name="itemName"/>
                                         </label>
@@ -143,6 +146,7 @@
                                     <table class="responsive max-width" id="crud-table" data-url="/item/findAll">
                                         <thead>
                                         <tr>
+                                            <th>Code</th>
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th style="width:10%"></th>
@@ -150,6 +154,7 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
+                                            <td>{{record.itemCode}}</td>
                                             <td>{{record.itemName}}</td>
                                             <td>{{record.description}}</td>
                                             <td>
@@ -170,12 +175,17 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
                         <h3 id="crud-title">Add New Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Code <small>required</small>
+                                            <input type="text" placeholder="Item COde" name="itemCode" required></label>
+                                        <small class="error">Please provide a code for the item.</small>
+                                    </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Item Name <small>required</small>
                                             <input type="text" placeholder="Item Name" name="itemName" required></label>
@@ -192,7 +202,18 @@
                                                     {{record.value}}
                                                 </option>
                                             </select>
+                                            <small class="error">Please provide unit of measure.</small>
                                         </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Critical Level
+                                            <input type="number" placeholder="Critical Level" name="criticalLevel" pattern="number"></label>
+                                        <small class="error">Please provide a number value.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Demarcation
+                                            <input type="number" placeholder="Demarcation" name="demarcation" pattern="number"></label>
+                                        <small class="error">Please provide a number value.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -210,7 +231,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Update Reference Look Up.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -218,6 +239,11 @@
                                 <div class="small-12 columns">
                                     <div class="row">
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Code <small>required</small>
+                                            <input type="text" placeholder="Item Code" name="itemCode" value="{{recordFound.itemCode}}" required></label>
+                                        <small class="error">Key is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Item Name <small>required</small>
@@ -235,6 +261,16 @@
                                             </select>
                                         </label>
                                         <small class="error">Please provide unit of measure.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Critical Level
+                                            <input type="number" placeholder="Critical Level" name="criticalLevel" value="{{recordFound.criticalLevel}}" pattern="number"></label>
+                                        <small class="error">Please provide a number value.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Demarcation
+                                            <input type="number" placeholder="Demarcation" name="demarcation" value="{{recordFound.demarcation}}" pattern="number"></label>
+                                        <small class="error">Please provide a number value.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>

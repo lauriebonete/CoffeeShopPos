@@ -269,3 +269,31 @@
 .added-item-location .row{
     padding-bottom: 0.5rem;
 }
+
+.empty {
+    color:gray;
+}
+
+.critical {
+    color:red;
+}
+
+.low {
+    color:orange;
+}
+
+.good {
+    color:green;
+}
+
+.critical-row {
+    background-color:#ffcccc !important;
+}
+
+.low-row {
+    background-color:#ffedcc !important;
+}
+
+.good-row {
+    background-color:#cce5cc !important;
+}

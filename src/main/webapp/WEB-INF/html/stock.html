@@ -1,0 +1,414 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/responsive-tables.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                    <div class="row main-section-row" id="crud-body">
+                        <div class="row main-section-row">
+                            <div class="small-12 text-align-center">
+                                <h4>Inventory</h4>
+                            </div>
+                        </div>
+                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>Item Code
+                                            <input id="itemCode" type="text" placeholder="Provide Item Code" name="itemCode"/>
+                                        </label>
+                                        <label>Item Name
+                                            <input id="itemName" input="itemName" type="text" placeholder="Provide Item Name" name="itemName"/>
+                                        </label>
+                                        <label>Condition
+                                            <select id="status" name="status" data-list="false">
+                                                <option></option>
+                                                <option class="good-row">Good</option>
+                                                <option class="low-row">Low</option>
+                                                <option class="critical-row">Critical</i></option>
+                                                <option>Empty</option>
+                                            </select>
+                                        </label>
+                                        <div class="rows">
+                                            <a href="#" class="button expand" id="search-inventory-crud-btn">Search</a>
+                                            <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="responsive max-width" id="crud-table" data-url="/inventory/stockCount">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Code</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Current Stock</th>
+                                                <th>Critical Level</th>
+                                                <th style="width:10%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="record in records" class="{{record.status}}-row">
+                                                <td>
+                                                    <i class="fa fa-circle {{record.status}}"></i>
+                                                    {{record.item.itemCode}}
+                                                </td>
+                                                <td>{{record.item.itemName}}</td>
+                                                <td>{{record.item.description}}</td>
+                                                <td>{{record.quantity}} {{record.item.uom.value}}</td>
+                                                <td>{{record.item.criticalLevel}} {{record.item.uom.value}}</td>
+                                                <td>
+                                                    <i class="fa fa-edit has-tip tip-top radius fa-lg" aria-haspopup="true" title="Edit" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-refresh has-tip tip-top radius fa-2x" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="restock-modal" class="reveal-modal restock-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                        <h3 id="restock-title">Restock Inventory</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="restock-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Name
+                                            <input id="item" type="text" placeholder="Item Name" name="itemId" data-itemId="{{stock.item.id}}" value="{{stock.item.itemName}}" disabled></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Supplier Name
+                                            <input id="supplier" type="text" placeholder="Supplier Name" name="supplier" value=""></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Current Stock</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" value="{{stock.quantity}}" disabled/>
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Restock Amount</label>
+                                        <div class="small-9 columns">
+                                            <input id="ordered-quantity" type="number" placeholder="Quantity" name="quantity"/>
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Price</label>
+                                        <div class="small-9 columns">
+                                            <input id="price" type="number" placeholder="Price" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">PHP </span>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success restock-btn" data-url="/purchase/inventory-order">Place Order</button>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success restock-btn" data-url="/purchase/inventory-purchase">Purchase</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="update-modal" class="reveal-modal update-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Inventory Details</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="update-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Item Name
+                                            <input type="text" placeholder="Item Name" name="itemName" value="{{stock.item.itemName}}" disabled></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="itemName" value="{{stock.item.description}}" disabled></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Current Quantity</label>
+                                        <div class="small-9 columns">
+                                            <input type="text" placeholder="Current Quantity" value="{{stock.quantity}}" disabled/>
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Add Quantity</label>
+                                        <div class="small-9 columns">
+                                            <input type="number" placeholder="Add Quantity" />
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <span class="postfix">{{stock.item.uom.value}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click","#search-inventory-crud-btn", function(){
+            var form = $(this).parents("form");
+            var stockHelper = new Object();
+            var item = new Object();
+            item["itemCode"] = $(form).find("#itemCode").val();
+            item["itemName"] = $(form).find("#itemName").val();
+            stockHelper["item"] = item;
+            stockHelper["status"] = $(form).find("#status").val();
+
+            $.ajax({
+                url: evey.getHome()+"/inventory/findStock",
+                data: JSON.stringify(stockHelper),
+                type: "POST",
+                contentType: "application/json",
+                dataType: "JSON",
+                success:function(data){
+                    var paginateThis = evey.paginatePage(data);
+                    paginateThis["currentPage"] = 1;
+                    paginate(paginateThis, $("ul.pagination"));
+                }
+            });
+        }).on("click",".restock-btn",function(){
+            var purchase = new Object();
+            var item = new Object();
+            var purchaseOrder = new Object();
+            var purchaseOrderList = [];
+
+            item["id"] = $("#item").data("itemid");
+            purchaseOrder["orderedItem"] = item;
+            purchaseOrder["price"] = $("#price").val();
+            purchaseOrder["orderedQuantity"] = $("#ordered-quantity").val();
+            purchaseOrderList.push(purchaseOrder);
+
+            purchase["supplier"] = $("#supplier").val();
+            purchase["purchaseOrders"] = purchaseOrderList;
+
+            $.ajax({
+                url: evey.getHome()+$(this).data("url"),
+                data: JSON.stringify(purchase),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json",
+                success: function(data){
+                    console.log(data.result.purchaseCode);
+                    $('#restock-modal').foundation('reveal', 'close');
+                }
+            });
+        });
+
+        var paginate = function(paginateThis, pagination){
+
+            $(pagination).find("li").remove();
+
+            var previous = $('<li>');
+            $(previous).append($('<a>&laquo; Previous</a>'));
+            $(previous).addClass("arrow");
+
+            var next = $('<li>');
+            $(next).addClass("arrow");
+            $(next).append($('<a>Next &raquo;</a>'));
+
+            if(paginateThis.currentPage == 1) {
+                $(previous).addClass("unavailable");
+                $(previous).attr("aria-disabled",true);
+            }
+
+            $(pagination).append($(previous))
+
+            for(var i=1;i<=paginateThis.numberOfPage;i++) {
+                if(Number(paginateThis.currentPage) == Number(i)) {
+                    var newPage = $('<li class="current">').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+                } else {
+                    var newPage = $('<li>').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
+                }
+
+                $(newPage).find("a").on("click",function(){
+
+                    $(this).parents("ul").find("li.current").removeClass("current");
+                    $(this).parent("li").addClass("current");
+
+                    var page = $(this).data("page");
+                    var max = $(this).data("max");
+
+                    if(Number(page) != 1) {
+                        $(previous).removeClass("unavailable");
+                        $(previous).attr("aria-disabled", false);
+                    } else {
+                        $(previous).addClass("unavailable");
+                        $(previous).attr("aria-disabled", true);
+                    }
+
+                    if(Number(page) != Number(paginateThis.numberOfPage)) {
+                        $(next).removeClass("unavailable");
+                        $(next).attr("aria-disabled", false);
+                    } else {
+                        $(next).addClass("unavailable");
+                        $(next).attr("aria-disabled", true);
+                    }
+
+                    angular.element(".main-body").scope().changePage(page, max);
+                    angular.element(".main-body").scope().$apply();
+
+                });
+
+                $(pagination).append($(newPage));
+            }
+
+            if(paginateThis.currentPage == paginateThis.numberOfPage) {
+                $(next).addClass("unavailable");
+                $(next).attr("aria-disabled",true);
+            }
+
+            $(pagination).append($(next));
+
+
+            $(next).on("click", function(){
+                $(pagination).find("li.current").next().find("a.pages").click();
+            });
+
+            $(previous).on("click", function(){
+                $(pagination).find("li.current").prev().find("a.pages").click();
+            });
+
+            angular.element(".main-body").scope().loadTable(paginateThis);
+            angular.element(".main-body").scope().$apply();
+        }
+    </script>
+</footer>
+</html>

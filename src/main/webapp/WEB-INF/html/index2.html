@@ -1,0 +1,109 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/font-awesome.css" />
+	<link rel="stylesheet" href="css/responsive-tables.css">
+	<link rel="stylesheet" href="css/order.css" />
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+	<script src="js/responsive-tables.js"></script>	
+	<script src="js/vendor/modernizr.js"></script>
+  </head>
+  <body>
+	<div class="row">
+		<div class="columns">
+			<div class="off-canvas-wrap" data-offcanvas>
+				<div class="inner-wrap">
+					<nav class="tab-bar">
+						<section class="left-small">
+							<a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+						</section>
+						<section class="middle tab-bar-section">
+							<h1 class="title">Maestro Fedeli</h1>
+						</section>
+						<section class="right-small">
+							<a class="right-off-canvas-toggle menu-icon" ><span></span></a>
+						</section>
+					</nav>
+					<aside class="right-off-canvas-menu">
+						<ul class="off-canvas-list">
+							<li><label>Logged In User</label></li>
+							<li><a href="#"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+							<li><a href="#"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+						</ul>
+					</aside>
+					<aside class="left-off-canvas-menu">
+						<ul class="off-canvas-list">
+							<li><label>Coffee Shop POS</label></li>
+							<li><a href="#"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+							<li><a href="#"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+							<li><a href="#"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+							<li><a href="#"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+							<li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+								<ul class="left-submenu">
+									<li class="back"><a href="#">Back</a></li>
+									<li><label>Administration Page</label></li>
+									<li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+										<ul class="left-submenu">
+											<li class="back"><a href="#">Back</a></li>
+											<li><label>Account Maintenance</label></li>
+											<li><a href="#">People Maintenance</a></li>
+											<li><a href="#">User Page</a></li>
+											<li><a href="#">Customer</a></li>
+											<li><a href="#">Supplier</a></li>
+										</ul>
+									</li>
+									<li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+										<ul class="left-submenu">
+											<li class="back"><a href="#">Back</a></li>
+											<li><label>System Maintenance</label></li>
+											<li><a href="#">Item</a></li>
+											<li><a href="#">Ingredients</a></li>
+											<li><a href="#">Product</a></li>
+											<li><a href="#">Meal Components</a></li>
+											<li><a href="#">Meal</a></li>
+											<li><a href="#">Reference</a></li>
+											<li><a href="#">Address</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</aside>
+					<section class="main-section main-body" >
+
+					</section>
+					<a class="exit-off-canvas"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <script>
+		$(document).foundation();	  
+		$(document).ready(function(){
+			if ($(window).width() < 640) {
+				$('.payment').css("width", "100%" );
+			} else {
+				$('.payment').css("width", "60%" );
+			}
+		});		
+
+		$( window ).resize(function() {
+			if ($(window).width() < 640) {
+				$('.payment').css("width", "100%" );
+			} else {
+				$('.payment').css("width", "60%" );
+			}
+		});	
+	</script>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="slick/slick.min.js"></script>
+  </body>
+</html>

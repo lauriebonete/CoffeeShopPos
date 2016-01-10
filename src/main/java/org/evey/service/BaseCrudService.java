@@ -19,6 +19,7 @@ public interface BaseCrudService<T extends BaseEntity> extends BaseService {
     public List<Object> findByListOfIds(List<Long> ids);
     public Set<Object> findBySetOfIds(Set<Long> ids);
     public T load(Long id);
+    public List<T> findEntityByNamedQuery(String queryName);
 
     public BaseEntityDao<T,Long> getDao();
 }

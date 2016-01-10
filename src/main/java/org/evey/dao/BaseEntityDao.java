@@ -20,5 +20,6 @@ public interface BaseEntityDao<T extends BaseEntity, Id extends Serializable> {
     public List<Object> findByListOfIds(List<Long> ids);
     public Set<Object> findBySetOfIds(Set<Long> ids);
     public T load(Long id);
+    public List<T> findEntityByNamedQuery(String name);
 
 }

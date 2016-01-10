@@ -2,6 +2,19 @@
  * Created by Laurie on 11/6/2015.
  */
 crudApp.controller("crudController", function ($scope, $http) {
+
+
+    $scope.cacheEntities = function(url){
+        $scope.entities = [];
+
+        var urls = url.split(",");
+        $.each(urls, function(i, urlParse){
+            $http.get(urlParse).then(function successCallback(response){
+                $scope.entities.push(response.data);
+            })
+        });
+    };
+
     $scope.loadDropDown = function (url) {
         $http.get(url).then(function successCallback(response) {
             $scope.dropdown = response.data;
@@ -34,7 +47,15 @@ crudApp.controller("crudController", function ($scope, $http) {
         angular.forEach($scope.records, function (value, key) {
             if (value.id == id) {
                 $scope.recordFound = value;
-                console.log($scope.recordFound);
+                return;
+            }
+        });
+    };
+
+    $scope.restock = function(id){
+        angular.forEach($scope.records, function (value, key) {
+            if (value.item.id == id) {
+                $scope.stock = value;
                 return;
             }
         });
