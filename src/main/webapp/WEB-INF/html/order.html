@@ -525,10 +525,25 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
+            //toggle minicart
             $(".cartSmall-icon").on("click",function(){
-                $('.cartSmall-icon').css("right", "+70vw" );
-                $('.cartSmall-content').css("right", "+1vw" );
+                var displayed =  $('.cartSmall-icon').css("right");
+
+                if(displayed == '0px') {
+                    $('.cartSmall-icon').css("right", "+70vw" );
+                    $('.cartSmall-content').css("right", "+1vw" );
+                } else {
+                    $('.cartSmall-icon').css("right", "0vw" );
+                    $('.cartSmall-content').css("right", "-70vw" );
+                }
             });
+
+            //restore to minicart default position if window is resized
+            $(window).resize(function() {
+                $('.cartSmall-icon').css("right", "0vw" );
+                $('.cartSmall-content').css("right", "-70vw" );
+            });
+
         }).on("click",".group", function(){
             $(".group").removeClass("active");
             $(this).addClass("active");

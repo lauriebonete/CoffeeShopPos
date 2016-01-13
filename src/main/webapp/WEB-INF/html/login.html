@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Foundation | Welcome</title>
+	<link rel="stylesheet" href="css/foundation.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/app.css"/>
+	<link rel="stylesheet" href="css/login.css"/>
+	<link rel="stylesheet" href="css/font-awesome.css"/>
+	<link rel="stylesheet" href="css/responsive-tables.css">
+
+	<script src="js/vendor/jquery.js"></script>
+	<script src="js/foundation.min.js"></script>
+	<script src="js/responsive-tables.js"></script>
+	<script src="js/evey-1.0.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-selectize.js"></script>
+	<script src="angular/crudApp.js"></script>
+	<script src="angular/crudController.js"></script>
+	<script src="js/vendor/modernizr.js"></script>
+</head>
+<body>
+<br>
+<div id="login">
+	<div>
+		<img src="img/maestroFedeliLogo.png" height="300px" width="360px" style="display:block;margin:auto;"/>
+	</div>
+	</br>
+	<form action="/login" method="POST">
+		<div>
+			<input type="password" placeholder="6 pin digit" id="pinDigit" name="pinDigit"/>
+		</div>
+		<div id="numpad">
+			<div class="numpadNumber">
+				<h5>7</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>8</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>9</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>4</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>5</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>6</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>1</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>2</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>3</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>Clear</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>0</h5>
+			</div>
+			<div class="numpadNumber">
+				<h5>Enter</h5>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+	$(document).foundation();
+
+	$(".numpadNumber").on("click",function(){
+		var pressed = $(this).find("h5").text();
+		if(pressed == "Clear"){
+			$("#pinDigit").removeAttr("value");
+			return false;
+		} else if (pressed == "Enter"){
+			$("form").submit();
+		}
+		var pin;
+		if($("#pinDigit").val() != ""){
+			pin = $("#pinDigit").val();
+		} else {
+			pin = "";
+		}
+		if(pin.length > 5){
+			return false;
+		}
+		$("#pinDigit").attr("value", pin + pressed);
+	});
+
+</script>
+</body>
+</html>
