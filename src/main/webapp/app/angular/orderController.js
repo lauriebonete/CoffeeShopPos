@@ -89,6 +89,14 @@ orderApp.controller("orderController", function ($scope, $http) {
         });
     };
 
+    $scope.countOrdered = function(count){
+        $scope.orderedCount = count;
+    };
+
+    $scope.setOrderedCount = function(){
+        $scope.orderedCount = 0;
+    };
+
     $scope.getPriceBySelected = function(id){
         if($scope.selectedProduct.price != null &&
             $scope.selectedProduct.price != undefined &&

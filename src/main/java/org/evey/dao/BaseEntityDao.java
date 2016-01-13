@@ -5,6 +5,7 @@ import org.evey.bean.BaseEntity;
 import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,5 +22,6 @@ public interface BaseEntityDao<T extends BaseEntity, Id extends Serializable> {
     public Set<Object> findBySetOfIds(Set<Long> ids);
     public T load(Long id);
     public List<T> findEntityByNamedQuery(String name);
+    public List<T> findEntityByNamedQuery(String name, Map<String, Object> parameters);
 
 }

@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ public class Item extends BaseEntity {
 	private static final long serialVersionUID = 2776590636632885067L;
 
 	@Column(name="ITEM_CODE", unique = true, nullable = false)
+	@UniqueField
 	private String itemCode;
 
 	@Column(name="ITEM_NAME")

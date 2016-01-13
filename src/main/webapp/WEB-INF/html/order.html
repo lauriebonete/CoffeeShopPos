@@ -100,9 +100,9 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="cartBig show-for-large-up">
+                        <div class="cartBig show-for-large-up" ng-init="setOrderedCount()">
                             <h5 class="left">Order Summary</h5>
-                            <h5 class="right">(0)</h5>
+                            <h5 class="right">({{orderedCount}})</h5>
                             <div class="orderSummary">
                                 <div class="items">
                                     <div class="row">
@@ -146,7 +146,7 @@
                             </div>
                             <div class="cartSmall-content show-for-medium-down">
                                 <h5 class="left">Order Summary</h5>
-                                <h5 class="right">(0)</h5>
+                                <h5 class="right">({{orderedCount}})</h5>
                                 <div class="orderSummary">
                                     <div class="items">
                                         <div class="row">
@@ -194,7 +194,8 @@
                                         <div class="panel-flat">
                                             <div class="row">
                                                 <div class="column small-12">
-                                                    <h3>Orders</h3>
+                                                    <h3 id="saleCode"></h3>
+                                                    <h2>Orders</h2>
                                                 </div>
                                             </div>
                                             <div class="row header">
@@ -614,6 +615,8 @@
             $(classTotalPrice).text(totalPrice);
             $(classTotalPrice).attr("data-total",totalPrice);
 
+            countQty();
+
             $('#modifyOrder').foundation('reveal', 'close');
 
         }).on("click","#modifyOrder input[name=size-group]",function(){
@@ -638,6 +641,9 @@
             $(totalHolder).text(total);
 
             $(".order-holder div.added:nth-child("+index+")").remove();
+
+            countQty();
+
         }).on("click", ".continue",function(){
             var detail = getCartDetail();
             $.ajax({
@@ -647,24 +653,44 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success: function(data){
-                    displayData(data.results);
-                    confirmOrderFunc(data.results);
-                    holderOrderFunc(data.results);
-                    $(".payment-page").toggleClass("hide");
-                    $(".order-page").toggleClass("hide");
+                    $.ajax({
+                        url: evey.getHome()+"/sale/reserve-sale-code",
+                        type: "GET",
+                        dataType: "JSON",
+                        success:function(saleCode){
+                            $("#saleCode").text(saleCode);
+                            displayData(data.results);
+                            confirmOrderFunc(data.results);
+                            holderOrderFunc(data.results);
+                            $(".payment-page").toggleClass("hide");
+                            $(".order-page").toggleClass("hide");
+                        }
+                    });
                 },
                 error: function(data){
                     alert(JSON.stringify(data));
                 }
-            })
+            });
 
         }).on("click", ".back-to-order", function(){
             $(".payment-page").toggleClass("hide");
             $(".order-page").toggleClass("hide");
         });
 
+        var countQty = function(){
+
+            var totalCount = 0;
+            $.each($(".cartBig .order-holder .row .quantity-price"),function(i,row){
+                totalCount += parseInt($(row).attr("data-quantity"));
+            });
+
+            angular.element("body").scope().countOrdered(totalCount);
+            angular.element("body").scope().$apply();
+        };
+
         var confirmOrderFunc = function(data){
             $("#confirm-order").on("click", function(){
+                data["saleCode"] = $("#saleCode").text();
                 $.ajax({
                     url: evey.getHome()+"/sale/confirm",
                     type: "POST",
@@ -673,8 +699,14 @@
                     contentType: "application/json",
                     success: function(data){
 
+                        $(".order-holder").children().remove();
+                        angular.element("body").scope().setOrderedCount();
+                        angular.element("body").scope().$apply();
+
+                        $(".payment-page").toggleClass("hide");
+                        $(".order-page").toggleClass("hide");
                     }
-                })
+                });
             });
         };
 

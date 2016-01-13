@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.evey.annotation.JoinList;
+import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 public class Product extends BaseEntity {
 
 	@Column(name = "PRODUCT_CODE", unique = true, nullable = false)
+	@UniqueField
 	private String productCode;
 
 	@Column(name="PRODUCT_NAME")

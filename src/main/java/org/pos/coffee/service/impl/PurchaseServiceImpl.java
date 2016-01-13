@@ -54,7 +54,7 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Purchase receivedPurchaseOrder(Purchase purchase) {
+    public Purchase receivedPurchaseOrder(Purchase purchase) throws Exception{
         Purchase loadPurchase = this.load(purchase.getId());
         purchaseOrderService.receivePurchaseOrders(loadPurchase.getPurchaseOrders(), purchase.getPurchaseOrders());
         stockService.createInventoryForReceivingPO(loadPurchase.getPurchaseOrders());
