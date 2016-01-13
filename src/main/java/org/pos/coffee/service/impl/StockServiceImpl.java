@@ -60,7 +60,11 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
             Map<String,Object> params = new HashMap<>();
             params.put("item", item.getId());
 
-            stockList.addAll(this.findEntityByNamedQuery("jpql.stock.retrieve-null-stocks",params));
+            List<Stock> resultNull = this.findEntityByNamedQuery("jpql.stock.retrieve-null-stocks", params);
+            if(resultNull!=null){
+                stockList.addAll(resultNull);
+            }
+
 
             for (Stock inactive: stockList){
                 inactive.setIsActive(false);

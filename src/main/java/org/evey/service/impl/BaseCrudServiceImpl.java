@@ -101,7 +101,7 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
 
     @Override
     public List<T> findEntityByNamedQuery(String queryName, Map<String, Object> parameters) {
-        return null;
+        return baseEntityDao.findEntityByNamedQuery(queryName, parameters);
     }
 
     private void preloadEntity(T entity) {

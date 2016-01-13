@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/selectize.default.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -121,11 +122,11 @@
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
-                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                                <a href="#" class="button right success small add-purchase-modal"><i class="fa fa-plus-circle"></i> &nbsp Purchase</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/purchase/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/purchase/findAll">
                                         <thead>
                                             <tr>
                                                 <th>Purchase Code</th>
@@ -144,7 +145,7 @@
                                                 <td></td>
                                                 <td>{{record.status}}</td>
                                                 <td>
-                                                    <i class="fa fa-refresh has-tip tip-top radius restock-btn" aria-haspopup="true" title="Restock" ng-click = "editAction(record.id)" ng-class="id"  data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                    <i class="fa fa-refresh restock-btn fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id"  data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -160,7 +161,41 @@
                             </div>
                         </div>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" data-receival="{{recordFound.isForReceival}}">
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                        <h3 id="crud-title">Purchase.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="crud-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Supplier Name
+                                            <input class="supplier-name" type="text" placeholder="Supplier Name" name="supplierName"></label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <div class="columns small-12">
+                                            <div class="row">
+                                                <div class="columns small-12 add-purchase">
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="columns small-12 added-purchase">
+
+                                                </div>
+                                            </div>
+                                            <div class="row margin-top-one-rem">
+                                                <a aria-label="Add" class="add-item"><i class="fa fa-plus-circle"></i> Add Item</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button class="button expand success purchase-crud">Purchase</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="update-modal" class="reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog" data-receival="{{recordFound.isForReceival}}">
                         <h3 id="update-title">Purchase: {{recordFound.purchaseCode}}</h3>
                         <h4 class="center">{{recordFound.status}}</h4>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
@@ -194,11 +229,11 @@
                                                 <div class="columns small-3">
                                                     <label class="center">Request Quantity</label>
                                                 </div>
-                                                <div class="columns small-3">
-                                                    <label class="center">Price</label>
-                                                </div>
                                                 <div class="columns small-2">
                                                     <label class="center">Received</label>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <label class="center">Price</label>
                                                 </div>
                                             </div>
                                             <div class="ordered-item-location">
@@ -228,6 +263,40 @@
 </body>
 <footer>
 
+    <script type="text/html" id="purchase-template">
+        <div class="row item-row">
+            <div class="columns small-6">
+                <select class="item-dropdown"></select>
+            </div>
+            <div class="columns small-2">
+                <input class="purc-order-qty" type="number" placeholder="Purchase Quantity" name="orderQuantity" pattern="number">
+            </div>
+            <div class="columns small-3">
+                <input class="purc-price" type="number" placeholder="Price" name="price" pattern="number">
+            </div>
+            <div class="columns small-1">
+                <a class="push-item"><i class="fa fa-plus fa-2x"></i></a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="added-purchase-template">
+        <div class="row item-added">
+            <div class="columns small-5">
+                <span class="item"></span>
+            </div>
+            <div class="columns small-3">
+                <span class="purch-order-qty"></span>
+            </div>
+            <div class="columns small-3">
+                <span class="purch-price"></span>
+            </div>
+            <div class="columns small-1">
+                <a aria-label="Remove" class="remove-item"><i class="fa fa-times fa-lg"></i></a>
+            </div>
+        </div>
+    </script>
+
     <script type="text/html" id="ordered-template">
         <div class="row">
             <div class="center columns small-4">
@@ -250,11 +319,11 @@
             <div class="center columns small-3">
                 <span class="request-quantity"></span>
             </div>
-            <div class="center columns small-3">
-                <input type="number" class="request-price"/>
-            </div>
             <div class="center columns small-2">
                 <input type="number" class="quantity-received"/>
+            </div>
+            <div class="center columns small-3">
+                <input type="number" class="request-price"/>
             </div>
         </div>
     </script>
@@ -263,7 +332,17 @@
         $(document).foundation();
         $(document).EVEYfy();
 
+        var items = null;
         $(document).ready(function(){
+
+            $.ajax({
+                url: evey.getHome()+"/item/getAllBypassLazy",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    items = data;
+                }
+            });
 
         }).on("click", ".restock-btn", function(){
             var purchaseId = $(this).data("id");
@@ -370,6 +449,69 @@
                     $('#update-modal').foundation('reveal', 'close');
                 }
             });
+        }).on("click", ".add-item", function(){
+            var template = $("#purchase-template").html();
+
+            var location = $("#crud-modal .add-purchase");
+            $(location).append($(template));
+            $(location).find(".item-dropdown").last().selectize({
+                valueField: 'id',
+                labelField: 'itemName',
+                searchField: ['itemName','itemCode'],
+                options:items,
+                render: {
+                    option:function(items){
+                        return "<option value='"+items.id+"' data-uom='"+items.uom.value+"'>"+items.itemCode+" - "+items.itemName+"</option>"
+                    }
+                }
+            });
+        }).on("click", ".push-item", function(){
+            var row = $(this).parents("div.item-row");
+            var itemId = $(row).find("select option:selected").val();
+            var itemName = $(row).find("select option:selected").text();
+            var qty = $(row).find("input.purc-order-qty").val();
+            var price = $(row).find("input.purc-price").val();
+
+            var template = $("#added-purchase-template").html();
+            var location = $("#crud-modal .added-purchase");
+
+            $(location).append($(template));
+            var lastRow = $(location).find("div.row").last();
+            $(lastRow).attr("data-itemid", itemId);
+            $(lastRow).attr("data-qty", qty);
+            $(lastRow).attr("data-price",price);
+            $(lastRow).find("span.item").text(itemName);
+            $(lastRow).find("span.purch-order-qty").text(qty);
+            $(lastRow).find("span.purch-price").text(price);
+
+            $(row).remove();
+
+        }).on("click", ".remove-item", function(){
+            $(this).parents(".item-added").remove();
+        }).on("click", ".add-purchase-modal", function(){
+            $("#crud-modal .add-purchase").children().remove();
+            $("#crud-modal .added-purchase").children().remove();
+            $('#crud-modal').foundation('reveal', 'open');
+        }).on("click", ".purchase-crud", function(){
+            var purchaseOrderList = [];
+            var purchase = new Object();
+            $.each($("#crud-modal .added-purchase .item-added"),function(i,row){
+                var purchaseOrder = new Object();
+                var item = new Object();
+                var itemId = $(row).attr("data-itemid");
+                var qty = $(row).attr("data-qty");
+                var price = $(row).attr("data-price");
+
+                item["id"] = itemId;
+                purchaseOrder["price"] = price;
+                purchaseOrder["orderedQuantity"] = qty;
+                purchaseOrder["orderedItem"] = item;
+                purchaseOrderList.push(purchaseOrder);
+            });
+
+            purchase["supplier"] = $("#crud-modal .supplier-name").val();
+            purchase["purchaseOrders"] = purchaseOrderList;
+
         });
     </script>
 </footer>

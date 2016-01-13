@@ -40,10 +40,6 @@
 	width:100%;
 }
 
-.reveal-modal.crud-modal {
-	width:40%;
-}
-
 .clearfix {
 	clear: both;
 }
@@ -101,10 +97,6 @@
 .each-size {
     margin-bottom: .25rem;
     padding: .25rem;
-}
-
-.half-modal{
-    width: 50%;
 }
 
 .margin-top-one-rem {
@@ -178,4 +170,98 @@ input[data-toggle]:checked + label:active {
 
 .height-full {
     height: 100%;
+}
+
+@media only screen and (max-width: 64.0625em) {
+    table {
+        overflow-x: auto;
+        display: block;
+    }
+}
+
+/*FOR SMALL*/
+@media only screen {
+    i.fa-2x-for-small {
+        font-size: 2em ;
+    }
+
+    .half-modal{
+        width: 100%;
+    }
+
+    .reveal-modal.crud-modal {
+        width:100%;
+    }
+
+    .reveal-modal {
+        min-height: 0;
+    }
+}
+
+
+/*FOR MEDIUM*/
+@media only screen and (min-width: 40.0625em) {
+    i.fa-2x-for-small {
+        font-size: 2em ;
+    }
+
+    .half-modal{
+        width: 100%;
+    }
+
+    .reveal-modal.crud-modal {
+        width:100%;
+    }
+
+    .reveal-modal {
+        min-height: 0;
+    }
+}
+
+/* large displays */
+@media only screen and (min-width: 64.0625em) {
+
+    i.fa-2x-for-small.fa-lg {
+        font-size: 1.33rem;
+    }
+
+    .half-modal{
+        width: 50%;
+    }
+
+    .reveal-modal.crud-modal {
+        width:40%;
+    }
+}
+
+/* xlarge displays */
+@media only screen and (min-width: 90.0625em) {
+
+    i.fa-2x-for-small.fa-lg {
+        font-size: 1.33rem;
+    }
+
+    .half-modal{
+        width: 50%;
+    }
+
+    .reveal-modal.crud-modal {
+        width:40%;
+    }
+}
+
+/* xxlarge displays */
+@media only screen and (min-width: 120.0625em) {
+
+    i.fa-2x-for-small.fa-lg {
+        font-size: 1.33rem;
+    }
+
+    .half-modal{
+        width: 50%;
+    }
+
+    .reveal-modal.crud-modal {
+        width:40%;
+    }
 }

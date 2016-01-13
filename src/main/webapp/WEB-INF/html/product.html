@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/dropzone.css">
 
@@ -148,7 +147,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/product/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/product/findAll">
                                         <thead>
                                         <tr>
                                             <th>Code</th>
@@ -167,10 +166,10 @@
                                             <td>{{record.displayProductGroup}}</td>
                                             <td>{{record.displayPromoGroup}}</td>
                                             <td>
-                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
-                                                <i class="fa fa-cutlery has-tip tip-top radius ingredient-action" data-tooltip aria-haspopup="true" title="Ingredient" data-id="{{record.id}}"></i>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-camera image-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
+                                                <i class="fa fa-cutlery ingredient-action fa-2x-for-small fa-lg" data-id="{{record.id}}"></i>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -538,11 +537,11 @@
             $(location).find(".item-dropdown").last().selectize({
                 valueField: 'id',
                 labelField: 'itemName',
-                searchField: 'itemName',
+                searchField: ['itemName','itemCode'],
                 options:items,
                 render: {
                     option:function(items){
-                        return "<option value='"+items.id+"' data-uom='"+items.uom.value+"'>"+items.itemName+"</option>"
+                        return "<option value='"+items.id+"' data-uom='"+items.uom.value+"'>"+items.itemCode+" - "+items.itemName+"</option>"
                     }
                 }
             });
@@ -611,7 +610,7 @@
                         var lastRow = $(location).find("div.row").last();
                         $(lastRow).find("div.details-holder").attr("data-id", item.itemId);
                         $(lastRow).find("div.details-holder").attr("data-qty", item.quantity);
-                        $(lastRow).find("span.item").text(item.item.itemName);
+                        $(lastRow).find("span.item").text(item.item.itemCode+" - "+item.item.itemName);
                         $(lastRow).find("span.qty").text(item.quantity+" "+item.item.uom.value);
                     });
                     $('#ingredient-modal').foundation('reveal', 'open');
