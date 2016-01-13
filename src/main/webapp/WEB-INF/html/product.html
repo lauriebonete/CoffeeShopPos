@@ -594,6 +594,8 @@
         }).on("click",".ingredient-action", function(){
             $("#ingredient-modal").attr("data-product", $(this).data("id"));
 
+            $("#ingredient-modal .added-item-location").children().remove();
+
             $.ajax({
                 url: evey.getHome()+"/ingredient/getIngredient",
                 data: {"productId": $(this).data("id")},

@@ -5,12 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="MAESTRO_USER")
-public class MaestroUser extends User {
+public class MaestroUser{
 
-	@ManyToOne
-	@JoinColumn(name="BRANCH", referencedColumnName = "KEY_")
 	private ReferenceLookUp branch;
 
 	public ReferenceLookUp getBranch() {
@@ -20,5 +16,5 @@ public class MaestroUser extends User {
 	public void setBranch(ReferenceLookUp branch) {
 		this.branch = branch;
 	}
-	
+
 }

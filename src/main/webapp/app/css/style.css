@@ -2,6 +2,10 @@
     padding-left: 0.5%;
 }
 
+.hide {
+    display: none !important;
+}
+
 .center-modal {
     margin-top: 15%;
 }

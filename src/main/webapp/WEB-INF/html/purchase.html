@@ -107,21 +107,8 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Item Name
-                                            <input type="text" placeholder="Provide Item Name" name="itemName"/>
-                                        </label>
-                                        <label>Description
-                                            <input type="text" placeholder="Provide Description" name="description"/>
-                                        </label>
-                                        <label>Unit of measurement
-                                            <select name="uom.id" data-list="false">
-                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.value}}</option>
-                                            </select>
-                                        </label>
-                                        <label>Condition
-                                            <select name="" data-list="false">
-                                                <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.value}}</option>
-                                            </select>
+                                        <label>Purchase Code
+                                            <input type="text" placeholder="Purchase Code" name="purchaseCode"/>
                                         </label>
                                         <div class="rows">
                                             <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
@@ -134,6 +121,7 @@
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
@@ -218,10 +206,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="rows">
+                                    <div class="rows" ng-if="!recordFound.isForReceival">
                                         <button class="button expand success restock-action-btn" data-status="In Progress">Purchase</button>
                                     </div>
-                                    <div class="rows">
+                                    <div class="rows" ng-if="recordFound.isForReceival">
                                         <button class="button expand success" id="restock-receive-btn">Receive</button>
                                     </div>
                                     <div class="rows">
@@ -246,10 +234,10 @@
                 <span class="item"></span>
             </div>
             <div class="center columns small-4">
-                <span class="request-quantity"></span>
+                <input type="number" class="request-quantity"/>
             </div>
             <div class="center columns small-4">
-                <span class="request-price"></span>
+                <input type="number" class="request-price"/>
             </div>
         </div>
     </script>
@@ -263,7 +251,7 @@
                 <span class="request-quantity"></span>
             </div>
             <div class="center columns small-3">
-                <span class="request-price"></span>
+                <input type="number" class="request-price"/>
             </div>
             <div class="center columns small-2">
                 <input type="number" class="quantity-received"/>
@@ -279,6 +267,7 @@
 
         }).on("click", ".restock-btn", function(){
             var purchaseId = $(this).data("id");
+            $("#restock-receive-btn").removeClass("hide");
 
             var location = $(".ordered-item-location");
             $(location).children("div.row").remove();
@@ -300,6 +289,7 @@
 
                     var entities = angular.element(".main-body").scope().entities[0];
 
+                    var isHideReceiveBtn = true;
                     $.each(data, function(i, po){
                         $(location).append($(orderedItem));
                         var lastRow = $(location).find("div.row").last();
@@ -314,15 +304,30 @@
 
                         $(lastRow).attr("data-id",po.id);
                         $(lastRow).find("span.item").text(po.orderedItem.itemCode +" - "+po.orderedItem.itemName);
-                        $(lastRow).find("span.request-quantity").text(po.orderedQuantity+" "+uom);
+
+                        if($("#update-modal").attr("data-receival")==="true"){
+                            $(lastRow).find("span.request-quantity").text(po.orderedQuantity+" "+uom);
+                        } else {
+                            $(lastRow).find("input.request-quantity").val(po.orderedQuantity);
+                        }
+
+                        $(lastRow).find("input.request-price").val(po.price);
                         $(lastRow).find("span.request-price").text(po.price);
                         if(po.isReceived){
                             $(lastRow).find("input.quantity-received").val(po.receivedQuantity);
                             $(lastRow).find("input.quantity-received").attr("disabled", true);
+
+                            $(lastRow).find("input.request-price").attr("disabled", true);
+                            isHideReceiveBtn = true;
                         } else{
                             $(lastRow).find("input.quantity-received").removeAttr("disabled");
+                            $(lastRow).find("input.request-price").removeAttr("disabled");
+                            isHideReceiveBtn = false;
                         }
                     });
+                    if(isHideReceiveBtn){
+                        $("#restock-receive-btn").addClass("hide");
+                    }
                 }
             });
         }).on("click",".restock-action-btn", function(){
@@ -336,6 +341,7 @@
                 dataType: "JSON",
                 success:function(data){
                     console.log(data);
+                    $('#update-modal').foundation('reveal', 'close');
                 }
             });
         }).on("click", "#restock-receive-btn",function(){
@@ -361,6 +367,7 @@
                 contentType: "application/json",
                 success:function(data){
                     console.log(data);
+                    $('#update-modal').foundation('reveal', 'close');
                 }
             });
         });

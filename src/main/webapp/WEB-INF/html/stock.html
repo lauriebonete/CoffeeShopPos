@@ -310,7 +310,7 @@
             var purchaseOrder = new Object();
             var purchaseOrderList = [];
 
-            item["id"] = $("#item").data("itemid");
+            item["id"] = $("#item").attr("data-itemid");
             purchaseOrder["orderedItem"] = item;
             purchaseOrder["price"] = $("#price").val();
             purchaseOrder["orderedQuantity"] = $("#ordered-quantity").val();

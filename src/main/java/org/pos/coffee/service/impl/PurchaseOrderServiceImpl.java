@@ -45,10 +45,14 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
     public void receivePurchaseOrders(List<PurchaseOrder> target, List<PurchaseOrder> update) {
         for(PurchaseOrder purchaseOrder: target){
             for(PurchaseOrder updateSource: update){
-                if(purchaseOrder.equals(updateSource)){
-                    purchaseOrder.setReceivedQuantity(updateSource.getReceivedQuantity());
-                    purchaseOrder.setIsReceived(true);
-                    this.save(purchaseOrder);
+                if(updateSource.getReceivedQuantity()!=null){
+                    if(purchaseOrder.equals(updateSource)){
+                        purchaseOrder.setReceivedQuantity(updateSource.getReceivedQuantity());
+                        purchaseOrder.setIsReceived(true);
+                        this.save(purchaseOrder);
+                        break;
+                    }
+                } else {
                     break;
                 }
             }
