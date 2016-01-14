@@ -64,6 +64,23 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Purchase createPurchase(Purchase purchase) {
+        purchase.setPurchaseCode(this.generatePurchaseCode("PO_",1,1,5));
+        purchase.setStatus(Purchase.Status.FOR_APPROVAL.getValue());
+
+        Double totalPrice = 0D;
+        for(PurchaseOrder purchaseOrder: purchase.getPurchaseOrders()){
+            purchaseOrder.setPurchase(purchase);
+            purchaseOrderService.save(purchaseOrder);
+            totalPrice += purchaseOrder.getPrice();
+        }
+        purchase.setTotalExpense(totalPrice);
+        this.save(purchase);
+        return purchase;
+    }
+
+    @Override
     @Transactional
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry) {
         final String datePrefix = DateFormatUtils.format(Calendar.getInstance().getTime(), "yyyyMMdd");

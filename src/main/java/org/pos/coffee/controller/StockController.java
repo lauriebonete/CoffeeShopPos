@@ -1,6 +1,7 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
+import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Stock;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.service.StockService;
@@ -54,6 +55,52 @@ public class StockController extends BaseCrudController<Stock> {
         map.put("size", results.size());
         map.put("listSize", entityListSize);
         return map;
+    }
+
+    @RequestMapping(value = "/rebalance", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Map<String, Object> rebalance(Long itemId, Double currentQty, Double correctQty) throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
+
+        Item item = new Item();
+        item.setId(itemId);
+
+        Stock stock = new Stock();
+        stock.setItem(item);
+        List<Stock> stockList = stockService.findActiveEntity(stock);
+
+        if(correctQty>currentQty){
+            for(Stock foundStock : stockList){
+                if(foundStock.getQuantity()!=null){
+                    foundStock.setQuantity(foundStock.getQuantity()+(correctQty-currentQty));
+                } else {
+                    foundStock.setQuantity(correctQty-currentQty);
+                }
+                stockService.save(foundStock);
+                break;
+            }
+        } else {
+            Double discrepancy = currentQty - correctQty;
+            for(Stock foundStock: stockList){
+                //substract qty
+                if(foundStock.getQuantity()>discrepancy){
+                    foundStock.setQuantity(foundStock.getQuantity()-(discrepancy));
+                    stockService.save(foundStock);
+                    break;
+                } else {
+                    discrepancy -= foundStock.getQuantity();
+                    foundStock.setQuantity(0D);
+                    foundStock.setIsActive(false);
+                }
+
+                stockService.save(foundStock);
+                if(discrepancy>0){
+                    break;
+                }
+            }
+        }
+
+        returnMap.put("success",true);
+        return returnMap;
     }
 
 }

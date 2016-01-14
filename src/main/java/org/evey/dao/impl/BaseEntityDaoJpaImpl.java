@@ -74,6 +74,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         String whereClause = buildWhereQuery(fieldAndValueList);
         queryBuilder.append(whereClause);
         queryBuilder.append(appendToWhere(whereClause, entity));
+        queryBuilder.append(appendOrderClause(entity));
 
         _log.warn(queryBuilder.toString());
 
@@ -312,5 +313,19 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             _log.error("NO property with name "+queryName+" found.");
         }
         return null;
+    }
+
+    private String appendOrderClause(T entity){
+        StringBuilder orderClauseBuilder = new StringBuilder();
+        if(entity.getOrderBy()!=null){
+            orderClauseBuilder.append(" ORDER BY ");
+            for(Map.Entry<String,String> entry: entity.getOrderBy().entrySet()){
+                if(orderClauseBuilder.toString().length()>9){
+                    orderClauseBuilder.append(", ");
+                }
+                orderClauseBuilder.append(entry.getKey()+" "+entry.getValue());
+            }
+        }
+        return orderClauseBuilder.toString();
     }
 }

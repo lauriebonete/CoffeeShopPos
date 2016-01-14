@@ -228,11 +228,11 @@
                     <div id="update-modal" class="reveal-modal update-modal half-modal reveal-modal-absolute" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Inventory Details</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <form data-abide="ajax" id="update-form">
+                        <form data-abide="ajax">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row">
-                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input type="hidden" id="update-item-id" value="{{stock.item.id}}" name="id">
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Item Name
@@ -245,16 +245,16 @@
                                     <div class="row collapse prefix-radius">
                                         <label>Current Quantity</label>
                                         <div class="small-9 columns">
-                                            <input type="text" placeholder="Current Quantity" value="{{stock.quantity}}" disabled/>
+                                            <input type="text" placeholder="Current Quantity" value="{{stock.quantity}}" class="current-quantity" disabled/>
                                         </div>
                                         <div class="small-3 columns">
                                             <span class="postfix">{{stock.item.uom.value}}</span>
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
-                                        <label>Add Quantity</label>
+                                        <label>Correct Quantity</label>
                                         <div class="small-9 columns">
-                                            <input type="number" placeholder="Add Quantity" />
+                                            <input type="number" placeholder="Correct Quantity" class="correct-quantity" />
                                         </div>
                                         <div class="small-3 columns">
                                             <span class="postfix">{{stock.item.uom.value}}</span>
@@ -327,6 +327,23 @@
                 success: function(data){
                     console.log(data.result.purchaseCode);
                     $('#restock-modal').foundation('reveal', 'close');
+                }
+            });
+        }).on("click","#form-update-btn",function(){
+            var itemId = $("#update-modal #update-item-id").val();
+            var currentQty = $("#update-modal .current-quantity").val();
+            var correctQty = $("#update-modal .correct-quantity").val();
+
+            $.ajax({
+                url: evey.getHome()+"/inventory/rebalance",
+                data: {"itemId":itemId, "currentQty": currentQty, "correctQty": correctQty},
+                type: "POST",
+                dataType: "JSON",
+                success: function (data) {
+                    if(data.success!=null
+                        && data.success) {
+                        $('#update-modal').foundation('reveal', 'close');
+                    }
                 }
             });
         });

@@ -2,6 +2,7 @@ package org.evey.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -50,6 +51,9 @@ public class BaseEntity implements Serializable{
 
 	@Transient
 	private Boolean skipAudit;
+
+	@Transient
+	private Map<String,String> orderBy;
 	
 	public Long getId() {
 		return id;
@@ -94,6 +98,14 @@ public class BaseEntity implements Serializable{
 
 	public void setSkipAudit(Boolean skipAudit) {
 		this.skipAudit = skipAudit;
+	}
+
+	public Map<String, String> getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(Map<String, String> orderBy) {
+		this.orderBy = orderBy;
 	}
 
 	@Override

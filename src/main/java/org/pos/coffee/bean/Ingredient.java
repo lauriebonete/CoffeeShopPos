@@ -27,6 +27,9 @@ public class Ingredient extends BaseEntity {
 	@Column(name = "PRODUCT_ID", insertable = false, updatable = false)
 	private Long productId;
 
+	@Column(name="IS_BASE")
+	private Boolean isBase;
+
 
 	public Item getItem() {
 		return item;
@@ -65,4 +68,18 @@ public class Ingredient extends BaseEntity {
 		this.productId = productId;
 	}
 
+	public Boolean getIsBase() {
+		return isBase;
+	}
+
+	public void setIsBase(Boolean isBase) {
+		this.isBase = isBase;
+	}
+
+	@Override
+	protected void prePersist() {
+		if(this.isBase==null){
+			this.isBase = false;
+		}
+	}
 }

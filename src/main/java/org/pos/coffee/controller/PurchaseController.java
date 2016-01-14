@@ -79,4 +79,14 @@ public class PurchaseController extends BaseCrudController<Purchase> {
 
         return returnMap;
     }
+
+    @RequestMapping(value = "/create-purchase", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Map<String, Object> createPurchase(@RequestBody Purchase purchase) {
+        Map<String, Object> returnMap = new HashMap<>();
+        Purchase saved = purchaseService.createPurchase(purchase);
+        returnMap.put("result", saved);
+        returnMap.put("success", true);
+
+        return returnMap;
+    }
 }

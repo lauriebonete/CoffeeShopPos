@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
@@ -33,6 +34,9 @@ public class Item extends BaseEntity {
 
 	@Column(name="DEMARCATION")
 	private Double demarcation;
+
+	@Column(name = "IS_BASE")
+	private Boolean isBase;
 	
 	public String getItemName() {
 		return itemName;
@@ -83,6 +87,14 @@ public class Item extends BaseEntity {
 		this.demarcation = demarcation;
 	}
 
+	public Boolean getIsBase() {
+		return isBase;
+	}
+
+	public void setIsBase(Boolean isBase) {
+		this.isBase = isBase;
+	}
+
 	@Override
 	protected void prePersist() {
 		if(this.criticalLevel==null){
@@ -90,6 +102,10 @@ public class Item extends BaseEntity {
 		}
 		if(this.demarcation==null){
 			this.demarcation = 0D;
+		}
+
+		if(this.isBase==null){
+			this.isBase = false;
 		}
 	}
 }

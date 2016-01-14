@@ -214,14 +214,29 @@
                                             <input type="number" placeholder="Demarcation" name="demarcation" pattern="number"></label>
                                         <small class="error">Please provide a number value.</small>
                                     </div>
-                                    <div class="switch round">
-                                        <p>Active</p>
-                                        <input id="active" type="checkbox" name="isActive" checked>
-                                        <label for="active">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
+                                    <div class="row collapse prefix-radius">
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Active</p>
+                                                <input id="active" type="checkbox" name="isActive" checked>
+                                                <label for="active">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Active</p>
+                                                <input id="is-base" type="checkbox" name="isBase">
+                                                <label for="is-base">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-add-btn">Add</button>
                                         <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
@@ -271,14 +286,29 @@
                                             <input type="number" placeholder="Demarcation" name="demarcation" value="{{recordFound.demarcation}}" pattern="number"></label>
                                         <small class="error">Please provide a number value.</small>
                                     </div>
-                                    <div class="switch round">
-                                        <p>Active</p>
-                                        <input id="activeUpdate" type="checkbox" name="isActive" ng-model="recordFound.isActive">
-                                        <label for="activeUpdate">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
+                                    <div class="row collapse prefix-radius">
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Active</p>
+                                                <input id="updateActive" type="checkbox" name="isActive" ng-model="recordFound.isActive">
+                                                <label for="updateActive">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="columns small-6">
+                                            <div class="switch round">
+                                                <p>Active</p>
+                                                <input id="update-is-base" type="checkbox" name="isBase" ng-model="recordFound.isBase">
+                                                <label for="update-is-base">
+                                                    <span class="switch-on">YES</span>
+                                                    <span class="switch-off">NO</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-update-btn">Update</button>
                                         <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>

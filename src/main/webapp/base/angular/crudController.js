@@ -56,6 +56,7 @@ crudApp.controller("crudController", function ($scope, $http) {
         angular.forEach($scope.records, function (value, key) {
             if (value.item.id == id) {
                 $scope.stock = value;
+                console.log(value);
                 return;
             }
         });

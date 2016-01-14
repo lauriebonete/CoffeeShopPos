@@ -379,14 +379,20 @@
 
     <script type="text/html" id="item-template">
         <div class="item-row row">
-            <div class="columns small-6">
+            <div class="columns small-5">
                 <select class="item-dropdown"></select>
             </div>
             <div class="columns small-2">
                 <input type="text" class="quantity" placeholder="QTY">
             </div>
-            <div class="columns small-3">
+            <div class="columns small-2">
                 <span class="uom"></span>
+            </div>
+            <div class="columns small-2">
+                <div class="switch radius small">
+                    <input id="template" type="radio" name="isBase">
+                    <label for=""></label>
+                </div>
             </div>
             <div class="columns small-1">
                 <a class="add-item"><i class="fa fa-plus"></i></a>
@@ -397,15 +403,24 @@
     <script type="text/html" id="added-item-template">
         <div class="row">
             <div class="details-holder"></div>
-            <div class="columns small-7">
+            <div class="columns small-6">
                 <span class="item"></span>
             </div>
-            <div class="columns small-4">
+            <div class="columns small-3">
                 <span class="qty"></span>
+            </div>
+            <div class="columns small-2 switch-location">
             </div>
             <div class="columns small-1">
                 <a aria-label="Remove" class="remove-ingredient"><i class="fa fa-times"></i></a>
             </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="switch-template">
+        <div class="switch radius small">
+            <input id="" type="radio" name="isBase">
+            <label for=""></label>
         </div>
     </script>
 
@@ -530,6 +545,10 @@
                 $('#image-modal').foundation('reveal', 'open');
             }
         }).on("click", ".add-ingredient", function(){
+
+            var indexAdded = $("#ingredient-modal .added-item-location").children().length;
+            var indexToBe = $("#ingredient-modal .item-location").children().length;
+
             var template = $("#item-template").html();
 
             var location = $("#ingredient-modal .item-location");
@@ -546,13 +565,17 @@
                 }
             });
 
+            $(location).find(".item-row").last().find(".switch input").attr("id","base-"+(parseInt(indexAdded)+parseInt(indexToBe)));
+            $(location).find(".item-row").last().find(".switch label").attr("for","base-"+(parseInt(indexAdded)+parseInt(indexToBe)));
+
         }).on("change", ".item-dropdown", function(){
-            $(this).parents(".item-row").find("span").text($(this).parent().find(".selectize-dropdown-content option.selected").data("uom"));
+            $(this).parents(".item-row").find("span.uom").text($(this).parent().find(".selectize-dropdown-content option.selected").data("uom"));
         }).on("click", ".add-item", function(){
             var itemId = $(this).parents(".item-row").find("select option:selected").val();
             var itemName = $(this).parents(".item-row").find("select option:selected").text();
             var qty = $(this).parents(".item-row").find("input.quantity").val();
             var uom = $(this).parents(".item-row").find("span.uom").text();
+            var switchBase = $(this).parents(".item-row").find(".switch");
 
             var addedItem = $("#added-item-template").html();
             var location = $("#ingredient-modal .added-item-location");
@@ -563,6 +586,7 @@
             $(lastRow).find("div.details-holder").attr("data-qty", qty);
             $(lastRow).find("span.item").text(itemName);
             $(lastRow).find("span.qty").text(qty+" "+uom);
+            $(lastRow).find(".switch-location").append($(switchBase));
             $(this).parents(".item-row").remove();
 
         }).on("click", ".remove-ingredient", function(){
@@ -571,11 +595,18 @@
             var ingredientList = [];
             $.each($(".added-item-location .row .details-holder"), function(i, detail){
                 var ingredient = new Object;
+                if($(detail).data("ing-id")!=null
+                    && $(detail).data("ing-id") != undefined){
+                    ingredient["id"] = $(detail).data("ing-id");
+                }
                 ingredient["item"] = {"id":$(detail).data("id")};
                 ingredient["quantity"] = $(detail).data("qty");
                 ingredient["product"] = {"id":$("#ingredient-modal").data("product")};
+                ingredient["isBase"] = $(detail).parent().find(".switch input").is(":checked");
                 ingredientList.push(ingredient);
             });
+
+            console.log(ingredientList);
 
             $.ajax({
                 url: evey.getHome()+"/ingredient/addList",
@@ -594,6 +625,7 @@
             $("#ingredient-modal").attr("data-product", $(this).data("id"));
 
             $("#ingredient-modal .added-item-location").children().remove();
+            $("#ingredient-modal .item-location").children().remove();
 
             $.ajax({
                 url: evey.getHome()+"/ingredient/getIngredient",
@@ -604,14 +636,26 @@
 
                     $.each(data,function(i,item){
                         var addedItem = $("#added-item-template").html();
+                        var switchTemplate = $("#switch-template").html();
                         var location = $("#ingredient-modal .added-item-location");
                         $(location).append($(addedItem));
 
                         var lastRow = $(location).find("div.row").last();
                         $(lastRow).find("div.details-holder").attr("data-id", item.itemId);
                         $(lastRow).find("div.details-holder").attr("data-qty", item.quantity);
+                        $(lastRow).find("div.details-holder").attr("data-ing-id", item.id);
                         $(lastRow).find("span.item").text(item.item.itemCode+" - "+item.item.itemName);
                         $(lastRow).find("span.qty").text(item.quantity+" "+item.item.uom.value);
+                        $(lastRow).find(".switch-location").append($(switchTemplate));
+                        $(lastRow).find(".switch-location .switch input").attr("id", "base-"+item.id+"-added");
+                        $(lastRow).find(".switch-location .switch label").attr("for", "base-"+item.id+"-added");
+
+                        if(item.isBase != null
+                            && item.isBase != undefined
+                            && item.isBase) {
+                            $(lastRow).find(".switch-location .switch input").click();
+                            /*$(lastRow).find(".switch-location .switch input").attr("checked", true);*/
+                        }
                     });
                     $('#ingredient-modal').foundation('reveal', 'open');
                 }
