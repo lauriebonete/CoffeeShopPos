@@ -336,98 +336,89 @@
         </div>
 </div>
 <div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-pid="{{selectedProduct.id}}" data-pname="{{selectedProduct.productName}}">
-    <h2 id="modalTitle">{{selectedProduct.productName}}</h2>
+
+    <div class="row">
+        <div class="columns small-6">
+            <h2 id="modalTitle">{{selectedProduct.productName}} (<span id="modify-quantity">1</span>) </h2>
+        </div>
+        <div class="columns small-6">
+            <h2 class="price right" ng-if="sizeSelection"></h2>
+            <h2 class="price right" ng-if="!sizeSelection" data-list-id="{{selectedProduct.price.id}}" data-price="{{selectedProduct.price.price}}">{{selectedProduct.price.price}}php</h2>
+        </div>
+    </div>
+
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
     <div class="row">
+        <div class="small-4 columns">
+            <h4>Base:</h4>
+        </div>
+        <div class="small-8 columns">
+            <div class="right">
+                    <input type="radio" name="pokemon" value="Red" id="Soy"><label for="Soy"> <h4>Soy</h4></label>
+                    <input type="radio" name="pokemon" value="Red" id="Whole_Milk"><label for="Whole_Milk"> <h4>Whole Milk</h4></label>
+                    <input type="radio" name="pokemon" value="Red" id="Non_Fat"><label for="Non_Fat"> <h4>Non-fat</h4></label>
+            </div>
+        </div>
+    </div>
 
-        <div class="columns small-6">
-            <div class="row">
-                <div class="small-4 columns">
-                    <p>Base</p>
-                </div>
-                <div class="small-8 columns">
-                    <div class="right">
-                        <p>Soy Whole Milk Non-fat</p>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="small-4 columns">
+            <h4>Quantity:</h4>
+        </div>
+        <div class="small-8 columns">
+            <div class="right">
+                <ul class="button-group expand">
+                    <li><button class="button big max-width modify-quan-btn disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
+                    <li><button class="button big max-width modify-quan-btn" data-action="inc"><i class="fa fa-plus"></i></button></li>
+                </ul>
             </div>
-            <div class="row  panel-flat">
-                <div class="small-12 columns">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="columns small-4">
+            <h4>Size:</h4>
+        </div>
+        <div class="columns small-8">
+            <div class="right">
+                <ul class="button-group toggle" data-toggle="buttons-radio">
+                    <li ng-repeat="product in selectedProduct.productUnder">
+                        <input type="radio" id="{{product.id}}" name="size-group" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
+                        <label class="button" for="{{product.id}}">{{product.size.value}}</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <h4>Add-ons:</h4>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="addOnList small-block-grid-2 medium-block-grid-4 large-block-5">
+            <li ng-repeat="productAddOn in productAddOn">
+                <div class="addOn panel-flat sizes" data-id={{productAddOn.id}}>
                     <div class="row">
                         <div class="small-6 columns">
-                            <h4>Quantity</h4>
+                            <p>{{productAddOn.productName}}</p>
                         </div>
                         <div class="small-6 columns">
-                            <h4><span id="modify-quantity">1</span></h4>
-                        </div>
-                    </div>
-                    <div class="small-12 columns">
-                        <div class="row">
-                            <div class="center">
-                                <ul class="button-group">
-                                    <li><button class="button small max-width modify-quan-btn disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
-                                    <li><button class="button small max-width modify-quan-btn" data-action="inc"><i class="fa fa-plus"></i></button></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row panel-flat sizes" ng-if="sizeSelection">
-                <div class="small-12 columns">
-                    <div class="row">
-                        <div class="columns small-12">
-                            <h4>Size</h4>
+                            <p><span id="modify-addon-quantity_{{productAddOn.id}}">0</span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="center">
-                            <ul class="button-group toggle" data-toggle="buttons-radio">
-                                <li ng-repeat="product in selectedProduct.productUnder">
-                                    <input type="radio" id="{{product.id}}" name="size-group" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
-                                    <label class="button" for="{{product.id}}">{{product.size.value}}</label>
-                                </li>
+                            <ul class="button-group">
+                                <li><button class="button small max-width modify-addon-quan-btn {{productAddOn.id}} disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
+                                <li><button class="button small max-width modify-addon-quan-btn {{productAddOn.id}}" data-action="inc"><i class="fa fa-plus"></i></button></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="columns small-12">
-                    <h4 class="price" ng-if="sizeSelection"></h4>
-                    <h4 class="price" ng-if="!sizeSelection" data-list-id="{{selectedProduct.price.id}}" data-price="{{selectedProduct.price.price}}">{{selectedProduct.price.price}}php</h4>
-                </div>
-            </div>
-        </div>
-        <div class="columns small-6">
-            <div class="row">
-                <div class="small-12 columns">
-                    <h4>Add-ons</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="small-12 columns">
-                    <ul class="addOnList small-block-grid-1 medium-block-grid-2 large-block-3">
-                        <li ng-repeat="productAddOn in productAddOn">
-                            <div class="addOn" data-id={{productAddOn.id}}>
-                                <p>{{productAddOn.productName}}</p>
-                                <div class="row">
-                                    <div class="small-4 columns">
-                                        <p><i class="fa fa-minus"></i></p>
-                                    </div>
-                                    <div class="small-4 columns">
-                                        <p><i class="fa fa-plus"></i></p>
-                                    </div>
-                                    <div class="small-4 columns">
-                                        <p>0</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 
     <div class="row">
@@ -577,6 +568,29 @@
                     $(".modify-quan-btn.dec").removeClass("disabled");
                 }
                 $("#modify-quantity").text(Number($("#modify-quantity").text())+1);
+            }
+        }).on("click",".modify-addon-quan-btn",function(){
+
+            var addOnId = $(this).attr("class").match(/\d+/);
+
+            if($(this).data("action")=="dec"){
+                if(Number($("#modify-addon-quantity_" + addOnId).text())<=0){
+                    $(this).attr("disabled");
+                    $(this).addClass("disabled");
+                } else {
+                    $("#modify-addon-quantity_" + addOnId).text(Number($("#modify-addon-quantity_" + addOnId).text())-1);
+                    if(Number($("#modify-addon-quantity_" + addOnId).text())<=0){
+                        $(this).attr("disabled");
+                        $(this).addClass("disabled");
+                    }
+                }
+
+            } else if($(this).data("action") == "inc"){
+                if(Number($("#modify-addon-quantity_" + addOnId).text())+1>1){
+                    $("#modify-addon-quantity_" + addOnId).removeAttr("disabled");
+                    $("#modify-addon-quantity_" + addOnId).removeClass("disabled");
+                }
+                $("#modify-addon-quantity_" + addOnId).text(Number($("#modify-addon-quantity_" + addOnId).text())+1);
             }
         }).on("click", "#add-to-cart", function(){
             var productId = null;
