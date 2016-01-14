@@ -124,6 +124,16 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
+    public List<T> findEntityByNamedQuery(String name, Map<String, Object> parameters) {
+        String queryString = getNamedQuery(name);
+        Query query = getEntityManager().createQuery(queryString);
+        for(Map.Entry<String,Object> entry: parameters.entrySet()){
+            query.setParameter(entry.getKey(),entry.getValue());
+        }
+        return query.getResultList();
+    }
+
+    @Override
     public T load(Long id) {
         T entity = getEntityManager().find(getEntityBeanType(), id);
         return entity;
@@ -180,6 +190,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             } else if(
                     (Boolean.class.isAssignableFrom(query.getEntityType()) ||
                             Long.class.isAssignableFrom(query.getEntityType()) ||
+                            Double.class.isAssignableFrom(query.getEntityType()) ||
                             Integer.class.isAssignableFrom(query.getEntityType()) ||
                             Date.class.isAssignableFrom(query.getEntityType())
             ) || (query.getIsUnique()!=null &&
@@ -270,6 +281,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         for(QueryHelper helper:queryHelper){
             if((!Boolean.class.isAssignableFrom(helper.getEntityType()) &&
                !Long.class.isAssignableFrom(helper.getEntityType()) &&
+               !Double.class.isAssignableFrom(helper.getEntityType()) &&
                !Integer.class.isAssignableFrom(helper.getEntityType())
                 )
                 && !(helper.getIsUnique()!=null && helper.getIsUnique())

@@ -159,7 +159,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/price/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/price/findAll">
                                         <thead>
                                         <tr>
                                             <th>Name</th>
@@ -176,8 +176,8 @@
                                             <td>{{record.effectivityDate}}</td>
                                             <td>{{record.endDate}}</td>
                                             <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -143,7 +142,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/item/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/item/findAll">
                                         <thead>
                                         <tr>
                                             <th>Code</th>
@@ -158,8 +157,8 @@
                                             <td>{{record.itemName}}</td>
                                             <td>{{record.description}}</td>
                                             <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>

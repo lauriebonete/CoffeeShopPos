@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -136,7 +135,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/inventory/stockCount">
+                                    <table class="max-width" id="crud-table" data-url="/inventory/stockCount">
                                         <thead>
                                             <tr>
                                                 <th>Item Code</th>
@@ -158,8 +157,8 @@
                                                 <td>{{record.quantity}} {{record.item.uom.value}}</td>
                                                 <td>{{record.item.criticalLevel}} {{record.item.uom.value}}</td>
                                                 <td>
-                                                    <i class="fa fa-edit has-tip tip-top radius fa-lg" aria-haspopup="true" title="Edit" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
-                                                    <i class="fa fa-refresh has-tip tip-top radius fa-2x" aria-haspopup="true" title="Restock" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-edit fa-lg fa-2x-for-small" data-reveal-id="update-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
+                                                    <i class="fa fa-refresh fa-lg fa-2x-for-small" data-reveal-id="restock-modal" ng-click="restock(record.item.id)" ng-class="item.id" data-id="{{record.item.id}}"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -175,7 +174,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="restock-modal" class="reveal-modal restock-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                    <div id="restock-modal" class="reveal-modal restock-modal half-modal reveal-modal-absolute" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
                         <h3 id="restock-title">Restock Inventory</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="restock-form">
@@ -226,7 +225,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal update-modal half-modal" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal update-modal half-modal reveal-modal-absolute" data-reveal aria-labelledby="restock-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Inventory Details</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -310,7 +309,7 @@
             var purchaseOrder = new Object();
             var purchaseOrderList = [];
 
-            item["id"] = $("#item").data("itemid");
+            item["id"] = $("#item").attr("data-itemid");
             purchaseOrder["orderedItem"] = item;
             purchaseOrder["price"] = $("#price").val();
             purchaseOrder["orderedQuantity"] = $("#ordered-quantity").val();

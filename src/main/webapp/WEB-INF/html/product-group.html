@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/dropzone.css">
 
@@ -136,7 +135,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/productGroup/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/productGroup/findAll">
                                         <thead>
                                         <tr>
                                             <th>Name</th>
@@ -147,9 +146,9 @@
                                         <tr ng-repeat="record in records">
                                             <td>{{record.productGroupName}}</td>
                                             <td>
-                                                <i class="fa fa-camera has-tip tip-top radius image-action" data-tooltip aria-haspopup="true" title="Image" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-camera image-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>

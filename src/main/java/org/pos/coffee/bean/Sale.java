@@ -1,6 +1,8 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.evey.annotation.JoinList;
+import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -11,7 +13,12 @@ import java.util.List;
 @Table(name="SALE")
 public class Sale extends BaseEntity {
 
+	@Column(name = "SALE_CODE", nullable = false, unique = true)
+	@UniqueField
+	private String saleCode;
+
 	@OneToMany(mappedBy = "sale")
+	@JsonManagedReference
 	private List<Order> orders;
 
 	@ManyToOne
@@ -134,5 +141,13 @@ public class Sale extends BaseEntity {
 
 	public void setPreTax(Double preTax) {
 		this.preTax = preTax;
+	}
+
+	public String getSaleCode() {
+		return saleCode;
+	}
+
+	public void setSaleCode(String saleCode) {
+		this.saleCode = saleCode;
 	}
 }

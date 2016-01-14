@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.evey.annotation.JoinList;
 import org.evey.bean.BaseEntity;
 
@@ -12,6 +13,7 @@ public class Order extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name="SALE_ID", referencedColumnName = "ID")
+	@JsonBackReference
 	private Sale sale;
 
 	@Column(name = "SALE_ID", insertable = false, updatable = false)

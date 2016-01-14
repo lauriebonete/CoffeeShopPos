@@ -41,7 +41,7 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
 
                 queryBuilder.append("where ");
                 if(itemCode!=null && itemCode.length()>0){
-                    whereClause.append("item.itemCode = :itemCode ");
+                    whereClause.append("lower(item.itemCode) like lower(:itemCode) ");
                 }
                 if(itemName!=null && itemName.length()>0){
                     if(whereClause.toString().length()>0){
@@ -106,11 +106,11 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
                     || (itemCode!=null && itemCode.length()>0)) {
 
                 if(itemName!=null && itemName.length()>0){
-                    query.setParameter("itemName",stockHelper.getItem().getItemName());
+                    query.setParameter("itemName","%"+stockHelper.getItem().getItemName().trim()+"%");
                 }
 
                 if(itemCode!=null && itemCode.length()>0){
-                    query.setParameter("itemCode",stockHelper.getItem().getItemCode());
+                    query.setParameter("itemCode","%"+stockHelper.getItem().getItemCode().trim()+"%");
                 }
             }
         }

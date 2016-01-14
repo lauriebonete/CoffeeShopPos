@@ -70,7 +70,7 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     }
 
     @RequestMapping(value = "/receive-purchase", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Map<String, Object> receivePurchase(@RequestBody Purchase purchase){
+    public @ResponseBody Map<String, Object> receivePurchase(@RequestBody Purchase purchase) throws Exception{
         Map<String, Object> returnMap = new HashMap<>();
         Purchase updated = purchaseService.receivedPurchaseOrder(purchase);
 

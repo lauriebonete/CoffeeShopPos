@@ -14,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.Transient;
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Laurie on 11/5/2015.
@@ -38,6 +35,12 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     public final void save(T entity) {
         preloadEntity(entity);
         baseEntityDao.save(entity);
+    }
+
+    @Override
+    public List<T> findActiveEntity(T entity) throws Exception {
+        entity.setIsActive(true);
+        return baseEntityDao.findEntity(entity);
     }
 
     @Override
@@ -94,6 +97,11 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
     @Override
     public List<T> findEntityByNamedQuery(String queryName) {
         return baseEntityDao.findEntityByNamedQuery(queryName);
+    }
+
+    @Override
+    public List<T> findEntityByNamedQuery(String queryName, Map<String, Object> parameters) {
+        return baseEntityDao.findEntityByNamedQuery(queryName, parameters);
     }
 
     private void preloadEntity(T entity) {
