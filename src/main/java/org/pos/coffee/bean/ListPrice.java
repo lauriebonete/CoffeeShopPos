@@ -43,6 +43,8 @@ public class ListPrice extends BaseEntity {
 	@Column(name="IS_PRODUCT")
 	private Boolean isProduct;
 
+	private transient String displayName;
+
 	public Product getProduct() {
 		return product;
 	}
@@ -98,14 +100,12 @@ public class ListPrice extends BaseEntity {
 		this.isProduct = isProduct;
 	}
 
-	@JsonView
-	public String displayName(){
-		if(productId!=null){
-			return product.getProductName();
-		} else if(mealId!=null){
-			return meal.getMealName();
-		}
-		return "";
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	@PrePersist

@@ -4,8 +4,10 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.evey.dao.SequenceDao;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.*;
+import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.dao.SaleDao;
+import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.OrderService;
 import org.pos.coffee.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,20 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ItemService itemService;
+
     @Override
     @Transactional
-    public void countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList) {
+    public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList) {
+        Double totalExpense = 0D;
         for(OrderExpenseHelper orderExpenseHelper: orderExpenseHelperList){
             Order orderLoaded = orderService.load(orderExpenseHelper.getOrderId());
             orderLoaded.setTotalLineExpense(orderExpenseHelper.getExpense());
+            totalExpense += orderExpenseHelper.getExpense();
             orderService.save(orderLoaded);
         }
+        return totalExpense;
     }
 
     @Override
@@ -46,11 +54,21 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     public void createSaleAndOrders(Sale sale) {
         sale.setSaleDate(new Date());
         this.save(sale);
-
         for(Order order: sale.getOrders()){
             order.setSale(sale);
             orderService.save(order);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Sale confirmSaleTransaction(Sale sale) throws Exception{
+        this.createSaleAndOrders(sale);
+        List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
+        List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
+        sale.setTotalCost(this.countExpensePerOrder(orderExpenseHelperList));
+        this.save(sale);
+        return sale;
     }
 
     @Override
@@ -60,4 +78,5 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
         Long generatedCode = sequenceDao.incrementValue(key+datePrefix, increment, retryCount, maxRetry);
         return datePrefix+String.format("%06d",generatedCode);
     }
+
 }

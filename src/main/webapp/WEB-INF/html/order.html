@@ -348,16 +348,17 @@
     </div>
 
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-    <div class="row">
+    <div class="row" ng-show="showBases">
         <div class="small-4 columns">
             <h4>Base:</h4>
         </div>
         <div class="small-8 columns">
-            <div class="right">
-                    <input type="radio" name="pokemon" value="Red" id="Soy"><label for="Soy"> <h4>Soy</h4></label>
-                    <input type="radio" name="pokemon" value="Red" id="Whole_Milk"><label for="Whole_Milk"> <h4>Whole Milk</h4></label>
-                    <input type="radio" name="pokemon" value="Red" id="Non_Fat"><label for="Non_Fat"> <h4>Non-fat</h4></label>
-            </div>
+            <ul class="right base-location" ng-init="loadBases()">
+                    <li ng-repeat="base in bases" >
+                        <input type="radio" name="base-ingredient" value="{{base.id}}" id="base-{{base.id}}" ng-model="base.isSelectedAsBase" ng-value="base.isSelectedAsBase">
+                        <label for="base-{{base.id}}"> <h4>{{base.itemName}}</h4></label>
+                    </li>
+            </ul>
         </div>
     </div>
 
@@ -383,7 +384,7 @@
             <div class="right">
                 <ul class="button-group toggle" data-toggle="buttons-radio">
                     <li ng-repeat="product in selectedProduct.productUnder">
-                        <input type="radio" id="{{product.id}}" name="size-group" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
+                        <input type="radio" id="{{product.id}}" name="size-group" ng-click="clickSize(product.ingredientList)" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
                         <label class="button" for="{{product.id}}">{{product.size.value}}</label>
                     </li>
                 </ul>
@@ -612,7 +613,6 @@
             angular.element("body").scope().$apply();
             console.log(scope.addToCart);
 
-
             var productName = $("#modifyOrder").attr("data-pname");
             var quantity = Number($("#modifyOrder #modify-quantity").text());
             price = Number($('#modifyOrder .price').attr("data-price"));
@@ -729,6 +729,7 @@
                     success: function(data){
 
                         $(".order-holder").children().remove();
+                        $(".total-price").text("");
                         angular.element("body").scope().setOrderedCount();
                         angular.element("body").scope().$apply();
 
@@ -823,7 +824,6 @@
                 var price = $(added).find(".quantity-price").attr("data-price");
                 var listId = $(added).find(".quantity-price").attr("data-list-id");
                 var product = $(added).attr("data-product");
-                console.log(product);
 
                 var row = {
                     "product": productId,

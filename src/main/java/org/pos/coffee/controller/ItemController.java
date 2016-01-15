@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,17 @@ public class ItemController extends BaseCrudController<Item> {
             item.setUom(referenceLookUpService.load(item.getUom().getId()));
         }
         return itemList;
+    }
+
+    @RequestMapping(value = "/load-base", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<Item> getAllActiveBases() throws Exception{
+        List<Item> resultList = new ArrayList<>();
+        Item item =  new Item();
+        item.setIsActive(true);
+        item.setIsBase(true);
+        resultList = itemService.findEntity(item);
+
+        return  resultList;
     }
 
     @Override
