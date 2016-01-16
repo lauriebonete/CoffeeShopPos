@@ -12,6 +12,44 @@ orderApp.controller("orderController", function ($scope, $http) {
         });
     };
 
+    $scope.loadBases = function(){
+        $http.get("/item/load-base").then(function successCallback(response){
+            $scope.bases = response.data;
+        }, function errorCallback(response){
+
+        });
+    };
+
+    $scope.clickSize = function(ingredients){
+        if(isShowBases(ingredients)){
+            for(var i=0;i<=ingredients.length-1;i++){
+                if(ingredients[i].item.isBase !=null
+                    && ingredients[i].item.isBase){
+                    for(var j=0; j<=$scope.bases.length-1;j++){
+                        if(ingredients[i].item.id == $scope.bases[j].id){
+                            $("#base-"+$scope.bases[j].id).click();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    };
+
+    var isShowBases = function(ingredient){
+        var show = false;
+        for(var i=0; i<=ingredient.length-1;i++){
+            if(ingredient[i].item.isBase !=null
+                && ingredient[i].item.isBase) {
+                show = true;
+                break;
+            }
+        }
+        $scope.showBases = show;
+        return show;
+    };
+
     var getAddOn = function(data){
         for(var i=0;i<= data.length-1; i++){
             if(data[i] != null &&
@@ -26,6 +64,24 @@ orderApp.controller("orderController", function ($scope, $http) {
         if($scope.sideNav != null &&
             $scope.sideNav != undefined){
             $scope.changeGroup($scope.sideNav[0].id);
+        }
+    };
+
+    var getBase = function(data) {
+        if(data!=null
+            && data!=undefined){
+            for(var i=0; i<=data.length-1; i++){
+                if(data[i].item.isBase != null
+                    && data[i].item.isBase){
+                    for(var j = 0; j<= $scope.bases.length-1;j++){
+                        if($scope.bases[j].id==data[i].item.id){
+                            $scope.bases[j].isSelectedAsBase = true;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
         }
     };
 
@@ -84,6 +140,10 @@ orderApp.controller("orderController", function ($scope, $http) {
                 } else {
                     $scope.sizeSelection = false;
                 }
+                if(isShowBases(value.ingredientList)){
+                    getBase(value.ingredientList);
+                }
+
                 return;
             }
         });

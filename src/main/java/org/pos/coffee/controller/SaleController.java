@@ -37,12 +37,9 @@ public class SaleController extends BaseCrudController<Sale> {
     @RequestMapping(value = "/confirm", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Map<String,Object> confirmOrder(@RequestBody Sale sale) throws Exception{
         Map<String, Object> returnMap = new HashMap<>();
-        saleService.createSaleAndOrders(sale);
-        List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
-        List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
-        saleService.countExpensePerOrder(orderExpenseHelperList);
+        Sale saleCreated = saleService.confirmSaleTransaction(sale);
 
-        returnMap.put("result", sale);
+        returnMap.put("result", saleCreated);
         returnMap.put("success", true);
 
         return returnMap;

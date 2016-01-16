@@ -37,6 +37,9 @@ public class Item extends BaseEntity {
 
 	@Column(name = "IS_BASE")
 	private Boolean isBase;
+
+	@Transient
+	private Boolean isSelectedAsBase;
 	
 	public String getItemName() {
 		return itemName;
@@ -93,6 +96,14 @@ public class Item extends BaseEntity {
 
 	public void setIsBase(Boolean isBase) {
 		this.isBase = isBase;
+	}
+
+	public Boolean getIsSelectedAsBase() {
+		return isSelectedAsBase;
+	}
+
+	public void setIsSelectedAsBase(Boolean isSelectedAsBase) {
+		this.isSelectedAsBase = isSelectedAsBase;
 	}
 
 	@Override

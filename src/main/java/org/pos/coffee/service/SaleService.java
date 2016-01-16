@@ -10,7 +10,8 @@ import java.util.List;
  * Created by Laurie on 12/14/2015.
  */
 public interface SaleService extends BaseCrudService<Sale> {
-    public void countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList);
+    public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList);
     public void createSaleAndOrders(Sale sale);
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry);
+    public Sale confirmSaleTransaction(Sale sale) throws Exception;
 }
