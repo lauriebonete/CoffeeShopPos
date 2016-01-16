@@ -160,13 +160,7 @@
     1px 1px 0 #000;
 }
 
-.addOn {
-    border: 1px solid;
-}
-
 .addOn *{
-    padding: 0;
-    margin: 0;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
@@ -248,22 +242,27 @@
     background-color: #008CBA;
 }
 
+.payment-page {
+    margin-left: 15px;
+    margin-right: 15px;
+    position: relative;
+}
+
 .receipt {
-    width: 40%;
-    float: left;
-    max-height: 85vh;
-    padding: 20px;
     overflow: hidden;
     overflow-y:auto;
+    max-height: 80vh;
 }
 
 .payment {
-    width: 60%;
-    float: left;
-    max-height: 85vh;
-    padding: 20px;
     overflow: hidden;
     overflow-y:auto;
+    max-height: 80vh;
+}
+
+.moneyBillList {
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .added-item-location .row{
