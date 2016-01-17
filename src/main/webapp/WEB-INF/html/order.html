@@ -214,10 +214,89 @@
                                                     <h4 class="center">Total</h4>
                                                 </div>
                                             </div>
-                                            <div class="cart-holder">
+                                            <div class="row header">
+                                                <div class="columns small-2">
+                                                    <p class="center">1</p>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <p class="center">Product Name</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">100.00</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">100.00</p>
+                                                </div>
+                                            </div>
+                                            <div class="row header">
+                                                <div class="columns small-2">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <p class="center">Discount Name</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">-10%</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row header">
+                                                <div class="columns small-2">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">Sub-total:</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">90.00</p>
+                                                </div>
                                             </div>
                                             <div class="row">
-                                                <div class="columns small-12"><h4 class="total-sale center"></h4></div>
+                                                <div class="columns small-2">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">Total:</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">90.00</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="columns small-2">
+                                                    <p class="center"></p>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <p class="center">Service Charge</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">20%</p>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <p class="center">108.00</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="columns small-2">
+                                                    <h4 class="center"></h4>
+                                                </div>
+                                                <div class="columns small-4">
+                                                    <h4 class="center"></h4>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <h4 class="center">Grand Total:</h4>
+                                                </div>
+                                                <div class="columns small-3">
+                                                    <h4 class="center"><h4 class="total-sale center"></h4></h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -466,10 +545,44 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 columns price-set"></div>
+                    <div class="columns small-2">
+                    </div>
+                    <div class="columns small-4">
+                        <div class="center">Discount Name Holder</div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="center">Discount Price Holder</div>
+                    </div>
+                    <div class="columns small-3">
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="small-12 columns gross-line"></div>
+                    <div class="columns small-2">
+                        <div class="center"></div>
+                    </div>
+                    <div class="columns small-4">
+                        <div class="center"></div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="price-set center">Sub-total:</div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="gross-line center">Gross Line Holder</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns small-2">
+                        <div class="center"></div>
+                    </div>
+                    <div class="columns small-4">
+                        <div class="center">Service Charge</div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="service-charge center">10 %</div>
+                    </div>
+                    <div class="columns small-3">
+                        <div class="service-charge-total center">SC Total</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -802,7 +915,7 @@
                 }
 
 
-                $(".total-sale").text("Grand Total: " + data.totalSale);
+                $(".total-sale").text(data.totalSale);
                 $(".summary-total-balance").text("PHP "+data.totalSale);
                 $(".summary-total-balance").attr("data-balance",data.totalSale);
             });
