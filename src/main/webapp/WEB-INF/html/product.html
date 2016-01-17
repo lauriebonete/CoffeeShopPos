@@ -121,6 +121,7 @@
                                         </label>
                                         <label>Category
                                             <select name="productGroupList.id">
+                                                <option></option>
                                                 <option  ng-repeat="record in dropdown" value="{{record.id}}">{{record.productGroupName}}</option>
                                             </select>
                                         </label>
@@ -512,7 +513,7 @@
             $(".image-action").removeClass("picked");
             $(this).addClass("picked");
 
-            $("#image-modal").attr("data-product", $(this).data("id"));
+            $("#image-modal").attr("data-product", $(this).attr("data-id"));
 
             var imageId = $(this).attr("data-image");
             productImage.removeAllFiles();
@@ -661,8 +662,8 @@
                 }
             });
         }).on("click","#save-image",function(){
-            var fileId = $(".dz-preview").data("file");
-            var productId = $("#image-modal").data("product");
+            var fileId = $(".dz-preview").attr("data-file");
+            var productId = $("#image-modal").attr("data-product");
 
             var product = new Object;
             product["id"] = productId;

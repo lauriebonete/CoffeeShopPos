@@ -190,7 +190,8 @@ var evey = (function(){
             'updateForm' : '#update-form',
             'search-action': '#search-search-crud-btn',
             'pagination': '.pagination',
-            'crud-table': '#crud-table'
+            'crud-table': '#crud-table',
+            'search-clear': "#search-clr-crud-btn"
         }, options);
 
         return this.each(function(){
@@ -275,6 +276,10 @@ var evey = (function(){
             $(this).on("click",settings["clear"], function(){
                 evey.clearForm($(this).parents("form"));
             });
+            $(this).on("click",settings["search-clear"], function(){
+                evey.clearForm($(this).parents("form"));
+            });
+
 
             $(document).ready(function() {
 

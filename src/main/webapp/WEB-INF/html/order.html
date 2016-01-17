@@ -229,7 +229,7 @@
                                         <h4>Total Balance:</h4>
                                     </div>
                                     <div class="small-8 columns">
-                                        <h4 class="right">PHP 0</h4>
+                                        <h4 class="right summary-total-balance"></h4>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -260,7 +260,7 @@
                                     <div class="large-12 columns">
                                         <div class="row collapse">
                                             <div class="small-10 columns">
-                                                <input type="text" placeholder="0">
+                                                <input type="number" placeholder="0" id="payment-amount">
                                             </div>
                                             <div class="small-2 columns">
                                                 <a href="#" class="button postfix">PHP</a>
@@ -268,12 +268,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row change-due-row hide">
                                     <div class="small-4 columns">
                                         <h4>Change Due:</h4>
                                     </div>
                                     <div class="small-8 columns">
-                                        <h4 class="right">PHP 0</h4>
+                                        <h4 class="right change-due">PHP 0</h4>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -386,7 +386,7 @@
                 <div class="addOn panel-flat sizes" data-id={{productAddOn.id}}>
                     <div class="row">
                         <div class="small-6 columns">
-                            <p>{{productAddOn.productName}}</p>
+                            <p>{{productAddOn.productCode}}</p>
                         </div>
                         <div class="small-6 columns">
                             <p><span id="modify-addon-quantity_{{productAddOn.id}}">0</span></p>
@@ -687,6 +687,17 @@
         }).on("click", ".back-to-order", function(){
             $(".payment-page").toggleClass("hide");
             $(".order-page").toggleClass("hide");
+            $(".change-due-row").addClass("hide");
+        }).on("keyup","#payment-amount",function(){
+            console.log($(this).val());
+            if(parseInt($(this).val())>=parseInt($(".summary-total-balance").attr("data-balance"))){
+                var change = parseInt($(this).val()) - parseInt($(".summary-total-balance").attr("data-balance"));
+                $(".change-due").text("PHP "+change);
+                $(".change-due-row").removeClass("hide");
+            } else {
+                $(".change-due").text("PHP 0");
+                $(".change-due-row").addClass("hide");
+            }
         });
 
         var countQty = function(){
@@ -713,6 +724,8 @@
 
                         $(".order-holder").children().remove();
                         $(".total-price").text("");
+                        $(".change-due").text("PHP 0");
+                        $(".change-due-row").addClass("hide");
                         angular.element("body").scope().setOrderedCount();
                         angular.element("body").scope().$apply();
 
@@ -790,6 +803,8 @@
 
 
                 $(".total-sale").text("Grand Total: " + data.totalSale);
+                $(".summary-total-balance").text("PHP "+data.totalSale);
+                $(".summary-total-balance").attr("data-balance",data.totalSale);
             });
         };
 

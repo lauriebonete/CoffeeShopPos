@@ -74,9 +74,9 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     @Transactional
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry) {
-        final String datePrefix = DateFormatUtils.format(Calendar.getInstance().getTime(), "yyyyMMdd");
+        final String datePrefix = DateFormatUtils.format(Calendar.getInstance().getTime(), "MMddyy");
         Long generatedCode = sequenceDao.incrementValue(key+datePrefix, increment, retryCount, maxRetry);
-        return datePrefix+String.format("%06d",generatedCode);
+        return datePrefix+String.format("%04d",generatedCode);
     }
 
 }
