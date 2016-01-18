@@ -188,6 +188,7 @@ public class OrderController extends BaseCrudController<Order> {
             sale.setTotalSurcharge(totalSurcharge);
         }
         sale.setOrders(orderList);
+        sale.setGrossTotalLinePrice(total);
 
         ReferenceLookUp applyTax = referenceLookUpService.getReferenceLookUpByKey("SETTING_APPLY_VAT");
         if(applyTax!=null &&
@@ -199,6 +200,7 @@ public class OrderController extends BaseCrudController<Order> {
             double taxRate = applyTax.getNumberValue().doubleValue()/100;
             sale.setPreTax(Double.parseDouble(df.format(sale.getTotalSale()/(taxRate+1))));
             sale.setTax(Double.parseDouble(df.format(sale.getTotalSale() - (sale.getTotalSale() / (taxRate + 1)))));
+            sale.setTaxRate(applyTax.getNumberValue()+"%");
         }
 
         Map<String,Object> returnMap = new HashMap<>();

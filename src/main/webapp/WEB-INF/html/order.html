@@ -214,47 +214,8 @@
                                                     <h4 class="center">Total</h4>
                                                 </div>
                                             </div>
-                                            <div class="row header">
-                                                <div class="columns small-2">
-                                                    <p class="center">1</p>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <p class="center">Product Name</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">100.00</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">100.00</p>
-                                                </div>
-                                            </div>
-                                            <div class="row header">
-                                                <div class="columns small-2">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <p class="center">Discount Name</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">-10%</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center"></p>
-                                                </div>
-                                            </div>
-                                            <div class="row header">
-                                                <div class="columns small-2">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">Sub-total:</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">90.00</p>
-                                                </div>
+                                            <div class="cart-holder">
+
                                             </div>
                                             <div class="row">
                                                 <div class="columns small-2">
@@ -267,23 +228,13 @@
                                                     <p class="center">Total:</p>
                                                 </div>
                                                 <div class="columns small-3">
-                                                    <p class="center">90.00</p>
+                                                    <p class="center payment-summary-total">90.00</p>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="columns small-2">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <p class="center">Service Charge</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">20%</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">108.00</p>
-                                                </div>
+                                            <div class="sale-price-holder">
+
                                             </div>
+
                                             <div class="row">
                                                 <div class="columns small-2">
                                                     <h4 class="center"></h4>
@@ -316,7 +267,7 @@
                                         <h4>Tax</h4>
                                     </div>
                                     <div class="small-8 columns">
-                                        <h4 class="right">PHP 0</h4>
+                                        <h4 class="right tax-summary"></h4>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -523,6 +474,88 @@
             </div>
             <div class="columns small-2">
                 <a><i class="fa fa-minus-circle remove-cart"></i></a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="price-set-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center price-set-template-discount">Discount Name</p>
+            </div>
+            <div class="columns small-3">
+                <p class="center price-set-template-effect">-10%</p>
+            </div>
+            <div class="columns small-3">
+                <p class="center"></p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="sale-level-pricing-template">
+        <div class="row">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center sale-level-pricing-name"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center sale-level-pricing-effect"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center sale-level-pricing-amount"></p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="price-set-total-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center">Sub-total:</p>
+            </div>
+            <div class="columns small-3">
+                <p class="center price-set-total-template-amount">90.00</p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="payment-summary-cart">
+        <div class="row header payment-summary-row">
+            <div class="columns small-12">
+                <div class="row header">
+                    <div class="columns small-2">
+                        <p class="center payment-summary-cart-quantity">1</p>
+                    </div>
+                    <div class="columns small-4">
+                        <p class="center payment-summary-cart-product">Product Name</p>
+                    </div>
+                    <div class="columns small-3">
+                        <p class="center payment-summary-cart-price">100.00</p>
+                    </div>
+                    <div class="columns small-3">
+                        <p class="center payment-summary-cart-total-price">100.00</p>
+                    </div>
+                </div>
+                <div class="row header">
+                    <div class="columns small-12">
+                        <div class="payment-summary-cart-price-sets">
+
+                        </div>
+                        <div class="payment-summary-price-set-total">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </script>
@@ -778,6 +811,7 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success: function(data){
+                    console.log(data);
                     $.ajax({
                         url: evey.getHome()+"/sale/reserve-sale-code",
                         type: "GET",
@@ -801,8 +835,8 @@
             $(".payment-page").toggleClass("hide");
             $(".order-page").toggleClass("hide");
             $(".change-due-row").addClass("hide");
+            $(".tax-summary").text("PHP 0");
         }).on("keyup","#payment-amount",function(){
-            console.log($(this).val());
             if(parseInt($(this).val())>=parseInt($(".summary-total-balance").attr("data-balance"))){
                 var change = parseInt($(this).val()) - parseInt($(".summary-total-balance").attr("data-balance"));
                 $(".change-due").text("PHP "+change);
@@ -838,6 +872,7 @@
                         $(".order-holder").children().remove();
                         $(".total-price").text("");
                         $(".change-due").text("PHP 0");
+                        $(".tax-summary").text("PHP 0");
                         $(".change-due-row").addClass("hide");
                         angular.element("body").scope().setOrderedCount();
                         angular.element("body").scope().$apply();
@@ -856,32 +891,33 @@
         };
 
         var displayData = function(data){
+            console.log(data);
 
-            $("#receipt .items").remove();
+            $("#receipt .payment-summary-row").remove();
 
             $.each(data.orders,function(i,order){
                 var cartHolder = $("#receipt .cart-holder");
-                $(cartHolder).append($("#payment-product-cart").html());
-                var cartTemplate = $(cartHolder).find(".items").last();
-                $(cartTemplate).find(".product-name").text(order.product.productName);
-                $(cartTemplate).find(".quantity").text(order.quantity);
+                $(cartHolder).append($("#payment-summary-cart").html());
+                var cartTemplate = $(cartHolder).find(".payment-summary-row").last();
+                $(cartTemplate).find(".payment-summary-cart-product").text(order.product.productName);
+                $(cartTemplate).find(".payment-summary-cart-quantity").text(order.quantity);
 
                 if(order.listPrice !=null &&
                         order.listPrice != null &&
                         order.listPrice.price != null &&
                     order.listPrice.price != undefined) {
-                    $(cartTemplate).find(".price").text(order.listPrice.price);
+                    $(cartTemplate).find(".payment-summary-cart-price").text(order.listPrice.price);
                 } else {
-                    $(cartTemplate).find(".price").text(0);
+                    $(cartTemplate).find(".payment-summary-cart-price").text(0);
                 }
 
-                $(cartTemplate).find(".total").text(order.totalLinePrice);
+                $(cartTemplate).find(".payment-summary-cart-total-price").text(order.totalLinePrice);
 
-                var priceSetHolder = $(cartTemplate).find(".price-set");
+                var priceSetHolder = $(cartTemplate).find(".payment-summary-cart-price-sets");
                 $.each(order.appliedPriceSet, function(i, priceSet){
-                    $(priceSetHolder).append($("#payment-price-set").html());
-                    var priceSetTemplate = $(priceSetHolder).find(".set").last();
-                    $(priceSetTemplate).find(".price-set-name").text(priceSet.priceSetName);
+                    $(priceSetHolder).append($("#price-set-template").html());
+                    var priceSetTemplate = $(priceSetHolder).find(".row").last();
+                    $(priceSetTemplate).find(".price-set-template-discount").text(priceSet.priceSetName);
 
                     var moreOrLess = null;
                     if(priceSet.isDiscount!= null &&
@@ -901,24 +937,63 @@
                         percentOrPhp = "php"
                     }
 
-                    $(priceSetTemplate).find(".effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
-                    $(priceSetTemplate).find(".gross").text(order.grossLinePrice);
+                    $(priceSetTemplate).find(".price-set-template-effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
+                    /*$(priceSetTemplate).find(".gross").text(order.grossLinePrice);*/
                 });
 
                 if(order.appliedPriceSet != null &&
                     order.appliedPriceSet != undefined &&
                     order.appliedPriceSet.length > 0){
-                    var grossHolder = $(cartTemplate).find(".gross-line");
-                    $(grossHolder).append($("#payment-gross").html());
-                    var grossTemplate = $(grossHolder).find(".gross").last();
-                    $(grossTemplate).find(".gross-total").text(order.grossLinePrice);
+                    var grossHolder = $(cartTemplate).find(".payment-summary-price-set-total");
+                    $(grossHolder).append($("#price-set-total-template").html());
+                    var grossTemplate = $(grossHolder).find(".row").last();
+                    $(grossTemplate).find(".price-set-total-template-amount").text(order.grossLinePrice);
+                }
+            });
+
+            var saleLevelPrice = $(".sale-price-holder");
+            $.each(data.appliedPriceSet, function(i, priceSet){
+                $(saleLevelPrice).append($("#sale-level-pricing-template").html());
+                var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
+                $(saleLevelTemplate).find(".sale-level-pricing-name").text(priceSet.priceSetName);
+
+                var moreOrLess = null;
+                if(priceSet.isDiscount!= null &&
+                        priceSet.isDiscount!= undefined &&
+                        priceSet.isDiscount){
+                    moreOrLess = "LESS";
+                } else {
+                    moreOrLess = "ADD";
                 }
 
+                var percentOrPhp = null;
+                if(priceSet.isPercentage!= null &&
+                        priceSet.isPercentage!= undefined &&
+                        priceSet.isPercentage){
+                    percentOrPhp = "%";
+                } else {
+                    percentOrPhp = "php"
+                }
 
-                $(".total-sale").text(data.totalSale);
-                $(".summary-total-balance").text("PHP "+data.totalSale);
-                $(".summary-total-balance").attr("data-balance",data.totalSale);
+                $(saleLevelTemplate).find(".sale-level-pricing-effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
+
             });
+
+            if(data.tax !=null &&
+                    data.tax >0){
+                var saleLevelPrice = $(".sale-price-holder");
+                $(saleLevelPrice).append($("#sale-level-pricing-template").html());
+                var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
+                $(saleLevelTemplate).find(".sale-level-pricing-name").text("TAX");
+                $(saleLevelTemplate).find(".sale-level-pricing-effect").text(data.taxRate);
+                $(saleLevelTemplate).find(".sale-level-pricing-amount").text(data.tax);
+                $(".tax-summary").text("PHP "+data.tax);
+            }
+
+            $(".payment-summary-total").text(data.grossTotalLinePrice);
+            $(".total-sale").text(data.totalSale);
+            $(".summary-total-balance").text("PHP "+data.totalSale);
+            $(".summary-total-balance").attr("data-balance",data.totalSale);
         };
 
 

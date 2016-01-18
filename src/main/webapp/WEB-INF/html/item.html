@@ -216,6 +216,11 @@
                                         <small class="error">Please provide a number value.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
+                                        <label>Unit Price <small>required</small>
+                                            <input type="number" placeholder="Unit Price" name="unitPrice" pattern="number" required></label>
+                                        <small class="error">Please provide a number value.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
                                         <div class="columns small-6">
                                             <div class="switch round">
                                                 <p>Active</p>
@@ -285,6 +290,11 @@
                                     <div class="row collapse prefix-radius">
                                         <label>Demarcation
                                             <input type="number" placeholder="Demarcation" name="demarcation" value="{{recordFound.demarcation}}" pattern="number"></label>
+                                        <small class="error">Please provide a number value.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Unit Price
+                                            <input type="number" placeholder="Unit Price" name="unitPrice" value="{{recordFound.unitPrice}}" pattern="number"></label>
                                         <small class="error">Please provide a number value.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">

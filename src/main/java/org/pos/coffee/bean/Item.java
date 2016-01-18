@@ -40,6 +40,9 @@ public class Item extends BaseEntity {
 
 	@Transient
 	private Boolean isSelectedAsBase;
+
+	@Column(name = "UNIT_PRICE")
+	private Double unitPrice;
 	
 	public String getItemName() {
 		return itemName;
@@ -104,6 +107,14 @@ public class Item extends BaseEntity {
 
 	public void setIsSelectedAsBase(Boolean isSelectedAsBase) {
 		this.isSelectedAsBase = isSelectedAsBase;
+	}
+
+	public Double getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(Double unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 
 	@Override

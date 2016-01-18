@@ -156,6 +156,7 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
         sale.setTotalSurcharge(totalSurcharge);
         sale.setTotalDiscount(totalDiscount);
         sale.setAppliedPriceSet(appliedPriceSet);
+        sale.setTotalSale(total);
         return sale;
     }
 

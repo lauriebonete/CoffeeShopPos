@@ -31,6 +31,7 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     public @ResponseBody Map<String,Object> restockThroughInventoryOrder(@RequestBody Purchase purchase){
         Map<String,Object> returnMap = new HashMap<>();
         purchase.setStatus(Purchase.Status.FOR_APPROVAL.getValue());
+        purchase.setRequestDate(new Date());
         Purchase purchaseSaved = purchaseService.savePurchaseAndPO(purchase);
 
         returnMap.put("result", purchaseSaved);
@@ -42,7 +43,9 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     @RequestMapping(value = "/inventory-purchase", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Map<String,Object> restockThroughInventoryPurchase(@RequestBody Purchase purchase){
         Map<String,Object> returnMap = new HashMap<>();
-        purchase.setStatus(Purchase.Status.IN_TRANSIT.getValue());
+        purchase.setStatus(Purchase.Status.IN_PROGRESS.getValue());
+        purchase.setPurchaseDate(new Date());
+        purchase.setRequestDate(new Date());
         Purchase purchaseSaved = purchaseService.savePurchaseAndPO(purchase);
 
         returnMap.put("result", purchaseSaved);

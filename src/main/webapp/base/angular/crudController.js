@@ -70,6 +70,20 @@ crudApp.controller("crudController", function ($scope, $http) {
         $scope.records.push(data);
     };
 
+    $scope.updateEntity = function(data) {
+        for(var i=0; i<=$scope.fullRecords.length-1;i++){
+            if($scope.fullRecords[i].id==data.id){
+                $scope.fullRecords[i] = data;
+            }
+        }
+
+        for(var i=0; i<=$scope.records.length-1;i++){
+            if($scope.records[i].id==data.id){
+                $scope.records[i] = data;
+            }
+        }
+    };
+
     $scope.deleteAction = function (id, url) {
         var deleteEntity = {
             method: "DELETE",

@@ -54,6 +54,12 @@ public class Sale extends BaseEntity {
 	@Column(name="PRE_TAX")
 	private Double preTax;
 
+	@Column(name = "GROSS_LINE_PRICE")
+	private Double grossTotalLinePrice;
+
+	@Column(name = "TAX_RATE")
+	private String taxRate;
+
 	@JoinList
 	@ManyToMany
 	@JoinTable(name="SALE_PRICE_ADJST",
@@ -149,5 +155,21 @@ public class Sale extends BaseEntity {
 
 	public void setSaleCode(String saleCode) {
 		this.saleCode = saleCode;
+	}
+
+	public Double getGrossTotalLinePrice() {
+		return grossTotalLinePrice;
+	}
+
+	public void setGrossTotalLinePrice(Double grossTotalLinePrice) {
+		this.grossTotalLinePrice = grossTotalLinePrice;
+	}
+
+	public String getTaxRate() {
+		return taxRate;
+	}
+
+	public void setTaxRate(String taxRate) {
+		this.taxRate = taxRate;
 	}
 }

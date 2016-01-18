@@ -1,6 +1,7 @@
 package org.pos.coffee.service.impl;
 
 import org.evey.service.impl.BaseCrudServiceImpl;
+import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.PurchaseOrder;
 import org.pos.coffee.dao.PurchaseDao;
 import org.pos.coffee.dao.PurchaseOrderDao;
@@ -28,7 +29,8 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
     public Double countTotalExpense(List<PurchaseOrder> purchaseOrderList) {
         Double totalExpense = 0D;
         for(PurchaseOrder purchaseOrder: purchaseOrderList){
-            totalExpense += purchaseOrder.getPrice();
+            Item item = itemService.load(purchaseOrder.getOrderedItem().getId());
+            totalExpense += purchaseOrder.getOrderedQuantity()*item.getUnitPrice();
         }
         return totalExpense;
     }
@@ -47,7 +49,11 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
             for(PurchaseOrder updateSource: update){
                 if(updateSource.getReceivedQuantity()!=null){
                     if(purchaseOrder.equals(updateSource)){
+
+                        Item item = itemService.load(purchaseOrder.getOrderedItem().getId());
+
                         purchaseOrder.setReceivedQuantity(updateSource.getReceivedQuantity());
+                        purchaseOrder.setPrice(item.getUnitPrice()*purchaseOrder.getReceivedQuantity());
                         purchaseOrder.setIsReceived(true);
                         this.save(purchaseOrder);
                         break;
@@ -57,5 +63,14 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
                 }
             }
         }
+    }
+
+    @Override
+    public Double recountTotalExpense(List<PurchaseOrder> purchaseOrderList) {
+        Double totalExpense = 0D;
+        for(PurchaseOrder purchaseOrder: purchaseOrderList){
+            totalExpense += purchaseOrder.getPrice();
+        }
+        return totalExpense;
     }
 }

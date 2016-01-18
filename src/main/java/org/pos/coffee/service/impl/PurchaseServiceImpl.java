@@ -3,9 +3,11 @@ package org.pos.coffee.service.impl;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.evey.dao.SequenceDao;
 import org.evey.service.impl.BaseCrudServiceImpl;
+import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Purchase;
 import org.pos.coffee.bean.PurchaseOrder;
 import org.pos.coffee.dao.PurchaseDao;
+import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
 import org.pos.coffee.service.StockService;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Laurie on 1/4/2016.
@@ -30,6 +33,9 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private ItemService itemService;
 
     @Autowired
     private PurchaseDao purchaseDao;
@@ -59,6 +65,8 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
         purchaseOrderService.receivePurchaseOrders(loadPurchase.getPurchaseOrders(), purchase.getPurchaseOrders());
         stockService.createInventoryForReceivingPO(loadPurchase.getPurchaseOrders());
         loadPurchase.setStatus(Purchase.Status.RECEIVED.getValue());
+        loadPurchase.setReceiveDate(new Date());
+        loadPurchase.setTotalExpense(purchaseOrderService.recountTotalExpense(loadPurchase.getPurchaseOrders()));
         purchaseDao.save(loadPurchase);
         return purchase;
     }
@@ -68,11 +76,16 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
     public Purchase createPurchase(Purchase purchase) {
         purchase.setPurchaseCode(this.generatePurchaseCode("PO_",1,1,5));
         purchase.setStatus(Purchase.Status.FOR_APPROVAL.getValue());
+        purchase.setRequestDate(new Date());
 
         Double totalPrice = 0D;
         for(PurchaseOrder purchaseOrder: purchase.getPurchaseOrders()){
+            Item item = itemService.load(purchaseOrder.getOrderedItem().getId());
+
             purchaseOrder.setPurchase(purchase);
+            purchaseOrder.setPrice(item.getUnitPrice()*purchaseOrder.getOrderedQuantity());
             purchaseOrderService.save(purchaseOrder);
+
             totalPrice += purchaseOrder.getPrice();
         }
         purchase.setTotalExpense(totalPrice);

@@ -132,6 +132,9 @@
                                                 <th>Purchase Code</th>
                                                 <th>Supplier</th>
                                                 <th>Price</th>
+                                                <th>Request Date</th>
+                                                <th>Purchase Date</th>
+                                                <th>Receive Date</th>
                                                 <th>Ordered By</th>
                                                 <th>Status</th>
                                                 <th style="width:10%"></th>
@@ -142,6 +145,9 @@
                                                 <td>{{record.purchaseCode}}</td>
                                                 <td>{{record.supplier}}</td>
                                                 <td>{{record.totalExpense}}</td>
+                                                <td>{{record.displayRequestDate}}</td>
+                                                <td>{{record.displayPurchaseDate}}</td>
+                                                <td>{{record.displayReceiveDate}}</td>
                                                 <td></td>
                                                 <td>{{record.status}}</td>
                                                 <td>
@@ -212,28 +218,22 @@
                                     <div class="row collapse prefix-radius">
                                         <div class="column small-12">
                                             <div class="row" ng-if="!recordFound.isForReceival">
-                                                <div class="columns small-4">
+                                                <div class="columns small-6">
                                                     <label class="center">Item Name</label>
                                                 </div>
-                                                <div class="columns small-4">
+                                                <div class="columns small-6">
                                                     <label class="center">Request Quantity</label>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <label class="center">Price</label>
                                                 </div>
                                             </div>
                                             <div class="row" ng-if="recordFound.isForReceival">
-                                                <div class="columns small-4">
+                                                <div class="columns small-5">
                                                     <label class="center">Item Name</label>
                                                 </div>
-                                                <div class="columns small-3">
+                                                <div class="columns small-4">
                                                     <label class="center">Request Quantity</label>
                                                 </div>
-                                                <div class="columns small-2">
-                                                    <label class="center">Received</label>
-                                                </div>
                                                 <div class="columns small-3">
-                                                    <label class="center">Price</label>
+                                                    <label class="center">Received</label>
                                                 </div>
                                             </div>
                                             <div class="ordered-item-location">
@@ -265,14 +265,11 @@
 
     <script type="text/html" id="purchase-template">
         <div class="row item-row">
-            <div class="columns small-6">
+            <div class="columns small-8">
                 <select class="item-dropdown"></select>
             </div>
-            <div class="columns small-2">
-                <input class="purc-order-qty" type="number" placeholder="Purchase Quantity" name="orderQuantity" pattern="number">
-            </div>
             <div class="columns small-3">
-                <input class="purc-price" type="number" placeholder="Price" name="price" pattern="number">
+                <input class="purc-order-qty" type="number" placeholder="Quantity" name="orderQuantity" pattern="number">
             </div>
             <div class="columns small-1">
                 <a class="push-item"><i class="fa fa-plus fa-2x"></i></a>
@@ -282,14 +279,11 @@
 
     <script type="text/html" id="added-purchase-template">
         <div class="row item-added">
-            <div class="columns small-5">
+            <div class="columns small-8">
                 <span class="item"></span>
             </div>
             <div class="columns small-3">
                 <span class="purch-order-qty"></span>
-            </div>
-            <div class="columns small-3">
-                <span class="purch-price"></span>
             </div>
             <div class="columns small-1">
                 <a aria-label="Remove" class="remove-item"><i class="fa fa-times fa-lg"></i></a>
@@ -299,31 +293,25 @@
 
     <script type="text/html" id="ordered-template">
         <div class="row">
-            <div class="center columns small-4">
+            <div class="center columns small-6">
                 <span class="item"></span>
             </div>
-            <div class="center columns small-4">
+            <div class="center columns small-6">
                 <input type="number" class="request-quantity"/>
-            </div>
-            <div class="center columns small-4">
-                <input type="number" class="request-price"/>
             </div>
         </div>
     </script>
 
     <script type="text/html" id="ordered-receive-template">
         <div class="row">
-            <div class="center columns small-4">
+            <div class="center columns small-5">
                 <span class="item"></span>
             </div>
-            <div class="center columns small-3">
+            <div class="center columns small-4">
                 <span class="request-quantity"></span>
             </div>
-            <div class="center columns small-2">
-                <input type="number" class="quantity-received"/>
-            </div>
             <div class="center columns small-3">
-                <input type="number" class="request-price"/>
+                <input type="number" class="quantity-received"/>
             </div>
         </div>
     </script>
@@ -362,7 +350,6 @@
                     if($("#update-modal").attr("data-receival")!=null
                         && $("#update-modal").attr("data-receival")!=undefined
                         && $("#update-modal").attr("data-receival")==="true") {
-                        console.log($("#update-modal").attr("data-receival"));
                         orderedItem = $("#ordered-receive-template").html();
                     }
 

@@ -6,6 +6,7 @@ import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,14 @@ public class Purchase extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date purchaseDate;
 
+    @Column(name = "RECEIVE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date receiveDate;
+
+    @Column(name = "REQUEST_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date requestDate;
+
     @Column(name = "SUPPLIER_DETAILS")
     private String supplier;
 
@@ -65,6 +74,12 @@ public class Purchase extends BaseEntity {
     private String status;
 
     private transient Boolean isForReceival;
+
+    private transient String displayRequestDate;
+
+    private transient String displayPurchaseDate;
+
+    private transient String displayReceiveDate;
 
     public Boolean getIsForReceival() {
         if(Status.IN_TRANSIT.equals(Status.findByString(this.status))
@@ -125,5 +140,67 @@ public class Purchase extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
+    }
+
+    public Date getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public String getDisplayRequestDate() {
+        if(this.requestDate!=null){
+            return new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.requestDate);
+        }
+        return displayRequestDate;
+    }
+
+    public void setDisplayRequestDate(String displayRequestDate) {
+        if(this.requestDate!=null){
+            this.displayRequestDate = new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.requestDate);
+        } else{
+            this.displayRequestDate = displayRequestDate;
+        }
+
+    }
+
+    public String getDisplayPurchaseDate() {
+        if(this.purchaseDate!=null){
+            return new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.purchaseDate);
+        }
+        return displayPurchaseDate;
+    }
+
+    public void setDisplayPurchaseDate(String displayPurchaseDate) {
+        if(this.purchaseDate!=null){
+            this.displayPurchaseDate = new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.purchaseDate);
+        } else{
+            this.displayPurchaseDate = displayPurchaseDate;
+        }
+    }
+
+    public String getDisplayReceiveDate() {
+        if(this.receiveDate!=null){
+            return new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.receiveDate);
+        }
+        return displayReceiveDate;
+    }
+
+    public void setDisplayReceiveDate(String displayReceiveDate) {
+        if(this.receiveDate!=null){
+            this.displayReceiveDate = new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.displayReceiveDate);
+        } else{
+            this.displayReceiveDate = displayReceiveDate;
+        }
     }
 }

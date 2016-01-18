@@ -241,7 +241,11 @@ var evey = (function(){
                     data: jsonForm,
                     contentType: "application/json",
                     success : function(data) {
-                        console.log(data);
+                        if(data.status){
+                            angular.element(".main-body").scope().updateEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+                            $('#update-modal').foundation('reveal', 'close');
+                        }
                     }
                 });
             });

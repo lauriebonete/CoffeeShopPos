@@ -6,6 +6,7 @@ import org.pos.coffee.bean.PurchaseOrder;
 import org.pos.coffee.bean.Stock;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.dao.StockDao;
+import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
     @Autowired
     private StockDao stockDao;
 
+    @Autowired
+    private ItemService itemService;
+
     @Override
     public List<StockHelper> getStockCount(String queryName) {
         return stockDao.getStockCount(queryName);
@@ -37,12 +41,14 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
     @Override
     public void createInventoryForReceivingPO(List<PurchaseOrder> purchaseOrderList) throws Exception{
         for(PurchaseOrder purchaseOrder: purchaseOrderList){
-            if(purchaseOrder.getReceivedQuantity()!=null &&
-                    purchaseOrder.getPrice() !=null){
+            if(purchaseOrder.getReceivedQuantity()!=null){
+
+                Item item = itemService.load(purchaseOrder.getOrderedItem().getId());
+
                 Stock stock = new Stock();
                 stock.setItem(purchaseOrder.getOrderedItem());
                 stock.setQuantity(purchaseOrder.getReceivedQuantity());
-                stock.setPrice(purchaseOrder.getPrice()/purchaseOrder.getReceivedQuantity());
+                stock.setPrice(item.getUnitPrice());
                 stock.setIsActive(true);
                 stockDao.save(stock);
             }
