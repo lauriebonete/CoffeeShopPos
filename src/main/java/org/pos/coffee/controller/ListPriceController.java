@@ -31,7 +31,7 @@ public class ListPriceController extends BaseCrudController<ListPrice> {
         results = baseCrudService.findAll();
         for(ListPrice listPrice: results){
             if(listPrice.getProduct()!=null){
-                listPrice.setDisplayName(productService.load(listPrice.getProductId()).getProductName());
+                listPrice.setDisplayName(listPrice.getProduct().getProductName());
             } else if(listPrice.getMeal()!=null){
                 listPrice.getMeal().getMealName();
             }

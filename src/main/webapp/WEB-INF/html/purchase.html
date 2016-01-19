@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
+    <link rel="stylesheet" href="css/foundation-datepicker.min.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/responsive-tables.js"></script>
+    <script src="js/foundation-datepicker.min.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
     <script src="js/selectize.min.js"></script>
@@ -111,6 +113,15 @@
                                         <label>Purchase Code
                                             <input type="text" placeholder="Purchase Code" name="purchaseCode"/>
                                         </label>
+                                        <label>Request Date
+                                            <input class="fcalendar" type="text" name="requestDate" placeholder="Request Date">
+                                        </label>
+                                        <label>Purchase Date
+                                            <input class="fcalendar" type="text" name="purchaseDate" placeholder="Purchase Date">
+                                        </label>
+                                        <label>Receive Datex
+                                            <input class="fcalendar" type="text" name="receiveDate" placeholder="Receive Date">
+                                        </label>
                                         <div class="rows">
                                             <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
                                             <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
@@ -148,7 +159,7 @@
                                                 <td>{{record.displayRequestDate}}</td>
                                                 <td>{{record.displayPurchaseDate}}</td>
                                                 <td>{{record.displayReceiveDate}}</td>
-                                                <td></td>
+                                                <td>{{record.createdByUsername}}</td>
                                                 <td>{{record.status}}</td>
                                                 <td>
                                                     <i class="fa fa-refresh restock-btn fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id"  data-id="{{record.id}}" data-reveal-id="update-modal"></i>
@@ -512,6 +523,12 @@
                 }
             });
 
+        });
+
+        $(".fcalendar").fdatepicker({
+            format: 'mm-dd-yyyy',
+            disableDblClickSelection: true,
+            closeButton: true
         });
     </script>
 </footer>

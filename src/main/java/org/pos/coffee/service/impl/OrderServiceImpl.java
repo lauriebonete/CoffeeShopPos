@@ -34,12 +34,12 @@ public class OrderServiceImpl extends BaseCrudServiceImpl<Order> implements Orde
                 if(ingredientList!=null){
                     for(Ingredient ingredient: ingredientList){
 
-                        if(itemUsedMap.get(ingredient.getItemId())!=null){
-                            double quantityUsed = itemUsedMap.get(ingredient.getItemId());
+                        if(itemUsedMap.get(ingredient.getItem().getId())!=null){
+                            double quantityUsed = itemUsedMap.get(ingredient.getItem().getId());
                             quantityUsed += ingredient.getQuantity()*order.getQuantity();
-                            itemUsedMap.put(ingredient.getItemId(),quantityUsed);
+                            itemUsedMap.put(ingredient.getItem().getId(),quantityUsed);
                         } else {
-                            itemUsedMap.put(ingredient.getItemId(),ingredient.getQuantity()*order.getQuantity());
+                            itemUsedMap.put(ingredient.getItem().getId(),ingredient.getQuantity()*order.getQuantity());
                         }
                     }
                 }

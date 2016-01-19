@@ -7,5 +7,5 @@ import org.pos.coffee.bean.User;
  * Created by kenji on 12/4/2015.
  */
 public interface UserDao extends BaseEntityDao<User,Long> {
-
+    public User loadUserByUsername(String username);
 }

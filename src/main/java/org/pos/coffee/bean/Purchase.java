@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.evey.annotation.JoinList;
 import org.evey.annotation.UniqueField;
@@ -54,14 +55,17 @@ public class Purchase extends BaseEntity {
 
     @Column(name="PURCHASE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
     private Date purchaseDate;
 
     @Column(name = "RECEIVE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
     private Date receiveDate;
 
     @Column(name = "REQUEST_DATE")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
     private Date requestDate;
 
     @Column(name = "SUPPLIER_DETAILS")

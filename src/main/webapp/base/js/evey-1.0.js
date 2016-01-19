@@ -11,6 +11,22 @@ var evey = (function(){
             return window.location.protocol + '//' + window.location.host + path;
         },
 
+        getDate : function(){
+            var d = new Date();
+
+            var month = d.getMonth()+1;
+            var day = d.getDate();
+            var hours = d.getHours();
+
+            var time = (hours>12 ? hours-12:hours) + ":" + d.getMinutes() + ":" + d.getSeconds() + (hours>12? " PM":" AM");
+
+            var dateDisplay = (month<10 ? '0' : '') + month + '/' +
+                (day<10 ? '0' : '') + day + '/' +
+                d.getFullYear() + " " + time;
+
+            return dateDisplay;
+        },
+
         getHome : function() {
             return window.location.protocol;
         },
@@ -302,7 +318,7 @@ var evey = (function(){
                 }
             });
         });
-    }
+    };
 
     var paginate = function(paginateThis, pagination){
 

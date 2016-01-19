@@ -45,7 +45,6 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
     public Purchase savePurchaseAndPO(Purchase purchase) {
 
         purchase.setTotalExpense(purchaseOrderService.countTotalExpense(purchase.getPurchaseOrders()));
-        purchase.setPurchaseDate(new Date());
         purchase.setPurchaseCode(this.generatePurchaseCode("PO_",1,1,5));
 
         this.save(purchase);

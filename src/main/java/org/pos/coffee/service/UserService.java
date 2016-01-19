@@ -9,5 +9,6 @@ import org.springframework.security.core.Authentication;
  * Created by kenji on 12/4/2015.
  */
 public interface UserService extends BaseCrudService<User> {
+    public User getCurrentUser();
 
 }

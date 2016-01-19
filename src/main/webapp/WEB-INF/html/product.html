@@ -225,27 +225,29 @@
                                         </label>
                                     </div>
                                     <div class="switch round">
-                                        <p>Show on Order page</p>
+                                        <p>Show on as Main Product</p>
                                         <input id="isDisplayOnOrder" type="checkbox" name="isDisplayOnOrder" checked>
                                         <label for="isDisplayOnOrder">
                                             <span class="switch-on">YES</span>
                                             <span class="switch-off">NO</span>
                                         </label>
                                     </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Parent Product
-                                            <div ng-if='fullRecords.length'>
-                                                <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Size
-                                            <select class="size" placeHolder = "Select size" name="size.id" data-list="false" >
-                                                <option></option>
-                                                <option ng-repeat="size in size" value="{{size.id}}">{{size.value}}</option>
-                                            </select>
-                                        </label>
+                                    <div class="not-main hide">
+                                        <div class="row collapse prefix-radius">
+                                            <label>Main Product
+                                                <div ng-if='fullRecords.length'>
+                                                    <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Size
+                                                <select class="size" placeHolder = "Select size" name="size.id" data-list="false" >
+                                                    <option></option>
+                                                    <option ng-repeat="size in size" value="{{size.id}}">{{size.value}}</option>
+                                                </select>
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-add-btn">Add</button>
@@ -276,7 +278,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Description
-                                            <input type="text" placeholder="Description" name="description" value="{{recordFound.description}}" required></label>
+                                            <input type="text" placeholder="Description" name="description" value="{{recordFound.description}}"></label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
@@ -297,25 +299,27 @@
                                         </label>
                                     </div>
                                     <div class="switch round">
-                                        <p>Show on Order page</p>
+                                        <p>Show on as Main Product</p>
                                         <input id="isDisplayOnOrderUpdate" type="checkbox" name="isDisplayOnOrder" ng-model="recordFound.isDisplayOnOrder">
                                         <label for="isDisplayOnOrderUpdate">
                                             <span class="switch-on">YES</span>
                                             <span class="switch-off">NO</span>
                                         </label>
                                     </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Parent Product
-                                            <div ng-if='fullRecords.length'>
-                                                <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Size
-                                            <select class="size" placeHolder = "Select size" name="size.id" data-list="false" ng-options="size.id as size.value for size in size" ng-model="recordFound.sizeId">
-                                            </select>
-                                        </label>
+                                    <div ng-hide="recordFound.isDisplayOnOrder">
+                                        <div class="row collapse prefix-radius">
+                                            <label>Main Product
+                                                <div ng-if='fullRecords.length'>
+                                                    <selectize config='productsConfig' options='fullRecords' ng-model="recordFound.parentProductId"></selectize>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Size
+                                                <select class="size" placeHolder = "Select size" name="size.id" data-list="false" ng-options="size.id as size.value for size in size" ng-model="recordFound.sizeId">
+                                                </select>
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-update-btn">Update</button>
@@ -686,6 +690,12 @@
                     }
                 }
             });
+        }).on("click","#isDisplayOnOrder", function(){
+            if($(this).is(":checked")){
+                $(".not-main").addClass("hide");
+            } else {
+                $(".not-main").removeClass("hide");
+            }
         });
 
         var productImage = null;

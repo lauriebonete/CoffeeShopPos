@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -44,6 +45,10 @@ public class ListPrice extends BaseEntity {
 	private Boolean isProduct;
 
 	private transient String displayName;
+
+	private transient String displayEffectivityDate;
+
+	private transient String displayEndDate;
 
 	public Product getProduct() {
 		return product;
@@ -101,11 +106,37 @@ public class ListPrice extends BaseEntity {
 	}
 
 	public String getDisplayName() {
+		if(this.product!=null){
+			return this.product.getProductName();
+		}
 		return displayName;
 	}
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getDisplayEffectivityDate() {
+		if(this.effectivityDate!=null){
+			return new SimpleDateFormat("MM-dd-yyyy").format(this.effectivityDate);
+		}
+		return displayEffectivityDate;
+	}
+
+	public void setDisplayEffectivityDate(String displayEffectivityDate) {
+		this.displayEffectivityDate = displayEffectivityDate;
+	}
+
+	public String getDisplayEndDate() {
+		if(this.endDate!=null){
+			return new SimpleDateFormat("MM-dd-yyyy").format(this.endDate);
+		}
+
+		return displayEndDate;
+	}
+
+	public void setDisplayEndDate(String displayEndDate) {
+		this.displayEndDate = displayEndDate;
 	}
 
 	@PrePersist

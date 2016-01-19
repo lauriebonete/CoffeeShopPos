@@ -1,5 +1,6 @@
 package org.pos.coffee.service.impl;
 
+import org.evey.security.SessionUser;
 import org.pos.coffee.bean.User;
 import org.pos.coffee.bean.UserRole;
 import org.pos.coffee.service.LoginService;
@@ -11,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -46,7 +49,11 @@ public class LoginServiceImpl implements LoginService {
         }
 
         if (user != null) {
-            Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), getGrantedAuthorities(user));
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getGrantedAuthorities(user));
+            SessionUser sessionUser = new SessionUser(userDetails);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(sessionUser, null, getGrantedAuthorities(user));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
             return auth;
         } else {
             return null;

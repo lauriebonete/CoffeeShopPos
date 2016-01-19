@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
 </head>
-<body ng-app="orderApp" ng-controller="orderController">
+<body ng-app="orderApp" ng-controller="orderController" ng-init="cacheUser()">
 <div class="row height-full">
         <div class="off-canvas-wrap sticky height-full" data-offcanvas>
             <div class="inner-wrap height-full">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="cartBig show-for-large-up" ng-init="setOrderedCount()">
                             <h5 class="left">Order Summary</h5>
-                            <h5 class="right">({{orderedCount}})</h5>
+                            <h5 class="right">({{orderedCount}}) </h5>
                             <div class="orderSummary">
                                 <div class="items">
                                     <div class="row">
@@ -197,7 +197,7 @@
                                                 <div class="column small-12 center">
                                                     <h3>Maestro Fedeli</h3>
                                                     <p id="saleCode"></p>
-                                                    <p id="branch">Binan, Laguna; insert date and time here</p>
+                                                    <p id="branch">{{loggedUser.person.completeName}} {{dateTime}}</p>
                                                 </div>
                                             </div>
                                             <div class="row header">
@@ -361,14 +361,14 @@
     </div>
 
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-    <div class="row" ng-show="showBases">
+    <div class="row base-div" ng-show="showBases">
         <div class="small-4 columns">
             <h4>Base:</h4>
         </div>
         <div class="small-8 columns">
             <ul class="right base-location" ng-init="loadBases()">
                     <li ng-repeat="base in bases" >
-                        <input type="radio" name="base-ingredient" value="{{base.id}}" id="base-{{base.id}}" ng-model="base.isSelectedAsBase" ng-value="base.isSelectedAsBase">
+                        <input type="radio" data-baseid = "{{base}}" name="base-ingredient" value="{{base.id}}" id="base-{{base.id}}" ng-model="base.isSelectedAsBase" ng-value="base.isSelectedAsBase">
                         <label for="base-{{base.id}}"> <h4>{{base.itemName}}</h4></label>
                     </li>
             </ul>
@@ -389,15 +389,15 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-if="sizeSelection">
         <div class="columns small-4">
             <h4>Size:</h4>
         </div>
         <div class="columns small-8">
             <div class="right">
-                <ul class="button-group toggle" data-toggle="buttons-radio">
+                <ul class="button-group toggle size-selection" data-toggle="buttons-radio">
                     <li ng-repeat="product in selectedProduct.productUnder">
-                        <input type="radio" id="{{product.id}}" name="size-group" ng-click="clickSize(product.ingredientList)" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
+                        <input select-default-size data-ingredient= {{product.ingredientList}} type="radio" id="{{product.id}}" name="size-group" ng-click="clickSize(product.ingredientList)" data-list-id="{{product.price.id}}" data-price="{{product.price.price}}" data-toggle="button">
                         <label class="button" for="{{product.id}}">{{product.size.value}}</label>
                     </li>
                 </ul>
@@ -419,14 +419,14 @@
                             <p>{{productAddOn.productCode}}</p>
                         </div>
                         <div class="small-6 columns">
-                            <p><span id="modify-addon-quantity_{{productAddOn.id}}">0</span></p>
+                            <p><span id="modify-addon-quantity">0</span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="center">
                             <ul class="button-group">
-                                <li><button class="button small max-width modify-addon-quan-btn {{productAddOn.id}} disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
-                                <li><button class="button small max-width modify-addon-quan-btn {{productAddOn.id}}" data-action="inc"><i class="fa fa-plus"></i></button></li>
+                                <li><button class="button small max-width modify-addon-quan-btn disabled dec" data-action="dec"><i class="fa fa-minus"></i></button></li>
+                                <li><button class="button small max-width modify-addon-quan-btn" data-action="inc"><i class="fa fa-plus"></i></button></li>
                             </ul>
                         </div>
                     </div>
@@ -437,10 +437,10 @@
 
     <div class="row">
         <div class="small-6 columns">
-            <a href="#" class="button left">Reset Default</a>
+            <button class="button left secondary" id="reset-default">Reset Default</button>
         </div>
         <div class="small-6 columns">
-            <a class="button right" id="add-to-cart">Add to Cart</a>
+            <button class="button right" id="add-to-cart">Add to Cart</button>
         </div>
     </div>
 </div>
@@ -453,6 +453,7 @@
     <script src="js/vendor/modernizr.js"></script>
     <script src="angular/orderApp.js"></script>
     <script src="angular/orderController.js"></script>
+    <script src="angular/orderDirective.js"></script>
 
     <script type="text/html" id="cart-template">
         <div class="row added margin-bottom-half-rem">
@@ -484,10 +485,10 @@
                 <p class="center"></p>
             </div>
             <div class="columns small-4">
-                <p class="center price-set-template-discount">Discount Name</p>
+                <p class="center price-set-template-discount"></p>
             </div>
             <div class="columns small-3">
-                <p class="center price-set-template-effect">-10%</p>
+                <p class="center price-set-template-effect"></p>
             </div>
             <div class="columns small-3">
                 <p class="center"></p>
@@ -524,7 +525,7 @@
                 <p class="center">Sub-total:</p>
             </div>
             <div class="columns small-3">
-                <p class="center price-set-total-template-amount">90.00</p>
+                <p class="center price-set-total-template-amount"></p>
             </div>
         </div>
     </script>
@@ -534,16 +535,16 @@
             <div class="columns small-12">
                 <div class="row header">
                     <div class="columns small-2">
-                        <p class="center payment-summary-cart-quantity">1</p>
+                        <p class="center payment-summary-cart-quantity"></p>
                     </div>
                     <div class="columns small-4">
-                        <p class="center payment-summary-cart-product">Product Name</p>
+                        <p class="center payment-summary-cart-product"></p>
                     </div>
                     <div class="columns small-3">
-                        <p class="center payment-summary-cart-price">100.00</p>
+                        <p class="center payment-summary-cart-price"></p>
                     </div>
                     <div class="columns small-3">
-                        <p class="center payment-summary-cart-total-price">100.00</p>
+                        <p class="center payment-summary-cart-total-price"></p>
                     </div>
                 </div>
                 <div class="row header">
@@ -676,6 +677,11 @@
             angular.element("body").scope().selectProduct($(this).attr("data-id"));
             angular.element("body").scope().$apply();
 
+            var scope = angular.element("body").scope();
+            if(scope.sizeSelection) {
+                $("#modifyOrder input[name=size-group]:first").prop("checked",true).click();
+            }
+
             $("#modify-quantity").text("1");
             $('#modifyOrder').foundation('reveal', 'open');
 
@@ -701,26 +707,26 @@
             }
         }).on("click",".modify-addon-quan-btn",function(){
 
-            var addOnId = $(this).attr("class").match(/\d+/);
-
+            var quantity = $(this).parents(".addOn").find("span#modify-addon-quantity");
             if($(this).data("action")=="dec"){
-                if(Number($("#modify-addon-quantity_" + addOnId).text())<=0){
+                if(Number($(quantity).text())<=0){
                     $(this).attr("disabled");
                     $(this).addClass("disabled");
                 } else {
-                    $("#modify-addon-quantity_" + addOnId).text(Number($("#modify-addon-quantity_" + addOnId).text())-1);
-                    if(Number($("#modify-addon-quantity_" + addOnId).text())<=0){
+                    $(quantity).text(Number($(quantity).text())-1);
+                    if(Number($(quantity).text())<=0){
                         $(this).attr("disabled");
                         $(this).addClass("disabled");
                     }
                 }
 
             } else if($(this).data("action") == "inc"){
-                if(Number($("#modify-addon-quantity_" + addOnId).text())+1>1){
-                    $("#modify-addon-quantity_" + addOnId).removeAttr("disabled");
-                    $("#modify-addon-quantity_" + addOnId).removeClass("disabled");
+                if(Number($(quantity).text())+1>=1){
+                    var decBtn = $(this).parent().parent().find(".modify-addon-quan-btn.dec");
+                    $(decBtn).removeAttr("disabled");
+                    $(decBtn).removeClass("disabled");
                 }
-                $("#modify-addon-quantity_" + addOnId).text(Number($("#modify-addon-quantity_" + addOnId).text())+1);
+                $(quantity).text(Number($(quantity).text())+1);
             }
         }).on("click", "#add-to-cart", function(){
             var productId = null;
@@ -740,7 +746,27 @@
 
             angular.element("body").scope().retrieveProduct(productId);
             angular.element("body").scope().$apply();
-            console.log(scope.addToCart);
+
+            var retrieveProduct = scope.addToCart;
+
+            var base = $.parseJSON($("ul.base-location input[name=base-ingredient]:checked").attr("data-baseid"));
+
+            if(!$(".base-div").hasClass("ng-hide")){
+                if(retrieveProduct.ingredientList != null){
+                    for(var i=0; i<= retrieveProduct.ingredientList.length-1;i++){
+                        if(retrieveProduct.ingredientList[i].item!=null
+                                &&retrieveProduct.ingredientList[i].item.isBase!=null
+                                &&retrieveProduct.ingredientList[i].item.isBase
+                                &&retrieveProduct.ingredientList[i].item.id != base.id){
+
+                            retrieveProduct.ingredientList[i].item = base;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            console.log(retrieveProduct);
 
             var productName = $("#modifyOrder").attr("data-pname");
             var quantity = Number($("#modifyOrder #modify-quantity").text());
@@ -752,7 +778,7 @@
             $(".order-holder").prepend($(template));
             var addedTemplate = $(".order-holder").find("div.added:first-child");
             $(addedTemplate).attr("data-id", productId);
-            $(addedTemplate).attr("data-product",JSON.stringify(scope.addToCart));
+            $(addedTemplate).attr("data-product",JSON.stringify(retrieveProduct));
             $(addedTemplate).find(".product-name").text(productName);
             $(addedTemplate).find(".size-name").text(sizeName);
 
@@ -779,7 +805,6 @@
 
         }).on("click","#modifyOrder input[name=size-group]",function(){
             if($(this).is(":checked")){
-
                 var price = $(this).attr("data-price");
                 var priceClass = $("#modifyOrder .price");
                 $(priceClass).attr("data-list-id", $(this).attr("data-list-id"));
@@ -811,7 +836,6 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success: function(data){
-                    console.log(data);
                     $.ajax({
                         url: evey.getHome()+"/sale/reserve-sale-code",
                         type: "GET",
@@ -821,6 +845,10 @@
                             displayData(data.results);
                             confirmOrderFunc(data.results);
                             holderOrderFunc(data.results);
+
+                            angular.element("body").scope().setDateTime(evey.getDate());
+                            angular.element("body").scope().$apply();
+
                             $(".payment-page").toggleClass("hide");
                             $(".order-page").toggleClass("hide");
                         }
@@ -845,6 +873,19 @@
                 $(".change-due").text("PHP 0");
                 $(".change-due-row").addClass("hide");
             }
+        }).on("click", "#reset-default", function () {
+            $("span#modify-quantity").text("1");
+
+            var scope = angular.element("body").scope();
+            if(scope.sizeSelection) {
+                $("#modifyOrder input[name=size-group]:first").prop("checked",true).click();
+            }
+
+            $.each($("#modifyOrder ul.addOnList .addOn"),function(i, addOn){
+                $(addOn).find("span#modify-addon-quantity").text("0");
+                $(addOn).find(".modify-addon-quan-btn.dec").attr("disabled");
+                $(addOn).find(".modify-addon-quan-btn.dec").addClass("disabled");
+            });
         });
 
         var countQty = function(){
@@ -892,7 +933,6 @@
 
         var displayData = function(data){
             console.log(data);
-
             $("#receipt .payment-summary-row").remove();
 
             $.each(data.orders,function(i,order){
@@ -913,37 +953,22 @@
 
                 $(cartTemplate).find(".payment-summary-cart-total-price").text(order.totalLinePrice);
 
-                var priceSetHolder = $(cartTemplate).find(".payment-summary-cart-price-sets");
-                $.each(order.appliedPriceSet, function(i, priceSet){
-                    $(priceSetHolder).append($("#price-set-template").html());
-                    var priceSetTemplate = $(priceSetHolder).find(".row").last();
-                    $(priceSetTemplate).find(".price-set-template-discount").text(priceSet.priceSetName);
-
-                    var moreOrLess = null;
-                    if(priceSet.isDiscount!= null &&
-                            priceSet.isDiscount!= undefined &&
-                            priceSet.isDiscount){
-                        moreOrLess = "LESS";
-                    } else {
-                        moreOrLess = "ADD";
-                    }
-
-                    var percentOrPhp = null;
-                    if(priceSet.isPercentage!= null &&
-                            priceSet.isPercentage!= undefined &&
-                            priceSet.isPercentage){
-                        percentOrPhp = "%";
-                    } else {
-                        percentOrPhp = "php"
-                    }
-
-                    $(priceSetTemplate).find(".price-set-template-effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
-                    /*$(priceSetTemplate).find(".gross").text(order.grossLinePrice);*/
-                });
-
                 if(order.appliedPriceSet != null &&
                     order.appliedPriceSet != undefined &&
                     order.appliedPriceSet.length > 0){
+
+                    var priceSetHolder = $(cartTemplate).find(".payment-summary-cart-price-sets");
+                    $.each(order.appliedPriceSet, function(i, priceSet){
+                        $(priceSetHolder).append($("#price-set-template").html());
+                        var priceSetTemplate = $(priceSetHolder).find(".row").last();
+                        $(priceSetTemplate).find(".price-set-template-discount").text(priceSet.priceSetName);
+
+                        var effect = priceSetEffectDisplay(priceSet);
+                        $(priceSetTemplate).find(".price-set-template-effect").text(effect);
+                        /*$(priceSetTemplate).find(".gross").text(order.grossLinePrice);*/
+                    });
+
+
                     var grossHolder = $(cartTemplate).find(".payment-summary-price-set-total");
                     $(grossHolder).append($("#price-set-total-template").html());
                     var grossTemplate = $(grossHolder).find(".row").last();
@@ -951,33 +976,21 @@
                 }
             });
 
-            var saleLevelPrice = $(".sale-price-holder");
-            $.each(data.appliedPriceSet, function(i, priceSet){
-                $(saleLevelPrice).append($("#sale-level-pricing-template").html());
-                var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
-                $(saleLevelTemplate).find(".sale-level-pricing-name").text(priceSet.priceSetName);
+            if(data.appliedPriceSet!=null
+                && data.appliedPriceSet != undefined
+                && data.appliedPriceSet.length>0){
 
-                var moreOrLess = null;
-                if(priceSet.isDiscount!= null &&
-                        priceSet.isDiscount!= undefined &&
-                        priceSet.isDiscount){
-                    moreOrLess = "LESS";
-                } else {
-                    moreOrLess = "ADD";
-                }
+                var saleLevelPrice = $(".sale-price-holder");
+                $.each(data.appliedPriceSet, function(i, priceSet){
+                    $(saleLevelPrice).append($("#sale-level-pricing-template").html());
+                    var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
+                    $(saleLevelTemplate).find(".sale-level-pricing-name").text(priceSet.priceSetName);
 
-                var percentOrPhp = null;
-                if(priceSet.isPercentage!= null &&
-                        priceSet.isPercentage!= undefined &&
-                        priceSet.isPercentage){
-                    percentOrPhp = "%";
-                } else {
-                    percentOrPhp = "php"
-                }
+                    var effect = priceSetEffectDisplay(priceSet);
+                    $(saleLevelTemplate).find(".sale-level-pricing-effect").text(effect);
 
-                $(saleLevelTemplate).find(".sale-level-pricing-effect").text(moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp);
-
-            });
+                });
+            }
 
             if(data.tax !=null &&
                     data.tax >0){
@@ -996,6 +1009,27 @@
             $(".summary-total-balance").attr("data-balance",data.totalSale);
         };
 
+        var priceSetEffectDisplay = function(priceSet){
+            var moreOrLess = null;
+            if(priceSet.isDiscount!= null &&
+                    priceSet.isDiscount!= undefined &&
+                    priceSet.isDiscount){
+                moreOrLess = "LESS";
+            } else {
+                moreOrLess = "ADD";
+            }
+
+            var percentOrPhp = null;
+            if(priceSet.isPercentage!= null &&
+                    priceSet.isPercentage!= undefined &&
+                    priceSet.isPercentage){
+                percentOrPhp = "%";
+            } else {
+                percentOrPhp = "php"
+            }
+
+            return moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp;
+        };
 
         var getCartDetail = function(){
 

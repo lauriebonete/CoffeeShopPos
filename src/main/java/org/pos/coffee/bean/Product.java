@@ -77,6 +77,14 @@ public class Product extends BaseEntity {
 	@OneToMany(mappedBy = "parentProduct", fetch = FetchType.LAZY)
 	private List<Product> productUnder;
 
+	private transient String displayProductGroup;
+
+	private transient String displayPromoGroup;
+
+	private transient String displayProductGroupList;
+
+	private transient String displayPromoGroupList;
+
 
 	public String getProductName() {
 		return productName;
@@ -131,51 +139,75 @@ public class Product extends BaseEntity {
 		this.description = description;
 	}
 
-	@JsonView
-	public String displayProductGroup(){
-		StringBuffer buffer = new StringBuffer();
-		for(ProductGroup group: this.productGroupList){
-			buffer.append(group.getProductGroupName()+", ");
+	public String getDisplayProductGroup() {
+		if(this.productGroupList!=null){
+			StringBuffer buffer = new StringBuffer();
+			for(ProductGroup group: this.productGroupList){
+				buffer.append(group.getProductGroupName()+", ");
+			}
+
+			String value = buffer.toString();
+			if(value.length()>0){
+				return value.substring(0, value.length()-2);
+			}
+			return "";
 		}
-		String value = buffer.toString();
-		if(value.length()>0){
-			return value.substring(0, value.length()-2);
-		}
-		return "";
+		return displayProductGroup;
 	}
 
-	@JsonView
-	public String displayPromoGroup(){
-		StringBuffer buffer = new StringBuffer();
-		for(ReferenceLookUp group: this.promoGroupList){
-			buffer.append(group.getValue()+", ");
-		}
-		String value = buffer.toString();
-		if(value.length()>0){
-			return value.substring(0, value.length()-2);
-		}
-		return "";
+	public void setDisplayProductGroup(String displayProductGroup) {
+		this.displayProductGroup = displayProductGroup;
 	}
 
-
-	@JsonView
-	public String displayProductGroupList(){
-		StringBuffer buffer = new StringBuffer();
-		for(ProductGroup group: this.productGroupList){
-			buffer.append(group.getId()+"|");
+	public String getDisplayPromoGroup() {
+		if(this.promoGroupList!=null){
+			StringBuffer buffer = new StringBuffer();
+			for(ReferenceLookUp group: this.promoGroupList){
+				buffer.append(group.getValue()+", ");
+			}
+			String value = buffer.toString();
+			if(value.length()>0){
+				return value.substring(0, value.length()-2);
+			}
+			return "";
 		}
-		String value = buffer.toString();
-		return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
+		return displayPromoGroup;
 	}
 
-	@JsonView
-	public String displayPromoGroupList(){
-		StringBuffer buffer = new StringBuffer();
-		for(ReferenceLookUp group: this.promoGroupList){
-			buffer.append(group.getId()+"|");
+	public void setDisplayPromoGroup(String displayPromoGroup) {
+		this.displayPromoGroup = displayPromoGroup;
+	}
+
+	public String getDisplayProductGroupList() {
+		if(this.productGroupList !=null){
+			StringBuffer buffer = new StringBuffer();
+			for(ProductGroup group: this.productGroupList){
+				buffer.append(group.getId()+"|");
+			}
+			String value = buffer.toString();
+			return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
 		}
-		String value = buffer.toString();
-		return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
+		return displayProductGroupList;
+	}
+
+	public void setDisplayProductGroupList(String displayProductGroupList) {
+		this.displayProductGroupList = displayProductGroupList;
+	}
+
+	public String getDisplayPromoGroupList() {
+		if(this.promoGroupList!=null){
+			StringBuffer buffer = new StringBuffer();
+			for(ReferenceLookUp group: this.promoGroupList){
+				buffer.append(group.getId()+"|");
+			}
+			String value = buffer.toString();
+			return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
+		}
+		return displayPromoGroupList;
+	}
+
+	public void setDisplayPromoGroupList(String displayPromoGroupList) {
+		this.displayPromoGroupList = displayPromoGroupList;
 	}
 
 	public ReferenceLookUp getSize() {

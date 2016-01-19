@@ -37,6 +37,18 @@ orderApp.controller("orderController", function ($scope, $http) {
         }
     };
 
+    $scope.cacheUser = function(){
+        $http.get("/login/get-logged").then(function successCallback(response){
+            $scope.loggedUser = response.data;
+        }, function errorCallback(response){
+
+        });
+    };
+
+    $scope.setDateTime = function(datetime){
+        $scope.dateTime = datetime;
+    };
+
     var isShowBases = function(ingredient){
         var show = false;
         for(var i=0; i<=ingredient.length-1;i++){
@@ -131,6 +143,7 @@ orderApp.controller("orderController", function ($scope, $http) {
     };
 
     $scope.selectProduct = function(id){
+        $scope.selectedProduct = {};
         angular.forEach($scope.product, function (value, key) {
             if(value.id == id){
                 $scope.selectedProduct = value;
@@ -157,16 +170,4 @@ orderApp.controller("orderController", function ($scope, $http) {
         $scope.orderedCount = 0;
     };
 
-    $scope.getPriceBySelected = function(id){
-        if($scope.selectedProduct.price != null &&
-            $scope.selectedProduct.price != undefined &&
-            $scope.selectedProduct.price){
-            for(var i= 0; i<=$scope.selectedProduct.price.length-1;i++){
-                if($scope.selectedProduct.price[i].size.id == id){
-                    $scope.price = $scope.selectedProduct.price[i].price;
-                    break;
-                }
-            }
-        }
-    }
 });

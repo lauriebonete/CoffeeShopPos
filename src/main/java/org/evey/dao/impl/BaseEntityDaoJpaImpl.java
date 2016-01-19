@@ -192,11 +192,13 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                     (Boolean.class.isAssignableFrom(query.getEntityType()) ||
                             Long.class.isAssignableFrom(query.getEntityType()) ||
                             Double.class.isAssignableFrom(query.getEntityType()) ||
-                            Integer.class.isAssignableFrom(query.getEntityType()) ||
-                            Date.class.isAssignableFrom(query.getEntityType())
+                            Integer.class.isAssignableFrom(query.getEntityType())
+
             ) || (query.getIsUnique()!=null &&
                     query.getIsUnique() )){
                 queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
+            } else if(Date.class.isAssignableFrom(query.getEntityType())){
+                queryBuffer.append("date(obj."+query.getFieldName()+") = date(:"+NamingUtil.toParamName(query.getFieldName())+")");
             } else {
                 queryBuffer.append("lower(obj."+query.getFieldName()+") like :"+NamingUtil.toParamName(query.getFieldName()));
             }
@@ -283,12 +285,15 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             if((!Boolean.class.isAssignableFrom(helper.getEntityType()) &&
                !Long.class.isAssignableFrom(helper.getEntityType()) &&
                !Double.class.isAssignableFrom(helper.getEntityType()) &&
-               !Integer.class.isAssignableFrom(helper.getEntityType())
+               !Integer.class.isAssignableFrom(helper.getEntityType()) &&
+               !Date.class.isAssignableFrom(helper.getEntityType())
                 )
                 && !(helper.getIsUnique()!=null && helper.getIsUnique())
                 && !List.class.isAssignableFrom(helper.getEntityType())) {
                 query.setParameter(NamingUtil.toParamName(helper.getFieldName()),"%"+helper.getValue()+"%");
             } else if(List.class.isAssignableFrom(helper.getEntityType())) {
+                query.setParameter(NamingUtil.toParamName(helper.getFieldName()), helper.getValue());
+            } else if(Date.class.isAssignableFrom(helper.getEntityType())) {
                 query.setParameter(NamingUtil.toParamName(helper.getFieldName()), helper.getValue());
             } else {
                 query.setParameter(NamingUtil.toParamName(helper.getFieldName()),helper.getValue());

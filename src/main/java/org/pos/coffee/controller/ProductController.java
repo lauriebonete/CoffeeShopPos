@@ -7,6 +7,7 @@ import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.service.FileDetailService;
 import org.pos.coffee.service.ProductGroupService;
 import org.pos.coffee.service.ProductService;
+import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,9 @@ public class ProductController extends BaseCrudController<Product> {
 
     @Autowired
     private FileDetailService fileDetailService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/ingredient", method = RequestMethod.POST, produces = "application/json")
     public void addIngredients(@RequestBody Product product){

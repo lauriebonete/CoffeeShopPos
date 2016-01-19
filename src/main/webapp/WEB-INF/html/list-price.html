@@ -111,25 +111,9 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <div class="search-panel-flat columns small-12">
-                                            <div>
-                                                <p>Search Product</p>
-                                                <div class="switch center">
-                                                    <input id="isProduct" type="checkbox" checked>
-                                                    <label for="isProduct">
-                                                        <span class="switch-on">YES</span>
-                                                        <span class="switch-off">NO</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <label>Product Name
-                                                <input id="productName" type="text" placeholder="Product Name" name="product.productName"/>
-                                            </label>
-                                            <label>Meal Name
-                                                <input id="mealName" type="text" placeholder="Meal Name" name="meal.mealName"/>
-                                            </label>
-                                        </div>
+                                        <label>Product Name
+                                            <input id="productName" type="text" placeholder="Product Name" name="product.productName"/>
+                                        </label>
                                         <label>Promo Group
                                             <select id="promoGroup" ng-init = "loadDropDown('/reference/getReferenceLookUpByCategory/CATEGORY_PROMO_GROUP')">
                                                 <option></option>
@@ -173,8 +157,8 @@
                                         <tr ng-repeat="record in records">
                                             <td>{{record.displayName}}</td>
                                             <td>{{record.price}}</td>
-                                            <td>{{record.effectivityDate}}</td>
-                                            <td>{{record.endDate}}</td>
+                                            <td>{{record.displayEffectivityDate}}</td>
+                                            <td>{{record.displayEndDate}}</td>
                                             <td>
                                                 <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
@@ -199,14 +183,6 @@
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
-                                    <div class="switch round">
-                                        <p>Product?</p>
-                                        <input id="isProductCreate" type="checkbox" checked>
-                                        <label for="isProductCreate">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
-                                    </div>
                                     <div class="row collapse prefix-radius" ng-init="loadProducts()">
                                         <label>Product Name <small>required</small>
                                             <div ng-if='products.length'>
@@ -214,11 +190,6 @@
                                             </div>
                                         </label>
                                         <small class="error">Please provide the name of Product</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Meal Name <small>required</small>
-                                            <input type="text" placeholder="Meal Name" name="meal.id" id="meal" disabled></label>
-                                        <small class="error">Please provide the name of Meal</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Price <small>required</small>
@@ -266,14 +237,6 @@
                                     <div class="row">
                                         <input type="hidden" value="{{recordFound.id}}" name="id">
                                     </div>
-                                    <div class="switch round">
-                                        <p>Product?</p>
-                                        <input id="isProductUpdate" type="checkbox" ng-model="recordFound.isProduct">
-                                        <label for="isProductUpdate">
-                                            <span class="switch-on">YES</span>
-                                            <span class="switch-off">NO</span>
-                                        </label>
-                                    </div>
                                     <div class="row collapse prefix-radius" ng-init="loadProducts()">
                                         <label>Product Name <small>required</small>
                                             <div ng-if='products.length'>
@@ -281,11 +244,6 @@
                                             </div>
                                         </label>
                                         <small class="error">Please provide the name of Product</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>Meal Name <small>required</small>
-                                            <input type="text" placeholder="Meal Name" name="meal.id" value="{{recordFound.mealId}}" required></label>
-                                        <small class="error">Please provide the name of Meal</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Price <small>required</small>
@@ -297,7 +255,7 @@
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="Effective Date" name="effectivityDate" value="{{recordFound.effectivityDate}}">
+                                            <input class="fcalendar" type="text" placeholder="Effective Date" name="effectivityDate" value="{{recordFound.displayEffectivityDate}}">
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -305,7 +263,7 @@
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate" value="{{recordFound.endDate}}">
+                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate" value="{{recordFound.displayEndDate}}">
                                         </div>
                                     </div>
                                     <div class="switch round">

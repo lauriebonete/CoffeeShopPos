@@ -26,6 +26,8 @@ public class Person extends BaseEntity {
 	@JoinColumn(name="ADDRESS", referencedColumnName = "ID")
 	private Address address;
 
+	private transient String completeName;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -55,6 +57,14 @@ public class Person extends BaseEntity {
 	}
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public void setCompleteName(String completeName) {
+		this.completeName = completeName;
+	}
+
+	public String getCompleteName(){
+		return this.lastName+", "+this.firstName;
 	}
 	
 }

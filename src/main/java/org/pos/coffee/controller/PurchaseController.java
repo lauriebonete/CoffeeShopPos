@@ -3,8 +3,10 @@ package org.pos.coffee.controller;
 import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Purchase;
 import org.pos.coffee.bean.PurchaseOrder;
+import org.pos.coffee.bean.User;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
+import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,9 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     private PurchaseService purchaseService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private PurchaseOrderService purchaseOrderService;
 
     @RequestMapping(value = "/inventory-order", method = RequestMethod.POST, produces = "application/json")
@@ -32,6 +37,12 @@ public class PurchaseController extends BaseCrudController<Purchase> {
         Map<String,Object> returnMap = new HashMap<>();
         purchase.setStatus(Purchase.Status.FOR_APPROVAL.getValue());
         purchase.setRequestDate(new Date());
+
+        User user = userService.getCurrentUser();
+        if(user!=null){
+            purchase.setCreatedByUsername(user.getUsername());
+        }
+
         Purchase purchaseSaved = purchaseService.savePurchaseAndPO(purchase);
 
         returnMap.put("result", purchaseSaved);
@@ -67,6 +78,9 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     public @ResponseBody Purchase updateStatusPurchase(Long purchaseId, String status) throws Exception{
         Purchase purchase = purchaseService.load(purchaseId);
         purchase.setStatus(Purchase.Status.findByString(status).getValue());
+        if ("In Progress".equals(status)) {
+            purchase.setPurchaseDate(new Date());
+        }
         purchaseService.save(purchase);
 
         return purchase;

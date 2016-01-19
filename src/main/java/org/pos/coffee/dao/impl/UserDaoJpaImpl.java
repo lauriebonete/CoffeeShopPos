@@ -15,4 +15,11 @@ import java.util.List;
 @Repository("userDao")
 public class UserDaoJpaImpl extends BaseEntityDaoJpaImpl<User,Long> implements UserDao {
 
+    @Override
+    public User loadUserByUsername(String username) {
+        String queryString = "SELECT obj FROM User obj where obj.username = :username";
+        Query query = getEntityManager().createQuery(queryString);
+        query.setParameter("username", username);
+        return (User) query.getSingleResult();
+    }
 }
