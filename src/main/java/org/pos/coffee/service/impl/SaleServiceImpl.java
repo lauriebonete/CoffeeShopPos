@@ -7,6 +7,7 @@ import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.dao.SaleDao;
+import org.pos.coffee.service.AddOnService;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.OrderService;
 import org.pos.coffee.service.SaleService;
@@ -36,6 +37,9 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private AddOnService addOnService;
+
     @Override
     @Transactional
     public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList) {
@@ -57,6 +61,10 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
         for(Order order: sale.getOrders()){
             order.setSale(sale);
             orderService.save(order);
+            for(AddOn addOn: order.getAddOnList()){
+                addOn.setOrder(order);
+                addOnService.save(addOn);
+            }
         }
     }
 
@@ -67,7 +75,7 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
         List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
         List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
         sale.setTotalCost(this.countExpensePerOrder(orderExpenseHelperList));
-        this.save(sale);
+        /*this.save(sale);*/
         return sale;
     }
 

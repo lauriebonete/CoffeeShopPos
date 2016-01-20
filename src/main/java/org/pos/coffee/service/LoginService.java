@@ -24,4 +24,6 @@ public interface LoginService {
 
     public boolean supports(Class<?> authentication);
 
+    public String getMacAddress();
+
 }

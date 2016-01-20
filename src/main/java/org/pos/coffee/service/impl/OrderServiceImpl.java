@@ -43,8 +43,29 @@ public class OrderServiceImpl extends BaseCrudServiceImpl<Order> implements Orde
                         }
                     }
                 }
+
+                if(order.getAddOnList()!=null
+                        && order.getAddOnList().size()>0){
+                    for(AddOn addOn:order.getAddOnList()){
+                        Product productAddon = addOn.getProduct();
+                        List<Ingredient> ingredientListAddon = productAddon.getIngredientList();
+                        if(ingredientListAddon!=null){
+                            for(Ingredient ingredient: ingredientListAddon){
+
+                                if(itemUsedMap.get(ingredient.getItem().getId())!=null){
+                                    double quantityUsed = itemUsedMap.get(ingredient.getItem().getId());
+                                    quantityUsed += ingredient.getQuantity()*addOn.getQuantity();
+                                    itemUsedMap.put(ingredient.getItem().getId(),quantityUsed);
+                                } else {
+                                    itemUsedMap.put(ingredient.getItem().getId(),ingredient.getQuantity()*addOn.getQuantity());
+                                }
+                            }
+                        }
+                    }
+                }
                 itemUsedHelper.setItemUsedAndQuantity(itemUsedMap);
             }
+
             itemUsedHelperList.add(itemUsedHelper);
         }
 

@@ -39,7 +39,8 @@ orderApp.controller("orderController", function ($scope, $http) {
 
     $scope.cacheUser = function(){
         $http.get("/login/get-logged").then(function successCallback(response){
-            $scope.loggedUser = response.data;
+            $scope.loggedUser = response.data.user;
+            $scope.branch = response.data.branch;
         }, function errorCallback(response){
 
         });

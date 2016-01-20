@@ -157,10 +157,16 @@ public class OrderController extends BaseCrudController<Order> {
                     }
                     get_log().warn(subtotal+" after price set");
                 }
+
+                Double totalAddOnPrice = 0D;
+                for(AddOn addOn: orderHelper.getAddOn()){
+                    totalAddOnPrice += addOn.getPrice() * addOn.getQuantity();
+                }
                 Order orderLine = new Order();
                 orderLine.setProduct(orderHelper.getProduct());
                 orderLine.setQuantity(orderHelper.getQuantity());
                 orderLine.setTotalLinePrice(subtotal);
+                orderLine.setAddOnList(orderHelper.getAddOn());
                 orderLine.setAppliedPriceSet(applyPriceSetList);
 
                 if(orderHelper.getListId()!=null){
@@ -169,10 +175,10 @@ public class OrderController extends BaseCrudController<Order> {
 
                 orderLine.setTotalPriceSetDisc(totalLineDiscount);
                 orderLine.setTotalPriceSetSur(totalLineSurcharge);
-                orderLine.setGrossLinePrice(gross);
+                orderLine.setGrossLinePrice(gross+totalAddOnPrice);
 
                 orderList.add(orderLine);
-                total += gross;
+                total += gross + totalAddOnPrice;
             }
         }
 

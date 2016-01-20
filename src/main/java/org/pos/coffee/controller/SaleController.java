@@ -1,9 +1,11 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
+import org.pos.coffee.bean.Branch;
 import org.pos.coffee.bean.Sale;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.service.BranchService;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.OrderService;
 import org.pos.coffee.service.SaleService;
@@ -26,13 +28,10 @@ import java.util.Map;
 public class SaleController extends BaseCrudController<Sale> {
 
     @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private ItemService itemService;
-
-    @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private BranchService branchService;
 
     @RequestMapping(value = "/confirm", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Map<String,Object> confirmOrder(@RequestBody Sale sale) throws Exception{

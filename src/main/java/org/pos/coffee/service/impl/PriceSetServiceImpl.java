@@ -137,10 +137,10 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
                         if(priceSet.getIsPercentage() != null &&
                                 priceSet.getIsPercentage()){
                             surcharge = total  * (priceSet.getPriceSetModifier()/100);
-                            total -= surcharge;
+                            total += surcharge;
                         } else {
                             surcharge = priceSet.getPriceSetModifier();
-                            total -= surcharge;
+                            total += surcharge;
                         }
                         totalSurcharge += surcharge;
                     }

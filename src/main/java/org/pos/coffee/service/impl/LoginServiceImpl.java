@@ -1,8 +1,10 @@
 package org.pos.coffee.service.impl;
 
 import org.evey.security.SessionUser;
+import org.pos.coffee.bean.Branch;
 import org.pos.coffee.bean.User;
 import org.pos.coffee.bean.UserRole;
+import org.pos.coffee.service.BranchService;
 import org.pos.coffee.service.LoginService;
 import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,5 +81,27 @@ public class LoginServiceImpl implements LoginService {
         return authorities;
     }
 
+    @Override
+    public String getMacAddress() {
+        try {
+            InetAddress ip = InetAddress.getLocalHost();
+            NetworkInterface networkInterface = NetworkInterface.getByInetAddress(ip);
 
+            byte[] mac = networkInterface.getHardwareAddress();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+
+            return sb.toString();
+
+        } catch (UnknownHostException | SocketException uhe){
+            uhe.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

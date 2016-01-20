@@ -1,6 +1,8 @@
 package org.pos.coffee.controller;
 
+import org.pos.coffee.bean.Branch;
 import org.pos.coffee.bean.User;
+import org.pos.coffee.service.BranchService;
 import org.pos.coffee.service.LoginService;
 import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kenji on 12/4/2015.
@@ -25,6 +32,9 @@ public class LoginController implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BranchService branchService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -42,14 +52,18 @@ public class LoginController implements AuthenticationProvider {
     }
 
     @RequestMapping(value = "/get-logged", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody User getLoggedUser(){
+    public @ResponseBody Map<String, Object> getLoggedUser() throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
         User user = userService.getCurrentUser();
         if(user!=null
                 && user.getPerson()!=null){
             user.getPerson().getFirstName();
         }
+        returnMap.put("user",user);
+        returnMap.put("branch",branchService.getBranchUsingMac(loginService.getMacAddress()));
 
-        return user;
+
+        return returnMap;
     }
 
 }

@@ -67,7 +67,7 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
         loadPurchase.setReceiveDate(new Date());
         loadPurchase.setTotalExpense(purchaseOrderService.recountTotalExpense(loadPurchase.getPurchaseOrders()));
         purchaseDao.save(loadPurchase);
-        return purchase;
+        return loadPurchase;
     }
 
     @Override

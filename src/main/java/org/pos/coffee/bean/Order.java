@@ -1,6 +1,7 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.evey.annotation.JoinList;
 import org.evey.bean.BaseEntity;
 
@@ -40,13 +41,9 @@ public class Order extends BaseEntity {
 	@Column(name = "LIST_PRICE", insertable = false, updatable = false)
 	private Long listPriceId;
 
-
-	@ManyToOne
-	@JoinColumn(name="ADD_ON", referencedColumnName = "ID")
-	private Ingredient additional;
-
-	@Column(name = "ADD_ON", insertable = false, updatable = false)
-	private Long additionalId;
+	@OneToMany(mappedBy = "order")
+	@JsonManagedReference
+	private List<AddOn> addOnList;
 
 	@Column(name="QUANTITY")
 	private Long quantity;
@@ -138,22 +135,6 @@ public class Order extends BaseEntity {
 		this.productId = productId;
 	}
 
-	public Ingredient getAdditional() {
-		return additional;
-	}
-
-	public void setAdditional(Ingredient additional) {
-		this.additional = additional;
-	}
-
-	public Long getAdditionalId() {
-		return additionalId;
-	}
-
-	public void setAdditionalId(Long additionalId) {
-		this.additionalId = additionalId;
-	}
-
 	public List<PriceSet> getAppliedPriceSet() {
 		return appliedPriceSet;
 	}
@@ -200,5 +181,13 @@ public class Order extends BaseEntity {
 
 	public void setTotalPriceSetSur(Double totalPriceSetSur) {
 		this.totalPriceSetSur = totalPriceSetSur;
+	}
+
+	public List<AddOn> getAddOnList() {
+		return addOnList;
+	}
+
+	public void setAddOnList(List<AddOn> addOnList) {
+		this.addOnList = addOnList;
 	}
 }

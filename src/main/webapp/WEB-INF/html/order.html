@@ -197,7 +197,7 @@
                                                 <div class="column small-12 center">
                                                     <h3>Maestro Fedeli</h3>
                                                     <p id="saleCode"></p>
-                                                    <p id="branch">{{loggedUser.person.completeName}} {{dateTime}}</p>
+                                                    <p id="branch">{{branch.branch.value}} {{loggedUser.person.completeName}} {{dateTime}}</p>
                                                 </div>
                                             </div>
                                             <div class="row header">
@@ -430,6 +430,9 @@
                             </ul>
                         </div>
                     </div>
+                    <div>
+                        <p class="center add-on-price" data-addon-price="{{productAddOn.price.price}}">{{productAddOn.price.price}}php</p>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -455,6 +458,23 @@
     <script src="angular/orderController.js"></script>
     <script src="angular/orderDirective.js"></script>
 
+    <script type="text/html" id="add-cart-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center add-summary-cart-quantity"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center add-summary-cart-product"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center add-summary-cart-price"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center add-summary-cart-total-price"></p>
+            </div>
+        </div>
+    </script>
+
     <script type="text/html" id="cart-template">
         <div class="row added margin-bottom-half-rem">
             <div class="columns small-6">
@@ -464,6 +484,7 @@
                 <div class="row">
                     <div class="columns size-name"></div>
                 </div>
+                <div class="row"><div class="columns add-on-holder"></div></div>
             </div>
             <div class="columns small-4">
                 <div class="row">
@@ -472,13 +493,13 @@
                 <div class="row">
                     <div class="columns subtotal"></div>
                 </div>
+                <div class="row"><div class="columns add-on-price-holder"></div></div>
             </div>
             <div class="columns small-2">
                 <a><i class="fa fa-minus-circle remove-cart"></i></a>
             </div>
         </div>
     </script>
-
     <script type="text/html" id="price-set-template">
         <div class="row header">
             <div class="columns small-2">
@@ -495,7 +516,6 @@
             </div>
         </div>
     </script>
-
     <script type="text/html" id="sale-level-pricing-template">
         <div class="row">
             <div class="columns small-2">
@@ -512,7 +532,6 @@
             </div>
         </div>
     </script>
-
     <script type="text/html" id="price-set-total-template">
         <div class="row header">
             <div class="columns small-2">
@@ -529,7 +548,6 @@
             </div>
         </div>
     </script>
-
     <script type="text/html" id="payment-summary-cart">
         <div class="row header payment-summary-row">
             <div class="columns small-12">
@@ -549,6 +567,13 @@
                 </div>
                 <div class="row header">
                     <div class="columns small-12">
+                        <div class="add-summary-cart-holder">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row header">
+                    <div class="columns small-12">
                         <div class="payment-summary-cart-price-sets">
 
                         </div>
@@ -560,7 +585,6 @@
             </div>
         </div>
     </script>
-
     <script type="text/html" id="payment-product-cart">
         <div class="row items">
             <div class="columns small-12">
@@ -641,6 +665,16 @@
             </div>
         </div>
     </script>
+    <script type="text/html" id="add-on-cart-template">
+        <div class="add-on-name">
+
+        </div>
+    </script>
+    <script type="text/html" id="add-on-cart-price-template">
+        <div class="add-on-qty-price">
+
+        </div>
+    </script>
 
     <script>
         $(document).foundation();
@@ -683,6 +717,11 @@
             }
 
             $("#modify-quantity").text("1");
+            $.each($("#modifyOrder ul.addOnList .addOn"),function(i, addOn){
+                $(addOn).find("span#modify-addon-quantity").text("0");
+                $(addOn).find(".modify-addon-quan-btn.dec").attr("disabled");
+                $(addOn).find(".modify-addon-quan-btn.dec").addClass("disabled");
+            });
             $('#modifyOrder').foundation('reveal', 'open');
 
         }).on("click",".modify-quan-btn",function(){
@@ -766,8 +805,6 @@
                 }
             }
 
-            console.log(retrieveProduct);
-
             var productName = $("#modifyOrder").attr("data-pname");
             var quantity = Number($("#modifyOrder #modify-quantity").text());
             price = Number($('#modifyOrder .price').attr("data-price"));
@@ -782,6 +819,39 @@
             $(addedTemplate).find(".product-name").text(productName);
             $(addedTemplate).find(".size-name").text(sizeName);
 
+            var addOnList = [];
+            var addOnTemplate = $("#add-on-cart-template").html();
+            var addOnPriceTemplate = $("#add-on-cart-price-template").html();
+            var totalAddOnPrice = 0;
+            $.each($(".addOn"),function(i,addOn){
+                if(Number($(addOn).find("#modify-addon-quantity").text())>0){
+                    var addOnVar = new Object();
+                    angular.element("body").scope().retrieveProduct($(addOn).attr("data-id"));
+                    angular.element("body").scope().$apply();
+
+                    var qty = Number($(addOn).find("#modify-addon-quantity").text());
+                    var price = Number($(addOn).find(".add-on-price").attr("data-addon-price"));
+
+                    var productAddOn = scope.addToCart;
+                    addOnVar["product"] = productAddOn;
+                    addOnVar["quantity"] = qty;
+                    addOnVar["price"] = price;
+                    addOnList.push(addOnVar);
+
+
+                    $(addedTemplate).find(".add-on-holder").append($(addOnTemplate));
+                    var lastHolder = $(addedTemplate).find(".add-on-name:last");
+                    $(lastHolder).text("("+qty+") "+productAddOn.productCode);
+
+                    $(addedTemplate).find(".add-on-price-holder").append($(addOnPriceTemplate));
+                    var lastHolder = $(addedTemplate).find(".add-on-qty-price:last");
+                    $(lastHolder).text((qty*price)+"php");
+                    totalAddOnPrice += qty*price;
+                }
+            });
+
+            $(addedTemplate).attr("data-addon", JSON.stringify(addOnList));
+
             var classQuantityPrice = $(addedTemplate).find(".quantity-price");
             $(classQuantityPrice).text(quantity +" x "+price+"php");
             $(classQuantityPrice).attr("data-list-id",listId);
@@ -793,7 +863,7 @@
 
 
             var totalPrice = Number($(".cartBig .total-price").text());
-            totalPrice += subtotal;
+            totalPrice += subtotal+totalAddOnPrice;
 
             var classTotalPrice = $(".total-price");
             $(classTotalPrice).text(totalPrice);
@@ -901,7 +971,9 @@
 
         var confirmOrderFunc = function(data){
             $("#confirm-order").on("click", function(){
+                var scope = angular.element("body").scope();
                 data["saleCode"] = $("#saleCode").text();
+                data["branch"] = scope.branch.branch;
                 $.ajax({
                     url: evey.getHome()+"/sale/confirm",
                     type: "POST",
@@ -932,8 +1004,8 @@
         };
 
         var displayData = function(data){
-            console.log(data);
             $("#receipt .payment-summary-row").remove();
+            $("#receipt .sale-price-holder .row").remove();
 
             $.each(data.orders,function(i,order){
                 var cartHolder = $("#receipt .cart-holder");
@@ -949,6 +1021,21 @@
                     $(cartTemplate).find(".payment-summary-cart-price").text(order.listPrice.price);
                 } else {
                     $(cartTemplate).find(".payment-summary-cart-price").text(0);
+                }
+
+                if(order.addOnList != null &&
+                    order.addOnList != undefined &&
+                    order.addOnList.length >0){
+
+                    var addOnHolder = $(cartTemplate).find(".add-summary-cart-holder");
+                    $.each(order.addOnList, function(i,addOn){
+                        $(addOnHolder).append($("#add-cart-template").html());
+                        var addOnHolderTemplate = $(addOnHolder).find(".row").last();
+                        $(addOnHolderTemplate).find(".add-summary-cart-quantity").text(addOn.quantity);
+                        $(addOnHolderTemplate).find(".add-summary-cart-product").text(addOn.product.productCode);
+                        $(addOnHolderTemplate).find(".add-summary-cart-price").text(addOn.price);
+                        $(addOnHolderTemplate).find(".add-summary-cart-total-price").text(Number(addOn.price)*Number(addOn.quantity));
+                    });
                 }
 
                 $(cartTemplate).find(".payment-summary-cart-total-price").text(order.totalLinePrice);
@@ -1044,6 +1131,7 @@
                 var price = $(added).find(".quantity-price").attr("data-price");
                 var listId = $(added).find(".quantity-price").attr("data-list-id");
                 var product = $(added).attr("data-product");
+                var addOn = $(added).attr("data-addon");
 
                 var row = {
                     "product": productId,
@@ -1060,7 +1148,8 @@
                     "quantity": quantity,
                     "price": price,
                     "listId": listId,
-                    "product": $.parseJSON(product)
+                    "product": $.parseJSON(product),
+                    "addOn": $.parseJSON(addOn)
                 };
 
                 cart.push(row);
