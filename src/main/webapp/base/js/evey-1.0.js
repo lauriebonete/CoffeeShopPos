@@ -227,6 +227,12 @@ var evey = (function(){
             var home = evey.getHome();
 
             $(crudForm).on("valid.fndtn.abide",function(){
+                $(this).find("i.loader").toggleClass("hide");
+                $(this).find("span.btn-label").toggleClass("hide");
+
+                $(this).find(".button").toggleClass("disabled");
+                $(this).find(".button").attr("disabled",true);
+
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(crudForm);
@@ -238,15 +244,26 @@ var evey = (function(){
                     contentType: "application/json",
                     success : function(data) {
                         if(data.status) {
+                            $('#crud-modal').foundation('reveal', 'close');
+                            $(crudForm).find("i.loader").toggleClass("hide");
+                            $(crudForm).find("span.btn-label").toggleClass("hide");
+
+                            $(crudForm).find(".button").toggleClass("disabled");
+                            $(crudForm).find(".button").removeAttr("disabled",true);
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
-                            $('#crud-modal').foundation('reveal', 'close');
                         }
                     }
                 });
             });
 
             $(updateForm).on("valid.fndtn.abide",function(){
+                $(this).find("i.loader").toggleClass("hide");
+                $(this).find("span.btn-label").toggleClass("hide");
+
+                $(this).find(".button").toggleClass("disabled");
+                $(this).find(".button").attr("disabled",true);
+
                 var path = evey.getPath();
 
                 var jsonForm = evey.JSONnify(updateForm);
@@ -258,9 +275,15 @@ var evey = (function(){
                     contentType: "application/json",
                     success : function(data) {
                         if(data.status){
+                            $('#update-modal').foundation('reveal', 'close');
+                            $(updateForm).find("i.loader").toggleClass("hide");
+                            $(updateForm).find("span.btn-label").toggleClass("hide");
+
+                            $(updateForm).find(".button").toggleClass("disabled");
+                            $(updateForm).find(".button").removeAttr("disabled",true);
+
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
-                            $('#update-modal').foundation('reveal', 'close');
                         }
                     }
                 });

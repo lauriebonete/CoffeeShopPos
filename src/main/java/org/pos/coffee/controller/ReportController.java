@@ -1,17 +1,19 @@
 package org.pos.coffee.controller;
 
+import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.bean.helper.SaleOrderHelper;
-import org.pos.coffee.bean.poi.SalesReport;
+import org.pos.coffee.bean.helper.report.CategorySaleHelper;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
+import org.pos.coffee.bean.poi.format.SalesReport;
 import org.pos.coffee.service.ProductGroupService;
+import org.pos.coffee.service.ProductService;
 import org.pos.coffee.service.ReferenceLookUpService;
 import org.pos.coffee.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
@@ -33,6 +35,9 @@ public class ReportController {
     private ReportService reportService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private ProductGroupService productGroupService;
 
     @Autowired
@@ -44,14 +49,15 @@ public class ReportController {
         response.setHeader("Content-Disposition", "attachment; filename=test.xlsx");
 
         List<ProductGroup> productGroups = productGroupService.findAll();
-        List<SaleOrderHelper> soldProductList = reportService.prepareSalesData(new Date(), new Date());
         List<ReferenceLookUp> productCategory = referenceLookUpService.getReferenceLookUpByCategory("CATEGORY_PROD_CATEGORY");
-        reportService.buildReportData(soldProductList,productCategory,productGroups);
+        List<Product> products = productService.findAll();
 
+        List<SaleOrderHelper> soldProductList = reportService.prepareSalesData(new Date(), new Date());
+        List<CategorySaleHelper> categorySaleHelperList = reportService.buildReportData(products,productCategory,productGroups);
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();
-            new SalesReport().publishReport(out);
+            new SalesReport(productGroups).publishReport(out);
             out.flush();
         } finally {
             if(out != null)

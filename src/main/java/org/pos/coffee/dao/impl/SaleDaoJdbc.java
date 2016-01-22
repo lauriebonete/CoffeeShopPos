@@ -1,6 +1,6 @@
 package org.pos.coffee.dao.impl;
 
-import org.pos.coffee.bean.helper.SaleOrderHelper;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 
 import java.util.Date;
 import java.util.List;

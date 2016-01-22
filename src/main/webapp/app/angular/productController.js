@@ -48,6 +48,7 @@ crudApp.controller("productController", function ($scope, $http) {
         onInitialize : function (selectize) {
             // receives the selectize object as an argument
         },
+        maxItems:1,
     };
 
     $scope.loadProductGroup = function(data) {
@@ -60,4 +61,5 @@ crudApp.controller("productController", function ($scope, $http) {
 
     $scope.productGroup = 0;
     $scope.promoGroup = 0;
+    $scope.category = 0;
 });

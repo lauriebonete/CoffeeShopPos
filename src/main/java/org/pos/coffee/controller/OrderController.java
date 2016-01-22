@@ -61,10 +61,8 @@ public class OrderController extends BaseCrudController<Order> {
         List<Product> allProduct = new ArrayList<>();
         for(Product product: results){
 
-            if(product.getProductGroupList()!=null){
-                for(ProductGroup group: product.getProductGroupList()) {
-                    group = productGroupService.load(group.getId());
-                }
+            if(product.getProductGroup()!=null){
+                product.setProductGroup(productGroupService.load(product.getProductGroupId()));
             }
 
             if(product.getPromoGroupList() != null){

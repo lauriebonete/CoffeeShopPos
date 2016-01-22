@@ -1,4 +1,4 @@
-package org.pos.coffee.bean.helper;
+package org.pos.coffee.bean.helper.report;
 
 /**
  * Created by Laurie on 1/21/2016.
@@ -15,6 +15,7 @@ public class SaleOrderHelper {
     private String sizeName;
     private Long productGroupId;
     private String productGroupName;
+    private Long categoryId;
 
     public Double getQuantity() {
         return quantity;
@@ -102,5 +103,13 @@ public class SaleOrderHelper {
 
     public void setProductGroupName(String productGroupName) {
         this.productGroupName = productGroupName;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

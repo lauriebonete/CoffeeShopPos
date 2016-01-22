@@ -1,8 +1,10 @@
 package org.pos.coffee.service;
 
+import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.bean.helper.SaleOrderHelper;
+import org.pos.coffee.bean.helper.report.CategorySaleHelper;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -13,5 +15,5 @@ import java.util.List;
 public interface ReportService {
 
     public List<SaleOrderHelper> prepareSalesData(Date startDate, Date endDate);
-    public void buildReportData(List<SaleOrderHelper> saleOrderHelpers, List<ReferenceLookUp> categoryList, List<ProductGroup> productGroups);
+    public List<CategorySaleHelper> buildReportData(List<Product> productList, List<ReferenceLookUp> categoryList, List<ProductGroup> productGroups);
 }

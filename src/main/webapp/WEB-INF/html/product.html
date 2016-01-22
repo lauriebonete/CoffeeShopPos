@@ -164,7 +164,7 @@
                                             <td>{{record.productCode}}</td>
                                             <td>{{record.productName}}</td>
                                             <td>{{record.description}}</td>
-                                            <td>{{record.displayProductGroup}}</td>
+                                            <td>{{record.productGroup.productGroupName}}</td>
                                             <td>{{record.displayPromoGroup}}</td>
                                             <td>
                                                 <i class="fa fa-camera image-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-image="{{record.productImageId}}"></i>
@@ -208,7 +208,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <selectize data-attr="id" name="productGroupList" config='productGroupConfig' options='productGroupOption' ng-model="productGroup"></selectize>
+                                            <selectize data-list="false" data-attr="id" name="productGroup" config='productGroupConfig' options='productGroupOption' ng-model="productGroup"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -218,7 +218,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Category
-                                            <selectize config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
+                                            <selectize data-list="false" data-attr="id" name="category" config='categoryConfig' options='category' ng-model="category"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -255,7 +255,7 @@
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-add-btn">Add</button>
+                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Add</span></button>
                                         <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
                                     </div>
                                 </div>
@@ -287,7 +287,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <selectize config='productGroupConfig' options='productGroupOption' ng-model="recordFound.displayProductGroupList"></selectize>
+                                            <selectize data-list="false" config='productGroupConfig' options='productGroupOption' ng-model="recordFound.productGroupId"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Category
-                                            <selectize config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
+                                            <selectize data-list="false" name="category" config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -332,7 +332,7 @@
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn">Update</button>
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update</span>Update</button>
                                         <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
                                     </div>
                                 </div>
@@ -622,13 +622,13 @@
             var ingredientList = [];
             $.each($(".added-item-location .row .details-holder"), function(i, detail){
                 var ingredient = new Object;
-                if($(detail).data("ing-id")!=null
-                    && $(detail).data("ing-id") != undefined){
-                    ingredient["id"] = $(detail).data("ing-id");
+                if($(detail).attr("data-ing-id")!=null
+                    && $(detail).attr("data-ing-id") != undefined){
+                    ingredient["id"] = $(detail).attr("data-ing-id");
                 }
-                ingredient["item"] = {"id":$(detail).data("id")};
-                ingredient["quantity"] = $(detail).data("qty");
-                ingredient["product"] = {"id":$("#ingredient-modal").data("product")};
+                ingredient["item"] = {"id":$(detail).attr("data-id")};
+                ingredient["quantity"] = $(detail).attr("data-qty");
+                ingredient["product"] = {"id":$("#ingredient-modal").attr("data-product")};
                 ingredient["isBase"] = $(detail).parent().find(".switch input").is(":checked");
                 ingredientList.push(ingredient);
             });
@@ -656,7 +656,7 @@
 
             $.ajax({
                 url: evey.getHome()+"/ingredient/getIngredient",
-                data: {"productId": $(this).data("id")},
+                data: {"productId": $(this).attr("data-id")},
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){

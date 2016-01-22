@@ -28,13 +28,12 @@ public class Product extends BaseEntity {
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	private List<Ingredient> ingredientList;
 
-	@JoinList
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="PRODUCT_GROUP",
-			joinColumns = {@JoinColumn(name="PRODUCT_ID", referencedColumnName = "ID")},
-			inverseJoinColumns = @JoinColumn(name="PGROUP", referencedColumnName = "ID")
-	)
-	private List<ProductGroup> productGroupList;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PROD_GROUP_ID", referencedColumnName = "ID")
+	private ProductGroup productGroup;
+
+	@Column(name = "PROD_GROUP_ID", insertable = false, updatable = false)
+	private Long productGroupId;
 
 	@JoinList
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -106,14 +105,6 @@ public class Product extends BaseEntity {
 		this.ingredientList = ingredientList;
 	}
 
-	public List<ProductGroup> getProductGroupList() {
-		return productGroupList;
-	}
-
-	public void setProductGroupList(List<ProductGroup> productGroupList) {
-		this.productGroupList = productGroupList;
-	}
-
 	public List<ReferenceLookUp> getPromoGroupList() {
 		return promoGroupList;
 	}
@@ -146,22 +137,6 @@ public class Product extends BaseEntity {
 		this.description = description;
 	}
 
-	public String getDisplayProductGroup() {
-		if(this.productGroupList!=null){
-			StringBuffer buffer = new StringBuffer();
-			for(ProductGroup group: this.productGroupList){
-				buffer.append(group.getProductGroupName()+", ");
-			}
-
-			String value = buffer.toString();
-			if(value.length()>0){
-				return value.substring(0, value.length()-2);
-			}
-			return "";
-		}
-		return displayProductGroup;
-	}
-
 	public void setDisplayProductGroup(String displayProductGroup) {
 		this.displayProductGroup = displayProductGroup;
 	}
@@ -183,18 +158,6 @@ public class Product extends BaseEntity {
 
 	public void setDisplayPromoGroup(String displayPromoGroup) {
 		this.displayPromoGroup = displayPromoGroup;
-	}
-
-	public String getDisplayProductGroupList() {
-		if(this.productGroupList !=null){
-			StringBuffer buffer = new StringBuffer();
-			for(ProductGroup group: this.productGroupList){
-				buffer.append(group.getId()+"|");
-			}
-			String value = buffer.toString();
-			return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
-		}
-		return displayProductGroupList;
 	}
 
 	public void setDisplayProductGroupList(String displayProductGroupList) {
@@ -295,5 +258,29 @@ public class Product extends BaseEntity {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public ProductGroup getProductGroup() {
+		return productGroup;
+	}
+
+	public void setProductGroup(ProductGroup productGroup) {
+		this.productGroup = productGroup;
+	}
+
+	public String getDisplayProductGroup() {
+		return displayProductGroup;
+	}
+
+	public String getDisplayProductGroupList() {
+		return displayProductGroupList;
+	}
+
+	public Long getProductGroupId() {
+		return productGroupId;
+	}
+
+	public void setProductGroupId(Long productGroupId) {
+		this.productGroupId = productGroupId;
 	}
 }

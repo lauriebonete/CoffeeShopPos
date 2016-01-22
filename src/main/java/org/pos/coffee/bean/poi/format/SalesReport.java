@@ -1,17 +1,23 @@
-package org.pos.coffee.bean.poi;
+package org.pos.coffee.bean.poi.format;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.pos.coffee.bean.ProductGroup;
+import org.pos.coffee.bean.ReferenceLookUp;
+import org.pos.coffee.bean.poi.Report;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Laurie on 1/21/2016.
  */
 public class SalesReport extends Report {
+
+    private List<ProductGroup> productGroups;
 
     @Override
     protected void publishHeader() {
@@ -31,8 +37,26 @@ public class SalesReport extends Report {
 
     }
 
+    public SalesReport(List<ProductGroup> productGroupList){
+        super("Sales Report");
+        this.productGroups = productGroupList;
+
+    }
+
     @Override
     protected void publishData() {
+        publishData(this.productGroups);
+    }
+
+    protected void publishData(List<ProductGroup> productGroupList){
+        for(int i=0; i<=productGroupList.size()-1;i++){
+            XSSFRow row = sheet.createRow(i+1);
+            XSSFCell cell = row.createCell(0);
+            cell.setCellValue(productGroupList.get(i).getProductGroupName());
+        }
+    }
+
+    private void printCategoryHeader(List<ReferenceLookUp> category){
 
     }
 }

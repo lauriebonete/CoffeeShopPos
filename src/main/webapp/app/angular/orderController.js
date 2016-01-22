@@ -121,12 +121,9 @@ orderApp.controller("orderController", function ($scope, $http) {
     $scope.loadAddOn = function(data){
         $scope.productAddOn = [];
         for(var i=0; i<=data.length-1;i++){
-            if(data[i].productGroupList !=null){
-                for(var j=0;j<=data[i].productGroupList.length-1;j++){
-                    if($scope.addOnGroup.id == data[i].productGroupList[j].id){
-                        $scope.productAddOn.push(data[i]);
-                        break;
-                    }
+            if(data[i].productGroup !=null){
+                if($scope.addOnGroup.id == data[i].productGroup.id){
+                    $scope.productAddOn.push(data[i]);
                 }
             }
         }
@@ -135,11 +132,9 @@ orderApp.controller("orderController", function ($scope, $http) {
     $scope.changeGroup = function(id){
         $scope.productFound = [];
         angular.forEach($scope.product, function (value, key) {
-            angular.forEach(value.productGroupList, function(group, groupKey){
-                if(group.id == id){
-                    $scope.productFound.push(value);
-                }
-            });
+            if(value.productGroupId==id){
+                $scope.productFound.push(value);
+            }
         });
     };
 

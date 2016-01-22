@@ -1,8 +1,11 @@
 package org.pos.coffee.service.impl;
 
+import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.bean.helper.SaleOrderHelper;
+import org.pos.coffee.bean.helper.report.CategorySaleHelper;
+import org.pos.coffee.bean.helper.report.ProductGroupSaleHelper;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 import org.pos.coffee.dao.impl.SaleDaoJdbc;
 import org.pos.coffee.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +30,60 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void buildReportData(List<SaleOrderHelper> saleOrderHelpers, List<ReferenceLookUp> categoryList, List<ProductGroup> productGroups) {
-        Map<Long,Map<Long, List>> categoryGroup = new HashMap<>();
-        Map<Long,List<SaleOrderHelper>> productGroup = new HashMap<>();
-        for(SaleOrderHelper saleOrderHelper: saleOrderHelpers){
-            if(!productGroup.containsKey(saleOrderHelper.getProductGroupId())){
-                List<SaleOrderHelper> saleOrderHelperList = new ArrayList<>();
-                saleOrderHelperList.add(saleOrderHelper);
-                productGroup.put(saleOrderHelper.getProductGroupId(),saleOrderHelperList);
-            } else {
-                productGroup.get(saleOrderHelper.getProductGroupId()).add(saleOrderHelper);
+    public List<CategorySaleHelper> buildReportData(List<Product> productList, List<ReferenceLookUp> categoryList, List<ProductGroup> productGroups) {
+        Set<ProductGroupSaleHelper> productGroupSaleHelperSet = new HashSet<>();
+        for(ProductGroup productGroup: productGroups){
+            Set<Product> parent = new HashSet<>();
+            Set<ReferenceLookUp> size = new HashSet<>();
+            Set<Long> categoryIds = new HashSet<>();
+
+            List<Product> products = new ArrayList<>();
+            for(Product product: productList){
+                if(productGroup.getId()==product.getProductGroup().getId()){
+                    products.add(product);
+
+                    if(product.getParentProduct()!=null){
+                        Product parentProduct = product.getParentProduct();
+                        parent.add(parentProduct);
+                    } else {
+                        parent.add(product);
+                    }
+
+                    if(product.getSize()!=null){
+                        ReferenceLookUp sizeReference = product.getSize();
+                        size.add(sizeReference);
+                    }
+
+                    categoryIds.add(product.getCategoryId());
+                }
             }
+            ProductGroupSaleHelper productGroupSaleHelper = new ProductGroupSaleHelper();
+            productGroupSaleHelper.setProductGroup(productGroup);
+            productGroupSaleHelper.setParent(parent);
+            productGroupSaleHelper.setSizes(size);
+            productGroupSaleHelper.setCategorys(categoryIds);
+            productGroupSaleHelper.setProductList(products);
+            productGroupSaleHelperSet.add(productGroupSaleHelper);
         }
-        productGroup.isEmpty();
+
+        List<CategorySaleHelper> categorySaleHelperList = new ArrayList<>();
+        for(ReferenceLookUp category: categoryList){
+            CategorySaleHelper categorySaleHelper = new CategorySaleHelper();
+            categorySaleHelper.setCategory(category);
+
+            List<ProductGroupSaleHelper> listProductGroupSaleHelper = new ArrayList<>();
+            for(ProductGroupSaleHelper productGroupSaleHelper: productGroupSaleHelperSet){
+                for(Long categoryId: productGroupSaleHelper.getCategorys()){
+                    if(category.getId().equals(categoryId)){
+                        listProductGroupSaleHelper.add(productGroupSaleHelper);
+                        break;
+                    }
+                }
+            }
+            categorySaleHelper.setProductGroupSaleHelperSetList(listProductGroupSaleHelper);
+            categorySaleHelperList.add(categorySaleHelper);
+        }
+
+        return categorySaleHelperList;
     }
 }

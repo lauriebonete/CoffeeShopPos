@@ -1,9 +1,6 @@
 package org.pos.coffee.dao.impl;
 
-import org.evey.dao.impl.BaseEntityDaoJpaImpl;
-import org.pos.coffee.bean.Sale;
-import org.pos.coffee.bean.helper.SaleOrderHelper;
-import org.pos.coffee.dao.SaleDao;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -31,16 +28,13 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
 
     static {
         SEARCH_SOLD_PRODUCT.append("SELECT SUM(OL.QUANTITY) AS QUANTITY, P.ID AS PRODUCT_ID, P.PRODUCT_NAME, LP.ID AS LIST_ID, LP.PRICE, ")
-                .append("       PP.PRODUCT_NAME  AS PARENT_NAME, PP.ID AS PARENT_ID, SIZE.VALUE_ AS SIZE, SIZE.ID AS SIZE_ID, ")
-                .append("       P_G.ID AS PRODUCT_GROUP_ID, P_G.GROUP_NAME ")
+                .append("       PP.PRODUCT_NAME  AS PARENT_NAME, PP.ID AS PARENT_ID, SIZE.VALUE_ AS SIZE, SIZE.ID AS SIZE_ID, P.CATEGORY AS CATEGORY_ID ")
                 .append("FROM   SALE S ")
                 .append("       JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
                 .append("       JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
                 .append("       JOIN LIST_PRICE LP ON OL.LIST_PRICE = LP.ID ")
                 .append("       LEFT JOIN PRODUCT PP ON P.PARENT = PP.ID ")
                 .append("       LEFT JOIN REFERENCE_LOOKUP SIZE ON P.SIZE = SIZE.ID ")
-                .append("       LEFT JOIN PRODUCT_GROUP PG ON P.ID = PG.PRODUCT_ID ")
-                .append("       LEFT JOIN P_GROUP P_G ON PG.PGROUP = P_G.ID ")
                 .append("WHERE  STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("       AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP  BY P.ID, ")
@@ -61,8 +55,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
             saleOrderHelper.setParentName(rs.getString("PARENT_NAME"));
             saleOrderHelper.setSizeId(rs.getLong("SIZE_ID"));
             saleOrderHelper.setSizeName(rs.getString("SIZE"));
-            saleOrderHelper.setProductGroupId(rs.getLong("PRODUCT_GROUP_ID"));
-            saleOrderHelper.setProductName(rs.getString("GROUP_NAME"));
+            saleOrderHelper.setCategoryId(rs.getLong("CATEGORY_ID"));
 
             return saleOrderHelper;
         }
