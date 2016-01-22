@@ -52,6 +52,13 @@ public class Product extends BaseEntity {
 	private Long productImageId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CATEGORY", referencedColumnName = "ID")
+	private ReferenceLookUp category;
+
+	@Column(name = "CATEGORY", insertable = false, updatable = false)
+	private Long categoryId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SIZE", referencedColumnName = "ID")
 	private ReferenceLookUp size;
 
@@ -272,5 +279,21 @@ public class Product extends BaseEntity {
 
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
+	}
+
+	public ReferenceLookUp getCategory() {
+		return category;
+	}
+
+	public void setCategory(ReferenceLookUp category) {
+		this.category = category;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 }

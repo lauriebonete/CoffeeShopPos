@@ -186,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute product-controller" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog" ng-controller="productController">
+                    <div id="crud-modal" class="reveal-modal crud-modal reveal-modal-absolute product-controller" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog" ng-controller="productController" ng-init="loadCategory()">
                         <h3 id="crud-title">Add New Product.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
@@ -214,6 +214,11 @@
                                     <div class="row collapse prefix-radius">
                                         <label>Promo Group
                                             <selectize data-attr="id" name="promoGroupList" config='selectizeConfig' options='promoGroupOption' ng-model="promoGroup"></selectize>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Product Category
+                                            <selectize config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -288,6 +293,11 @@
                                     <div class="row collapse prefix-radius">
                                         <label>Promo Group
                                             <selectize config='selectizeConfig' options='promoGroupOption' ng-model="recordFound.displayPromoGroupList"></selectize>
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Product Category
+                                            <selectize config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -481,6 +491,18 @@
             });
 
             $.ajax({
+                url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PROD_CATEGORY",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $.each(angular.element(".product-controller"),function(){
+                        $(this).scope().loadCategory(data);
+                        $(this).scope().$apply();
+                    });
+                }
+            });
+
+            $.ajax({
                 url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PROMO_GROUP",
                 type: "GET",
                 dataType: "JSON",
@@ -627,7 +649,7 @@
             });
 
         }).on("click",".ingredient-action", function(){
-            $("#ingredient-modal").attr("data-product", $(this).data("id"));
+            $("#ingredient-modal").attr("data-product", $(this).attr("data-id"));
 
             $("#ingredient-modal .added-item-location").children().remove();
             $("#ingredient-modal .item-location").children().remove();

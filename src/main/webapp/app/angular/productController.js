@@ -6,6 +6,10 @@ crudApp.controller("productController", function ($scope, $http) {
         $scope.size = data;
     };
 
+    $scope.loadCategory = function(data){
+        $scope.category = data;
+    };
+
     $scope.productsConfig =
     {
         valueField : 'id',
@@ -14,6 +18,19 @@ crudApp.controller("productController", function ($scope, $http) {
         delimiter : '|',
         placeholder : 'Pick something',
         plugins: ['remove_button'],
+        onInitialize : function (selectize) {
+            // receives the selectize object as an argument
+        },
+        maxItems:1,
+    };
+
+    $scope.categoryConfig =
+    {
+        valueField : 'id',
+        labelField : 'value',
+        searchField: ['value'],
+        delimiter : '|',
+        placeholder : 'Pick something',
         onInitialize : function (selectize) {
             // receives the selectize object as an argument
         },

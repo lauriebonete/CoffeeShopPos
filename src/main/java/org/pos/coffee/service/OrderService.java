@@ -12,5 +12,6 @@ import java.util.List;
 public interface OrderService extends BaseCrudService<Order> {
 
     public List<ItemUsedHelper> countUseItems(List<Order> orderList);
+    public void updateTotalExpense(Long orderId, Double totalExpense);
 
 }

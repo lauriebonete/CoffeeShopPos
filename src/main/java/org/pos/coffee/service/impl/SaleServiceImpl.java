@@ -1,5 +1,6 @@
 package org.pos.coffee.service.impl;
 
+import org.apache.log4j.Logger;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.evey.dao.SequenceDao;
 import org.evey.service.impl.BaseCrudServiceImpl;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,10 @@ import java.util.List;
  */
 @Service("saleService")
 public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleService {
+
+    private static Logger logger = Logger.getLogger(SaleServiceImpl.class);
+
+
 
     @Autowired
     private SaleDao saleDao;
@@ -45,10 +51,8 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList) {
         Double totalExpense = 0D;
         for(OrderExpenseHelper orderExpenseHelper: orderExpenseHelperList){
-            Order orderLoaded = orderService.load(orderExpenseHelper.getOrderId());
-            orderLoaded.setTotalLineExpense(orderExpenseHelper.getExpense());
             totalExpense += orderExpenseHelper.getExpense();
-            orderService.save(orderLoaded);
+            orderService.updateTotalExpense(orderExpenseHelper.getOrderId(),orderExpenseHelper.getExpense());
         }
         return totalExpense;
     }
@@ -71,11 +75,11 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Sale confirmSaleTransaction(Sale sale) throws Exception{
+
         this.createSaleAndOrders(sale);
         List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
         List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
-        sale.setTotalCost(this.countExpensePerOrder(orderExpenseHelperList));
-        /*this.save(sale);*/
+        saleDao.updateTotalCost(sale.getId(),this.countExpensePerOrder(orderExpenseHelperList));
         return sale;
     }
 

@@ -81,7 +81,7 @@
                 <section class="main-section height-full">
                     <div class="order-page height-full">
                         <div class="side-nav">
-                            <div class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
+                            <div ng-cloak class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
                                 <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
                                     <img ng-if="group.groupImageId == null" src="img/hot51.png" alt=""/>
                                     <img ng-if="group.groupImageId != null" ng-src="file/viewImage/{{group.groupImageId}}" alt=""/>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                         <div class="content">
-                            <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+                            <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3" ng-cloak>
                                 <li ng-repeat="product in productFound">
                                     <div class="contentHolder product" data-id="{{product.id}}">
                                         <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
@@ -994,6 +994,7 @@
                         $(".order-page").toggleClass("hide");
                     }
                 });
+                $("#confirm-order").unbind("click");
             });
         };
 

@@ -8,4 +8,5 @@ import org.pos.coffee.bean.Sale;
  */
 
 public interface SaleDao extends BaseEntityDao<Sale, Long> {
+    public void updateTotalCost(Long saleId, Double totalCost);
 }

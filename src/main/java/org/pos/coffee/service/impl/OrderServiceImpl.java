@@ -3,7 +3,9 @@ package org.pos.coffee.service.impl;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
+import org.pos.coffee.dao.OrderDao;
 import org.pos.coffee.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +19,9 @@ import java.util.Map;
  */
 @Service("orderService")
 public class OrderServiceImpl extends BaseCrudServiceImpl<Order> implements OrderService {
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Override
     public List<ItemUsedHelper> countUseItems(List<Order> orderList) {
@@ -70,5 +75,10 @@ public class OrderServiceImpl extends BaseCrudServiceImpl<Order> implements Orde
         }
 
         return itemUsedHelperList;
+    }
+
+    @Override
+    public void updateTotalExpense(Long orderId, Double totalExpense) {
+        orderDao.updateTotalExpense(orderId,totalExpense);
     }
 }

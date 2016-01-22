@@ -53,6 +53,12 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.8.7" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.7" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi:3.13" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.13" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.13" />
+          <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" />
+          <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">
