@@ -353,29 +353,6 @@
     background-color:#cce5cc !important;
 }
 
-.numpad {
-    width: 40vw;
-    margin: 0 auto;
-}
-
-.numpadNumber {
-    border: solid 1px white;
-    float: left;
-    text-align:center;
-    background: #008CBA;
-    transition: all .03s ease-in-out;
-    -webkit-transition: all .03s ease-in-out;
-}
-
-.numpadNumber:active {
-    transform: translateY(5px);
-}
-
-.numpadNumber:hover {
-    background: #0078a0;
-    cursor: pointer;
-}
-
 .payment-page .details {
     height: 80vh;
 }
