@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Foundation | Welcome</title>
+    <title>Maestro Fedeli | Take Order</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
@@ -19,7 +19,7 @@
                     <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                 </section>
                 <section class="middle tab-bar-section">
-                    <h1 class="title">Maestro Fedeli</h1>
+                    <h1 class="title">Maestro Fedeli | Take Order</h1>
                 </section>
                 <section class="right-small">
                     <a class="right-off-canvas-toggle menu-icon"><span></span></a>
@@ -305,46 +305,6 @@
                                 <div class="small-8 columns">
                                     <h4 class="right change-due">PHP 0</h4>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <ul class="numpad small-block-grid-3 medium-block-grid-3 large-block-3">
-                                    <li class="numpadNumber">
-                                        <h5>7</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>8</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>9</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>4</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>5</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>6</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>1</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>2</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>3</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>Clear</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>0</h5>
-                                    </li>
-                                    <li class="numpadNumber">
-                                        <h5>.</h5>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -981,20 +941,7 @@
                 $(addOn).find(".modify-addon-quan-btn.dec").attr("disabled");
                 $(addOn).find(".modify-addon-quan-btn.dec").addClass("disabled");
             });
-        }).on("click", ".numpadNumber" ,function(){
-            var pressed = $(this).find("h5").text();
-            if(pressed == "Clear"){
-                $("#payment-amount").removeAttr("value");
-                return false;
-            }
-            var value;
-            if($("#payment-amount").val() != ""){
-                value = $("#payment-amount").val();
-            } else {
-                value = "";
-            }
-            $("#payment-amount").attr("value", value + pressed);
-        });;
+        });
 
         var countQty = function(){
 

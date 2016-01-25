@@ -32,6 +32,7 @@
 }
 
 .main-section {
+    margin-top: 2vh;
     height: 100vh;
 }
 
@@ -152,7 +153,7 @@ input[data-toggle]:checked + label:active {
 }
 
 .margin-top-side {
-    margin-top: .45rem !important;
+    /*margin-top: .45rem !important;*/
 }
 
 .margin-bottom-half-rem {
