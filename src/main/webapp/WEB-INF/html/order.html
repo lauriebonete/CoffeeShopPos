@@ -12,97 +12,141 @@
 </head>
 <body ng-app="orderApp" ng-controller="orderController" ng-init="cacheUser()">
 <div class="row height-full">
-        <div class="off-canvas-wrap sticky height-full" data-offcanvas>
-            <div class="inner-wrap height-full">
-                <nav class="tab-bar">
-                    <section class="left-small">
-                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
-                    </section>
-                    <section class="middle tab-bar-section">
-                        <h1 class="title">Maestro Fedeli</h1>
-                    </section>
-                    <section class="right-small">
-                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
-                    </section>
-                </nav>
-                <aside class="right-off-canvas-menu">
-                    <ul class="off-canvas-list">
-                        <li><label>Logged In User</label></li>
-                        <li><a href="/user/profile" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
-                        <li><a href="/user/logout" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
-                    </ul>
-                </aside>
-                <aside class="left-off-canvas-menu">
-                    <ul class="off-canvas-list">
-                        <li><label>Coffee Shop POS</label></li>
-                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
-                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
-                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
-                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
-                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
-                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
-                            <ul class="left-submenu">
-                                <li class="back"><a href="#">Back</a></li>
-                                <li><label>Administration Page</label></li>
-                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
-                                    <ul class="left-submenu">
-                                        <li class="back"><a href="#">Back</a></li>
-                                        <li><label>Account Maintenance</label></li>
-                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
-                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
-                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
-                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
-                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
-                                    <ul class="left-submenu">
-                                        <li class="back"><a href="#">Back</a></li>
-                                        <li><label>System Maintenance</label></li>
-                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
-                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
-                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
-                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
-                                        <li class="has-submenu"><a href="#">Pricing</a>
-                                            <ul class="left-submenu">
-                                                <li class="back"><a href="#">Back</a></li>
-                                                <li><label>Price Maintenance</label></li>
-                                                <li><a href="/price" class="canvas">Price List</a></li>
-                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </aside>
-                <section class="main-section height-full">
-                    <div class="order-page height-full">
-                        <div class="side-nav">
-                            <div ng-cloak class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
-                                <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
-                                    <img ng-if="group.groupImageId == null" src="img/hot51.png" alt=""/>
-                                    <img ng-if="group.groupImageId != null" ng-src="file/viewImage/{{group.groupImageId}}" alt=""/>
-                                    <label class="show-for-medium-up">{{group.productGroupName}}</label>
-                                </a>
+    <div class="off-canvas-wrap sticky height-full" data-offcanvas>
+        <div class="inner-wrap height-full">
+            <nav class="tab-bar">
+                <section class="left-small">
+                    <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                </section>
+                <section class="middle tab-bar-section">
+                    <h1 class="title">Maestro Fedeli</h1>
+                </section>
+                <section class="right-small">
+                    <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                </section>
+            </nav>
+            <aside class="right-off-canvas-menu">
+                <ul class="off-canvas-list">
+                    <li><label>Logged In User</label></li>
+                    <li><a href="/user/profile" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                    <li><a href="/user/logout" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                </ul>
+            </aside>
+            <aside class="left-off-canvas-menu">
+                <ul class="off-canvas-list">
+                    <li><label>Coffee Shop POS</label></li>
+                    <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                    <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                    <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                    <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                    <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                    <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                        <ul class="left-submenu">
+                            <li class="back"><a href="#">Back</a></li>
+                            <li><label>Administration Page</label></li>
+                            <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                <ul class="left-submenu">
+                                    <li class="back"><a href="#">Back</a></li>
+                                    <li><label>Account Maintenance</label></li>
+                                    <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
+                                    <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                    <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
+                                    <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
+                                    <li><a href="/address" id="address-off" class="canvas">Address</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                <ul class="left-submenu">
+                                    <li class="back"><a href="#">Back</a></li>
+                                    <li><label>System Maintenance</label></li>
+                                    <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                    <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                    <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                    <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
+                                    <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
+                                    <li class="has-submenu"><a href="#">Pricing</a>
+                                        <ul class="left-submenu">
+                                            <li class="back"><a href="#">Back</a></li>
+                                            <li><label>Price Maintenance</label></li>
+                                            <li><a href="/price" class="canvas">Price List</a></li>
+                                            <li><a href="/priceSet" class="canvas">Price Set</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
+            <section class="main-section height-full">
+                <div class="order-page height-full">
+                    <div class="side-nav">
+                        <div class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
+                            <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
+                                <img ng-if="group.groupImageId == null" src="img/hot51.png" alt=""/>
+                                <img ng-if="group.groupImageId != null" ng-src="file/viewImage/{{group.groupImageId}}" alt=""/>
+                                <label class="show-for-medium-up">{{group.productGroupName}}</label>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+                            <li ng-repeat="product in productFound">
+                                <div class="contentHolder product" data-id="{{product.id}}">
+                                    <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <img ng-if="product.productImageId != null" ng-src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
+                                    <h5>{{product.productName}}</h5>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="cartBig show-for-large-up" ng-init="setOrderedCount()">
+                        <h3 class="center">Order Summary ({{orderedCount}})</h3>
+                        <div class="orderSummary">
+                            <span></span>
+                            <div class="items">
+                                <div class="row">
+                                    <div class="columns small-6">
+                                        <h5>Items</h5>
+                                    </div>
+                                    <div class="columns small-4">
+                                        <h5>Qty * Price</h5>
+                                    </div>
+                                    <div class="columns small-2">
+
+                                    </div>
+                                </div>
+                                <div class="order-holder">
+                                </div>
+                            </div>
+                            <div class="totalPrice">
+                                <div class="row">
+                                    <div class="small-6 columns">
+                                        <div class="row">
+                                            <div class="columns">
+                                                Total
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-6 columns">
+                                        <div class="row">
+                                            <div class="columns">
+                                                <span class="total-price"></span>php
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="content">
-                            <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3" ng-cloak>
-                                <li ng-repeat="product in productFound">
-                                    <div class="contentHolder product" data-id="{{product.id}}">
-                                        <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
-                                        <img ng-if="product.productImageId != null" ng-src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
-                                        <h5>{{product.productName}}</h5>
-                                    </div>
-                                </li>
-                            </ul>
+                        <a class="button expand continue">Continue</a>
+                    </div>
+                    <div class="cartSmall">
+                        <div class="cartSmall-icon show-for-medium-down">
+                            <i class="fa fa-shopping-cart fa-2x"></i>
                         </div>
-                        <div class="cartBig show-for-large-up" ng-init="setOrderedCount()">
+                        <div class="cartSmall-content show-for-medium-down">
                             <h5 class="left">Order Summary</h5>
-                            <h5 class="right">({{orderedCount}}) </h5>
+                            <h5 class="right">({{orderedCount}})</h5>
                             <div class="orderSummary">
                                 <div class="items">
                                     <div class="row">
@@ -140,213 +184,187 @@
                             </div>
                             <a class="button expand continue">Continue</a>
                         </div>
-                        <div id="cartSmall-container">
-                            <div class="cartSmall-icon show-for-medium-down">
-                                <i class="fa fa-shopping-cart fa-2x"></i>
-                            </div>
-                            <div class="cartSmall-content show-for-medium-down">
-                                <h5 class="left">Order Summary</h5>
-                                <h5 class="right">({{orderedCount}})</h5>
-                                <div class="orderSummary">
-                                    <div class="items">
+                    </div>
+                </div>
+                <div class="payment-page hide">
+                    <h4 class="center">Order Summary</h4>
+                    <div class="row details">
+                        <div class="large-6 medium-5 small-5 columns receipt" id="receipt">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="panel-flat">
                                         <div class="row">
-                                            <div class="columns small-6">
-                                                <h5>Items</h5>
+                                            <div class="column small-12 center">
+                                                <h3>Maestro Fedeli</h3>
+                                                <p id="saleCode"></p>
+                                                <p id="branch">{{loggedUser.person.completeName}} {{dateTime}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row header">
+                                            <div class="columns small-2">
+                                                <h4 class="center">Quantity</h4>
                                             </div>
                                             <div class="columns small-4">
-                                                <h5>Qty * Price</h5>
+                                                <h4 class="center">Product Name</h4>
                                             </div>
-                                            <div class="columns small-2">
+                                            <div class="columns small-3">
+                                                <h4 class="center">Price</h4>
+                                            </div>
+                                            <div class="columns small-3">
+                                                <h4 class="center">Total</h4>
+                                            </div>
+                                        </div>
+                                        <div class="cart-holder">
 
-                                            </div>
                                         </div>
-                                        <div class="order-holder">
-                                        </div>
-                                    </div>
-                                    <div class="totalPrice">
                                         <div class="row">
-                                            <div class="small-6 columns">
-                                                <div class="row">
-                                                    <div class="columns">
-                                                        Total
-                                                    </div>
-                                                </div>
+                                            <div class="columns small-2">
+                                                <p class="center"></p>
                                             </div>
-                                            <div class="small-6 columns">
-                                                <div class="row">
-                                                    <div class="columns">
-                                                        <span class="total-price"></span>php
-                                                    </div>
-                                                </div>
+                                            <div class="columns small-4">
+                                                <p class="center"></p>
+                                            </div>
+                                            <div class="columns small-3">
+                                                <p class="center">Total:</p>
+                                            </div>
+                                            <div class="columns small-3">
+                                                <p class="center payment-summary-total">90.00</p>
+                                            </div>
+                                        </div>
+                                        <div class="sale-price-holder">
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="columns small-2">
+                                                <h4 class="center"></h4>
+                                            </div>
+                                            <div class="columns small-4">
+                                                <h4 class="center"></h4>
+                                            </div>
+                                            <div class="columns small-3">
+                                                <h4 class="center">Grand Total:</h4>
+                                            </div>
+                                            <div class="columns small-3">
+                                                <h4 class="center"><h4 class="total-sale center"></h4></h4>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <a class="button expand continue">Continue</a>
+                            </div>
+                        </div>
+                        <div class="large-6 medium-7 small-7 columns payment">
+                            <div class="row">
+                                <div class="small-4 columns">
+                                    <h4>Total Balance:</h4>
+                                </div>
+                                <div class="small-8 columns">
+                                    <h4 class="right summary-total-balance"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-4 columns">
+                                    <h4>Tax</h4>
+                                </div>
+                                <div class="small-8 columns">
+                                    <h4 class="right tax-summary"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-4 columns">
+                                    <h4>Payment:</h4>
+                                </div>
+                                <div class="small-8 columns">
+                                    <h4 class="right">Cash</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-4 columns">
+                                    <h4>Discount:</h4>
+                                </div>
+                                <div class="small-8 columns">
+                                    <h4 class="right"><a href="#" class="button expand">Apply Discount</a></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <div class="row collapse">
+                                        <div class="small-10 columns">
+                                            <input type="number" placeholder="0" id="payment-amount">
+                                        </div>
+                                        <div class="small-2 columns">
+                                            <a href="#" class="button postfix">PHP</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row change-due-row hide">
+                                <div class="small-4 columns">
+                                    <h4>Change Due:</h4>
+                                </div>
+                                <div class="small-8 columns">
+                                    <h4 class="right change-due">PHP 0</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <ul class="numpad small-block-grid-3 medium-block-grid-3 large-block-3">
+                                    <li class="numpadNumber">
+                                        <h5>7</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>8</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>9</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>4</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>5</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>6</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>1</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>2</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>3</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>Clear</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>0</h5>
+                                    </li>
+                                    <li class="numpadNumber">
+                                        <h5>.</h5>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="payment-page hide">
-                        <h4 class="center">Order Summary</h4>
-                        <div class="row details">
-                            <div class="large-6 medium-5 small-5 columns receipt" id="receipt">
-                                <div class="row">
-                                    <div class="small-12 columns">
-                                        <div class="panel-flat">
-                                            <div class="row">
-                                                <div class="column small-12 center">
-                                                    <h3>Maestro Fedeli</h3>
-                                                    <p id="saleCode"></p>
-                                                    <p id="branch">{{branch.branch.value}} {{loggedUser.person.completeName}} {{dateTime}}</p>
-                                                </div>
-                                            </div>
-                                            <div class="row header">
-                                                <div class="columns small-2">
-                                                    <h4 class="center">Quantity</h4>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <h4 class="center">Product Name</h4>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <h4 class="center">Price</h4>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <h4 class="center">Total</h4>
-                                                </div>
-                                            </div>
-                                            <div class="cart-holder">
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="columns small-2">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <p class="center"></p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center">Total:</p>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <p class="center payment-summary-total">90.00</p>
-                                                </div>
-                                            </div>
-                                            <div class="sale-price-holder">
-
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="columns small-2">
-                                                    <h4 class="center"></h4>
-                                                </div>
-                                                <div class="columns small-4">
-                                                    <h4 class="center"></h4>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <h4 class="center">Grand Total:</h4>
-                                                </div>
-                                                <div class="columns small-3">
-                                                    <h4 class="center"><h4 class="total-sale center"></h4></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="large-6 medium-7 small-7 columns payment">
-                                <div class="row">
-                                    <div class="small-4 columns">
-                                        <h4>Total Balance:</h4>
-                                    </div>
-                                    <div class="small-8 columns">
-                                        <h4 class="right summary-total-balance"></h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="small-4 columns">
-                                        <h4>Tax</h4>
-                                    </div>
-                                    <div class="small-8 columns">
-                                        <h4 class="right tax-summary"></h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="small-4 columns">
-                                        <h4>Payment:</h4>
-                                    </div>
-                                    <div class="small-8 columns">
-                                        <h4 class="right">Cash</h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="small-4 columns">
-                                        <h4>Discount:</h4>
-                                    </div>
-                                    <div class="small-8 columns">
-                                        <h4 class="right"><a href="#" class="button expand">Apply Discount</a></h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="large-12 columns">
-                                        <div class="row collapse">
-                                            <div class="small-10 columns">
-                                                <input type="number" placeholder="0" id="payment-amount">
-                                            </div>
-                                            <div class="small-2 columns">
-                                                <a href="#" class="button postfix">PHP</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row change-due-row hide">
-                                    <div class="small-4 columns">
-                                        <h4>Change Due:</h4>
-                                    </div>
-                                    <div class="small-8 columns">
-                                        <h4 class="right change-due">PHP 0</h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <ul class="small-block-grid-3 medium-block-grid-3 large-block-grid-3 moneyBillList">
-                                        <li>
-                                            <img src="img/P20new.jpg" alt=""/>
-                                        </li>
-                                        <li>
-                                            <img src="img/P50new.jpg" alt=""/>
-                                        </li>
-                                        <li>
-                                            <img src="img/P100new.jpg" alt=""/>
-                                        </li>
-                                        <li>
-                                            <img src="img/P200new.jpg" alt=""/>
-                                        </li>
-                                        <li>
-                                            <img src="img/P500new.jpg" alt=""/>
-                                        </li>
-                                        <li>
-                                            <img src="img/P1000new.jpg" alt=""/>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="row buttons">
+                        <div class="small-6 columns">
+                            <a class="button left back-to-order"><< Back</a>
                         </div>
-                        <div class="row">
-                            <div class="small-6 columns">
-                                <a class="button left back-to-order"><< Back</a>
-                            </div>
-                            <div class="small-6 columns">
-                                <a class="button right" id="confirm-order">Punch Order >></a>
-                            </div>
+                        <div class="small-6 columns">
+                            <a class="button right" id="confirm-order">Punch Order >></a>
                         </div>
                     </div>
-                </section>
-                <a class="exit-off-canvas"></a>
-            </div>
-            <!--<div id="display-modal" data-alert class="alert-box success radius display-message hide">
-                <span class="message"></span>
-                <a href="#" class="close">&#215;</a>
-            </div>-->
+                </div>
+            </section>
+            <a class="exit-off-canvas"></a>
         </div>
+        <!--<div id="display-modal" data-alert class="alert-box success radius display-message hide">
+            <span class="message"></span>
+            <a href="#" class="close">&#215;</a>
+        </div>-->
+    </div>
 </div>
 <div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-pid="{{selectedProduct.id}}" data-pname="{{selectedProduct.productName}}">
 
@@ -367,10 +385,10 @@
         </div>
         <div class="small-8 columns">
             <ul class="right base-location" ng-init="loadBases()">
-                    <li ng-repeat="base in bases" >
-                        <input type="radio" data-baseid = "{{base}}" name="base-ingredient" value="{{base.id}}" id="base-{{base.id}}" ng-model="base.isSelectedAsBase" ng-value="base.isSelectedAsBase">
-                        <label for="base-{{base.id}}"> <h4>{{base.itemName}}</h4></label>
-                    </li>
+                <li ng-repeat="base in bases" >
+                    <input type="radio" data-baseid = "{{base}}" name="base-ingredient" value="{{base.id}}" id="base-{{base.id}}" ng-model="base.isSelectedAsBase" ng-value="base.isSelectedAsBase">
+                    <label for="base-{{base.id}}"> <h4>{{base.itemName}}</h4></label>
+                </li>
             </ul>
         </div>
     </div>
@@ -500,6 +518,7 @@
             </div>
         </div>
     </script>
+
     <script type="text/html" id="price-set-template">
         <div class="row header">
             <div class="columns small-2">
@@ -516,6 +535,7 @@
             </div>
         </div>
     </script>
+
     <script type="text/html" id="sale-level-pricing-template">
         <div class="row">
             <div class="columns small-2">
@@ -532,6 +552,7 @@
             </div>
         </div>
     </script>
+
     <script type="text/html" id="price-set-total-template">
         <div class="row header">
             <div class="columns small-2">
@@ -548,6 +569,7 @@
             </div>
         </div>
     </script>
+
     <script type="text/html" id="payment-summary-cart">
         <div class="row header payment-summary-row">
             <div class="columns small-12">
@@ -585,6 +607,7 @@
             </div>
         </div>
     </script>
+
     <script type="text/html" id="payment-product-cart">
         <div class="row items">
             <div class="columns small-12">
@@ -805,6 +828,8 @@
                 }
             }
 
+            console.log(retrieveProduct);
+
             var productName = $("#modifyOrder").attr("data-pname");
             var quantity = Number($("#modifyOrder #modify-quantity").text());
             price = Number($('#modifyOrder .price').attr("data-price"));
@@ -956,7 +981,20 @@
                 $(addOn).find(".modify-addon-quan-btn.dec").attr("disabled");
                 $(addOn).find(".modify-addon-quan-btn.dec").addClass("disabled");
             });
-        });
+        }).on("click", ".numpadNumber" ,function(){
+            var pressed = $(this).find("h5").text();
+            if(pressed == "Clear"){
+                $("#payment-amount").removeAttr("value");
+                return false;
+            }
+            var value;
+            if($("#payment-amount").val() != ""){
+                value = $("#payment-amount").val();
+            } else {
+                value = "";
+            }
+            $("#payment-amount").attr("value", value + pressed);
+        });;
 
         var countQty = function(){
 
@@ -994,7 +1032,6 @@
                         $(".order-page").toggleClass("hide");
                     }
                 });
-                $("#confirm-order").unbind("click");
             });
         };
 
@@ -1018,15 +1055,15 @@
                 if(order.listPrice !=null &&
                         order.listPrice != null &&
                         order.listPrice.price != null &&
-                    order.listPrice.price != undefined) {
+                        order.listPrice.price != undefined) {
                     $(cartTemplate).find(".payment-summary-cart-price").text(order.listPrice.price);
                 } else {
                     $(cartTemplate).find(".payment-summary-cart-price").text(0);
                 }
 
                 if(order.addOnList != null &&
-                    order.addOnList != undefined &&
-                    order.addOnList.length >0){
+                        order.addOnList != undefined &&
+                        order.addOnList.length >0){
 
                     var addOnHolder = $(cartTemplate).find(".add-summary-cart-holder");
                     $.each(order.addOnList, function(i,addOn){
@@ -1042,8 +1079,8 @@
                 $(cartTemplate).find(".payment-summary-cart-total-price").text(order.totalLinePrice);
 
                 if(order.appliedPriceSet != null &&
-                    order.appliedPriceSet != undefined &&
-                    order.appliedPriceSet.length > 0){
+                        order.appliedPriceSet != undefined &&
+                        order.appliedPriceSet.length > 0){
 
                     var priceSetHolder = $(cartTemplate).find(".payment-summary-cart-price-sets");
                     $.each(order.appliedPriceSet, function(i, priceSet){
@@ -1065,8 +1102,8 @@
             });
 
             if(data.appliedPriceSet!=null
-                && data.appliedPriceSet != undefined
-                && data.appliedPriceSet.length>0){
+                    && data.appliedPriceSet != undefined
+                    && data.appliedPriceSet.length>0){
 
                 var saleLevelPrice = $(".sale-price-holder");
                 $.each(data.appliedPriceSet, function(i, priceSet){
