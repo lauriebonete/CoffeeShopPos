@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Laurie on 12/14/2015.
@@ -98,5 +99,15 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     public Double getTotalSaleForDate(Date startDate, Date endDate) {
         return saleDaoJdbc.getTotalSaleForDate(startDate, endDate);
+    }
+
+    @Override
+    public List<Double> getSalesPerCategory(Date startDate, Date endDate) {
+        return saleDaoJdbc.getSalesPerCategory(startDate,endDate);
+    }
+
+    @Override
+    public List<Map<String, Double>> getDisSurTax(Date startDate, Date endDate) {
+        return saleDaoJdbc.getDisSurTax(startDate,endDate);
     }
 }

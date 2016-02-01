@@ -60,7 +60,11 @@ public class LoginController implements AuthenticationProvider {
             user.getPerson().getFirstName();
         }
         returnMap.put("user",user);
-        returnMap.put("branch",branchService.getBranchUsingMac(loginService.getMacAddress()));
+        Branch branch = branchService.getBranchUsingMac(loginService.getMacAddress());
+        if(branch==null){
+            branch = new Branch();
+        }
+        returnMap.put("branch",branch);
 
 
         return returnMap;

@@ -171,13 +171,22 @@
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
-                                        <select name="branch">
+                                        <select name="branch.id" data-list="false">
                                             <option></option>
                                             <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                         </select>
                                     </div>
                                     <div>
                                         <a class="button secondary get-mac">test</a>
+                                    </div>
+                                    <div class="added-mac-location list" name="macAddresses">
+
+                                    </div>
+                                    <div class="mac-location">
+
+                                    </div>
+                                    <div class="row">
+                                        <a aria-label="Add" class="add-mac"><i class="fa fa-plus-circle"></i> Add Mac Address</a>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -188,7 +197,7 @@
                                         </label>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Add</span></button>
+                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="btn-label">Add</span></button>
                                         <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
                                     </div>
                                 </div>
@@ -206,12 +215,28 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Category
-                                            <select id="update-branch" ng-model="recordFound.branch" name="branch">
+                                            <select id="update-branch" ng-model="recordFound.branch" name="branch.id"  data-list="false">
                                                 <option></option>
                                                 <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                             </select>
                                         </label>
                                         <small class="error">Category is required.</small>
+                                    </div>
+                                    <div class="added-mac-location">
+                                        <div class="row" ng-repeat="mac in recordFound.macAddresses">
+                                            <div class="columns small-10">
+                                                <span class="added-mac">{{mac}}</span>
+                                            </div>
+                                            <div class="columns small-2">
+                                                <a aria-label="Remove" class="remove-added-mac"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mac-location">
+
+                                    </div>
+                                    <div class="row">
+                                        <a aria-label="Add" class="add-mac"><i class="fa fa-plus-circle"></i> Add Mac Address</a>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -222,7 +247,7 @@
                                         </label>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update</span></button>
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="btn-label">Update</span></button>
                                         <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
                                     </div>
                                 </div>
@@ -232,7 +257,7 @@
                     <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
                         <h3 id="delete-title">Are you sure you want to delete?</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <button class="button alert remove-record"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="delete-btn">Remove</span></button>
+                        <button class="button alert remove-record"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="delete-btn">Remove</span></button>
                         <button class="button secondary float-right">Cancel</button>
                     </div>
                 </section>
@@ -243,6 +268,29 @@
 </div>
 </body>
 <footer>
+
+    <script type="text/html" id="mac-address-template">
+        <div class="row">
+            <div class="columns small-10">
+                <input type="text" class="mac-address">
+            </div>
+            <div class="columns small-2">
+                <a class="add-mac-address"><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="added-mac-address-template">
+        <div class="row">
+            <div class="columns small-10">
+                <span class="added-mac list-item"></span>
+            </div>
+            <div class="columns small-2">
+                <a aria-label="Remove" class="remove-added-mac"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+    </script>
+
     <script>
         $(document).foundation();
         $(document).EVEYfy();
@@ -258,6 +306,25 @@
                     }
                 });
             });
+        }).on("click", ".add-mac", function(){
+            var macAddressLocation = $(".mac-location");
+            var macAddressTemplate = $("#mac-address-template").html();
+
+            $(macAddressLocation).append($(macAddressTemplate));
+        }).on("click", ".add-mac-address", function(){
+
+            var row = $(this).parent().parent();
+
+            var macAddressLocation = $(".added-mac-location");
+            var macAddressTemplate = $("#added-mac-address-template").html();
+
+            $(macAddressLocation).append($(macAddressTemplate));
+            $(macAddressLocation).find(".added-mac").last().text($(row).find(".mac-address").val());
+
+            $(row).remove();
+        }).on("click",".remove-added-mac", function(){
+            var row = $(this).parent().parent();
+            $(row).remove();
         });
     </script>
 </footer>

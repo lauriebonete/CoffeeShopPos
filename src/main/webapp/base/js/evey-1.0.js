@@ -75,6 +75,20 @@ var evey = (function(){
                 }
             });
 
+            $.each($(form).find(".list"),function(i,elem){
+
+                if($(elem).attr("name")!=null &&
+                    $(elem).attr("name")!=undefined &&
+                    $(elem).attr("name")!= ""){
+
+                    var list = [];
+                    $.each($(elem).find("span.list-item"),function(j,item){
+                        list.push($(item).text());
+                    });
+                    jsonObject[$(elem).attr("name")] = list;
+                }
+            });
+
             $.each($(form).find("selectize"), function (i,selectize) {
                 if($(selectize).attr("name")!= null &&
                     $(selectize).attr("name")!= undefined &&

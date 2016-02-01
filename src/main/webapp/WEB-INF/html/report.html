@@ -104,7 +104,7 @@
         $(document).ready({
 
         }).on("click", ".test", function(){
-            window.location.href = evey.getHome()+"/report/export-sales?startDate="+$(".start-date").val()+"&endDate="+$(".end-date").val();
+            window.location.href = evey.getHome()+"/report/export-sales?startDateString="+$(".start-date").val()+"&endDateString="+$(".end-date").val();
         });
 
         $(".fcalendar").fdatepicker({

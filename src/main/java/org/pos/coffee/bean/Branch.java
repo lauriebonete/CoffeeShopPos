@@ -21,7 +21,6 @@ public class Branch extends BaseEntity {
     @CollectionTable(name="NETWORK",
             joinColumns=@JoinColumn(name="BRANCH_ID"))
     @Column(name = "MAC_ADDRESS")
-    @JoinList
     private List<String> macAddresses;
 
     public ReferenceLookUp getBranch() {

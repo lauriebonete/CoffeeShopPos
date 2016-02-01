@@ -26,6 +26,8 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
 
     private static final StringBuilder SEARCH_SOLD_PRODUCT = new StringBuilder();
     private static final StringBuilder GET_TOTAL_SALE = new StringBuilder();
+    private static final StringBuilder GET_CATEGORY_SALE = new StringBuilder();
+    private static final StringBuilder GET_SURDISTAX_SALE = new StringBuilder();
 
     static {
         SEARCH_SOLD_PRODUCT.append("SELECT SUM(OL.QUANTITY) AS QUANTITY, P.ID AS PRODUCT_ID, P.PRODUCT_NAME, LP.ID AS LIST_ID, LP.PRICE, ")
@@ -41,9 +43,31 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("GROUP  BY P.ID, ")
                 .append("          OL.LIST_PRICE ");
 
-        GET_TOTAL_SALE.append("SELECT SUM(TOTAL_SALE) FROM SALE ")
+        GET_TOTAL_SALE.append("SELECT IFNULL(SUM(TOTAL_SALE),0) FROM SALE ")
                 .append("WHERE  STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d')  ")
                 .append("AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
+
+
+        GET_CATEGORY_SALE.append("SELECT IFNULL(SALE.TOTAL_SALE,0) FROM   REFERENCE_LOOKUP R ")
+                .append("       LEFT JOIN (SELECT CATEGORY, SUM(TOTAL_SALE) AS TOTAL_SALE ")
+                .append("                  FROM   SALE S ")
+                .append("                         JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
+                .append("                         JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
+                .append("                         JOIN P_GROUP PG ON P.PROD_GROUP_ID = PG.ID ")
+                .append("                  WHERE  ( S.SALE_DATE IS NULL ")
+                .append("                            OR ( STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("                                 AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) )) ")
+                .append("                 AS SALE ON R.ID = SALE.CATEGORY ")
+                .append("WHERE  R.CATEGORY_ = 'CATEGORY_PROD_CATEGORY' ")
+                .append("ORDER BY R.ID ");
+
+        GET_SURDISTAX_SALE.append("SELECT IFNULL(SUM(S.TOTAL_SURCHARGE),0) AS TOTAL_SURCHARGE, ")
+                .append("  IFNULL(SUM(S.TAX),0) AS TAX, ")
+                .append("  IFNULL(SUM(S.TOTAL_DISCOUNT),0) AS TOTAL_DISCOUNT ")
+                .append("FROM SALE S ")
+                .append("WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
+
 
     }
 
@@ -85,5 +109,36 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
         Double result = template.queryForObject(GET_TOTAL_SALE.toString(), params, Double.class);
         return result;
+    }
+
+    @Override
+    public List<Double> getSalesPerCategory(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Double> categorySale =  template.queryForList(GET_CATEGORY_SALE.toString(), params, Double.class);
+        return categorySale;
+    }
+
+    @Override
+    public List<Map<String, Double>> getDisSurTax(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Map<String, Double>> results = template.query(GET_SURDISTAX_SALE.toString(), params, new RowMapper<Map<String, Double>>() {
+
+            @Override
+            public Map<String, Double> mapRow(ResultSet resultSet, int i) throws SQLException {
+                Map<String,Double> map = new HashMap<String, Double>();
+                map.put("surcharge",resultSet.getDouble("TOTAL_SURCHARGE"));
+                map.put("tax",resultSet.getDouble("TAX"));
+                map.put("discount",resultSet.getDouble("TOTAL_DISCOUNT"));
+                return map;
+            }
+        });
+
+        return results;
     }
 }

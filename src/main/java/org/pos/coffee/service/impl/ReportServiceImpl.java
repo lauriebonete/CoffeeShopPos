@@ -4,10 +4,12 @@ import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.report.CategorySaleHelper;
+import org.pos.coffee.bean.helper.report.MonthlySaleCategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductGroupSaleHelper;
 import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 import org.pos.coffee.dao.impl.SaleDaoJdbc;
 import org.pos.coffee.service.ReportService;
+import org.pos.coffee.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     @Qualifier("saleDaoJdbc")
     private SaleDaoJdbc saleDaoJdbc;
+
+    @Autowired
+    private SaleService saleService;
 
     @Override
     public List<SaleOrderHelper> prepareSalesData(Date startDate, Date endDate) {
@@ -81,5 +86,36 @@ public class ReportServiceImpl implements ReportService {
         }
 
         return categorySaleHelperList;
+    }
+
+    @Override
+    public MonthlySaleCategoryHelper createSaleReportSummary(Date startDate, Date endDate) {
+        MonthlySaleCategoryHelper monthlySaleCategoryHelper = new MonthlySaleCategoryHelper();
+        List<Double> categorySaleList = saleService.getSalesPerCategory(startDate,endDate);
+        Double totalSaleForDate =  saleService.getTotalSaleForDate(startDate, endDate);
+        List<Map<String,Double>> saleDiscountSurcharge = saleService.getDisSurTax(startDate,endDate);
+
+        List<Double> saleBalanceList = new ArrayList<>();
+        for(Double categorySale: categorySaleList){
+            if(totalSaleForDate>0){
+                saleBalanceList.add((categorySale/totalSaleForDate)*100);
+            } else {
+                saleBalanceList.add(0D);
+            }
+
+        }
+
+        for(Map<String,Double> saleDisSur:saleDiscountSurcharge){
+            monthlySaleCategoryHelper.setDiscount(saleDisSur.get("discount"));
+            monthlySaleCategoryHelper.setSurcharge(saleDisSur.get("surcharge"));
+            monthlySaleCategoryHelper.setTax(saleDisSur.get("tax"));
+        }
+
+        monthlySaleCategoryHelper.setCategorySale(categorySaleList);
+        monthlySaleCategoryHelper.setTotalSales(totalSaleForDate);
+        monthlySaleCategoryHelper.setSaleBalance(saleBalanceList);
+        monthlySaleCategoryHelper.setDate(startDate);
+
+        return monthlySaleCategoryHelper;
     }
 }

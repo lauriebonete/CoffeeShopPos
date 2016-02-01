@@ -21,7 +21,6 @@ public abstract class Report {
 
     public Report(String sheetName){
         workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet(sheetName);
     }
 
     public void publishReport(OutputStream out) throws IOException {
