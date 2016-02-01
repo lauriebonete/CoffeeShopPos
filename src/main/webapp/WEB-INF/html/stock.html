@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Foundation | Welcome</title>
+    <title>Maestro Fedeli | Inventory</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
@@ -31,7 +31,7 @@
                         <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                     </section>
                     <section class="middle tab-bar-section">
-                        <h1 class="title">Maestro Fedeli</h1>
+                        <h1 class="title">Maestro Fedeli | Inventory</h1>
                     </section>
                     <section class="right-small">
                         <a class="right-off-canvas-toggle menu-icon"><span></span></a>
@@ -60,11 +60,7 @@
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>Account Maintenance</label></li>
-                                        <li><a href="/person" id="person-off" class="canvas">People Maintenance</a></li>
                                         <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
-                                        <li><a href="/customer" id="customer-off" class="canvas">Customer</a></li>
-                                        <li><a href="/supplier" id="supplier-off" class="canvas">Supplier</a></li>
-                                        <li><a href="/address" id="address-off" class="canvas">Address</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
@@ -74,7 +70,6 @@
                                         <li><a href="/item" id="item-off" class="canvas">Item</a></li>
                                         <li><a href="/product" id="product-off" class="canvas">Product</a></li>
                                         <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
-                                        <li><a href="/meal" id="meal-off" class="canvas">Meal</a></li>
                                         <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
                                         <li class="has-submenu"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
@@ -92,11 +87,6 @@
                 </aside>
                 <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
                     <div class="row main-section-row" id="crud-body">
-                        <div class="row main-section-row">
-                            <div class="small-12 text-align-center">
-                                <h4>Inventory</h4>
-                            </div>
-                        </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
                             <div class="row">
                                 <div class="small-12 columns bar">
@@ -143,7 +133,7 @@
                                                 <th>Description</th>
                                                 <th>Current Stock</th>
                                                 <th>Critical Level</th>
-                                                <th style="width:10%"></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>

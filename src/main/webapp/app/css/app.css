@@ -23,32 +23,58 @@
 }
 
 .content {
-    width: 60%;
+    width: 60vw;
     float: left;
     display: block;
-    padding: 5px;
-    max-height: 85vh;
+    max-height: 95vh;
     overflow: hidden;
     overflow-y: auto;
-    margin-left: 5px;
     position: relative;
+    margin: 0 2px 0 0;
+}
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+    .content {
+        width: 75vw;
+        float: left;
+        display: block;
+        max-height: 95vh;
+        overflow: hidden;
+        overflow-y: auto;
+        position: relative;
+        margin: 0 2px 0 0;
+    }
+}
+
+@media only screen and (min-width: 20.063em) and (max-width: 40.63em) {
+    .content {
+        width: 80vw;
+        float: left;
+        display: block;
+        max-height: 95vh;
+        overflow: hidden;
+        overflow-y: auto;
+        position: relative;
+        margin: 0 2px 0 0;
+    }
 }
 
 .cartBig {
-    float: left;
-    width: 27.5%;
+    width: 25vw;
     display: block;
-    padding: 10px;
-    margin-left: 5px;
-    max-height: 80vh;
+    max-height: 95vh;
+    overflow: hidden;
+    overflow-y: auto;
+    position: relative;
+    margin: 0 auto;
 }
 
-#cartSmall-container {
-    max-height: 60vh;
+.cartSmall {
+    max-height: 100vh;
     position: relative;
 }
 
-#cartSmall-container .cartSmall-icon {
+.cartSmall .cartSmall-icon {
     position: absolute;
     top: 5vh;
     right: 0;
@@ -61,47 +87,48 @@
     transition: right 1s cubic-bezier(0.17, 0.04, 0.03, 0.94);
 }
 
-#cartSmall-container * {
+.cartSmall * {
     color: white;
 }
 
-#cartSmall-container .cartSmall-content {
+.cartSmall .cartSmall-content {
     position: absolute;
     width: 70vw;
     right: -70vw;
     top: 5vh;
-    height: 85vh;
+    max-height: 85vh;
     z-index: 1;
     background: #222;
     padding: 5px 10px 5px 10px;
     transition: right 1s cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    overflow: hidden;
+    overflow-y: auto;
 }
 
-#cartSmall-container .cartSmall-content .orderSummary {
+.cartSmall .cartSmall-content .orderSummary {
     max-height: 60vh;
     position: relative;
 }
 
-#cartSmall-container .cartSmall-content .orderSummary .items {
+.cartSmall .cartSmall-content .orderSummary .items {
     padding: 10px;
     width: 100%;
-    height: 40vh;
+    max-height: 40vh;
     overflow: hidden;
     overflow-y: auto;
     margin-bottom: 10vh;
     border: 1px solid;
 }
 
-#cartSmall-container .cartSmall-content .orderSummary .totalPrice {
+.cartSmall .cartSmall-content .orderSummary .totalPrice {
     width: 100%;
     border: 1px solid;
-    position: absolute;
     left: 0;
-    bottom: -50px;
+    margin-bottom: 0;
 }
 
-#cartSmall-container .cartSmall-content .orderSummary .items * {
-    word-break: break-all;
+.cartSmall .cartSmall-content .orderSummary .items * {
+    /*word-break: break-all;*/
 }
 
 .cartBig .orderSummary {
@@ -128,7 +155,7 @@
 }
 
 .cartBig .orderSummary .items * {
-    word-break: break-all;
+    /*word-break: break-all;*/
 }
 
 .contentHolder {
@@ -242,6 +269,35 @@
     background-color: #008CBA;
 }
 
+.cartSmall-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.cartSmall-content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.cartSmall-content::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+.cartBig::-webkit-scrollbar {
+    width: 10px;
+}
+
+.cartBig::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: gray;
+}
+
+.cartBig::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    background-color: #008CBA;
+}
+
+
 .payment-page {
     margin-left: 15px;
     margin-right: 15px;
@@ -295,6 +351,18 @@
 
 .good-row {
     background-color:#cce5cc !important;
+}
+
+.payment-page .details {
+    height: 80vh;
+}
+
+.payment-page .buttons {
+    height: 20vh;
+}
+
+.base-location > li {
+    display: inline-block;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {

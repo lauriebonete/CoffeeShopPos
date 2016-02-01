@@ -32,12 +32,12 @@
 }
 
 .main-section {
+    margin-top: 2vh;
     height: 100vh;
 }
 
 .main-section-row {
 	margin: 0 !important;
-	padding-top: 1rem;
 }
 
 .max-width {
@@ -153,7 +153,7 @@ input[data-toggle]:checked + label:active {
 }
 
 .margin-top-side {
-    margin-top: .45rem !important;
+    /*margin-top: .45rem !important;*/
 }
 
 .margin-bottom-half-rem {
