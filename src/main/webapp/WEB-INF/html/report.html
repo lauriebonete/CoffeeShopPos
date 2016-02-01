@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/foundation-datepicker.min.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
-    <script src="js/responsive-tables.js"></script>
+    <script src="js/foundation-datepicker.min.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
     <script src="js/angular-resource.js"></script>
@@ -91,6 +92,8 @@
                 </aside>
                 <section class="main-section main-body">
                     <button class="button secondary test">sales</button>
+                    <input class="fcalendar start-date" type="text">
+                    <input class="fcalendar end-date" type="text">
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -106,7 +109,13 @@
         $(document).ready({
 
         }).on("click", ".test", function(){
-            window.location.href = evey.getHome()+"/report/export-sales";
+            window.location.href = evey.getHome()+"/report/export-sales?startDate="+$(".start-date").val()+"&endDate="+$(".end-date").val();
+        });
+
+        $(".fcalendar").fdatepicker({
+            format: 'mm-dd-yyyy',
+            disableDblClickSelection: true,
+            closeButton: true
         });
     </script>
 </footer>

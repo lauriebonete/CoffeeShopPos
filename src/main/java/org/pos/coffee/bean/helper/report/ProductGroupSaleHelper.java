@@ -14,7 +14,7 @@ public class ProductGroupSaleHelper {
     private ProductGroup productGroup;
     private Set<ReferenceLookUp> sizes;
     private Set<Product> parent;
-    private Set<Long> categorys;
+    private ReferenceLookUp category;
     private List<Product> productList;
 
     public ProductGroup getProductGroup() {
@@ -41,12 +41,12 @@ public class ProductGroupSaleHelper {
         this.parent = parent;
     }
 
-    public Set<Long> getCategorys() {
-        return categorys;
+    public ReferenceLookUp getCategory() {
+        return category;
     }
 
-    public void setCategorys(Set<Long> categorys) {
-        this.categorys = categorys;
+    public void setCategory(ReferenceLookUp category) {
+        this.category = category;
     }
 
     public List<Product> getProductList() {

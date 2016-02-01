@@ -4,6 +4,7 @@ import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.Sale;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,4 +15,5 @@ public interface SaleService extends BaseCrudService<Sale> {
     public void createSaleAndOrders(Sale sale);
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry);
     public Sale confirmSaleTransaction(Sale sale) throws Exception;
+    public Double getTotalSaleForDate(Date startDate, Date endDate);
 }

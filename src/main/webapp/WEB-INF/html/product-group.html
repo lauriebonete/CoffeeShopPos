@@ -21,6 +21,7 @@
     <script src="js/dropzone.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
+    <script src="angular/categoryController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
@@ -164,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal category-controller" ng-controller="categoryController" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
                         <h3 id="crud-title">Add Product Group.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
@@ -174,6 +175,11 @@
                                         <label>Group Name <small>required</small>
                                             <input type="text" placeholder="Group Name" name="productGroupName" required></label>
                                         <small class="error">Please provide Product Group Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Category
+                                            <selectize data-list="false" data-attr="id" name="category" config='categoryConfig' options='category' ng-model="categoryModel"></selectize>
+                                        </label>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -191,7 +197,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal crud-modal category-controller" ng-controller="categoryController" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Update Product Group.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -202,8 +208,13 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Group Name <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="productGroupName" value="{{recordFound.productGroupName}}" pattern="number"></label>
+                                            <input type="text" placeholder="Number Value" name="productGroupName" value="{{recordFound.productGroupName}}" required></label>
                                         <small class="error">Please provide Product Group Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Category
+                                            <selectize data-list="false" data-attr="id"  name="category" config='categoryConfig' options='category' ng-model="recordFound.categoryId"></selectize>
+                                        </label>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -214,7 +225,7 @@
                                         </label>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update</span>Update</button>
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update</span></button>
                                         <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
                                     </div>
                                 </div>
@@ -224,7 +235,7 @@
                     <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
                         <h3 id="delete-title">Are you sure you want to delete?</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                        <button class="button alert remove-record">Remove</button>
+                        <button class="button alert remove-record"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="delete-btn">Remove</span></button>
                         <button class="button secondary float-right">Cancel</button>
                     </div>
                     <div id="image-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="image-title" aria-hidden="true" role="dialog">
@@ -257,11 +268,23 @@
 
         $(document).ready(function(){
 
+            $.ajax({
+                url: evey.getHome() +"/reference/getReferenceLookUpByCategory/CATEGORY_PROD_CATEGORY",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $.each(angular.element(".category-controller"),function(){
+                        $(this).scope().loadCategory(data);
+                        $(this).scope().$apply();
+                    });
+                }
+            });
+
         }).on("click",".image-action",function(){
             $(".image-action").removeClass("picked");
             $(this).addClass("picked");
 
-            $("#image-modal").attr("data-product", $(this).data("id"));
+            $("#image-modal").attr("data-product", $(this).attr("data-id"));
 
             var imageId = $(this).attr("data-image");
             productImage.removeAllFiles();
@@ -295,8 +318,8 @@
                 $('#image-modal').foundation('reveal', 'open');
             }
         }).on("click","#save-image",function(){
-            var fileId = $(".dz-preview").data("file");
-            var productGroupId = $("#image-modal").data("product");
+            var fileId = $(".dz-preview").attr("data-file");
+            var productGroupId = $("#image-modal").attr("data-product");
 
             var productGroup = new Object;
             productGroup["id"] = productGroupId;

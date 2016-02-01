@@ -1,10 +1,12 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="ITEM")
@@ -43,6 +45,10 @@ public class Item extends BaseEntity {
 
 	@Column(name = "UNIT_PRICE")
 	private Double unitPrice;
+
+	@OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
+	private List<Stock> stockList;
 	
 	public String getItemName() {
 		return itemName;

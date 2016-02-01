@@ -66,6 +66,11 @@ public class LoginController implements AuthenticationProvider {
         return returnMap;
     }
 
+    @RequestMapping(value="/get-mac-address", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody String getMacAddress() {
+        return loginService.getMacAddress();
+    }
+
 }
 
 

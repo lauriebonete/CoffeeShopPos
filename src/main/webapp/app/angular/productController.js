@@ -24,19 +24,6 @@ crudApp.controller("productController", function ($scope, $http) {
         maxItems:1,
     };
 
-    $scope.categoryConfig =
-    {
-        valueField : 'id',
-        labelField : 'value',
-        searchField: ['value'],
-        delimiter : '|',
-        placeholder : 'Pick something',
-        onInitialize : function (selectize) {
-            // receives the selectize object as an argument
-        },
-        maxItems:1,
-    };
-
     $scope.productGroupConfig =
     {
         valueField : 'id',
@@ -61,5 +48,5 @@ crudApp.controller("productController", function ($scope, $http) {
 
     $scope.productGroup = 0;
     $scope.promoGroup = 0;
-    $scope.category = 0;
+
 });

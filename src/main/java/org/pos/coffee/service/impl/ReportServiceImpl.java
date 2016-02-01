@@ -53,15 +53,13 @@ public class ReportServiceImpl implements ReportService {
                         ReferenceLookUp sizeReference = product.getSize();
                         size.add(sizeReference);
                     }
-
-                    categoryIds.add(product.getCategoryId());
                 }
             }
             ProductGroupSaleHelper productGroupSaleHelper = new ProductGroupSaleHelper();
             productGroupSaleHelper.setProductGroup(productGroup);
             productGroupSaleHelper.setParent(parent);
             productGroupSaleHelper.setSizes(size);
-            productGroupSaleHelper.setCategorys(categoryIds);
+            productGroupSaleHelper.setCategory(productGroup.getCategory());
             productGroupSaleHelper.setProductList(products);
             productGroupSaleHelperSet.add(productGroupSaleHelper);
         }
@@ -73,11 +71,9 @@ public class ReportServiceImpl implements ReportService {
 
             List<ProductGroupSaleHelper> listProductGroupSaleHelper = new ArrayList<>();
             for(ProductGroupSaleHelper productGroupSaleHelper: productGroupSaleHelperSet){
-                for(Long categoryId: productGroupSaleHelper.getCategorys()){
-                    if(category.getId().equals(categoryId)){
-                        listProductGroupSaleHelper.add(productGroupSaleHelper);
-                        break;
-                    }
+                if(productGroupSaleHelper.getCategory()!=null &&
+                        category.getId().equals(productGroupSaleHelper.getCategory().getId())){
+                    listProductGroupSaleHelper.add(productGroupSaleHelper);
                 }
             }
             categorySaleHelper.setProductGroupSaleHelperSetList(listProductGroupSaleHelper);

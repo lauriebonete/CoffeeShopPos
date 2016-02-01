@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
@@ -45,6 +46,7 @@ public class ReportController {
 
     @RequestMapping(value = "/export-sales", method = RequestMethod.GET)
     public void exportSales(HttpServletRequest request, HttpServletResponse response) throws IOException{
+
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=test.xlsx");
 
@@ -57,7 +59,7 @@ public class ReportController {
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();
-            new SalesReport(productGroups).publishReport(out);
+            new SalesReport(categorySaleHelperList, soldProductList).publishReport(out);
             out.flush();
         } finally {
             if(out != null)

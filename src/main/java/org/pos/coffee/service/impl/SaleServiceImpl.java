@@ -8,6 +8,7 @@ import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.dao.SaleDao;
+import org.pos.coffee.dao.impl.SaleDaoJdbc;
 import org.pos.coffee.service.AddOnService;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.OrderService;
@@ -33,6 +34,9 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
 
     @Autowired
     private SaleDao saleDao;
+
+    @Autowired
+    private SaleDaoJdbc saleDaoJdbc;
 
     @Autowired
     private SequenceDao sequenceDao;
@@ -91,4 +95,8 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
         return datePrefix+String.format("%04d",generatedCode);
     }
 
+    @Override
+    public Double getTotalSaleForDate(Date startDate, Date endDate) {
+        return saleDaoJdbc.getTotalSaleForDate(startDate, endDate);
+    }
 }

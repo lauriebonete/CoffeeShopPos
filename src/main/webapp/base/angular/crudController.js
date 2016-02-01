@@ -84,16 +84,29 @@ crudApp.controller("crudController", function ($scope, $http) {
     };
 
     $scope.deleteAction = function (id, url) {
+        $("#delete-modal .loader").toggleClass("hide");
+        $("#delete-modal span.delete-btn").toggleClass("hide");
+        $("#delete-modal .button").toggleClass("disabled");
+        $("#delete-modal .button").attr("disabled", true);
         var deleteEntity = {
             method: "DELETE",
             url: url + "/" + id
         };
 
         $http(deleteEntity).then(function successCallback(response) {
+            $("#delete-modal .loader").toggleClass("hide");
+            $("#delete-modal span.delete-btn").toggleClass("hide");
+            $("#delete-modal .button").toggleClass("disabled");
+            $("#delete-modal .button").removeAttr("disabled");
+
             $('#delete-modal').foundation('reveal', 'close');
             $scope.records.splice($.inArray(id, $scope.records), 1);
 
         }, function errorCallback(response) {
+            $("#delete-modal .loader").toggleClass("hide");
+            $("#delete-modal span.delete-btn").toggleClass("hide");
+            $("#delete-modal .button").toggleClass("disabled");
+            $("#delete-modal .button").removeAttr("disabled");
         })
     };
 

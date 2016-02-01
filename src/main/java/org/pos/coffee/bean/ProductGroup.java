@@ -21,6 +21,13 @@ public class ProductGroup extends BaseEntity {
     @Column(name = "IMAGE", insertable = false, updatable = false)
     private Long groupImageId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY", referencedColumnName = "ID")
+    private ReferenceLookUp category;
+
+    @Column(name = "CATEGORY", insertable = false, updatable = false)
+    private Long categoryId;
+
     public String getProductGroupName() {
         return productGroupName;
     }
@@ -43,5 +50,21 @@ public class ProductGroup extends BaseEntity {
 
     public void setGroupImageId(Long groupImageId) {
         this.groupImageId = groupImageId;
+    }
+
+    public ReferenceLookUp getCategory() {
+        return category;
+    }
+
+    public void setCategory(ReferenceLookUp category) {
+        this.category = category;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

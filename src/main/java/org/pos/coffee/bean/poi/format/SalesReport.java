@@ -5,7 +5,12 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
+import org.pos.coffee.bean.helper.report.CategorySaleHelper;
+import org.pos.coffee.bean.helper.report.ProductGroupSaleHelper;
+import org.pos.coffee.bean.helper.report.SaleOrderHelper;
 import org.pos.coffee.bean.poi.Report;
+import org.pos.coffee.service.SaleService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,46 +22,45 @@ import java.util.Locale;
  */
 public class SalesReport extends Report {
 
-    private List<ProductGroup> productGroups;
+    private List<CategorySaleHelper> categorySaleHelperList;
+    private List<SaleOrderHelper> saleOrderHelperList;
+
+    @Autowired
+    private SaleService saleService;
 
     @Override
     protected void publishHeader() {
 
-        Calendar cal = Calendar.getInstance();
-        cal = Calendar.getInstance();
-        String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-
-
-        XSSFRow row = sheet.createRow(0);
-        XSSFCell cell = row.createCell(0);
-        cell.setCellValue("Date: "+month);
-        sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
-        cell = row.createCell(5);
-        cell.setCellValue("TOTAL SALES");
-        sheet.addMergedRegion(new CellRangeAddress(0,0,5,8));
-
     }
 
-    public SalesReport(List<ProductGroup> productGroupList){
-        super("Sales Report");
-        this.productGroups = productGroupList;
+    public SalesReport(List<CategorySaleHelper> categorySaleHelperList, List<SaleOrderHelper> saleOrderHelperList){
 
     }
 
     @Override
     protected void publishData() {
-        publishData(this.productGroups);
+        publishData(this.categorySaleHelperList, this.saleOrderHelperList);
     }
 
-    protected void publishData(List<ProductGroup> productGroupList){
-        for(int i=0; i<=productGroupList.size()-1;i++){
-            XSSFRow row = sheet.createRow(i+1);
-            XSSFCell cell = row.createCell(0);
-            cell.setCellValue(productGroupList.get(i).getProductGroupName());
+    protected void publishData(List<CategorySaleHelper> categorySaleHelperList, List<SaleOrderHelper> saleOrderHelperList){
+
+    }
+
+    private int getHighestNumberOfQTY(List<CategorySaleHelper> categorySaleHelperList){
+        int maxSize = 0;
+        for(CategorySaleHelper categorySaleHelper: categorySaleHelperList){
+            for(ProductGroupSaleHelper productGroupSaleHelper : categorySaleHelper.getProductGroupSaleHelperSetList()){
+                if(productGroupSaleHelper.getSizes().size()>maxSize){
+                    maxSize = productGroupSaleHelper.getSizes().size();
+                }
+            }
         }
+
+        return maxSize;
     }
 
-    private void printCategoryHeader(List<ReferenceLookUp> category){
-
+    private void createSaleReportSummary(){
+        Double totalSaleForDate =  saleService.getTotalSaleForDate(new Date(), new Date());
     }
+
 }

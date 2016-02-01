@@ -788,7 +788,12 @@
 
             var retrieveProduct = scope.addToCart;
 
-            var base = $.parseJSON($("ul.base-location input[name=base-ingredient]:checked").attr("data-baseid"));
+            var baseId = $("ul.base-location input[name=base-ingredient]:checked").attr("data-baseid");
+            if(baseId != null &&
+                baseId != undefined){
+                var base = $.parseJSON(baseId);
+            }
+
 
             if(!$(".base-div").hasClass("ng-hide")){
                 if(retrieveProduct.ingredientList != null){

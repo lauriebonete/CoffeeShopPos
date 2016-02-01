@@ -95,7 +95,7 @@
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
-                                <h4>Reference Look Up</h4>
+                                <h4>Branch</h4>
                             </div>
                         </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
@@ -107,15 +107,10 @@
                             <div class="row">
                                 <form>
                                     <div class="small-12 columns">
-                                        <label>Key
-                                            <input id="key" type="text" placeholder="Input Key" name="key"/>
-                                        </label>
-                                        <label>Value
-                                            <input id="value" type="text" placeholder="Input Value" name="value"/>
-                                        </label>
-                                        <label>Category
-                                            <select name="category" id="category" ng-init="loadDropDown('/reference/findAllCategory')">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                        <label>Branch
+                                            <select name="category" id="category" ng-init="loadDropDown('/reference/getReferenceLookUpByCategory/CATEGORY_BRANCH')">
+                                                <option></option>
+                                                <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                             </select>
                                         </label>
                                         <div class="switch round">
@@ -141,20 +136,16 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="responsive max-width" id="crud-table" data-url="/priceSet/findAll">
+                                    <table class="responsive max-width" id="crud-table" data-url="/branch/findAll">
                                         <thead>
                                         <tr>
-                                            <th>Category</th>
-                                            <th>Key</th>
-                                            <th>value</th>
+                                            <th>Branch Name</th>
                                             <th style="width:10%"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="record in records">
-                                            <td>{{record.category}}</td>
-                                            <td>{{record.key}}</td>
-                                            <td>{{record.value}}</td>
+                                            <td>{{record.branch.value}}</td>
                                             <td>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
@@ -174,30 +165,19 @@
                         </div>
                     </div>
                     <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
-                        <h3 id="crud-title">Add New Reference Look Up.</h3>
+                        <h3 id="crud-title">Add New Branch.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
                             <div class="row">
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
-                                        <select name="category">
-                                            <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                        <select name="branch">
+                                            <option></option>
+                                            <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                         </select>
                                     </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" required></label>
-                                        <small class="error">Value is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
+                                    <div>
+                                        <a class="button secondary get-mac">test</a>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -216,7 +196,7 @@
                         </form>
                     </div>
                     <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
-                        <h3 id="update-title">Update Reference Look Up.</h3>
+                        <h3 id="update-title">Update Branch.</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
                             <div class="row">
@@ -226,26 +206,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Category
-                                            <select id="update-category" ng-model="recordFound.category" name="category">
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            <select id="update-branch" ng-model="recordFound.branch" name="branch">
+                                                <option></option>
+                                                <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                             </select>
                                         </label>
                                         <small class="error">Category is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>KEY <small>required</small>
-                                            <input type="text" placeholder="Key" name="key" value="{{recordFound.key}}" required></label>
-                                        <small class="error">Key is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>VALUE <small>required</small>
-                                            <input type="text" placeholder="Value" name="value" value="{{recordFound.value}}" required></label>
-                                        <small class="error">Value is required.</small>
-                                    </div>
-                                    <div class="row collapse prefix-radius">
-                                        <label>NUMBER VALUE <small>required</small>
-                                            <input type="text" placeholder="Number Value" name="numberValue" value="{{recordFound.numberValue}}" pattern="number"></label>
-                                        <small class="error">Number Value is required.</small>
                                     </div>
                                     <div class="switch round">
                                         <p>Active</p>
@@ -280,6 +246,19 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
+
+        $(document).ready(function(){
+            $(".get-mac").click(function(){
+                $.ajax({
+                    url: evey.getHome()+"/login/get-mac-address",
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
+            });
+        });
     </script>
 </footer>
 </html>

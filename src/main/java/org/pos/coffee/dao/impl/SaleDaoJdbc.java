@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface SaleDaoJdbc {
     public List<SaleOrderHelper> getAllSales(Date startDate, Date endDate);
+    public Double getTotalSaleForDate(Date startDate, Date endDate);
 }

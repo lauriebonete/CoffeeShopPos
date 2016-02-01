@@ -25,6 +25,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     private DataSource dataSource;
 
     private static final StringBuilder SEARCH_SOLD_PRODUCT = new StringBuilder();
+    private static final StringBuilder GET_TOTAL_SALE = new StringBuilder();
 
     static {
         SEARCH_SOLD_PRODUCT.append("SELECT SUM(OL.QUANTITY) AS QUANTITY, P.ID AS PRODUCT_ID, P.PRODUCT_NAME, LP.ID AS LIST_ID, LP.PRICE, ")
@@ -39,6 +40,11 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("       AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP  BY P.ID, ")
                 .append("          OL.LIST_PRICE ");
+
+        GET_TOTAL_SALE.append("SELECT SUM(TOTAL_SALE) FROM SALE ")
+                .append("WHERE  STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d')  ")
+                .append("AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
+
     }
 
     public static RowMapper<SaleOrderHelper> SOLD_PRODUCT = new RowMapper<SaleOrderHelper>() {
@@ -59,7 +65,6 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
 
             return saleOrderHelper;
         }
-
     };
 
     @Override
@@ -69,6 +74,16 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
         List<SaleOrderHelper> result = template.query(SEARCH_SOLD_PRODUCT.toString(), params, SOLD_PRODUCT);
+        return result;
+    }
+
+    @Override
+    public Double getTotalSaleForDate(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        Double result = template.queryForObject(GET_TOTAL_SALE.toString(), params, Double.class);
         return result;
     }
 }
