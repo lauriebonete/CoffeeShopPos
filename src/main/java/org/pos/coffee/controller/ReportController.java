@@ -1,18 +1,15 @@
 package org.pos.coffee.controller;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.evey.utility.DateUtil;
 import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.bean.helper.report.CategorySaleHelper;
-import org.pos.coffee.bean.helper.report.MonthlySaleCategoryHelper;
-import org.pos.coffee.bean.helper.report.MonthlySaleHelper;
-import org.pos.coffee.bean.helper.report.SaleOrderHelper;
+import org.pos.coffee.bean.helper.StockHelper;
+import org.pos.coffee.bean.helper.report.*;
+import org.pos.coffee.bean.poi.format.InventoryReport;
 import org.pos.coffee.bean.poi.format.SalesReport;
-import org.pos.coffee.service.ProductGroupService;
-import org.pos.coffee.service.ProductService;
-import org.pos.coffee.service.ReferenceLookUpService;
-import org.pos.coffee.service.ReportService;
+import org.pos.coffee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,29 +38,37 @@ public class ReportController {
     private ReportService reportService;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductGroupService productGroupService;
+    private StockService stockService;
 
     @Autowired
     private ReferenceLookUpService referenceLookUpService;
 
+    @Autowired
+    private SaleService saleService;
+
     @RequestMapping(value = "/export-sales", method = RequestMethod.GET)
     public void exportSales(HttpServletRequest request, HttpServletResponse response, @RequestParam String startDateString, @RequestParam String endDateString) throws Exception{
-
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=test.xlsx");
 
         MonthlySaleHelper monthlySaleHelper = new MonthlySaleHelper();
 
         Date startDate = new SimpleDateFormat("MM-dd-yyyy").parse(startDateString);
         Date endDate = new SimpleDateFormat("MM-dd-yyyy").parse(endDateString);
 
+        String fileName = "Sale_Report_for_"+startDateString+"_to_"+endDateString;
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+
         List<MonthlySaleCategoryHelper> monthlySaleCategoryHelperList = new ArrayList<>();
+        List<ProductSaleHelperHolder> productSaleHelperHolderList = new ArrayList<>();
         Date startDateLooper = startDate;
         do {
             monthlySaleCategoryHelperList.add(reportService.createSaleReportSummary(startDateLooper, startDateLooper));
+
+            ProductSaleHelperHolder productSaleHelperHolder = new ProductSaleHelperHolder();
+            productSaleHelperHolder.setDate(startDateLooper);
+            productSaleHelperHolder.setProductSaleHelperList(saleService.getProductSalePerDate(startDateLooper,startDateLooper));
+            productSaleHelperHolderList.add(productSaleHelperHolder);
+
             startDateLooper = DateUtils.addDays(startDateLooper, 1);
         } while(startDateLooper.before(DateUtils.addDays(endDate, 1)));
 
@@ -79,13 +84,33 @@ public class ReportController {
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();
-            new SalesReport(monthlySaleHelper).publishReport(out);
+            new SalesReport(monthlySaleHelper, productSaleHelperHolderList).publishReport(out);
             out.flush();
         } finally {
             if(out != null)
                 out.close();
         }
 
+    }
+
+    @RequestMapping(value = "/download-inventory", method = RequestMethod.GET)
+    public void createInventoryExcel(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        String fileName = "Inventory_Report_"+ DateUtil.dateToString(new Date(), "MM-dd-yyyy");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+
+        List<StockHelper> stockList = stockService.getStockCount("jpql.inventory.display-inventory-count");
+
+
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            new InventoryReport(stockList).publishReport(out);
+            out.flush();
+        } finally {
+            if(out != null)
+                out.close();
+        }
     }
 
     @RequestMapping

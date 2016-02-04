@@ -3,6 +3,8 @@ package org.pos.coffee.service;
 import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.Sale;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -19,4 +21,7 @@ public interface SaleService extends BaseCrudService<Sale> {
     public Double getTotalSaleForDate(Date startDate, Date endDate);
     public List<Double> getSalesPerCategory(Date startDate, Date endDate);
     public List<Map<String,Double>> getDisSurTax(Date startDate, Date endDate);
+    public List<ProductSaleHelper> getProductSalePerDate(Date startDate, Date endDate);
+    public List<Double> getSalePerMonth(Date startDate, Date endDate);
+    public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate);
 }

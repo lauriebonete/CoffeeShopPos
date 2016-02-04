@@ -79,14 +79,14 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
             String status = stockHelper.getStatus();
                 switch (status.toLowerCase()){
                     case "good":
-                        havingClause.append("HAVING SUM(obj.quantity) >= item.criticalLevel + item.demarcation ");
+                        havingClause.append("HAVING SUM(obj.quantity) > item.criticalLevel + item.demarcation ");
                         break;
                     case "low":
                         havingClause.append("HAVING SUM(obj.quantity) <= item.criticalLevel + item.demarcation AND ")
-                                .append("SUM(obj.quantity) >= item.criticalLevel - item.demarcation ");
+                                .append("SUM(obj.quantity) > item.criticalLevel ");
                         break;
                     case "critical":
-                        havingClause.append("HAVING SUM(obj.quantity) <= item.criticalLevel - item.demarcation ");
+                        havingClause.append("HAVING SUM(obj.quantity) <= item.criticalLevel ");
                         break;
                 }
             queryBuilder.append(havingClause.toString());

@@ -337,6 +337,13 @@ var evey = (function(){
                 evey.clearForm($(this).parents("form"));
             });
 
+            $("a.navigation").on("click", function(){
+                $(this).find(".navigation-icon").toggleClass("hide");
+                $(this).find(".navigation-spinner").toggleClass("hide");
+                var url = $(this).attr("data-url");
+                $(this).attr("href", url);
+            });
+
 
             $(document).ready(function() {
 

@@ -7,6 +7,8 @@ import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDao;
 import org.pos.coffee.dao.impl.SaleDaoJdbc;
 import org.pos.coffee.service.AddOnService;
@@ -109,5 +111,20 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     public List<Map<String, Double>> getDisSurTax(Date startDate, Date endDate) {
         return saleDaoJdbc.getDisSurTax(startDate,endDate);
+    }
+
+    @Override
+    public List<ProductSaleHelper> getProductSalePerDate(Date startDate, Date endDate) {
+        return saleDaoJdbc.getProductSalePerDate(startDate,endDate);
+    }
+
+    @Override
+    public List<Double> getSalePerMonth(Date startDate, Date endDate) {
+        return saleDaoJdbc.getSalePerMonth(startDate,endDate);
+    }
+
+    @Override
+    public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate) {
+        return saleDaoJdbc.getCategoryPercentage(startDate,endDate);
     }
 }

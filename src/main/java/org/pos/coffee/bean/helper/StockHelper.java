@@ -62,12 +62,12 @@ public class StockHelper {
                 demarcation = 0D;
             }
 
-            if(quantity>=criticalLevel+demarcation){
+            if(quantity>criticalLevel+demarcation){
                 this.status = "good";
             } else if(quantity<=criticalLevel+demarcation
-                    && quantity>=criticalLevel-demarcation){
+                    && quantity>criticalLevel){
                 this.status = "low";
-            } else if (quantity<=criticalLevel-demarcation) {
+            } else if (quantity<=criticalLevel) {
                 this.status = "critical";
             }
         }

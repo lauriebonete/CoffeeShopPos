@@ -1,6 +1,7 @@
 package org.pos.coffee.dao.impl;
 
-import org.pos.coffee.bean.helper.report.SaleOrderHelper;
+import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,25 +25,14 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     @Autowired
     private DataSource dataSource;
 
-    private static final StringBuilder SEARCH_SOLD_PRODUCT = new StringBuilder();
     private static final StringBuilder GET_TOTAL_SALE = new StringBuilder();
     private static final StringBuilder GET_CATEGORY_SALE = new StringBuilder();
     private static final StringBuilder GET_SURDISTAX_SALE = new StringBuilder();
+    private static final StringBuilder GET_PRODUCT_SALE = new StringBuilder();
+    private static final StringBuilder GET_SALE_MONTH = new StringBuilder();
+    private static final StringBuilder GET_CATEGORY_PERCENTAGE = new StringBuilder();
 
     static {
-        SEARCH_SOLD_PRODUCT.append("SELECT SUM(OL.QUANTITY) AS QUANTITY, P.ID AS PRODUCT_ID, P.PRODUCT_NAME, LP.ID AS LIST_ID, LP.PRICE, ")
-                .append("       PP.PRODUCT_NAME  AS PARENT_NAME, PP.ID AS PARENT_ID, SIZE.VALUE_ AS SIZE, SIZE.ID AS SIZE_ID, P.CATEGORY AS CATEGORY_ID ")
-                .append("FROM   SALE S ")
-                .append("       JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
-                .append("       JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
-                .append("       JOIN LIST_PRICE LP ON OL.LIST_PRICE = LP.ID ")
-                .append("       LEFT JOIN PRODUCT PP ON P.PARENT = PP.ID ")
-                .append("       LEFT JOIN REFERENCE_LOOKUP SIZE ON P.SIZE = SIZE.ID ")
-                .append("WHERE  STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
-                .append("       AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
-                .append("GROUP  BY P.ID, ")
-                .append("          OL.LIST_PRICE ");
-
         GET_TOTAL_SALE.append("SELECT IFNULL(SUM(TOTAL_SALE),0) FROM SALE ")
                 .append("WHERE  STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d')  ")
                 .append("AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
@@ -56,7 +46,8 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("                         JOIN P_GROUP PG ON P.PROD_GROUP_ID = PG.ID ")
                 .append("                  WHERE  ( S.SALE_DATE IS NULL ")
                 .append("                            OR ( STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
-                .append("                                 AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) )) ")
+                .append("                                 AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
+                .append("                   GROUP BY CATEGORY) ")
                 .append("                 AS SALE ON R.ID = SALE.CATEGORY ")
                 .append("WHERE  R.CATEGORY_ = 'CATEGORY_PROD_CATEGORY' ")
                 .append("ORDER BY R.ID ");
@@ -68,38 +59,68 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
 
+        GET_PRODUCT_SALE.append("SELECT R.ID AS CATEGORY, R.VALUE_ AS CATEGORY_NAME, PG.ID AS GROUP_ID, ")
+                .append("  PG.GROUP_NAME  AS GROUP_NAME, P.ID AS PARENT_ID, P.PRODUCT_NAME AS PARENT_NAME, ")
+                .append("  C.ID AS CHILD_ID, C.PRODUCT_NAME AS CHILD_NAME, IFNULL(S.QUANTITY,0) AS QUANTITY, IFNULL(LP.PRICE,0) AS PRICE, IFNULL(S.LINE_PRICE,0) AS LINE_PRICE ")
+                .append("FROM REFERENCE_LOOKUP R ")
+                .append("LEFT JOIN P_GROUP PG ON PG.CATEGORY = R.ID ")
+                .append("LEFT JOIN PRODUCT P ON P.PROD_GROUP_ID = PG.ID ")
+                .append("LEFT JOIN PRODUCT C ON P.ID = C.PARENT ")
+                .append("LEFT JOIN LIST_PRICE LP ON (LP.PRODUCT = P.ID OR LP.PRODUCT  = C.ID) ")
+                .append("LEFT JOIN ")
+                .append("  (SELECT OL.PRODUCT_ID AS PRODUCT_ID, SUM(OL.QUANTITY) AS QUANTITY, SUM(OL.LINE_PRICE) AS LINE_PRICE ")
+                .append("  FROM SALE S ")
+                .append("  JOIN ORDER_LINE OL ON OL.SALE_ID = S.ID ")
+                .append("  WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("  AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("  GROUP BY OL.PRODUCT_ID ")
+                .append("  ) AS S ON S.PRODUCT_ID                      = C.ID ")
+                .append("WHERE R.CATEGORY_                             = 'CATEGORY_PROD_CATEGORY' ")
+                .append("AND P.SHOW_PRODUCT                            = 1 ")
+                .append("ORDER BY R.ID, PG.ID, P.ID ");
 
+        GET_SALE_MONTH.append("SELECT SUM(TOTAL_SALE) ")
+                .append("FROM SALE ")
+                .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ");
+
+        GET_CATEGORY_PERCENTAGE.append("SELECT IFNULL(SALE.TOTAL_QUANTITY,0) AS TOTAL_QUANTITY, R.VALUE_ AS CATEGORY_NAME ")
+                .append("FROM REFERENCE_LOOKUP R ")
+                .append("LEFT JOIN ")
+                .append("  (SELECT CATEGORY, ")
+                .append("    SUM(OL.QUANTITY) AS TOTAL_QUANTITY ")
+                .append("  FROM SALE S ")
+                .append("  JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
+                .append("  JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
+                .append("  JOIN P_GROUP PG ON P.PROD_GROUP_ID = PG.ID ")
+                .append("  WHERE ( S.SALE_DATE IS NULL ")
+                .append("          OR ( STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("                AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')  <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
+                .append("  GROUP BY CATEGORY ")
+                .append("  ) AS SALE ON R.ID = SALE.CATEGORY ")
+                .append("WHERE R.CATEGORY_   = 'CATEGORY_PROD_CATEGORY' ")
+                .append("ORDER BY R.ID  ");
     }
 
-    public static RowMapper<SaleOrderHelper> SOLD_PRODUCT = new RowMapper<SaleOrderHelper>() {
-
+    public static RowMapper<ProductSaleHelper> PRODUCT_HELPER = new RowMapper<ProductSaleHelper>() {
         @Override
-        public SaleOrderHelper mapRow(ResultSet rs, int rowNum) throws SQLException {
-            final SaleOrderHelper saleOrderHelper = new SaleOrderHelper();
-            saleOrderHelper.setQuantity(rs.getDouble("QUANTITY"));
-            saleOrderHelper.setProductId(rs.getLong("PRODUCT_ID"));
-            saleOrderHelper.setListPriceId(rs.getLong("LIST_ID"));
-            saleOrderHelper.setPrice(rs.getDouble("PRICE"));
-            saleOrderHelper.setProductName(rs.getString("PRODUCT_NAME"));
-            saleOrderHelper.setParentId(rs.getLong("PARENT_ID"));
-            saleOrderHelper.setParentName(rs.getString("PARENT_NAME"));
-            saleOrderHelper.setSizeId(rs.getLong("SIZE_ID"));
-            saleOrderHelper.setSizeName(rs.getString("SIZE"));
-            saleOrderHelper.setCategoryId(rs.getLong("CATEGORY_ID"));
-
-            return saleOrderHelper;
+        public ProductSaleHelper mapRow(ResultSet resultSet, int i) throws SQLException {
+            final ProductSaleHelper productSaleHelper = new ProductSaleHelper();
+            productSaleHelper.setCategoryId(resultSet.getLong("CATEGORY"));
+            productSaleHelper.setCategoryName(resultSet.getString("CATEGORY_NAME"));
+            productSaleHelper.setGroupId(resultSet.getLong("GROUP_ID"));
+            productSaleHelper.setGroupName(resultSet.getString("GROUP_NAME"));
+            productSaleHelper.setParentId(resultSet.getLong("PARENT_ID"));
+            productSaleHelper.setParentName(resultSet.getString("PARENT_NAME"));
+            productSaleHelper.setProductId(resultSet.getLong("CHILD_ID"));
+            productSaleHelper.setProductName(resultSet.getString("CHILD_NAME"));
+            productSaleHelper.setQuantity(resultSet.getDouble("QUANTITY"));
+            productSaleHelper.setPrice(resultSet.getDouble("PRICE"));
+            productSaleHelper.setLinePrice(resultSet.getDouble("LINE_PRICE"));
+            return productSaleHelper;
         }
     };
-
-    @Override
-    public List<SaleOrderHelper> getAllSales(Date startDate, Date endDate) {
-        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
-        final Map<String, Object> params = new HashMap<>();
-        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
-        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<SaleOrderHelper> result = template.query(SEARCH_SOLD_PRODUCT.toString(), params, SOLD_PRODUCT);
-        return result;
-    }
 
     @Override
     public Double getTotalSaleForDate(Date startDate, Date endDate) {
@@ -140,5 +161,44 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         });
 
         return results;
+    }
+
+    @Override
+    public List<ProductSaleHelper> getProductSalePerDate(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<ProductSaleHelper> productSaleHelperList = template.query(GET_PRODUCT_SALE.toString(), params, PRODUCT_HELPER);
+        return productSaleHelperList;
+    }
+
+    @Override
+    public List<Double> getSalePerMonth(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Double> salePerMonth = template.queryForList(GET_SALE_MONTH.toString(),params,Double.class);
+        return salePerMonth;
+    }
+
+    @Override
+    public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<CategoryHelper> categoryHelperList = template.query(GET_CATEGORY_PERCENTAGE.toString(), params, new RowMapper<CategoryHelper>() {
+            @Override
+            public CategoryHelper mapRow(ResultSet resultSet, int i) throws SQLException {
+                final CategoryHelper categoryHelper = new CategoryHelper();
+                categoryHelper.setQuantity(resultSet.getDouble("TOTAL_QUANTITY"));
+                categoryHelper.setCategoryName(resultSet.getString("CATEGORY_NAME"));
+                return categoryHelper;
+            }
+        });
+
+        return categoryHelperList;
     }
 }
