@@ -22,57 +22,62 @@
 	<script src="angular/crudController.js"></script>
 	<script src="js/vendor/modernizr.js"></script>
 </head>
-<body>
+<div>
 <br>
-<div id="login">
-	<div>
-		<img class="maestroLogo" src="img/maestroFedeliLogo.png"/>
+<div id="loginContainer">
+	<div id="loginBackground">
+		</div>
 	</div>
-	<form action="/login" method="POST">
-		<div class="row">
-			<input type="password" placeholder="6 pin digit" id="pinDigit" name="pinDigit"/>
+	<div id="loginForm">
+		<div>
+			<img class="maestroLogo show-for-medium-up" src="img/maestroFedeliLogo.png"/>
 		</div>
-		<div class="row">
-			<ul class="addOnList small-block-grid-3 medium-block-grid-3 large-block-3">
-				<li class="numpadNumber">
-					<h5>7</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>8</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>9</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>4</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>5</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>6</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>1</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>2</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>3</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>Clear</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>0</h5>
-				</li>
-				<li class="numpadNumber">
-					<h5>Enter</h5>
-				</li>
-			</ul>
-		</div>
-	</form>
+		<form action="/login" method="POST">
+			<div class="row">
+				<input type="password" id="pinDigit" name="pinDigit"/>
+			</div>
+			<div class="row">
+				<ul class="addOnList small-block-grid-3 medium-block-grid-3 large-block-3">
+					<li class="numpadNumber">
+						<h5>7</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>8</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>9</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>4</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>5</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>6</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>1</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>2</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>3</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>Clear</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>0</h5>
+					</li>
+					<li class="numpadNumber">
+						<h5>Enter</h5>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
 </div>
 <script>
 	$(document).foundation();
