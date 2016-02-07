@@ -1,0 +1,398 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Maestro Fedeli | Users</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/selectize.default.css">
+    <link rel="stylesheet" href="css/dropzone.css">
+    <link rel="stylesheet" href="css/user.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="js/dropzone.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli | Users</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-user"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="#" class="canvas"><i class="fa fa-sign-out"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a href="/dashboard" id="dashboard-off" class="canvas"><i class="fa fa-line-chart"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a href="/order" id="order-off" class="canvas"><i class="fa fa-shopping-cart"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a href="/inventory" id="inventory-off" class="canvas"><i class="fa fa-bar-chart"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a href="/purchase" id="purchase-off" class="canvas"><i class="fa fa-money"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a href="/report" id="report-off" class="canvas"><i class="fa fa-pie-chart"></i>&nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a href="/user" id="user-off" class="canvas">User Page</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a href="/item" id="item-off" class="canvas">Item</a></li>
+                                        <li><a href="/product" id="product-off" class="canvas">Product</a></li>
+                                        <li><a href="/productGroup" id="product-group-off" class="canvas">Product Group</a></li>
+                                        <li><a href="/reference" id="reference-off" class="canvas">Reference</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a href="/price" class="canvas">Price List</a></li>
+                                                <li><a href="/priceSet" class="canvas">Price Set</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                    <div class="row main-section-row" id="crud-body">
+                        <div class="row main-section-row">
+                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>User Name
+                                            <input id="userName" type="text" placeholder="User Name" name="userName"/>
+                                        </label>
+                                        <label>First Name
+                                            <input id="firstName" type="text" placeholder="First Name" name="firstName"/>
+                                        </label>
+                                        <label>Last Name
+                                            <input id="lastName" type="text" placeholder="Last Name" name="lastName"/>
+                                        </label>
+                                        <label>Role
+                                            <select name="userRole" id="userRole" ng-init="loadDropDown('/userRole/findAllCategory')">
+                                                <option></option>
+                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            </select>
+                                        </label>
+                                        <div class="rows">
+                                            <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
+                                            <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="max-width" id="crud-table" data-url="/user/findAll">
+                                        <thead>
+                                        <tr>
+                                            <th>Last Name</th>
+                                            <th>First Name</th>
+                                            <th>User Name</th>
+                                            <th>Pin</th>
+                                            <th>Role</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="record in records">
+                                            <td>{{record.person.lastName}}</td>
+                                            <td>{{record.person.firstName}}</td>
+                                            <td>{{record.username}}</td>
+                                            <td>{{record.pinDigit}}</td>
+                                            <td></td>
+                                            <td>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                        <h3 id="crud-title">Create User</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="crud-form">
+                            <ul class="tabs" data-tab>
+                                <li class="tab-title active"><a href="#createPanel1">Personal Information</a></li>
+                                <li class="tab-title"><a href="#createPanel2">Credentials</a></li>
+                                <li class="tab-title"><a href="#createPanel3">User Rights</a></li>
+                            </ul>
+                            <div class="tabs-content">
+                                <div class="content active" id="createPanel1">
+                                    <div class="small-12 columns">
+                                        <div class="row collapse prefix-radius">
+                                            <label>First Name <small>required</small>
+                                                <input type="text" placeholder="First Name" name="person.firstName" required></label>
+                                            <small class="error">Please provide First Name.</small>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Middle Name <small>required</small>
+                                                <input type="text" placeholder="Last Name" name="person.middleName" required></label>
+                                            <small class="error">Please provide Middle Name.</small>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Last Name <small>required</small>
+                                                <input type="text" placeholder="Last Name" name="person.lastName" required></label>
+                                            <small class="error">Please provide Last Name.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content" id="createPanel2">
+                                    <div class="row collapse prefix-radius">
+                                        <label>User Name <small>required</small>
+                                            <input type="text" placeholder="User Name" name="username" required></label>
+                                        <small class="error">Please provide desired User Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Password <small>required</small>
+                                            <input type="text" placeholder="Password" name="passwordTemp" required></label>
+                                        <small class="error">Please provide desired Password.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Confirm Password <small>required</small>
+                                            <input type="text" placeholder="Password Confirm" name="password" required></label>
+                                        <small class="error">Please provide desired Password.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Pin Digit <small>required</small>
+                                            <input type="number" placeholder="Pin Digit" name="pinDigit" required></label>
+                                        <small class="error">Please provide desired Pin Digit.</small>
+                                    </div>
+                                </div>
+                                <div class="content" id="createPanel3">
+                                    <div class="row">
+                                        <label>User Role
+                                            <select name="" id="userRole" ng-init="">
+                                                <option></option>
+                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="small-4 columns">
+                                            <label>Access
+                                                <select name="" id="rights" ng-init="">
+                                                    <option></option>
+                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="small-4 columns">
+                                            <label>Module
+                                                <select name="" id="module" ng-init="">
+                                                    <option></option>
+                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="small-4 columns">
+                                            <a href="#" class="button"><i class="fa fa-plus fa-lg"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Update User</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="update-form">
+                            <ul class="tabs" data-tab>
+                                <li class="tab-title active"><a href="#updatePanel1">Personal Information</a></li>
+                                <li class="tab-title"><a href="#updatePanel2">Credentials</a></li>
+                                <li class="tab-title"><a href="#updatePanel3">User Rights</a></li>
+                            </ul>
+                            <div class="tabs-content">
+                                <div class="content active" id="updatePanel1">
+                                    <div class="small-12 columns">
+                                        <div class="row collapse prefix-radius">
+                                            <label>First Name <small>required</small>
+                                                <input type="text" placeholder="First Name" name="person.firstName" required></label>
+                                            <small class="error">Please provide First Name.</small>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Middle Name <small>required</small>
+                                                <input type="text" placeholder="Last Name" name="person.middleName" required></label>
+                                            <small class="error">Please provide Middle Name.</small>
+                                        </div>
+                                        <div class="row collapse prefix-radius">
+                                            <label>Last Name <small>required</small>
+                                                <input type="text" placeholder="Last Name" name="person.lastName" required></label>
+                                            <small class="error">Please provide Last Name.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content" id="updatePanel2">
+                                    <div class="row collapse prefix-radius">
+                                        <label>User Name <small>required</small>
+                                            <input type="text" placeholder="User Name" name="username" required></label>
+                                        <small class="error">Please provide desired User Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Password <small>required</small>
+                                            <input type="text" placeholder="Password" name="passwordTemp" required></label>
+                                        <small class="error">Please provide desired Password.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Confirm Password <small>required</small>
+                                            <input type="text" placeholder="Password Confirm" name="password" required></label>
+                                        <small class="error">Please provide desired Password.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Pin Digit <small>required</small>
+                                            <input type="number" placeholder="Pin Digit" name="pinDigit" required></label>
+                                        <small class="error">Please provide desired Pin Digit.</small>
+                                    </div>
+                                </div>
+                                <div class="content" id="updatePanel3">
+                                    <div class="row">
+                                        <label>User Role
+                                            <select name="" id="userRole" ng-init="">
+                                                <option></option>
+                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="small-4 columns">
+                                            <label>Access
+                                                <select name="" id="rights" ng-init="">
+                                                    <option></option>
+                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="small-4 columns">
+                                            <label>Module
+                                                <select name="" id="module" ng-init="">
+                                                    <option></option>
+                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="small-4 columns">
+                                            <a href="#" class="button"><i class="fa fa-plus fa-lg"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
+                        <h3 id="delete-title">Are you sure you want to delete?</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <button class="button alert remove-record">Remove</button>
+                        <button class="button secondary float-right">Cancel</button>
+                    </div>
+                    <div id="image-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="image-title" aria-hidden="true" role="dialog">
+                        <h3 id="image-title">Product Image</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <form action="/file/upload" method="POST" enctype="multipart/form-data" class="dropzone" id="dropZone">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns small-12">
+                                <button class="button success margin-top-one-rem max-width" id="save-image">Save Image</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(document).ready(function(){
+
+        }).on("click",".form-next-btn",function(){
+            $(".userDetails").css( "visibility", "hidden" );
+            $(".userDetails").css( "z-index", "0" );
+
+            $(".userRights").css( "visibility", "visible" );
+            $(".userRights").css( "z-index", "999" );
+        }).on("click",".form-prv-btn",function(){
+            $(".userRights").css( "visibility", "hidden" );
+            $(".userRights").css( "z-index", "0" );
+
+            $(".userDetails").css( "visibility", "visible" );
+            $(".userDetails").css( "z-index", "999" );
+        });
+
+    </script>
+</footer>
+</html>
