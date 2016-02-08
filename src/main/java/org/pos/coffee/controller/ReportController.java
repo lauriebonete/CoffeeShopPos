@@ -8,6 +8,7 @@ import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.*;
 import org.pos.coffee.bean.poi.format.InventoryReport;
+import org.pos.coffee.bean.poi.format.PurchaseReport;
 import org.pos.coffee.bean.poi.format.SalesReport;
 import org.pos.coffee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class ReportController {
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private PurchaseService purchaseService;
 
     @Autowired
     private ReferenceLookUpService referenceLookUpService;
@@ -106,6 +110,28 @@ public class ReportController {
         try {
             out = response.getOutputStream();
             new InventoryReport(stockList).publishReport(out);
+            out.flush();
+        } finally {
+            if(out != null)
+                out.close();
+        }
+    }
+
+    @RequestMapping(value = "/create-purchase", method = RequestMethod.GET)
+    public  void createPurchaseReport(HttpServletRequest request, HttpServletResponse response, @RequestParam String startDateString, @RequestParam String endDateString) throws Exception{
+        String fileName = "Purchase_Report_"+ DateUtil.dateToString(new Date(), "MM-dd-yyyy");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+
+        Date startDate = new SimpleDateFormat("MM-dd-yyyy").parse(startDateString);
+        Date endDate = new SimpleDateFormat("MM-dd-yyyy").parse(endDateString);
+
+        List<PurchaseReportHelper> purchaseReportHelperList = purchaseService.getPurchaseUsingDateRange(startDate,endDate);
+
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            new PurchaseReport(purchaseReportHelperList).publishReport(out);
             out.flush();
         } finally {
             if(out != null)

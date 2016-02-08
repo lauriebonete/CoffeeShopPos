@@ -10,7 +10,7 @@ import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDao;
-import org.pos.coffee.dao.impl.SaleDaoJdbc;
+import org.pos.coffee.dao.SaleDaoJdbc;
 import org.pos.coffee.service.AddOnService;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.OrderService;

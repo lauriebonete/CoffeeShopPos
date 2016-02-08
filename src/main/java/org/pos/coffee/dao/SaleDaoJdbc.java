@@ -1,4 +1,4 @@
-package org.pos.coffee.dao.impl;
+package org.pos.coffee.dao;
 
 import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;

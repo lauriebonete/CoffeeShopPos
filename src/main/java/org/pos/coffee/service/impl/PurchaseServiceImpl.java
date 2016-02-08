@@ -6,7 +6,9 @@ import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Purchase;
 import org.pos.coffee.bean.PurchaseOrder;
+import org.pos.coffee.bean.helper.report.PurchaseReportHelper;
 import org.pos.coffee.dao.PurchaseDao;
+import org.pos.coffee.dao.PurchaseDaoJdbc;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
@@ -27,6 +29,9 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
 
     @Autowired
     private SequenceDao sequenceDao;
+
+    @Autowired
+    private PurchaseDaoJdbc purchaseDaoJdbc;
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
@@ -98,5 +103,10 @@ public class PurchaseServiceImpl extends BaseCrudServiceImpl<Purchase> implement
         final String datePrefix = DateFormatUtils.format(Calendar.getInstance().getTime(), "yyyyMMdd");
         Long generatedCode = sequenceDao.incrementValue(key+datePrefix, increment, retryCount, maxRetry);
         return key+datePrefix+String.format("%06d",generatedCode);
+    }
+
+    @Override
+    public List<PurchaseReportHelper> getPurchaseUsingDateRange(Date startDate, Date endDate) {
+        return purchaseDaoJdbc.getPurchaseUsingDateRange(startDate,endDate);
     }
 }

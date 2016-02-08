@@ -88,9 +88,12 @@
                 </aside>
                 <section class="main-section main-body">
                     <button class="button secondary sales">sales</button>
-                    <button class="button secondary inventory">sales</button>
                     <input class="fcalendar start-date" type="text">
                     <input class="fcalendar end-date" type="text">
+                    <button class="button secondary inventory">Inventory</button>
+                    <button class="button secondary purchase">Purchase</button>
+                    <input class="fcalendar start-date-purchase" type="text">
+                    <input class="fcalendar end-date-purchase" type="text">
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -109,6 +112,8 @@
             window.location.href = evey.getHome()+"/report/export-sales?startDateString="+$(".start-date").val()+"&endDateString="+$(".end-date").val();
         }).on("click", ".inventory", function(){
             window.location.href = evey.getHome()+"/report/download-inventory";
+        }).on("click", ".purchase", function(){
+            window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
         });
 
         $(".fcalendar").fdatepicker({

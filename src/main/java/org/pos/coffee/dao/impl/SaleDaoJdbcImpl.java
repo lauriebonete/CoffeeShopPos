@@ -2,6 +2,7 @@ package org.pos.coffee.dao.impl;
 
 import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
+import org.pos.coffee.dao.SaleDaoJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
