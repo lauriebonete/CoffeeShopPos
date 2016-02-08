@@ -274,9 +274,13 @@ var evey = (function(){
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
-                            $(".alert-box.success").show();
-                            setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
+                            promptSuccess();
+                        } else {
+                            promptAlert;
                         }
+                    },
+                    error : function(data) {
+                        promptAlert();
                     }
                 });
             });
@@ -309,9 +313,13 @@ var evey = (function(){
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
-                            $(".alert-box.success").show();
-                            setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
+                            promptSuccess();
+                        } else {
+                            promptAlert();
                         }
+                    },
+                    error : function(data) {
+                        promptAlert();
                     }
                 });
             });
@@ -325,8 +333,7 @@ var evey = (function(){
                 angular.element(".main-body").scope().deleteAction(selectedDelete,evey.getMapping());
                 angular.element(".main-body").scope().$apply();
 
-                $(".alert-box.success").show();
-                setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
+                promptSuccess();
             });
 
             $(this).on("click", settings['search-action'], function () {
@@ -457,6 +464,17 @@ var evey = (function(){
         angular.element(".main-body").scope().loadTable(paginateThis);
         angular.element(".main-body").scope().$apply();
     }
+
+    var promptSuccess = function() {
+        $(".alert-box.success").show();
+        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+    };
+
+    var promptAlert = function() {
+        $("#crud-modal .close-reveal-modal").click();
+        $(".alert-box.alert").show();
+        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+    };
 
 })(jQuery);
 
