@@ -273,6 +273,9 @@ var evey = (function(){
                             $(crudForm).find(".button").removeAttr("disabled",true);
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
+
+                            $(".alert-box.success").show();
+                            setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
                         }
                     }
                 });
@@ -305,6 +308,9 @@ var evey = (function(){
 
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
+
+                            $(".alert-box.success").show();
+                            setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
                         }
                     }
                 });
@@ -318,6 +324,9 @@ var evey = (function(){
             $(".remove-record").on('click',function(){
                 angular.element(".main-body").scope().deleteAction(selectedDelete,evey.getMapping());
                 angular.element(".main-body").scope().$apply();
+
+                $(".alert-box.success").show();
+                setTimeout(function() { $(".alert-box.success").hide(); }, 5000);
             });
 
             $(this).on("click", settings['search-action'], function () {

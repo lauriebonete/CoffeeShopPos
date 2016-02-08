@@ -145,7 +145,7 @@ input[data-toggle]:checked + label:active {
 }
 
 .side-nav {
-    height: 100vh;
+    height: 80vh;
 }
 
 .max-height-none {
