@@ -94,6 +94,9 @@
                     <button class="button secondary purchase">Purchase</button>
                     <input class="fcalendar start-date-purchase" type="text">
                     <input class="fcalendar end-date-purchase" type="text">
+                    <button class="button secondary expense">Expense</button>
+                    <input class="fcalendar start-date-expense" type="text">
+                    <input class="fcalendar end-date-expense" type="text">
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -114,6 +117,8 @@
             window.location.href = evey.getHome()+"/report/download-inventory";
         }).on("click", ".purchase", function(){
             window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
+        }).on("click", ".expense", function(){
+            window.location.href = evey.getHome()+"/report/create-expense?startDateString="+$(".start-date-expense").val()+"&endDateString="+$(".end-date-expense").val();
         });
 
         $(".fcalendar").fdatepicker({

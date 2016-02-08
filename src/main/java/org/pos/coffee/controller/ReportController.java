@@ -139,6 +139,16 @@ public class ReportController {
         }
     }
 
+    @RequestMapping(value = "/create-expense", method = RequestMethod.GET)
+    public void createExpenseReport(HttpServletRequest request, HttpServletResponse response, @RequestParam String startDateString, @RequestParam String endDateString) throws Exception{
+        String fileName = "Expense_Report_"+ DateUtil.dateToString(new Date(), "MM-dd-yyyy");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+
+        Date startDate = new SimpleDateFormat("MM-dd-yyyy").parse(startDateString);
+        Date endDate = new SimpleDateFormat("MM-dd-yyyy").parse(endDateString);
+    }
+
     @RequestMapping
     public ModelAndView loadHtml() {
         return new ModelAndView("html/report.html");
