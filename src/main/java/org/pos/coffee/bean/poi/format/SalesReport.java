@@ -1,8 +1,12 @@
 package org.pos.coffee.bean.poi.format;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
@@ -44,7 +48,8 @@ public class SalesReport extends Report {
     protected void publishData(MonthlySaleHelper monthlySaleHelper, List<ProductSaleHelperHolder> productSaleHelperHolderList){
         this.sheet = workbook.createSheet("Monthly Sale");
         createSaleReportSummaryHeader(monthlySaleHelper.getHeaders());
-        createSaleReportSummary(monthlySaleHelper.getMonthlySaleCategoryHelperList());
+        Map<String,Integer> returnMap = createSaleReportSummary(monthlySaleHelper.getMonthlySaleCategoryHelperList());
+        createSaleReportSummaryTotal(monthlySaleHelper.getMonthlySaleCategoryHelperList(),returnMap);
 
         for(ProductSaleHelperHolder productSaleHelperHolder: productSaleHelperHolderList){
             this.sheet = workbook.createSheet(new SimpleDateFormat("MM-dd-yyyy").format(productSaleHelperHolder.getDate()));
@@ -62,6 +67,22 @@ public class SalesReport extends Report {
         int categoryRow = 1;
         int groupRow = 1;
         int parentRow = 1;
+
+        XSSFCellStyle alignStyle = workbook.createCellStyle();
+        alignStyle.setAlignment(XSSFCellStyle.ALIGN_RIGHT);
+
+        XSSFCellStyle boldStyle = workbook.createCellStyle();
+        XSSFFont boldFont = workbook.createFont();
+        boldFont.setBold(true);
+        boldStyle.setFont(boldFont);
+
+        XSSFCellStyle productGroupStyle = workbook.createCellStyle();
+        XSSFFont productGroupFont = workbook.createFont();
+        productGroupFont.setBold(true);
+        productGroupFont.setItalic(true);
+        productGroupStyle.setFont(productGroupFont);
+        productGroupStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+
         for(ProductSaleHelper productSaleHelper: productSaleHelperHolder.getProductSaleHelperList()){
             XSSFRow row = sheet.createRow(indexRow);
             int indexCell = 0;
@@ -83,6 +104,7 @@ public class SalesReport extends Report {
                 indexCell = 0;
                 cell = row.createCell(indexCell);
                 cell.setCellValue(productSaleHelper.getGroupName());
+                cell.setCellStyle(productGroupStyle);
                 groupId = productSaleHelper.getGroupId();
 
                 row = sheet.createRow(++indexRow);
@@ -90,6 +112,7 @@ public class SalesReport extends Report {
                 indexCell = 0;
                 cell = row.createCell(indexCell);
                 cell.setCellValue(productSaleHelper.getParentName());
+                cell.setCellStyle(boldStyle);
                 parentId = productSaleHelper.getParentId();
 
                 if(productSaleHelper.getProductName()==null ||
@@ -105,6 +128,7 @@ public class SalesReport extends Report {
                     indexCell = 0;
                     cell = row.createCell(indexCell);
                     cell.setCellValue(productSaleHelper.getProductName());
+                    cell.setCellStyle(alignStyle);
 
                     cell = row.createCell(++indexCell);
                     cell.setCellValue(productSaleHelper.getQuantity());
@@ -127,6 +151,7 @@ public class SalesReport extends Report {
                     indexCell = 0;
                     cell = row.createCell(indexCell);
                     cell.setCellValue(productSaleHelper.getGroupName());
+                    cell.setCellStyle(productGroupStyle);
                     groupId = productSaleHelper.getGroupId();
 
                     row = sheet.createRow(++indexRow);
@@ -134,6 +159,7 @@ public class SalesReport extends Report {
                     indexCell = 0;
                     cell = row.createCell(indexCell);
                     cell.setCellValue(productSaleHelper.getParentName());
+                    cell.setCellStyle(boldStyle);
                     parentId = productSaleHelper.getParentId();
 
                     if(productSaleHelper.getProductName()==null ||
@@ -149,6 +175,7 @@ public class SalesReport extends Report {
                         indexCell = 0;
                         cell = row.createCell(indexCell);
                         cell.setCellValue(productSaleHelper.getProductName());
+                        cell.setCellStyle(alignStyle);
 
                         cell = row.createCell(++indexCell);
                         cell.setCellValue(productSaleHelper.getQuantity());
@@ -165,6 +192,7 @@ public class SalesReport extends Report {
                         indexCell = 0;
                         cell = row.createCell(indexCell);
                         cell.setCellValue(productSaleHelper.getParentName());
+                        cell.setCellStyle(boldStyle);
                         parentId = productSaleHelper.getParentId();
 
                         if(productSaleHelper.getProductName()==null
@@ -180,6 +208,7 @@ public class SalesReport extends Report {
                             indexCell = 0;
                             cell = row.createCell(indexCell);
                             cell.setCellValue(productSaleHelper.getProductName());
+                            cell.setCellStyle(alignStyle);
 
                             cell = row.createCell(++indexCell);
                             cell.setCellValue(productSaleHelper.getQuantity());
@@ -193,6 +222,7 @@ public class SalesReport extends Report {
                         indexCell = 0;
                         cell = row.createCell(indexCell);
                         cell.setCellValue(productSaleHelper.getProductName());
+                        cell.setCellStyle(alignStyle);
 
                         cell = row.createCell(++indexCell);
                         cell.setCellValue(productSaleHelper.getQuantity());
@@ -211,56 +241,87 @@ public class SalesReport extends Report {
             sheet.groupRow(parentRow+1,indexRow-1);
         }
         sheet.setRowGroupCollapsed(categoryRow+1,true);
+        sheet.autoSizeColumn(0);
 
     }
 
     private void createProductSaleReportForDateHeader(){
+
+        XSSFCellStyle alignStyle = workbook.createCellStyle();
+        alignStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+
         XSSFRow row = sheet.createRow(0);
         int indexCell = 0;
         XSSFCell cell = row.createCell(indexCell);
         cell.setCellValue("Category");
+        cell.setCellStyle(alignStyle);
+
         cell = row.createCell(++indexCell);
         cell.setCellValue("Quantity");
+        cell.setCellStyle(alignStyle);
+
         cell = row.createCell(++indexCell);
         cell.setCellValue("Price");
+        cell.setCellStyle(alignStyle);
+
         cell = row.createCell(++indexCell);
         cell.setCellValue("Total");
+        cell.setCellStyle(alignStyle);
     }
 
 
     private void createSaleReportSummaryHeader(List<String> categoryHeaders){
+
+        XSSFCellStyle alignStyle = workbook.createCellStyle();
+        XSSFFont boldFont = workbook.createFont();
+        boldFont.setBold(true);
+        alignStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        alignStyle.setFont(boldFont);
+
         XSSFRow row = sheet.createRow(0);
         int indexCell = 0;
         XSSFCell cell = row.createCell(indexCell);
 
         cell.setCellValue("Date");
+        cell.setCellStyle(alignStyle);
         for(String category: categoryHeaders){
             indexCell++;
             cell = row.createCell(indexCell);
             cell.setCellValue(category);
+            cell.setCellStyle(alignStyle);
         }
 
         cell = row.createCell(++indexCell);
         cell.setCellValue("Discount");
+        cell.setCellStyle(alignStyle);
 
         cell = row.createCell(++indexCell);
         cell.setCellValue("Surcharge");
+        cell.setCellStyle(alignStyle);
 
         cell = row.createCell(++indexCell);
         cell.setCellValue("Tax");
+        cell.setCellStyle(alignStyle);
 
         cell = row.createCell(++indexCell);
         cell.setCellValue("Total Sales");
+        cell.setCellStyle(alignStyle);
 
         for(String category: categoryHeaders){
             indexCell++;
             cell = row.createCell(indexCell);
             cell.setCellValue(category);
+            cell.setCellStyle(alignStyle);
         }
     }
 
-    private void createSaleReportSummary(List<MonthlySaleCategoryHelper> monthlySaleCategoryHelperList){
+    private Map<String,Integer> createSaleReportSummary(List<MonthlySaleCategoryHelper> monthlySaleCategoryHelperList){
         int indexRow = 1;
+        int maxIndexCell=0;
+
+        XSSFCellStyle percentageStyle = workbook.createCellStyle();
+        percentageStyle.setDataFormat(workbook.createDataFormat().getFormat("0.0#"));
+
         for(MonthlySaleCategoryHelper monthlySaleCategoryHelper: monthlySaleCategoryHelperList){
 
             int indexCell = 0;
@@ -290,9 +351,87 @@ public class SalesReport extends Report {
                 indexCell++;
                 cell = row.createCell(indexCell);
                 cell.setCellValue(balance);
+                cell.setCellStyle(percentageStyle);
             }
 
             indexRow++;
+            maxIndexCell = indexCell;
+        }
+
+        for(int i=0;i<=maxIndexCell;i++){
+            sheet.autoSizeColumn(i);
+        }
+
+        Integer categorySize = monthlySaleCategoryHelperList.get(0).getCategorySale().size();
+
+        Map<String,Integer> returnMap = new HashMap<>();
+        returnMap.put("indexRow", indexRow);
+        returnMap.put("maxIndexCell", maxIndexCell-categorySize);
+        returnMap.put("categorySize",categorySize);
+        return returnMap;
+
+    }
+
+    private void createSaleReportSummaryTotal(List<MonthlySaleCategoryHelper> monthlySaleCategoryHelperList, Map<String,Integer> indexes){
+        XSSFCellStyle borderStyle = workbook.createCellStyle();
+        XSSFFont boldFont = workbook.createFont();
+        boldFont.setBold(true);
+        borderStyle.setFont(boldFont);
+        borderStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+        borderStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+        borderStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+        borderStyle.setBorderTop(XSSFCellStyle.BORDER_MEDIUM_DASHED);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+
+        XSSFCellStyle borderPercentageStyle = workbook.createCellStyle();
+        XSSFFont boldPercentageFont = workbook.createFont();
+        boldPercentageFont.setBold(true);
+        borderPercentageStyle.setFont(boldPercentageFont);
+        borderPercentageStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+        borderPercentageStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+        borderPercentageStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+        borderPercentageStyle.setBorderTop(XSSFCellStyle.BORDER_MEDIUM_DASHED);
+        borderPercentageStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderPercentageStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderPercentageStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderPercentageStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderPercentageStyle.setDataFormat(workbook.createDataFormat().getFormat("0.0#"));
+
+
+        int indexCell = 0;
+        XSSFRow row = sheet.createRow(indexes.get("indexRow"));
+        XSSFCell cell = row.createCell(indexCell);
+        cell.setCellValue("TOTAL");
+        cell.setCellStyle(borderStyle);
+
+        indexCell++;
+        for(int i = indexCell;i<=indexes.get("maxIndexCell");i++, indexCell++){
+            StringBuilder formulaBuilder = new StringBuilder();
+            formulaBuilder.append("SUM(")
+                    .append(CellReference.convertNumToColString(i))
+                    .append("2:"+CellReference.convertNumToColString(i))
+                    .append(indexes.get("indexRow")+")");
+
+            cell = row.createCell(i);
+            cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+            cell.setCellFormula(formulaBuilder.toString());
+            cell.setCellStyle(borderStyle);
+        }
+
+        for(int i = 1; i<=indexes.get("categorySize"); i++,indexCell++){
+            StringBuilder formulaBuilder = new StringBuilder();
+            formulaBuilder.append("(")
+                    .append(CellReference.convertNumToColString(i))
+                    .append(indexes.get("indexRow")+1+"/"+CellReference.convertNumToColString(indexes.get("maxIndexCell")))
+                    .append(indexes.get("indexRow")+1+")*100");
+
+            cell = row.createCell(indexCell);
+            cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+            cell.setCellFormula(formulaBuilder.toString());
+            cell.setCellStyle(borderPercentageStyle);
         }
     }
 

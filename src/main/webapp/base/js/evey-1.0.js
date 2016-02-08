@@ -49,6 +49,10 @@ var evey = (function(){
                             var dottedName = $(input).attr("name").split(".");
                             var object = new Object();
 
+                            if(jsonObject[dottedName[0]] != null){
+                                object = jsonObject[dottedName[0]];
+                            }
+
                             if($(input).is(":checkbox")) {
                                 if($(input).is(":checked")) {
                                     object[dottedName[1]] = true;
@@ -132,6 +136,9 @@ var evey = (function(){
                             var dottedName = $(select).attr("name").split(".");
                             var object = new Object();
 
+                            if(jsonObject[dottedName[0]] != null){
+                                object = jsonObject[dottedName[0]];
+                            }
 
                             if($(select).val().indexOf(":")!=-1){
                                 object[dottedName[1]] = $(select).val().substring($(select).val().indexOf(":")+1);

@@ -172,14 +172,14 @@
                                             <option  ng-repeat="value in dropdown" value="{{value.id}}">{{value.value}}</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <a class="button secondary get-mac">test</a>
-                                    </div>
                                     <div class="added-mac-location list" name="macAddresses">
 
                                     </div>
                                     <div class="mac-location">
 
+                                    </div>
+                                    <div class="row">
+                                        <a class="get-mac"><i class="fa fa-key fa-2x"></i></a>
                                     </div>
                                     <div class="row">
                                         <a aria-label="Add" class="add-mac"><i class="fa fa-plus-circle"></i> Add Mac Address</a>
@@ -292,16 +292,6 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
-            $(".get-mac").click(function(){
-                $.ajax({
-                    url: evey.getHome()+"/login/get-mac-address",
-                    type: "GET",
-                    dataType: "JSON",
-                    success: function(data){
-                        console.log(data);
-                    }
-                });
-            });
         }).on("click", ".add-mac", function(){
             var macAddressLocation = $(".mac-location");
             var macAddressTemplate = $("#mac-address-template").html();
@@ -321,6 +311,17 @@
         }).on("click",".remove-added-mac", function(){
             var row = $(this).parent().parent();
             $(row).remove();
+        }).on("click",".get-mac", function(){
+            var key = $(this);
+            $.ajax({
+                url: evey.getHome()+"/login/get-mac-address",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    var input = $(key).parent().parent().find(".mac-location .mac-address").last();
+                    $(input).val(data);
+                }
+            });
         });
     </script>
 </footer>
