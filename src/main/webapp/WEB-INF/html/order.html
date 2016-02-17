@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="button expand continue">Continue</a>
+                        <a class="button expand continue disabled">Continue</a>
                     </div>
                     <div class="cartSmall">
                         <div class="cartSmall-icon show-for-medium-down">
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a class="button expand continue">Continue</a>
+                            <a class="button expand continue disabled">Continue</a>
                         </div>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
                             <a class="button left back-to-order"><< Back</a>
                         </div>
                         <div class="small-6 columns">
-                            <a class="button right" id="confirm-order">Punch Order >></a>
+                            <a class="button right disabled" id="confirm-order">Punch Order >></a>
                         </div>
                     </div>
                 </div>
@@ -858,6 +858,8 @@
             countQty();
 
             $('#modifyOrder').foundation('reveal', 'close');
+            //enable continue button
+            $(".continue").removeClass("disabled");
 
         }).on("click","#modifyOrder input[name=size-group]",function(){
             if($(this).is(":checked")){
@@ -883,38 +885,47 @@
 
             countQty();
 
+            var hasItems = $(".order-holder").has("div").length ? "Yes" : "No" ;
+
+            if(hasItems == "No"){
+                $(".continue").addClass("disabled");
+            }
+
         }).on("click", ".continue",function(){
-            var detail = getCartDetail();
-            $.ajax({
-                url: evey.getHome()+"/order/getPriceSet",
-                data: JSON.stringify(detail.orderHelper),
-                type: "POST",
-                dataType: "JSON",
-                contentType: "application/json",
-                success: function(data){
-                    $.ajax({
-                        url: evey.getHome()+"/sale/reserve-sale-code",
-                        type: "GET",
-                        dataType: "JSON",
-                        success:function(saleCode){
-                            $("#saleCode").text(saleCode);
-                            displayData(data.results);
-                            confirmOrderFunc(data.results);
-                            holderOrderFunc(data.results);
+            if ( $(".continue").hasClass("disabled")) {
+                return false;
+            } else {
+                var detail = getCartDetail();
+                $.ajax({
+                    url: evey.getHome()+"/order/getPriceSet",
+                    data: JSON.stringify(detail.orderHelper),
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function(data){
+                        $.ajax({
+                            url: evey.getHome()+"/sale/reserve-sale-code",
+                            type: "GET",
+                            dataType: "JSON",
+                            success:function(saleCode){
+                                $("#saleCode").text(saleCode);
+                                displayData(data.results);
+                                confirmOrderFunc(data.results);
+                                holderOrderFunc(data.results);
 
-                            angular.element("body").scope().setDateTime(evey.getDate());
-                            angular.element("body").scope().$apply();
+                                angular.element("body").scope().setDateTime(evey.getDate());
+                                angular.element("body").scope().$apply();
 
-                            $(".payment-page").toggleClass("hide");
-                            $(".order-page").toggleClass("hide");
-                        }
-                    });
-                },
-                error: function(data){
-                    alert(JSON.stringify(data));
-                }
-            });
-
+                                $(".payment-page").toggleClass("hide");
+                                $(".order-page").toggleClass("hide");
+                            }
+                        });
+                    },
+                    error: function(data){
+                        alert(JSON.stringify(data));
+                    }
+                });
+            }
         }).on("click", ".back-to-order", function(){
             $(".payment-page").toggleClass("hide");
             $(".order-page").toggleClass("hide");
@@ -925,9 +936,11 @@
                 var change = parseInt($(this).val()) - parseInt($(".summary-total-balance").attr("data-balance"));
                 $(".change-due").text("PHP "+change);
                 $(".change-due-row").removeClass("hide");
+                $("#confirm-order").removeClass("disabled");
             } else {
                 $(".change-due").text("PHP 0");
                 $(".change-due-row").addClass("hide");
+                $("#confirm-order").addClass("disabled");
             }
         }).on("click", "#reset-default", function () {
             $("span#modify-quantity").text("1");
