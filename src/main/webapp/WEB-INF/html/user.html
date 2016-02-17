@@ -278,17 +278,17 @@
                                     <div class="small-12 columns">
                                         <div class="row collapse prefix-radius">
                                             <label>First Name <small>required</small>
-                                                <input type="text" placeholder="First Name" name="person.firstName" required></label>
+                                                <input type="text" placeholder="First Name" value="{{recordFound.person.firstName}}" name="person.firstName" required></label>
                                             <small class="error">Please provide First Name.</small>
                                         </div>
                                         <div class="row collapse prefix-radius">
                                             <label>Middle Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" name="person.middleName" required></label>
+                                                <input type="text" placeholder="Last Name" value="{{recordFound.person.middleName}}" name="person.middleName" required></label>
                                             <small class="error">Please provide Middle Name.</small>
                                         </div>
                                         <div class="row collapse prefix-radius">
                                             <label>Last Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" name="person.lastName" required></label>
+                                                <input type="text" placeholder="Last Name" value="{{recordFound.person.lastName}}" name="person.lastName" required></label>
                                             <small class="error">Please provide Last Name.</small>
                                         </div>
                                     </div>
@@ -296,22 +296,22 @@
                                 <div class="content" id="updatePanel2">
                                     <div class="row collapse prefix-radius">
                                         <label>User Name <small>required</small>
-                                            <input type="text" placeholder="User Name" name="username" required></label>
+                                            <input type="text" placeholder="User Name" value="{{recordFound.username}}" name="username" required></label>
                                         <small class="error">Please provide desired User Name.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Password <small>required</small>
-                                            <input type="text" placeholder="Password" name="passwordTemp" required></label>
+                                            <input type="text" placeholder="Password" value="{{recordFound.password}}" name="passwordTemp" required></label>
                                         <small class="error">Please provide desired Password.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Confirm Password <small>required</small>
-                                            <input type="text" placeholder="Password Confirm" name="password" required></label>
+                                            <input type="text" placeholder="Password Confirm" value="{{recordFound.password}}" name="password" required></label>
                                         <small class="error">Please provide desired Password.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Pin Digit <small>required</small>
-                                            <input type="number" placeholder="Pin Digit" name="pinDigit" required></label>
+                                            <input type="number" placeholder="Pin Digit" value="{{recordFound.pinDigit}}" name="pinDigit" required></label>
                                         <small class="error">Please provide desired Pin Digit.</small>
                                     </div>
                                 </div>
@@ -347,7 +347,7 @@
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update User</span></button>
                                     </div>
                                 </div>
                             </div>

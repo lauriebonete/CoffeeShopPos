@@ -1,5 +1,7 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import java.util.Set;
 @Table(name = "USER")
 public class User extends BaseEntity{
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="PERSON_ID")
 	private Person person;
 
@@ -18,6 +20,7 @@ public class User extends BaseEntity{
 	private Long personId;
 
 	@Column(name="USERNAME", unique=true, nullable=false)
+	@UniqueField
 	private String username;
 
 	@Column(name="PASSWORD", nullable=false)
@@ -36,6 +39,7 @@ public class User extends BaseEntity{
 	private Date accountExpirationDate;
 
 	@Column(name="PIN_DIGIT", unique=true, nullable=false)
+	@UniqueField
 	private String pinDigit;
 
 	@ManyToMany(fetch = FetchType.LAZY)
