@@ -43,8 +43,21 @@ public class ProductController extends BaseCrudController<Product> {
         productService.save(addedToThis);
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody void test(Long id){
+    @RequestMapping(value = "/findAllByPass", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> findAllByPass(){
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Product> results = new ArrayList<Product>();
+        results.addAll(baseCrudService.findAll());
+        for(Product product:results){
+            product.getProductGroup().getProductGroupName();
+        }
+
+        map.put("message", "success");
+        map.put("status", true);
+        map.put("results", results);
+        map.put("size", results.size());
+        map.put("listSize", entityListSize);
+        return map;
     }
 
     @RequestMapping(value = "/saveImage", method = RequestMethod.POST, produces = "application/json")

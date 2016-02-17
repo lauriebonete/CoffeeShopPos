@@ -127,4 +127,9 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate) {
         return saleDaoJdbc.getCategoryPercentage(startDate,endDate);
     }
+
+    @Override
+    public List<ProductSaleHelper> getProductExpensePerDate(Date startDate, Date endDate) {
+        return saleDaoJdbc.getProductExpensePerDate(startDate,endDate);
+    }
 }

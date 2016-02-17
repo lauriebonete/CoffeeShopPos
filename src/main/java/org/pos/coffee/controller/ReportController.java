@@ -7,6 +7,7 @@ import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.*;
+import org.pos.coffee.bean.poi.format.ExpenseReport;
 import org.pos.coffee.bean.poi.format.InventoryReport;
 import org.pos.coffee.bean.poi.format.PurchaseReport;
 import org.pos.coffee.bean.poi.format.SalesReport;
@@ -147,6 +148,27 @@ public class ReportController {
 
         Date startDate = new SimpleDateFormat("MM-dd-yyyy").parse(startDateString);
         Date endDate = new SimpleDateFormat("MM-dd-yyyy").parse(endDateString);
+
+        List<ProductSaleHelperHolder> productSaleHelperHolderList = new ArrayList<>();
+        Date startDateLooper = startDate;
+        do {
+            ProductSaleHelperHolder productSaleHelperHolder = new ProductSaleHelperHolder();
+            productSaleHelperHolder.setDate(startDateLooper);
+            productSaleHelperHolder.setProductSaleHelperList(saleService.getProductExpensePerDate(startDateLooper, startDateLooper));
+            productSaleHelperHolderList.add(productSaleHelperHolder);
+
+            startDateLooper = DateUtils.addDays(startDateLooper, 1);
+        } while(startDateLooper.before(DateUtils.addDays(endDate, 1)));
+
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            new ExpenseReport(productSaleHelperHolderList).publishReport(out);
+            out.flush();
+        } finally {
+            if(out != null)
+                out.close();
+        }
     }
 
     @RequestMapping

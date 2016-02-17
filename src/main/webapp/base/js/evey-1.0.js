@@ -275,6 +275,7 @@ var evey = (function(){
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
+                            foundationApi.publish('main-notifications', { title: 'Test', content: 'Test2' });
                         } else {
                             promptAlert;
                         }
@@ -314,6 +315,7 @@ var evey = (function(){
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
+                            foundationApi.publish('main-notifications', { title: 'Test', content: 'Test2' });
                         } else {
                             promptAlert();
                         }

@@ -30,6 +30,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     private static final StringBuilder GET_CATEGORY_SALE = new StringBuilder();
     private static final StringBuilder GET_SURDISTAX_SALE = new StringBuilder();
     private static final StringBuilder GET_PRODUCT_SALE = new StringBuilder();
+    private static final StringBuilder GET_PRODUCT_EXPENSE = new StringBuilder();
     private static final StringBuilder GET_SALE_MONTH = new StringBuilder();
     private static final StringBuilder GET_CATEGORY_PERCENTAGE = new StringBuilder();
 
@@ -79,6 +80,27 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("WHERE R.CATEGORY_                             = 'CATEGORY_PROD_CATEGORY' ")
                 .append("AND P.SHOW_PRODUCT                            = 1 ")
                 .append("ORDER BY R.ID, PG.ID, P.ID ");
+
+        GET_PRODUCT_EXPENSE.append("SELECT R.ID AS CATEGORY, R.VALUE_ AS CATEGORY_NAME, PG.ID AS GROUP_ID, PG.GROUP_NAME AS GROUP_NAME, ")
+                .append("  P.ID AS PARENT_ID, P.PRODUCT_NAME AS PARENT_NAME, C.ID AS CHILD_ID, ")
+                .append("  C.PRODUCT_NAME AS CHILD_NAME, IFNULL(S.QUANTITY,0) AS QUANTITY, IFNULL(S.LINE_EXPENSE,0) AS LINE_EXPENSE ")
+                .append("FROM REFERENCE_LOOKUP R ")
+                .append("LEFT JOIN P_GROUP PG ON PG.CATEGORY = R.ID ")
+                .append("LEFT JOIN PRODUCT P ON P.PROD_GROUP_ID = PG.ID ")
+                .append("LEFT JOIN PRODUCT C ON P.ID = C.PARENT ")
+                .append("LEFT JOIN ")
+                .append("  (SELECT OL.PRODUCT_ID  AS PRODUCT_ID, SUM(OL.QUANTITY) AS QUANTITY, SUM(OL.LINE_EXPENSE) AS LINE_EXPENSE ")
+                .append("  FROM SALE S ")
+                .append("  JOIN ORDER_LINE OL ON OL.SALE_ID = S.ID ")
+                .append("  WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("  AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("  GROUP BY OL.PRODUCT_ID ")
+                .append("  ) AS S ON S.PRODUCT_ID = C.ID ")
+                .append("WHERE R.CATEGORY_        = 'CATEGORY_PROD_CATEGORY' ")
+                .append("AND P.SHOW_PRODUCT       = 1 ")
+                .append("ORDER BY R.ID, PG.ID, P.ID ");
+
+
 
         GET_SALE_MONTH.append("SELECT SUM(TOTAL_SALE) ")
                 .append("FROM SALE ")
@@ -201,5 +223,31 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         });
 
         return categoryHelperList;
+    }
+
+    @Override
+    public List<ProductSaleHelper> getProductExpensePerDate(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<ProductSaleHelper> productSaleHelperList = template.query(GET_PRODUCT_EXPENSE.toString(), params, new RowMapper<ProductSaleHelper>() {
+            @Override
+            public ProductSaleHelper mapRow(ResultSet resultSet, int i) throws SQLException {
+                final ProductSaleHelper productSaleHelper = new ProductSaleHelper();
+                productSaleHelper.setCategoryId(resultSet.getLong("CATEGORY"));
+                productSaleHelper.setCategoryName(resultSet.getString("CATEGORY_NAME"));
+                productSaleHelper.setGroupId(resultSet.getLong("GROUP_ID"));
+                productSaleHelper.setGroupName(resultSet.getString("GROUP_NAME"));
+                productSaleHelper.setParentId(resultSet.getLong("PARENT_ID"));
+                productSaleHelper.setParentName(resultSet.getString("PARENT_NAME"));
+                productSaleHelper.setProductId(resultSet.getLong("CHILD_ID"));
+                productSaleHelper.setProductName(resultSet.getString("CHILD_NAME"));
+                productSaleHelper.setQuantity(resultSet.getDouble("QUANTITY"));
+                productSaleHelper.setLinePrice(resultSet.getDouble("LINE_EXPENSE"));
+                return productSaleHelper;
+            }
+        });
+        return productSaleHelperList;
     }
 }
