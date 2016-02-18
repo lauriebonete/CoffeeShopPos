@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 <div class="row">
@@ -76,12 +77,76 @@
                 </aside>
                 <section class="main-section main-body">
                     <div class="row">
-                        <div class="column small-12">
-                            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
-                                <li><canvas class="chart-line-area"/></li>
-                                <li><canvas class="chart-pie-area"/></li>
-                                <li><canvas class="chart-bar-area"/></li>
-                            </ul>
+                        <div id="dashboardContainer">
+                            <div class="leftContainer">
+                                <div>
+                                    <h4>Today</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5 class="left">Sales:</h5>
+                                        <h2 id="salesToday" class="right emphasis"></h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5 class="left">Transactions:</h5>
+                                        <h2 id="salesCount" class="right emphasis"></h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5 class="left">Trending Item:</h5>
+                                        <h2 class="right emphasis"></h2>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5 class="left">Pending Purchase:</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rightContainer">
+                                <div class="topContainer">
+                                    <div>
+                                        <div class="chartTitle">
+                                            <h4>Sales</h4>
+                                        </div>
+                                        <div class="snap-button-container">
+                                            <a class="button snap-week">Week</a>
+                                            <a class="button snap-month">Month</a>
+                                        </div>
+                                    </div>
+                                    <div id="chartLineContainer">
+                                        <canvas id="chart-line-area"></canvas>
+                                    </div>
+                                </div>
+                                <div clas="bottomContainer">
+                                    <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
+                                        <li>
+                                            <div class="bottomContainerContent">
+                                                <h4>Inventory</h4>
+                                                <div>
+                                                    <canvas class="chart-bar-area"/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="bottomContainerContent">
+                                                <h4>Trending Items</h4>
+                                                <div class="snap-button-container">
+                                                    <a class="button snap-week">Week</a>
+                                                    <a class="button snap-month">Month</a>
+                                                </div>
+                                                <div>
+                                                    <canvas class="chart-pie-area"/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -105,12 +170,32 @@
 
         $(document).ready(function(){
             $.ajax({
+                url:evey.getHome()+"/dashboard/sale-per-day",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var saleToday = parseFloat(data.sale);
+                    $("#salesToday").text(saleToday + " PHP");
+                }
+            });
+
+            $.ajax({
+                url:evey.getHome()+"/dashboard/sale-count-per-day",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var salesCount = parseFloat(data.salesCount);
+                    $("#salesCount").text(salesCount);
+                }
+            });
+
+            $.ajax({
                 url:evey.getHome()+"/dashboard/sale-per-month",
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
                     var lineChartData = {
-                        labels: data.months,
+                        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                         datasets: [
                             {
                                 label: "Monthly Sale",
@@ -125,9 +210,81 @@
                         ]
                     };
 
-                    $.each($(".chart-line-area"),function(i,line){
-                        var ctx = line.getContext("2d");
-                        var myNewChart = new Chart(ctx).Line(lineChartData);
+                    $.each($("#chart-line-area"),function(i,line){
+                        var ctx = document.getElementById("chart-line-area").getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(lineChartData,{
+                            responsive: true,
+                            pointDotRadius: 10,
+                            maintainAspectRatio: false
+                        });
+                    });
+                }
+            });
+        }).on("click", ".snap-week",function(){
+            $("#chart-line-area").remove();
+            $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
+            $.ajax({
+                url:evey.getHome()+"/dashboard/sale-per-week",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var lineChartData = {
+                        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                        datasets: [
+                            {
+                                label: "Weekly Sale",
+                                fillColor: "#99cccc",
+                                strokeColor: "#329999",
+                                pointColor: "#004c4c",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "#99cccc",
+                                data: data.sale
+                            },
+                        ]
+                    };
+
+                    $.each($("#chart-line-area"),function(i,line){
+                        var ctx = document.getElementById("chart-line-area").getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(lineChartData,{
+                            responsive: true,
+                            pointDotRadius: 10,
+                            maintainAspectRatio: false
+                        });
+                    });
+                }
+            });
+        }).on("click", ".snap-month",function(){
+            $("#chart-line-area").remove();
+            $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
+            $.ajax({
+                url:evey.getHome()+"/dashboard/sale-per-month",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var lineChartData = {
+                        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        datasets: [
+                            {
+                                label: "Monthly Sale",
+                                fillColor: "#99cccc",
+                                strokeColor: "#329999",
+                                pointColor: "#004c4c",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "#99cccc",
+                                data: data.sale
+                            },
+                        ]
+                    };
+
+                    $.each($("#chart-line-area"),function(i,line){
+                        var ctx = document.getElementById("chart-line-area").getContext("2d");
+                        var myNewChart = new Chart(ctx).Line(lineChartData,{
+                            responsive: true,
+                            pointDotRadius: 10,
+                            maintainAspectRatio: false
+                        });
                     });
                 }
             });

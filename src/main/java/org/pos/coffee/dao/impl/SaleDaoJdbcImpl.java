@@ -31,6 +31,9 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     private static final StringBuilder GET_SURDISTAX_SALE = new StringBuilder();
     private static final StringBuilder GET_PRODUCT_SALE = new StringBuilder();
     private static final StringBuilder GET_SALE_MONTH = new StringBuilder();
+    private static final StringBuilder GET_SALE_WEEK = new StringBuilder();
+    private static final StringBuilder GET_SALE_DAY = new StringBuilder();
+    private static final StringBuilder GET_SALE_COUNT_DAY = new StringBuilder();
     private static final StringBuilder GET_CATEGORY_PERCENTAGE = new StringBuilder();
 
     static {
@@ -85,6 +88,24 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ");
+
+        GET_SALE_WEEK.append("SELECT SUM(TOTAL_SALE) ")
+                .append("FROM SALE ")
+                .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
+
+        GET_SALE_DAY.append("SELECT SUM(TOTAL_SALE) ")
+                .append("FROM SALE ")
+                .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
+
+        GET_SALE_COUNT_DAY.append("SELECT COUNT(TOTAL_SALE) ")
+                .append("FROM SALE ")
+                .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
 
         GET_CATEGORY_PERCENTAGE.append("SELECT IFNULL(SALE.TOTAL_QUANTITY,0) AS TOTAL_QUANTITY, R.VALUE_ AS CATEGORY_NAME ")
                 .append("FROM REFERENCE_LOOKUP R ")
@@ -182,6 +203,36 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
         List<Double> salePerMonth = template.queryForList(GET_SALE_MONTH.toString(),params,Double.class);
         return salePerMonth;
+    }
+
+    @Override
+    public List<Double> getSalePerWeek(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Double> salePerWeek = template.queryForList(GET_SALE_WEEK.toString(),params,Double.class);
+        return salePerWeek;
+    }
+
+    @Override
+    public List<Double> getSalePerDay(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Double> salePerDay = template.queryForList(GET_SALE_WEEK.toString(),params,Double.class);
+        return salePerDay;
+    }
+
+    @Override
+    public List<Double> getSaleCountPerDay(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        List<Double> saleCountPerDay = template.queryForList(GET_SALE_COUNT_DAY.toString(),params,Double.class);
+        return saleCountPerDay;
     }
 
     @Override

@@ -27,25 +27,76 @@ public class DashboardController {
     @Autowired
     private StockService stockService;
 
+    @RequestMapping(value = "/sale-per-week", method = RequestMethod.GET, produces = "application/json")
+      public @ResponseBody Map<String,Object> getSalePerWeek() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Calendar cal = Calendar.getInstance();
+
+        Calendar first = (Calendar) cal.clone();
+        first.add(Calendar.DAY_OF_WEEK, first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+
+        Calendar last = (Calendar) first.clone();
+        last.add(Calendar.DAY_OF_YEAR, 6);
+
+        Date startDate = dateFormat.parse(dateFormat.format(first.getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(last.getTime()));
+
+        List<Double> saleList = saleService.getSalePerWeek(startDate, endDate);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("sale",saleList);
+
+        return returnMap;
+
+    }
+
+    @RequestMapping(value = "/sale-per-day", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getSalePerDay() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+
+        List<Double> saleList = saleService.getSalePerDay(startDate, endDate);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("sale",saleList);
+
+        return returnMap;
+
+    }
+
+    @RequestMapping(value = "/sale-count-per-day", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getSaleCountPerDay() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+
+        List<Double> saleList = saleService.getSaleCountPerDay(startDate, endDate);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("salesCount",saleList);
+
+        return returnMap;
+
+    }
+
     @RequestMapping(value = "/sale-per-month", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Map<String,Object> getSalePerMonth() throws Exception{
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String dateTodayString = dateFormat.format(new Date()).toString();
 
-        LinkedList<String> months = new LinkedList<>();
-        for(int i=0; i<Calendar.MONTH;i++){
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.MONTH,-i);
-            months.addFirst(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH ));
-        }
-
         Date startDate = dateFormat.parse("01/01/"+dateTodayString.substring(6));
         Date endDate = dateFormat.parse("12/31/"+dateTodayString.substring(6));
 
-        List<Double> saleList = saleService.getSalePerMonth(startDate,endDate);
+        List<Double> saleList = saleService.getSalePerMonth(startDate, endDate);
         Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("months",months);
         returnMap.put("sale",saleList);
 
         return returnMap;

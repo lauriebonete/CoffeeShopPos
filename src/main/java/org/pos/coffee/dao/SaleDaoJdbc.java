@@ -16,5 +16,8 @@ public interface SaleDaoJdbc {
     public List<Map<String,Double>> getDisSurTax(Date startDate, Date endDate);
     public List<ProductSaleHelper> getProductSalePerDate(Date startDate, Date endDate);
     public List<Double> getSalePerMonth(Date startDate, Date endDate);
+    public List<Double> getSalePerWeek(Date startDate, Date endDate);
+    public List<Double> getSalePerDay(Date startDate, Date endDate);
+    public List<Double> getSaleCountPerDay(Date startDate, Date endDate);
     public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate);
 }
