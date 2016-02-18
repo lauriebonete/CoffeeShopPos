@@ -24,6 +24,8 @@
     <script src="angular/productController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/zurb/foundation-apps-1.2.0.min.css">
+    <script src="http://cdn.jsdelivr.net/zurb/foundation-apps-1.2.0.min.js"></script>
 </head>
 <body>
 <div class="row">
@@ -147,7 +149,7 @@
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
-                                    <table class="max-width" id="crud-table" data-url="/product/findAll">
+                                    <table class="max-width" id="crud-table" data-url="/product/findAllByPass">
                                         <thead>
                                         <tr>
                                             <th>Code</th>
@@ -281,12 +283,12 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Product Group
-                                            <selectize data-list="false" config='productGroupConfig' options='productGroupOption' ng-model="recordFound.productGroupId"></selectize>
+                                            <selectize data-list="false" data-attr="id" name="productGroup" config='productGroupConfig' options='productGroupOption' ng-model="recordFound.productGroupId"></selectize>
                                         </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Promo Group
-                                            <selectize config='selectizeConfig' options='promoGroupOption' ng-model="recordFound.displayPromoGroupList"></selectize>
+                                            <selectize data-attr="id" config='selectizeConfig' name="promoGroupList" options='promoGroupOption' ng-model="recordFound.displayPromoGroupList"></selectize>
                                         </label>
                                     </div>
                                     <div class="switch round">
@@ -376,6 +378,7 @@
                     </div>
                 </section>
                 <a class="exit-off-canvas"></a>
+                <zf-notification-set id="main-notifications" position="top-left"></zf-notification-set>
             </div>
         </div>
     </div>

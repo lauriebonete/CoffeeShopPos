@@ -3,7 +3,7 @@ package org.pos.coffee.controller;
 import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Purchase;
 import org.pos.coffee.bean.PurchaseOrder;
-import org.pos.coffee.bean.User;
+import org.evey.bean.User;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
 import org.pos.coffee.service.UserService;

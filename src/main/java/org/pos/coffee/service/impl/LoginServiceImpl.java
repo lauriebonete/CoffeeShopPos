@@ -1,14 +1,11 @@
 package org.pos.coffee.service.impl;
 
 import org.evey.security.SessionUser;
-import org.pos.coffee.bean.Branch;
-import org.pos.coffee.bean.User;
-import org.pos.coffee.bean.UserRole;
-import org.pos.coffee.service.BranchService;
+import org.evey.bean.User;
+import org.evey.bean.UserRole;
 import org.pos.coffee.service.LoginService;
 import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -74,10 +71,10 @@ public class LoginServiceImpl implements LoginService {
     private List<GrantedAuthority> getGrantedAuthorities(User user){
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for(UserRole userRole : user.getUserRole()){
+       /* for(UserRole userRole : user.getUserRole()){
             authorities.add(new SimpleGrantedAuthority("ROLE_"+userRole.getRole()));
-        }
-        System.out.print("authorities :"+authorities);
+        }*/
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return authorities;
     }
 

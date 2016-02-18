@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.evey.security.SessionUser;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.evey.utility.SecurityUtil;
-import org.pos.coffee.bean.User;
+import org.evey.bean.User;
 import org.pos.coffee.dao.UserDao;
 import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.evey.annotation.JoinList;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
+import org.evey.bean.User;
 
 import javax.persistence.*;
 import java.util.Date;

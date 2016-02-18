@@ -1,7 +1,7 @@
 package org.pos.coffee.controller;
 
 import org.pos.coffee.bean.Branch;
-import org.pos.coffee.bean.User;
+import org.evey.bean.User;
 import org.pos.coffee.service.BranchService;
 import org.pos.coffee.service.LoginService;
 import org.pos.coffee.service.UserService;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

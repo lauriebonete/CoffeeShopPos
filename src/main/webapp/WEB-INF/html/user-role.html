@@ -1,0 +1,236 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Foundation | Welcome</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/responsive-tables.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="/user/profile" class="canvas navigation"><i class="navigation-icon fa fa-user"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="/user/logout" class="canvas navigation"><i class="navigation-icon fa fa-sign-out"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li><a data-url="/dashboard" id="dashboard-off" class="canvas navigation"><i class="navigation-icon fa fa-line-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li><a data-url="/order" id="order-off" class="canvas navigation"><i class="navigation-icon fa fa-shopping-cart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Orders</a></li>
+                        <li><a data-url="/inventory" id="inventory-off" class="canvas navigation"><i class="navigation-icon fa fa-bar-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Inventory</a></li>
+                        <li><a data-url="/purchase" id="purchase-off" class="canvas navigation"><i class="navigation-icon fa fa-money"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Purchase</a></li>
+                        <li><a data-url="/report" id="report-off" class="canvas navigation"><i class="navigation-icon fa fa-pie-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li><a data-url="/user" id="user-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Page</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li><a data-url="/item" id="item-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Item</a></li>
+                                        <li><a data-url="/product" id="product-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product</a></li>
+                                        <li><a data-url="/productGroup" id="product-group-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product Group</a></li>
+                                        <li><a data-url="/reference" id="reference-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Reference</a></li>
+                                        <li><a data-url="/branch" id="branch-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Branch</a></li>
+                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li><a data-url="/price" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price List</a></li>
+                                                <li><a data-url="/priceSet" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price Set</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                    <div class="row main-section-row" id="crud-body">
+                        <div class="row main-section-row">
+                            <div class="small-12 text-align-center">
+                                <h4>User Role</h4>
+                            </div>
+                        </div>
+                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>User Role
+                                            <input id="role" type="text" placeholder="User Role" name="role"/>
+                                        </label>
+                                        <div class="rows">
+                                            <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
+                                            <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="responsive max-width" id="crud-table" data-url="/userRole/findAll">
+                                        <thead>
+                                        <tr>
+                                            <th>User Role</th>
+                                            <th>Description</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="record in records">
+                                            <td>{{record.roleName}}</td>
+                                            <td>{{record.description}}</td>
+                                            <td>
+                                                <i class="fa fa-user-secret has-tip tip-top manage-access" data-tooltip aria-haspopup="true" title="Manage Access" data-id="{{record.id}}"></i>
+                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                        <h3 id="crud-title">Add New User Role.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="crud-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Role Name <small>required</small>
+                                            <input type="text" placeholder="Role Name" name="roleName" required></label>
+                                        <small class="error">Role Name is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="description"></label>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="btn-label">Add</span></button>
+                                        <a href="#" class="button secondary expand" id="form-clr-btn">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                        <h3 id="update-title">Update Reference Look Up.</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <form data-abide="ajax" id="update-form">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Role Name <small>required</small>
+                                            <input type="text" placeholder="Role Name" name="key" value="{{recordFound.roleName}}" required></label>
+                                        <small class="error">Role Name is required.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Description
+                                            <input type="text" placeholder="Description" name="description" value="{{recordFound.description}}" ></label>
+                                    </div>
+                                    <div class="rows">
+                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="btn-label">Update</span></button>
+                                        <a href="#" class="button secondary expand" id="update-clr-btn">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="delete-modal" class="reveal-modal crud-modal center-modal" data-reveal aria-labelledby="delete-title" aria-hidden="true" role="dialog">
+                        <h3 id="delete-title">Are you sure you want to delete?</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <button class="button alert remove-record"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="delete-btn">Remove</span></button>
+                        <button class="button secondary float-right">Cancel</button>
+                    </div>
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(document).ready(function(){
+        }).on("click",".manage-access", function(){
+            console.log($(this).attr("data-id"));
+            $.ajax({
+                url: evey.getHome()+"/userRole/get-all-authorities",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+</footer>
+</html>

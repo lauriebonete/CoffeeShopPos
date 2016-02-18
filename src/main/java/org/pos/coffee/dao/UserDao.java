@@ -1,7 +1,7 @@
 package org.pos.coffee.dao;
 
 import org.evey.dao.BaseEntityDao;
-import org.pos.coffee.bean.User;
+import org.evey.bean.User;
 
 /**
  * Created by kenji on 12/4/2015.
