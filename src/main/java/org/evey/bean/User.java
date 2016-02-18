@@ -1,6 +1,6 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
-import org.evey.bean.BaseEntity;
+import org.pos.coffee.bean.Person;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -43,12 +43,6 @@ public class User extends BaseEntity{
 			joinColumns = { @JoinColumn(name = "USER_ID") },
 			inverseJoinColumns = { @JoinColumn(name = "USER_ROLE_ID") })
 	private Set<UserRole> userRole;
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "USER_AUTHORITY",
-			joinColumns = { @JoinColumn(name = "USER_ID") },
-			inverseJoinColumns = { @JoinColumn(name = "USER_AUTHORITY_ID") })
-	private Set<Authority> authorities;
 
 	//not yet implemented
 //	private Role role;
@@ -99,14 +93,6 @@ public class User extends BaseEntity{
 
 	public void setUserRole(Set<UserRole> userRole) {
 		this.userRole = userRole;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
 	}
 
 	public Person getPerson() {
