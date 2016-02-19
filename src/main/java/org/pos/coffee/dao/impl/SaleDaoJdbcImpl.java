@@ -6,6 +6,7 @@ import org.pos.coffee.dao.SaleDaoJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -105,13 +106,13 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
 
 
 
-        GET_SALE_MONTH.append("SELECT SUM(TOTAL_SALE) ")
+        GET_SALE_MONTH.append("SELECT EXTRACT(MONTH FROM SALE_DATE) AS MONTH, SUM(TOTAL_SALE) AS TOTAL_SALE ")
                 .append("FROM SALE ")
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ");
 
-        GET_SALE_WEEK.append("SELECT SUM(TOTAL_SALE) ")
+        GET_SALE_WEEK.append("SELECT EXTRACT(DAY FROM SALE_DATE) AS DAY, SUM(TOTAL_SALE) AS TOTAL_SALE ")
                 .append("FROM SALE ")
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
@@ -218,23 +219,38 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     }
 
     @Override
-    public List<Double> getSalePerMonth(Date startDate, Date endDate) {
+    public Map getSalePerMonth(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<Double> salePerMonth = template.queryForList(GET_SALE_MONTH.toString(),params,Double.class);
-        return salePerMonth;
+        SqlRowSet salePerMonth = template.queryForRowSet(GET_SALE_MONTH.toString(), params);
+
+        Map salesPerMonthMap = new HashMap();
+
+        while (salePerMonth.next()) {
+            System.out.println(salePerMonth.getString("MONTH") + " - " + salePerMonth.getString("TOTAL_SALE"));
+            salesPerMonthMap.put(salePerMonth.getString("MONTH"), salePerMonth.getString("TOTAL_SALE"));
+        }
+
+        return salesPerMonthMap;
     }
 
     @Override
-    public List<Double> getSalePerWeek(Date startDate, Date endDate) {
+    public Map getSalePerWeek(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<Double> salePerWeek = template.queryForList(GET_SALE_WEEK.toString(),params,Double.class);
-        return salePerWeek;
+        SqlRowSet salePerWeek = template.queryForRowSet(GET_SALE_WEEK.toString(), params);
+
+        Map salesPerWeekMap = new HashMap();
+
+        while (salePerWeek.next()) {
+            salesPerWeekMap.put(salePerWeek.getString("DAY"), salePerWeek.getString("TOTAL_SALE"));
+        }
+
+        return salesPerWeekMap;
     }
 
     @Override
@@ -243,7 +259,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<Double> salePerDay = template.queryForList(GET_SALE_WEEK.toString(),params,Double.class);
+        List<Double> salePerDay = template.queryForList(GET_SALE_DAY.toString(),params,Double.class);
         return salePerDay;
     }
 

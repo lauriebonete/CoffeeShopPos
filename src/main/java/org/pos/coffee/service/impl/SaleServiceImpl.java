@@ -119,12 +119,12 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     }
 
     @Override
-      public List<Double> getSalePerMonth(Date startDate, Date endDate) {
+      public Map getSalePerMonth(Date startDate, Date endDate) {
         return saleDaoJdbc.getSalePerMonth(startDate,endDate);
     }
 
     @Override
-    public List<Double> getSalePerWeek(Date startDate, Date endDate) {
+    public Map getSalePerWeek(Date startDate, Date endDate) {
         return saleDaoJdbc.getSalePerWeek(startDate, endDate);
     }
 

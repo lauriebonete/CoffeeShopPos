@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -44,9 +45,26 @@ public class DashboardController {
         Date startDate = dateFormat.parse(dateFormat.format(first.getTime()));
         Date endDate = dateFormat.parse(dateFormat.format(last.getTime()));
 
-        List<Double> saleList = saleService.getSalePerWeek(startDate, endDate);
+        Map salesPerWeekMap = saleService.getSalePerWeek(startDate, endDate);
+        List<String> week = new ArrayList<>();
+        List<String> sales = new ArrayList<>();
+
+        Iterator entries = salesPerWeekMap.entrySet().iterator();
+
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            Date daySale = dateFormat.parse(dateTodayString.substring(0,2) + "/" + (String) thisEntry.getKey() + "/" + dateTodayString.substring(6));
+            System.out.println(daySale);
+            week.add(new SimpleDateFormat("EE").format(daySale));
+            sales.add(thisEntry.getValue().toString());
+        }
+
+        Collections.reverse(week);
+        Collections.reverse(sales);
+
         Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("sale",saleList);
+        returnMap.put("week",week);
+        returnMap.put("sales",sales);
 
         return returnMap;
 
@@ -95,9 +113,23 @@ public class DashboardController {
         Date startDate = dateFormat.parse("01/01/"+dateTodayString.substring(6));
         Date endDate = dateFormat.parse("12/31/"+dateTodayString.substring(6));
 
-        List<Double> saleList = saleService.getSalePerMonth(startDate, endDate);
+        Map salesPerMonthMap = saleService.getSalePerMonth(startDate, endDate);
+        List<String> month = new ArrayList<>();
+        List<String> sales = new ArrayList<>();
+
+        Iterator entries = salesPerMonthMap.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            month.add(new DateFormatSymbols().getMonths()[Integer.parseInt((String) thisEntry.getKey())-1]);
+            sales.add(thisEntry.getValue().toString());
+        }
+
+        Collections.reverse(month);
+        Collections.reverse(sales);
+
         Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("sale",saleList);
+        returnMap.put("month",month);
+        returnMap.put("sales",sales);
 
         return returnMap;
 
@@ -118,25 +150,55 @@ public class DashboardController {
         return returnMap;
     }
 
-    @RequestMapping(value = "/inventory-snapshot", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Map<String,Object> getInventorySnapShot(){
+    @RequestMapping(value = "/inventory-snapshot-critical", method = RequestMethod.GET, produces = "application/json")
+     public @ResponseBody Map<String,Object> getInventorySnapShotCritical(){
         StockHelper stockHelper = new StockHelper();
         stockHelper.setStatus("critical");
         List<StockHelper> stockHelperList = new ArrayList<>();
 
-
         stockHelperList.addAll(stockService.findStockEntity(stockHelper));
-        if(stockHelperList.size()<5){
-            stockHelper.setStatus("low");
-            stockHelperList.addAll(stockService.findStockEntity(stockHelper));
 
-            /*if(stockHelperList.size()<5){
-                stockHelper.setStatus("good");
-                stockHelperList.addAll(stockService.findStockEntity(stockHelper));
-            }*/
+        if(stockHelperList.size()<5){
+            stockHelper.setStatus("critical");
+            stockHelperList.addAll(stockService.findStockEntity(stockHelper));
         }
 
+        List<Double> returnList = new ArrayList<>();
+        int max = 0;
+        if(stockHelperList.size()>5){
+            max = 5;
+        } else {
+            max = stockHelperList.size();
+        }
+        for(int i=0;i<max;i++){
+            returnList.add(stockHelperList.get(i).getQuantity());
+        }
 
+        List<String> label = new ArrayList<>();
+        for(int i=0; i<max;i++){
+            StockHelper stockHelperFound = stockHelperList.get(i);
+            label.add(stockHelperFound.getItem().getItemName());
+        }
+
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("label",label);
+        returnMap.put("results",returnList);
+
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/inventory-snapshot-low", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getInventorySnapShotLow(){
+        StockHelper stockHelper = new StockHelper();
+        stockHelper.setStatus("low");
+        List<StockHelper> stockHelperList = new ArrayList<>();
+
+        stockHelperList.addAll(stockService.findStockEntity(stockHelper));
+
+        if(stockHelperList.size()<5){
+            stockHelper.setStatus("critical");
+            stockHelperList.addAll(stockService.findStockEntity(stockHelper));
+        }
 
         List<Double> returnList = new ArrayList<>();
         int max = 0;

@@ -126,9 +126,15 @@
                                     <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
                                         <li>
                                             <div class="bottomContainerContent">
-                                                <h4>Inventory <i class="fa fa-bar-chart"></i></h4>
-                                                <div>
-                                                    <canvas class="chart-bar-area"/>
+                                                <div class="chartTitle">
+                                                    <h4>Inventory <i class="fa fa-bar-chart"></i></h4>
+                                                </div>
+                                                <div class="snap-button-container">
+                                                    <a class="button snap-low">Low</a>
+                                                    <a class="button snap-critical">Critical</a>
+                                                </div>
+                                                <div id="chartBarContainer">
+                                                    <canvas id="chart-bar-area"/>
                                                 </div>
                                             </div>
                                         </li>
@@ -197,7 +203,7 @@
                 dataType: "JSON",
                 success:function(data){
                     var lineChartData = {
-                        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        labels: data.month,
                         datasets: [
                             {
                                 label: "Monthly Sale",
@@ -207,7 +213,7 @@
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
                                 pointHighlightStroke: "#99cccc",
-                                data: data.sale
+                                data: data.sales
                             },
                         ]
                     };
@@ -217,11 +223,41 @@
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
                             pointDotRadius: 10,
-                            maintainAspectRatio: false
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
                         });
                     });
                 }
             });
+
+            $.ajax({
+                url: evey.getHome()+"/dashboard/inventory-snapshot-critical",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.label,
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "#e60000",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.results
+                            }]
+                    };
+
+                    $.each($("#chart-bar-area"),function(i,bar){
+                        var ctx = document.getElementById("chart-bar-area").getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+
         }).on("click", ".snap-week",function(){
             $("#chart-line-area").remove();
             $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
@@ -231,7 +267,7 @@
                 dataType: "JSON",
                 success:function(data){
                     var lineChartData = {
-                        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                        labels: data.week,
                         datasets: [
                             {
                                 label: "Weekly Sale",
@@ -241,7 +277,7 @@
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
                                 pointHighlightStroke: "#99cccc",
-                                data: data.sale
+                                data: data.sales
                             },
                         ]
                     };
@@ -251,7 +287,8 @@
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
                             pointDotRadius: 10,
-                            maintainAspectRatio: false
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
                         });
                     });
                 }
@@ -265,7 +302,7 @@
                 dataType: "JSON",
                 success:function(data){
                     var lineChartData = {
-                        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        labels: data.month,
                         datasets: [
                             {
                                 label: "Monthly Sale",
@@ -275,7 +312,7 @@
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
                                 pointHighlightStroke: "#99cccc",
-                                data: data.sale
+                                data: data.sales
                             },
                         ]
                     };
@@ -285,36 +322,73 @@
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
                             pointDotRadius: 10,
-                            maintainAspectRatio: false
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
                         });
                     });
                 }
             });
-        });
+        }).on("click", ".snap-low",function(){
+            $("#chart-bar-area").remove();
+            $("#chartBarContainer").append("<canvas id='chart-bar-area'></canvas>");
+            $.ajax({
+                url: evey.getHome()+"/dashboard/inventory-snapshot-low",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.label,
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "#ff8c1a",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.results
+                            }]
+                    };
 
-        $.ajax({
-            url: evey.getHome()+"/dashboard/inventory-snapshot",
-            type: "GET",
-            dataType: "JSON",
-            success:function(data){
-                var barData = {
-                    labels: data.label,
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            fillColor: "#008080",
-                            strokeColor: "#006666",
-                            highlightFill: "#008080",
-                            highlightStroke: "#006666",
-                            data: data.results
-                        }]
-                };
+                    $.each($("#chart-bar-area"),function(i,bar){
+                        var ctx = bar.getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+        }).on("click", ".snap-critical",function(){
+            $("#chart-bar-area").remove();
+            $("#chartBarContainer").append("<canvas id='chart-bar-area'></canvas>");
 
-                $.each($(".chart-bar-area"),function(i,bar){
-                    var ctx = bar.getContext("2d");
-                    var myNewChart = new Chart(ctx).Bar(barData);
-                });
-            }
+            $.ajax({
+                url: evey.getHome()+"/dashboard/inventory-snapshot-critical",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.label,
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "#e60000",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.results
+                            }]
+                    };
+
+                    $.each($("#chart-bar-area"),function(i,bar){
+                        var ctx = bar.getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
         });
 
         $.ajax({
