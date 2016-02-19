@@ -35,6 +35,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     private static final StringBuilder GET_SALE_MONTH = new StringBuilder();
     private static final StringBuilder GET_SALE_WEEK = new StringBuilder();
     private static final StringBuilder GET_SALE_DAY = new StringBuilder();
+    private static final StringBuilder GET_PRODUCT_SALE_SUMMARY_DATE = new StringBuilder();
     private static final StringBuilder GET_SALE_COUNT_DAY = new StringBuilder();
     private static final StringBuilder GET_CATEGORY_PERCENTAGE = new StringBuilder();
 
@@ -123,6 +124,12 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
+
+        GET_PRODUCT_SALE_SUMMARY_DATE.append("select b.PRODUCT_NAME, SUM(GROSS_PRICE) AS TOTAL_SALE from order_line as a left join product as b ")
+                .append("on a.PRODUCT_ID = b.ID ")
+                .append("WHERE STR_TO_DATE(a.CREATEDATE, '%Y-%m-%d') >= STR_TO_DATE('2016-02-01', '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(a.CREATEDATE, '%Y-%m-%d')   <= STR_TO_DATE('2016-02-30', '%Y-%m-%d') ")
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ");
 
         GET_SALE_COUNT_DAY.append("SELECT COUNT(TOTAL_SALE) ")
                 .append("FROM SALE ")
@@ -219,6 +226,23 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     }
 
     @Override
+    public Map getProductSaleSummaryPerDate(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        SqlRowSet salePerMonth = template.queryForRowSet(GET_PRODUCT_SALE_SUMMARY_DATE.toString(), params);
+
+        Map salesPerMonthMap = new HashMap();
+
+        while (salePerMonth.next()) {
+            salesPerMonthMap.put(salePerMonth.getString("PRODUCT_NAME"), salePerMonth.getString("TOTAL_SALE"));
+        }
+
+        return salesPerMonthMap;
+    }
+
+    @Override
     public Map getSalePerMonth(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
@@ -229,7 +253,6 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         Map salesPerMonthMap = new HashMap();
 
         while (salePerMonth.next()) {
-            System.out.println(salePerMonth.getString("MONTH") + " - " + salePerMonth.getString("TOTAL_SALE"));
             salesPerMonthMap.put(salePerMonth.getString("MONTH"), salePerMonth.getString("TOTAL_SALE"));
         }
 

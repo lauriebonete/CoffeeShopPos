@@ -95,9 +95,10 @@
     margin: 5px;
 }
 
-.emphasis{
+.emphasis, #today{
     font-family: Segoe, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     color: #007A08;
-    font-size: 60px;
     font-weight: bold;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }

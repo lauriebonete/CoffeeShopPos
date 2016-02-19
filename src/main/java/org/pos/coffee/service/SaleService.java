@@ -23,6 +23,7 @@ public interface SaleService extends BaseCrudService<Sale> {
     public List<Map<String,Double>> getDisSurTax(Date startDate, Date endDate);
     public List<ProductSaleHelper> getProductSalePerDate(Date startDate, Date endDate);
     public List<ProductSaleHelper> getProductExpensePerDate(Date startDate, Date endDate);
+    public Map getProductSaleSummaryPerDate(Date startDate, Date endDate);
     public Map getSalePerMonth(Date startDate, Date endDate);
     public Map getSalePerWeek(Date startDate, Date endDate);
     public List<Double> getSalePerDay(Date startDate, Date endDate);

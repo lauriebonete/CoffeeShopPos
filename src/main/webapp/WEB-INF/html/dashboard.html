@@ -80,30 +80,33 @@
                         <div id="dashboardContainer">
                             <div class="leftContainer">
                                 <div>
-                                    <h4 class="center">Today <i class="fa fa-sun-o"></i></h4>
+                                    <h4 id="today" class="center">Today</i></h4>
+                                    <h4 class="center"><i class="fa fa-sun-o  fa-4x"></i></h4>
                                 </div>
                                 <div class="row">
                                     <div class="small-12 columns">
-                                        <h5 class="left"><i class="fa fa-money"></i> Sales:</h5>
-                                        <h2 id="salesToday" class="right emphasis"></h2>
+                                        <h5 class="left">Sales</h5>
+                                        <h5 id="salesToday" class="right emphasis"></h5>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="small-12 columns">
-                                        <h5 class="left"><i class="fa fa-shopping-cart"></i> Transactions:</h5>
-                                        <h2 id="salesCount" class="right emphasis"></h2>
+                                        <h5 class="left">Transactions</h5>
+                                        <h5 id="salesCount" class="right emphasis"></h5>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="small-12 columns">
-                                        <h5 class="left"><i class="fa fa-thumbs-up"></i> Trending Item:</h5>
-                                        <h2 class="right emphasis"></h2>
+                                        <h5>Sales per Category <i class="fa fa-pie-chart=today"></i></h5>
+                                        <div id="chartPieContainerToday">
+                                            <canvas id="chart-pie-area-today"/>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="small-12 columns">
-                                        <h5 class="left"><i class="fa fa-tasks"></i> Pending Purchase:</h5>
+                                        <h5 class="left">Pending Purchases</h5>
                                     </div>
                                 </div>
                             </div>
@@ -141,14 +144,14 @@
                                         <li>
                                             <div class="bottomContainerContent">
                                                 <div class="chartTitle">
-                                                    <h4>Trending Items <i class="fa fa-thumbs-up"></i></h4>
+                                                    <h4>Sales per Category <i class="fa fa-pie-chart"></i></h4>
                                                 </div>
                                                 <div class="snap-button-container">
-                                                    <a class="button snap-week">Week</a>
-                                                    <a class="button snap-month">Month</a>
+                                                    <a class="button snap-category-week">Week</a>
+                                                    <a class="button snap-category-month">Month</a>
                                                 </div>
-                                                <div>
-                                                    <canvas class="chart-pie-area"/>
+                                                <div id="chartPieContainer">
+                                                    <canvas id="chart-pie-area"/>
                                                 </div>
                                             </div>
                                         </li>
@@ -177,6 +180,16 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
+            var d = new Date();
+            var month = d.getMonth()+1;
+            var day = d.getDate();
+            var today =
+                    ((''+month).length<2 ? '0' : '') + month + '-' +
+                    ((''+day).length<2 ? '0' : '') + day  + '-' +
+                    d.getFullYear();
+
+            $("#today").append(" (" + today +")").show();
+
             $.ajax({
                 url:evey.getHome()+"/dashboard/sale-per-day",
                 type: "GET",
@@ -222,7 +235,7 @@
                         var ctx = document.getElementById("chart-line-area").getContext("2d");
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
-                            pointDotRadius: 10,
+                            pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
                         });
@@ -258,6 +271,68 @@
                 }
             });
 
+            $.ajax({
+                url: evey.getHome()+"/dashboard/category-percentage-month",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+
+                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+
+                    var pieData = [];
+                    var categoryList = data.category;
+                    for(var i=0;i<categoryList.length;i++){
+                        var category = {
+                            value: categoryList[i].quantity,
+                            label: categoryList[i].categoryName,
+                            color: shades[i],
+                            highlight: tints[i]
+                        };
+
+                        pieData.push(category);
+                    }
+                    $.each($("#chart-pie-area"),function(i,pie){
+                        var ctx = pie.getContext("2d");
+                        var myNewChart = new Chart(ctx).Doughnut(pieData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+
+            $.ajax({
+                url: evey.getHome()+"/dashboard/category-percentage-today",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+
+                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+
+                    var pieData = [];
+                    var categoryList = data.category;
+                    for(var i=0;i<categoryList.length;i++){
+                        var category = {
+                            value: categoryList[i].quantity,
+                            label: categoryList[i].categoryName,
+                            color: shades[i],
+                            highlight: tints[i]
+                        };
+
+                        pieData.push(category);
+                    }
+                    $.each($("#chart-pie-area-today"),function(i,pie){
+                        var ctx = pie.getContext("2d");
+                        var myNewChart = new Chart(ctx).Doughnut(pieData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+
         }).on("click", ".snap-week",function(){
             $("#chart-line-area").remove();
             $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
@@ -286,7 +361,7 @@
                         var ctx = document.getElementById("chart-line-area").getContext("2d");
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
-                            pointDotRadius: 10,
+                            pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
                         });
@@ -321,7 +396,7 @@
                         var ctx = document.getElementById("chart-line-area").getContext("2d");
                         var myNewChart = new Chart(ctx).Line(lineChartData,{
                             responsive: true,
-                            pointDotRadius: 10,
+                            pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
                         });
@@ -361,7 +436,6 @@
         }).on("click", ".snap-critical",function(){
             $("#chart-bar-area").remove();
             $("#chartBarContainer").append("<canvas id='chart-bar-area'></canvas>");
-
             $.ajax({
                 url: evey.getHome()+"/dashboard/inventory-snapshot-critical",
                 type: "GET",
@@ -389,36 +463,73 @@
                     });
                 }
             });
-        });
+        }).on("click", ".snap-category-week",function(){
+            $("#chart-pie-area").remove();
+            $("#chartPieContainer").append("<canvas id='chart-pie-area'></canvas>");
+            $.ajax({
+                url: evey.getHome()+"/dashboard/category-percentage-week",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
 
-        $.ajax({
-            url: evey.getHome()+"/dashboard/category-percentage",
-            type: "GET",
-            dataType: "JSON",
-            success:function(data){
+                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
 
-                var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
-                var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+                    var pieData = [];
+                    var categoryList = data.category;
+                    for(var i=0;i<categoryList.length;i++){
+                        var category = {
+                            value: categoryList[i].quantity,
+                            label: categoryList[i].categoryName,
+                            color: shades[i],
+                            highlight: tints[i]
+                        };
 
-                var pieData = [];
-                var categoryList = data.category;
-                for(var i=0;i<categoryList.length;i++){
-                    var category = {
-                        value: categoryList[i].quantity,
-                        label: categoryList[i].categoryName,
-                        color: shades[i],
-                        highlight: tints[i]
-                    };
-
-                    pieData.push(category);
+                        pieData.push(category);
+                    }
+                    $.each($("#chart-pie-area"),function(i,pie){
+                        var ctx = pie.getContext("2d");
+                        var myNewChart = new Chart(ctx).Doughnut(pieData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
                 }
-                $.each($(".chart-pie-area"),function(i,pie){
-                    var ctx = pie.getContext("2d");
-                    var myNewChart = new Chart(ctx).Pie(pieData);
-                });
-            }
-        });
+            });
+        }).on("click", ".snap-category-month",function(){
+            $("#chart-pie-area").remove();
+            $("#chartPieContainer").append("<canvas id='chart-pie-area'></canvas>");
+            $.ajax({
+                url: evey.getHome()+"/dashboard/category-percentage-month",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
 
+                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+
+                    var pieData = [];
+                    var categoryList = data.category;
+                    for(var i=0;i<categoryList.length;i++){
+                        var category = {
+                            value: categoryList[i].quantity,
+                            label: categoryList[i].categoryName,
+                            color: shades[i],
+                            highlight: tints[i]
+                        };
+
+                        pieData.push(category);
+                    }
+                    $.each($("#chart-pie-area"),function(i,pie){
+                        var ctx = pie.getContext("2d");
+                        var myNewChart = new Chart(ctx).Doughnut(pieData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+        });
 
     </script>
 </footer>

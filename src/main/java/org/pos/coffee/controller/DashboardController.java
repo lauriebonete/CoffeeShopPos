@@ -2,6 +2,7 @@ package org.pos.coffee.controller;
 
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.service.SaleService;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -135,8 +137,31 @@ public class DashboardController {
 
     }
 
-    @RequestMapping(value = "/category-percentage", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Map<String,Object> getCategoryPercentage(){
+    @RequestMapping(value = "/category-percentage-week", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getCategoryPercentagePerWeek() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Calendar cal = Calendar.getInstance();
+
+        Calendar first = (Calendar) cal.clone();
+        first.add(Calendar.DAY_OF_WEEK, first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+
+        Calendar last = (Calendar) first.clone();
+        last.add(Calendar.DAY_OF_YEAR, 6);
+
+        Date startDate = dateFormat.parse(dateFormat.format(first.getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(last.getTime()));
+
+        List<CategoryHelper> categoryHelperList = saleService.getCategoryPercentage(startDate, endDate);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("category",categoryHelperList);
+
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/category-percentage-month", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getCategoryPercentagePerMonth(){
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
         Date lastDayOfMonth = cal.getTime();
@@ -144,6 +169,21 @@ public class DashboardController {
         Date firstDayOfMonth = cal.getTime();
 
         List<CategoryHelper> categoryHelperList = saleService.getCategoryPercentage(firstDayOfMonth,lastDayOfMonth);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("category",categoryHelperList);
+
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/category-percentage-today", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getCategoryPercentageToday() throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+
+        List<CategoryHelper> categoryHelperList = saleService.getCategoryPercentage(startDate,endDate);
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("category",categoryHelperList);
 
