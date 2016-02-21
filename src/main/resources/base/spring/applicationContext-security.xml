@@ -24,7 +24,91 @@
         <beans:property name="sourceMap">
             <beans:map>
                 <beans:entry key="ACCESS_DASHBOARD_TAB">
-                    <beans:value>01.00.00.00 Access Dashboard Tab</beans:value>
+                    <beans:value>01.00.00.00.00@Access Dashboard Tab</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_ADMIN_TAB">
+                    <beans:value>02.00.00.00.00@Access Administration Tab</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_ACCOUNT_SETTING">
+                    <beans:value>02.01.00.00.00@Access Account Setting Tab</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_USER_PAGE">
+                    <beans:value>02.01.01.00.00@Access User Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ADD_USER">
+                    <beans:value>02.01.01.01.00@Add New User</beans:value>
+                </beans:entry>
+                <beans:entry key="DELETE_USER">
+                    <beans:value>02.01.01.02.00@Delete Existing User</beans:value>
+                </beans:entry>
+                <beans:entry key="UPDATE_USER">
+                    <beans:value>02.01.01.03.00@Update Existing User</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_USER_ROLE">
+                    <beans:value>02.01.02.00.00@Access User Role</beans:value>
+                </beans:entry>
+                <beans:entry key="ADD_USER_ROLE">
+                    <beans:value>02.01.02.01.00@Add New User Role</beans:value>
+                </beans:entry>
+                <beans:entry key="DELETE_USER_ROLE">
+                    <beans:value>02.01.02.02.00@Delete Existing User Role</beans:value>
+                </beans:entry>
+                <beans:entry key="UPDATE_USER_ROLE">
+                    <beans:value>02.01.02.03.00@Update Existing User Role</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_SYSTEM_SETTING">
+                    <beans:value>02.02.00.00.00@Access System Setting Tab</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_ITEM_PAGE">
+                    <beans:value>02.02.01.00.00@Access Item Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ADD_ITEM">
+                    <beans:value>02.02.01.01.00@Add New Item</beans:value>
+                </beans:entry>
+                <beans:entry key="DELETE_ITEM">
+                    <beans:value>02.02.01.02.00@Delete Existing Item</beans:value>
+                </beans:entry>
+                <beans:entry key="UPDATE_ITEM">
+                    <beans:value>02.02.01.03.00@Update Existing Item</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_PRODUCT_PAGE">
+                    <beans:value>02.02.02.00.00@Access Product Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ADD_PRODUCT">
+                    <beans:value>02.02.02.01.00@Add New Product</beans:value>
+                </beans:entry>
+                <beans:entry key="DELETE_PRODUCT">
+                    <beans:value>02.02.02.02.00@Delete Existing Product</beans:value>
+                </beans:entry>
+                <beans:entry key="UPDATE_PRODUCT">
+                    <beans:value>02.02.02.03.00@Update Existing Product</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_PRODUCT_GROUP_PAGE">
+                    <beans:value>02.02.03.00.00@Access Product Group Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_REFERENCE_PAGE">
+                    <beans:value>02.02.04.00.00@Access Reference Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_BRANCH_PAGE">
+                    <beans:value>02.02.05.00.00@Access Branch Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_PRICING_PAGE">
+                    <beans:value>02.02.06.00.00@Access Pricing Tab</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_PRICE_LIST_PAGE">
+                    <beans:value>02.02.06.01.00@Access Price List Page</beans:value>
+                </beans:entry>
+                <beans:entry key="ADD_PRICE_LIST">
+                    <beans:value>02.02.06.01.01@Add New Price List</beans:value>
+                </beans:entry>
+                <beans:entry key="DELETE_PRICE_LIST">
+                    <beans:value>02.02.06.01.02@Delete Existing Price List</beans:value>
+                </beans:entry>
+                <beans:entry key="UPDATE_PRICE_LIST">
+                    <beans:value>02.02.06.01.03@Update Existing Price List</beans:value>
+                </beans:entry>
+                <beans:entry key="ACCESS_PRICE_SET_PAGE">
+                    <beans:value>02.02.06.02.00@Access Price Set Page</beans:value>
                 </beans:entry>
             </beans:map>
         </beans:property>

@@ -1,7 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
-    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Foundation | Welcome</title>
     <link rel="stylesheet" href="css/foundation.css"/>
@@ -9,6 +8,7 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/jquery.bonsai.css"/>
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -20,6 +20,8 @@
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
+    <script src="js/jquery.bonsai.js"></script>
+    <script src="js/jquery.qubit.js"></script>
 
 </head>
 <body>
@@ -88,6 +90,28 @@
                     </ul>
                 </aside>
                 <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                    <div class="row user-credentials hide">
+                        <div>
+                            <div class="row">
+                                <div class="columns small-12">
+
+                                </div>
+                            </div>
+                            <div class="row role-tree-holder">
+                                <div class="columns small-12">
+                                    <div class="row">
+                                        <ul id="role-tree" class="level-1">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row button-holder">
+                                <div class="columns small-12">
+                                    <button class="button success">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
@@ -227,7 +251,66 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    console.log(data);
+                    $.each(data, function(key, value){
+                        var listAndName = value.split("@");
+                        var list = listAndName[0].split(".");
+
+                        if($(".level-1").children("li#"+list[0]).length>0){
+
+                            var firstLevelNode = $(".level-1").children("li#"+list[0]);
+                            if($(firstLevelNode).children("ul").length<=0){
+                                $(firstLevelNode).append($("<ul>").addClass("level-2"));
+                            }
+
+                            var level2Node = $(firstLevelNode).find("ul.level-2").children("li#"+list[1]);
+                            if($(level2Node).length>0){
+                                if($(level2Node).find("ul").length<=0){
+                                    $(level2Node).append($("<ul>").addClass("level-3"));
+                                }
+
+                                var level3Node = $(level2Node).find("ul.level-3").children("li#"+list[2]);
+                                if($(level3Node).length>0){
+                                    if($(level3Node).find("ul").length<=0){
+                                        $(level3Node).append($("<ul>").addClass("level-4"));
+                                    }
+
+                                    var level4Node = $(level3Node).find("ul.level-4").children("li#"+list[3]);
+                                    if($(level4Node).length>0){
+                                        if($(level4Node).find("ul").length<=0){
+                                            $(level4Node).append($("<ul>").addClass("level-5"));
+                                        }
+
+                                        var level5Node = $(level4Node).find("ul.level-5").children("li#"+list[4]);
+                                        if($(level5Node).length>0) {
+                                            if ($(level5Node).find("ul").length <= 0) {
+                                                $(level5Node).append($("<ul>").addClass("level-6"));
+                                            }
+                                        } else {
+                                            $(level4Node).find("ul.level-5").append($("<li>").attr("id",list[4]).attr("data-id",key).append(listAndName[1]));
+                                        }
+                                    } else {
+                                        $(level3Node).find("ul.level-4").append($("<li>").attr("id",list[3]).attr("data-id",key).append(listAndName[1]));
+                                    }
+                                } else {
+                                    $(level2Node).find("ul.level-3").append($("<li>").attr("id",list[2]).attr("data-id",key).append(listAndName[1]));
+                                }
+                            } else {
+                                $(firstLevelNode).find("ul.level-2").append($("<li>").attr("id",list[1]).attr("data-id",key).append(listAndName[1]));
+                            }
+                        } else {
+                            $(".level-1").append($("<li>").attr("id",list[0]).attr("data-id",key).append(listAndName[1]));
+                        }
+
+                    });
+                    $(".user-credentials").toggleClass("hide");
+                    $(".main-section-row").toggleClass("hide");
+
+                    $('#role-tree').bonsai({
+                        expandAll: false,
+                        checkboxes: true, // depends on jquery.qubit plugin
+                        createInputs: 'checkbox', // takes values from data-name and data-value, and data-name is inherited
+                        checkboxes: false,
+                    });
                 }
             });
         });

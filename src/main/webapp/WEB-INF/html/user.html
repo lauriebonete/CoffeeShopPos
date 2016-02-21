@@ -276,6 +276,12 @@
                             <div class="tabs-content">
                                 <div class="content active" id="updatePanel1">
                                     <div class="small-12 columns">
+                                        <div class="row">
+                                            <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        </div>
+                                        <div class="row">
+                                            <input type="hidden" value="{{recordFound.person.id}}" name="person.id">
+                                        </div>
                                         <div class="row collapse prefix-radius">
                                             <label>First Name <small>required</small>
                                                 <input type="text" placeholder="First Name" value="{{recordFound.person.firstName}}" name="person.firstName" required></label>
