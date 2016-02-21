@@ -1,6 +1,7 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 import org.evey.bean.BaseEntity;
+import org.pos.coffee.bean.Person;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Set;
 @Table(name = "USER")
 public class User extends BaseEntity{
 
-	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="PERSON_ID")
 	private Person person;
 
