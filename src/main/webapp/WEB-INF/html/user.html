@@ -182,7 +182,6 @@
                             <ul class="tabs" data-tab>
                                 <li class="tab-title active"><a href="#createPanel1">Personal Information</a></li>
                                 <li class="tab-title"><a href="#createPanel2">Credentials</a></li>
-                                <li class="tab-title"><a href="#createPanel3">User Rights</a></li>
                             </ul>
                             <div class="tabs-content">
                                 <div class="content active" id="createPanel1">
@@ -194,7 +193,7 @@
                                         </div>
                                         <div class="row collapse prefix-radius">
                                             <label>Middle Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" name="person.middleName" required></label>
+                                                <input type="text" placeholder="Middle Name" name="person.middleName" required></label>
                                             <small class="error">Please provide Middle Name.</small>
                                         </div>
                                         <div class="row collapse prefix-radius">
@@ -225,39 +224,7 @@
                                             <input type="number" placeholder="Pin Digit" name="pinDigit" required></label>
                                         <small class="error">Please provide desired Pin Digit.</small>
                                     </div>
-                                </div>
-                                <div class="content" id="createPanel3">
                                     <div class="row">
-                                        <label>User Role
-                                            <select name="" id="userRole" ng-init="">
-                                                <option></option>
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="row">
-                                        <div class="small-4 columns">
-                                            <label>Access
-                                                <select name="" id="rights" ng-init="">
-                                                    <option></option>
-                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="small-4 columns">
-                                            <label>Module
-                                                <select name="" id="module" ng-init="">
-                                                    <option></option>
-                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="small-4 columns">
-                                            <a href="#" class="button"><i class="fa fa-minus"></i></a>
-                                            <a href="#" class="button"><i class="fa fa-plus"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="rows">
                                         <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
                                     </div>
                                 </div>
@@ -271,15 +238,12 @@
                             <ul class="tabs" data-tab>
                                 <li class="tab-title active"><a href="#updatePanel1">Personal Information</a></li>
                                 <li class="tab-title"><a href="#updatePanel2">Credentials</a></li>
-                                <li class="tab-title"><a href="#updatePanel3">User Rights</a></li>
                             </ul>
                             <div class="tabs-content">
                                 <div class="content active" id="updatePanel1">
                                     <div class="small-12 columns">
                                         <div class="row">
                                             <input type="hidden" value="{{recordFound.id}}" name="id">
-                                        </div>
-                                        <div class="row">
                                             <input type="hidden" value="{{recordFound.person.id}}" name="person.id">
                                         </div>
                                         <div class="row collapse prefix-radius">
@@ -289,7 +253,7 @@
                                         </div>
                                         <div class="row collapse prefix-radius">
                                             <label>Middle Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" value="{{recordFound.person.middleName}}" name="person.middleName" required></label>
+                                                <input type="text" placeholder="Middle Name" value="{{recordFound.person.middleName}}" name="person.middleName" required></label>
                                             <small class="error">Please provide Middle Name.</small>
                                         </div>
                                         <div class="row collapse prefix-radius">
@@ -319,38 +283,6 @@
                                         <label>Pin Digit <small>required</small>
                                             <input type="number" placeholder="Pin Digit" value="{{recordFound.pinDigit}}" name="pinDigit" required></label>
                                         <small class="error">Please provide desired Pin Digit.</small>
-                                    </div>
-                                </div>
-                                <div class="content" id="updatePanel3">
-                                    <div class="row">
-                                        <label>User Role
-                                            <select name="" id="userRole" ng-init="">
-                                                <option></option>
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="row">
-                                        <div class="small-4 columns">
-                                            <label>Access
-                                                <select name="" id="rights" ng-init="">
-                                                    <option></option>
-                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="small-4 columns">
-                                            <label>Module
-                                                <select name="" id="module" ng-init="">
-                                                    <option></option>
-                                                    <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                        <div class="small-4 columns">
-                                            <a href="#" class="button"><i class="fa fa-minus"></i></a>
-                                            <a href="#" class="button"><i class="fa fa-plus"></i></a>
-                                        </div>
                                     </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update User</span></button>
