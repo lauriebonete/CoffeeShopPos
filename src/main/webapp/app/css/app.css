@@ -276,3 +276,10 @@
 .alert-box {
     display: none;
 }
+
+#add-ons {
+    display: none;
+    max-height: 25vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
