@@ -1,6 +1,9 @@
 package org.pos.coffee.bean;
 
+import org.evey.annotation.UniqueField;
+import org.evey.bean.Authority;
 import org.evey.bean.BaseEntity;
+import org.evey.bean.UserRole;
 
 import javax.persistence.*;
 import java.util.Date;
