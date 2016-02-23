@@ -104,6 +104,12 @@ public class BaseCrudServiceImpl<T extends BaseEntity> implements BaseCrudServic
         return baseEntityDao.findEntityByNamedQuery(queryName, parameters);
     }
 
+    @Override
+    @Transactional
+    public void executeUpdateByNamedQuery(String queryName, Map<String, Object> parameters) {
+        baseEntityDao.executeUpdateByNamedQuery(queryName,parameters);
+    }
+
     private void preloadEntity(T entity) {
         try {
             for(Field field: entityBeanType.getDeclaredFields()) {

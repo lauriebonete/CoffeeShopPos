@@ -266,22 +266,24 @@ var evey = (function(){
                     success : function(data) {
                         if(data.status) {
                             $('#crud-modal').foundation('reveal', 'close');
-                            $(crudForm).find("i.loader").toggleClass("hide");
-                            $(crudForm).find("span.btn-label").toggleClass("hide");
 
-                            $(crudForm).find(".button").toggleClass("disabled");
-                            $(crudForm).find(".button").removeAttr("disabled",true);
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
-                            foundationApi.publish('main-notifications', { title: 'Test', content: 'Test2' });
                         } else {
                             promptAlert;
                         }
                     },
                     error : function(data) {
                         promptAlert();
+                    },
+                    complete: function(){
+                        $(crudForm).find("i.loader").toggleClass("hide");
+                        $(crudForm).find("span.btn-label").toggleClass("hide");
+
+                        $(crudForm).find(".button").toggleClass("disabled");
+                        $(crudForm).find(".button").removeAttr("disabled",true);
                     }
                 });
             });
@@ -305,23 +307,23 @@ var evey = (function(){
                     success : function(data) {
                         if(data.status){
                             $('#update-modal').foundation('reveal', 'close');
-                            $(updateForm).find("i.loader").toggleClass("hide");
-                            $(updateForm).find("span.btn-label").toggleClass("hide");
-
-                            $(updateForm).find(".button").toggleClass("disabled");
-                            $(updateForm).find(".button").removeAttr("disabled",true);
-
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
-                            foundationApi.publish('main-notifications', { title: 'Test', content: 'Test2' });
                         } else {
                             promptAlert();
                         }
                     },
                     error : function(data) {
                         promptAlert();
+                    },
+                    complete : function(){
+                        $(updateForm).find("i.loader").toggleClass("hide");
+                        $(updateForm).find("span.btn-label").toggleClass("hide");
+
+                        $(updateForm).find(".button").toggleClass("disabled");
+                        $(updateForm).find(".button").removeAttr("disabled",true);
                     }
                 });
             });
