@@ -225,6 +225,12 @@
                                             <input type="number" placeholder="Pin Digit" name="pinDigit" required></label>
                                         <small class="error">Please provide desired Pin Digit.</small>
                                     </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>User Role <small>required</small>
+                                            <selectize data-list="false" data-attr="id" name="userRole" config='userRoleConfig' options='userRole' ng-model="userRoleModel"></selectize>
+                                        </label>
+                                        <small class="error">Please provide desired User Role.</small>
+                                    </div>
                                     <div class="row">
                                         <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
                                     </div>

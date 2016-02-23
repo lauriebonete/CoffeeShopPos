@@ -303,14 +303,14 @@
                                     <h4 class="right change-due">PHP 0</h4>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row buttons">
-                        <div class="small-6 columns">
-                            <a class="button left back-to-order"><< Back</a>
-                        </div>
-                        <div class="small-6 columns">
-                            <a class="button right disabled" id="confirm-order">Punch Order >></a>
+                            <div class="row buttons">
+                                <div class="small-6 columns">
+                                    <a class="button left back-to-order"><< Back</a>
+                                </div>
+                                <div class="small-6 columns">
+                                    <a class="button right disabled" id="confirm-order">Punch Order >></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,10 +382,10 @@
 
     <div class="row">
         <div class="small-12 columns">
-            <h4>Add-ons:</h4>
+            <a class="button left" id="toggle-add-ons">Add-ons</a>
         </div>
     </div>
-    <div class="row">
+    <div id="add-ons" class="row">
         <ul class="addOnList small-block-grid-2 medium-block-grid-4 large-block-5">
             <li ng-repeat="productAddOn in productAddOn">
                 <div class="addOn panel-flat sizes" data-id={{productAddOn.id}}>
@@ -956,6 +956,12 @@
                 $(addOn).find(".modify-addon-quan-btn.dec").attr("disabled");
                 $(addOn).find(".modify-addon-quan-btn.dec").addClass("disabled");
             });
+        }).on("click", "#toggle-add-ons", function () {
+            var toggle = $("#add-ons").css("display");
+            if(toggle == "none")
+                $("#add-ons").css("display","block");
+            else
+                $("#add-ons").css("display","none");
         });
 
         var countQty = function(){
