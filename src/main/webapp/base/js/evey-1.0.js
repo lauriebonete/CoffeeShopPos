@@ -266,16 +266,23 @@ var evey = (function(){
                     success : function(data) {
                         if(data.status) {
                             $('#crud-modal').foundation('reveal', 'close');
-
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
                         } else {
-                            promptAlert;
+                            $('#crud-modal').foundation('reveal', 'close');
+                            angular.element(".main-body").scope().searchEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+
+                            promptAlert();
                         }
                     },
                     error : function(data) {
+                        $('#crud-modal').foundation('reveal', 'close');
+                        angular.element(".main-body").scope().searchEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+
                         promptAlert();
                     },
                     complete: function(){
@@ -312,10 +319,18 @@ var evey = (function(){
 
                             promptSuccess();
                         } else {
+                            $('#update-modal').foundation('reveal', 'close');
+                            angular.element(".main-body").scope().searchEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+
                             promptAlert();
                         }
                     },
                     error : function(data) {
+                        $('#update-modal').foundation('reveal', 'close');
+                        angular.element(".main-body").scope().searchEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+
                         promptAlert();
                     },
                     complete : function(){
@@ -474,7 +489,6 @@ var evey = (function(){
         toastr.options.closeMethod = 'fadeOut';
         toastr.options.closeDuration = 300;
         toastr.options.closeEasing = 'swing';
-        toastr.options.progressBar = true;
         toastr.success('Transaction Successful!');
 
     };
@@ -484,7 +498,6 @@ var evey = (function(){
         toastr.options.closeMethod = 'fadeOut';
         toastr.options.closeDuration = 300;
         toastr.options.closeEasing = 'swing';
-        toastr.options.progressBar = true;
         toastr.error('Transaction Failed! Double check your inputs and try again.');
     };
 
