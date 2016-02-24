@@ -468,14 +468,22 @@ var evey = (function(){
     }
 
     var promptSuccess = function() {
-        $(".alert-box.success").show();
-        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+        toastr.options.positionClass = 'toast-bottom-full-width';
+        toastr.options.closeMethod = 'fadeOut';
+        toastr.options.closeDuration = 300;
+        toastr.options.closeEasing = 'swing';
+        toastr.options.progressBar = true;
+        toastr.success('Transaction Successful!');
+
     };
 
     var promptAlert = function() {
-        $("#crud-modal .close-reveal-modal").click();
-        $(".alert-box.alert").show();
-        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+        toastr.options.positionClass = 'toast-bottom-full-width';
+        toastr.options.closeMethod = 'fadeOut';
+        toastr.options.closeDuration = 300;
+        toastr.options.closeEasing = 'swing';
+        toastr.options.progressBar = true;
+        toastr.error('Transaction Failed! Double check your inputs and try again.');
     };
 
 })(jQuery);
