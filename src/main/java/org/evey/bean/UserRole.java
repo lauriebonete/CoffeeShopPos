@@ -4,6 +4,7 @@ package org.evey.bean;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,9 +20,19 @@ public class UserRole extends BaseEntity {
     @Column(name="ROLE_DESCRIPTION")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userRole", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Authority> authorities;
+
+    private transient List<Authority> authorityList;
+
+    public List<Authority> getAuthorityList() {
+        return authorityList;
+    }
+
+    public void setAuthorityList(List<Authority> authorityList) {
+        this.authorityList = authorityList;
+    }
 
     public String getRoleName() {
         return roleName;

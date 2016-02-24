@@ -23,6 +23,7 @@ public interface BaseCrudService<T extends BaseEntity> extends BaseService {
     public T load(Long id);
     public List<T> findEntityByNamedQuery(String queryName);
     public List<T> findEntityByNamedQuery(String queryName, Map<String,Object> parameters);
+    public void executeUpdateByNamedQuery(String queryName, Map<String,Object> parameters);
 
     public BaseEntityDao<T,Long> getDao();
 }

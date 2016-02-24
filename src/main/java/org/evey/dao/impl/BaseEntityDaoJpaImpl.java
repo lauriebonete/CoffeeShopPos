@@ -135,6 +135,16 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     @Override
+    public void executeUpdateByNamedQuery(String name, Map<String, Object> parameters) {
+        String queryString = getNamedQuery(name);
+        Query query = getEntityManager().createQuery(queryString);
+        for(Map.Entry<String,Object> entry: parameters.entrySet()){
+            query.setParameter(entry.getKey(),entry.getValue());
+        }
+        query.executeUpdate();
+    }
+
+    @Override
     public T load(Long id) {
         T entity = getEntityManager().find(getEntityBeanType(), id);
         return entity;

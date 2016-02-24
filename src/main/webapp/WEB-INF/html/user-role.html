@@ -64,6 +64,7 @@
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>Account Maintenance</label></li>
                                         <li><a data-url="/user" id="user-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Page</a></li>
+                                        <li><a data-url="/userRole" id="user-role-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Role</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
@@ -91,25 +92,42 @@
                 </aside>
                 <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
                     <div class="row user-credentials hide">
-                        <div>
+                        <div class="small-3 columns">
+
+                        </div>
+                        <div class="small-6 columns">
                             <div class="row">
                                 <div class="columns small-12">
-
+                                    <div class="row collapse prefix-radius">
+                                        <input id="role-id" type="hidden" name="id" value="{{recordFound.id}}">
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Role Name
+                                            <input id="role-name" readonly type="text" placeholder="Role Name" name="roleName" value="{{recordFound.roleName}}">
+                                        </label>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Description
+                                            <input id="role-description" readonly type="text" placeholder="Description" name="description" value="{{recordFound.description}}">
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row role-tree-holder">
                                 <div class="columns small-12">
-                                    <div class="row">
-                                        <ul id="role-tree" class="level-1">
-                                        </ul>
-                                    </div>
+                                    <ul id="role-tree" class="level-1">
+                                    </ul>
                                 </div>
                             </div>
                             <div class="row button-holder">
                                 <div class="columns small-12">
-                                    <button class="button success">Save</button>
+                                    <button class="button success expand" id="save-access"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="btn-label">Save</span></button>
+                                    <button class="button secondary expand" id="back-access">Back</button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="small-3 columns">
+
                         </div>
                     </div>
                     <div class="row main-section-row" id="crud-body">
@@ -158,7 +176,7 @@
                                             <td>{{record.roleName}}</td>
                                             <td>{{record.description}}</td>
                                             <td>
-                                                <i class="fa fa-user-secret has-tip tip-top manage-access" data-tooltip aria-haspopup="true" title="Manage Access" data-id="{{record.id}}"></i>
+                                                <i class="fa fa-user-secret has-tip tip-top manage-access" data-tooltip aria-haspopup="true" ng-click = "editAction(record.id)" ng-class="id" title="Manage Access" data-id="{{record.id}}"></i>
                                                 <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
                                                 <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
@@ -210,7 +228,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Role Name <small>required</small>
-                                            <input type="text" placeholder="Role Name" name="key" value="{{recordFound.roleName}}" required></label>
+                                            <input type="text" placeholder="Role Name" name="roleName" value="{{recordFound.roleName}}" required></label>
                                         <small class="error">Role Name is required.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
@@ -244,76 +262,128 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
+            $('#role-tree').bonsai({
+                expandAll: false,
+                checkboxes: true, // depends on jquery.qubit plugin
+                createInputs: 'checkbox', // takes values from data-name and data-value, and data-name is inherited
+                checkboxes: false,
+            });
         }).on("click",".manage-access", function(){
-            console.log($(this).attr("data-id"));
+            $("#role-tree").children().remove();
             $.ajax({
                 url: evey.getHome()+"/userRole/get-all-authorities",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
-                    $.each(data, function(key, value){
-                        var listAndName = value.split("@");
-                        var list = listAndName[0].split(".");
+                    createTreeRole(data);
+                    $('#role-tree').bonsai('update');
+                    var scope = angular.element(".main-body").scope();
+                    checkAccessRights(scope.recordFound.authorities);
 
-                        if($(".level-1").children("li#"+list[0]).length>0){
-
-                            var firstLevelNode = $(".level-1").children("li#"+list[0]);
-                            if($(firstLevelNode).children("ul").length<=0){
-                                $(firstLevelNode).append($("<ul>").addClass("level-2"));
-                            }
-
-                            var level2Node = $(firstLevelNode).find("ul.level-2").children("li#"+list[1]);
-                            if($(level2Node).length>0){
-                                if($(level2Node).find("ul").length<=0){
-                                    $(level2Node).append($("<ul>").addClass("level-3"));
-                                }
-
-                                var level3Node = $(level2Node).find("ul.level-3").children("li#"+list[2]);
-                                if($(level3Node).length>0){
-                                    if($(level3Node).find("ul").length<=0){
-                                        $(level3Node).append($("<ul>").addClass("level-4"));
-                                    }
-
-                                    var level4Node = $(level3Node).find("ul.level-4").children("li#"+list[3]);
-                                    if($(level4Node).length>0){
-                                        if($(level4Node).find("ul").length<=0){
-                                            $(level4Node).append($("<ul>").addClass("level-5"));
-                                        }
-
-                                        var level5Node = $(level4Node).find("ul.level-5").children("li#"+list[4]);
-                                        if($(level5Node).length>0) {
-                                            if ($(level5Node).find("ul").length <= 0) {
-                                                $(level5Node).append($("<ul>").addClass("level-6"));
-                                            }
-                                        } else {
-                                            $(level4Node).find("ul.level-5").append($("<li>").attr("id",list[4]).attr("data-id",key).append(listAndName[1]));
-                                        }
-                                    } else {
-                                        $(level3Node).find("ul.level-4").append($("<li>").attr("id",list[3]).attr("data-id",key).append(listAndName[1]));
-                                    }
-                                } else {
-                                    $(level2Node).find("ul.level-3").append($("<li>").attr("id",list[2]).attr("data-id",key).append(listAndName[1]));
-                                }
-                            } else {
-                                $(firstLevelNode).find("ul.level-2").append($("<li>").attr("id",list[1]).attr("data-id",key).append(listAndName[1]));
-                            }
-                        } else {
-                            $(".level-1").append($("<li>").attr("id",list[0]).attr("data-id",key).append(listAndName[1]));
-                        }
-
-                    });
                     $(".user-credentials").toggleClass("hide");
                     $(".main-section-row").toggleClass("hide");
-
-                    $('#role-tree').bonsai({
-                        expandAll: false,
-                        checkboxes: true, // depends on jquery.qubit plugin
-                        createInputs: 'checkbox', // takes values from data-name and data-value, and data-name is inherited
-                        checkboxes: false,
-                    });
                 }
             });
+        }).on("click","#save-access",function(){
+            $("#save-access").find("i.loader").toggleClass("hide");
+            $("#save-access").find("span.btn-label").toggleClass("hide");
+
+            $("#save-access").toggleClass("disabled");
+            $("#save-access").attr("disabled",true);
+
+            var userRole = {};
+            userRole["id"] = $("#role-id").val();
+            userRole["roleName"] = $("#role-name").val();
+            userRole["description"] = $("#role-description").val();
+
+            var authorities = [];
+            $("#role-tree input:checkbox:checked").each(function(i,checkbox){
+                var authority = {"access": $(checkbox).attr("id")};
+                authorities.push(authority);
+            });
+
+            userRole["authorityList"] = authorities;
+
+            $.ajax({
+                url: evey.getHome()+"/userRole/save-access",
+                type: "POST",
+                dataType: "JSON",
+                data: JSON.stringify(userRole),
+                contentType: "application/json",
+                success : function(data) {
+                    console.log(data);
+                },
+                complete: function () {
+                    $("#save-access").find("i.loader").toggleClass("hide");
+                    $("#save-access").find("span.btn-label").toggleClass("hide");
+
+                    $("#save-access").toggleClass("disabled");
+                    $("#save-access").removeAttr("disabled",true);
+                }
+            });
+        }).on("click","#back-access",function(){
+            $(".user-credentials").toggleClass("hide");
+            $(".main-section-row").toggleClass("hide");
         });
+
+        var checkAccessRights = function(data){
+            $.each(data, function(i,val){
+                $("#role-tree #"+val.access).click();
+            });
+        };
+
+        var createTreeRole = function(data){
+            $.each(data, function(key, value){
+                var listAndName = value.split("@");
+                var list = listAndName[0].split(".");
+
+                if($(".level-1").children("li#"+list[0]).length>0){
+
+                    var firstLevelNode = $(".level-1").children("li#"+list[0]);
+                    if($(firstLevelNode).children("ul").length<=0){
+                        $(firstLevelNode).append($("<ul>").addClass("level-2"));
+                    }
+
+                    var level2Node = $(firstLevelNode).find("ul.level-2").children("li#"+list[1]);
+                    if($(level2Node).length>0){
+                        if($(level2Node).find("ul").length<=0){
+                            $(level2Node).append($("<ul>").addClass("level-3"));
+                        }
+
+                        var level3Node = $(level2Node).find("ul.level-3").children("li#"+list[2]);
+                        if($(level3Node).length>0){
+                            if($(level3Node).find("ul").length<=0){
+                                $(level3Node).append($("<ul>").addClass("level-4"));
+                            }
+
+                            var level4Node = $(level3Node).find("ul.level-4").children("li#"+list[3]);
+                            if($(level4Node).length>0){
+                                if($(level4Node).find("ul").length<=0){
+                                    $(level4Node).append($("<ul>").addClass("level-5"));
+                                }
+
+                                var level5Node = $(level4Node).find("ul.level-5").children("li#"+list[4]);
+                                if($(level5Node).length>0) {
+                                    if ($(level5Node).find("ul").length <= 0) {
+                                        $(level5Node).append($("<ul>").addClass("level-6"));
+                                    }
+                                } else {
+                                    $(level4Node).find("ul.level-5").append($("<li>").attr("id",list[4]).attr("data-id",key).append(listAndName[1]));
+                                }
+                            } else {
+                                $(level3Node).find("ul.level-4").append($("<li>").attr("id",list[3]).attr("data-id",key).append(listAndName[1]));
+                            }
+                        } else {
+                            $(level2Node).find("ul.level-3").append($("<li>").attr("id",list[2]).attr("data-id",key).append(listAndName[1]));
+                        }
+                    } else {
+                        $(firstLevelNode).find("ul.level-2").append($("<li>").attr("id",list[1]).attr("data-id",key).append(listAndName[1]));
+                    }
+                } else {
+                    $(".level-1").append($("<li>").attr("id",list[0]).attr("data-id",key).append(listAndName[1]));
+                }
+            });
+        };
     </script>
 </footer>
 </html>
