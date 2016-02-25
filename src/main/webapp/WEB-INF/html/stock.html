@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/toastr.css"/>
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/responsive-tables.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
+    <script src="js/toastr.js"></script>
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
     <script src="angular/currentUserService.js"></script>
@@ -320,6 +322,10 @@
                 success: function(data){
                     console.log(data.result.purchaseCode);
                     $('#restock-modal').foundation('reveal', 'close');
+                    promptSuccess();
+                },
+                error : function(data) {
+                    promptAlert();
                 }
             });
         }).on("click","#form-update-btn",function(){
@@ -336,7 +342,14 @@
                     if(data.success!=null
                         && data.success) {
                         $('#update-modal').foundation('reveal', 'close');
+                        promptSuccess();
+                    } else {
+                        $('#update-modal').foundation('reveal', 'close');
+                        promptAlert();
                     }
+                },
+                error : function(data) {
+                    promptAlert();
                 }
             });
         });
@@ -418,6 +431,24 @@
             angular.element(".main-body").scope().loadTable(paginateThis);
             angular.element(".main-body").scope().$apply();
         }
+
+        var promptSuccess = function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.success('Transaction Successful!');
+
+        };
+
+        var promptAlert = function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.error('Transaction Failed! Double check your inputs and try again.');
+        };
+
     </script>
 </footer>
 </html>

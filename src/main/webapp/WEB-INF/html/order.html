@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
     <link rel="stylesheet" href="css/responsive-tables.css">
+    <link rel="stylesheet" href="css/toastr.css"/>
 </head>
 <body ng-app="orderApp" ng-controller="orderController" ng-init="cacheUser()">
 <div class="row height-full">
@@ -428,6 +429,7 @@
     <script src="js/foundation.min.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
+    <script src="js/toastr.js"></script>
     <script src="js/vendor/modernizr.js"></script>
     <script src="angular/currentUserService.js"></script>
     <script src="angular/orderApp.js"></script>
@@ -999,6 +1001,12 @@
 
                         $(".payment-page").toggleClass("hide");
                         $(".order-page").toggleClass("hide");
+
+                        promptSuccess();
+                    },
+                    error : function(data) {
+
+                        promptAlert();
                     }
                 });
             });
@@ -1169,6 +1177,23 @@
             };
 
             return returnThis;
+        };
+
+        var promptSuccess = function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.success('Transaction Successful!');
+
+        };
+
+        var promptAlert = function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.error('Transaction Failed! Double check your inputs and try again.');
         };
 
     </script>
