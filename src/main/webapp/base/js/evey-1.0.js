@@ -266,16 +266,23 @@ var evey = (function(){
                     success : function(data) {
                         if(data.status) {
                             $('#crud-modal').foundation('reveal', 'close');
-
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
                         } else {
-                            promptAlert;
+                            $('#crud-modal').foundation('reveal', 'close');
+                            angular.element(".main-body").scope().searchEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+
+                            promptAlert();
                         }
                     },
                     error : function(data) {
+                        $('#crud-modal').foundation('reveal', 'close');
+                        angular.element(".main-body").scope().searchEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+
                         promptAlert();
                     },
                     complete: function(){
@@ -312,10 +319,18 @@ var evey = (function(){
 
                             promptSuccess();
                         } else {
+                            $('#update-modal').foundation('reveal', 'close');
+                            angular.element(".main-body").scope().searchEntity(data.result);
+                            angular.element(".main-body").scope().$apply();
+
                             promptAlert();
                         }
                     },
                     error : function(data) {
+                        $('#update-modal').foundation('reveal', 'close');
+                        angular.element(".main-body").scope().searchEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+
                         promptAlert();
                     },
                     complete : function(){
@@ -470,14 +485,20 @@ var evey = (function(){
     }
 
     var promptSuccess = function() {
-        $(".alert-box.success").show();
-        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+        toastr.options.positionClass = 'toast-bottom-full-width';
+        toastr.options.closeMethod = 'fadeOut';
+        toastr.options.closeDuration = 300;
+        toastr.options.closeEasing = 'swing';
+        toastr.success('Transaction Successful!');
+
     };
 
     var promptAlert = function() {
-        $("#crud-modal .close-reveal-modal").click();
-        $(".alert-box.alert").show();
-        setTimeout(function() { $(".alert-box.alert").hide(); }, 5000);
+        toastr.options.positionClass = 'toast-bottom-full-width';
+        toastr.options.closeMethod = 'fadeOut';
+        toastr.options.closeDuration = 300;
+        toastr.options.closeEasing = 'swing';
+        toastr.error('Transaction Failed! Double check your inputs and try again.');
     };
 
 })(jQuery);

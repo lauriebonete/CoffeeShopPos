@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/dropzone.css">
     <link rel="stylesheet" href="css/user.css">
+    <link rel="stylesheet" href="css/toastr.css"/>
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -20,6 +21,7 @@
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
     <script src="js/dropzone.js"></script>
+    <script src="js/toastr.js"></script>
     <script src="angular/currentUserService.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
@@ -128,14 +130,6 @@
                             </div>
                         </div>
                         <div class="small-8 large-9 columns crud-result">
-                            <div data-alert class="alert-box success radius">
-                                Transaction Completed.
-                                <a href="#" class="close">&times;</a>
-                            </div>
-                            <div data-alert class="alert-box alert radius">
-                                Transaction Failed. Please review your inputs or contact your system administrator.
-                                <a href="#" class="close">&times;</a>
-                            </div>
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
                                 <a href="#" class="button right success small" data-reveal-id="crud-modal" ng-show="checkIfHasAccess('ADD_USER')"><i class="fa fa-plus-circle"></i> &nbsp Add</a>
