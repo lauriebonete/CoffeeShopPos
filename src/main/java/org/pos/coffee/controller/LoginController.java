@@ -1,5 +1,6 @@
 package org.pos.coffee.controller;
 
+import org.evey.bean.UserRole;
 import org.pos.coffee.bean.Branch;
 import org.evey.bean.User;
 import org.pos.coffee.service.BranchService;
@@ -50,9 +51,13 @@ public class LoginController implements AuthenticationProvider {
     }
 
     @RequestMapping(value = "/get-logged", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Map<String, Object> getLoggedUser() throws Exception{
+    public @ResponseBody Map<String, Object> getLoggedUserAndBranch() throws Exception{
         Map<String,Object> returnMap = new HashMap<>();
         User user = userService.getCurrentUser();
+        for(UserRole role : user.getUserRole()){
+            //do this to bypass lazy
+            role.getRoleName();
+        }
         if(user!=null
                 && user.getPerson()!=null){
             user.getPerson().getFirstName();
@@ -65,6 +70,33 @@ public class LoginController implements AuthenticationProvider {
         returnMap.put("branch",branch);
 
 
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/get-logged-user", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String, Object> getLoggedUser() throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
+        User user = userService.getCurrentUser();
+        for(UserRole role : user.getUserRole()){
+            //do this to bypass lazy
+            role.getRoleName();
+        }
+        if(user!=null
+                && user.getPerson()!=null){
+            user.getPerson().getFirstName();
+        }
+        returnMap.put("user",user);
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/get-device-branch", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String, Object> getDeviceBranch() throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
+        Branch branch = branchService.getBranchUsingMac(loginService.getMacAddress());
+        if(branch==null){
+            branch = new Branch();
+        }
+        returnMap.put("branch",branch);
         return returnMap;
     }
 

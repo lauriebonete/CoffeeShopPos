@@ -1,117 +1,247 @@
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-             xmlns:beans="http://www.springframework.org/schema/beans"
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:sec="http://www.springframework.org/schema/security"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <http auto-config="true" >
-        <intercept-url pattern="/dashboard" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/dashboard**" access="hasRole('ADMIN')" />
-        <form-login  login-page="/login"
+    <sec:http auto-config="false"  use-expressions="true">
+        <sec:intercept-url pattern="/dashboard" access="isAuthenticated()" />
+        <sec:form-login  login-page="/login"
                      username-parameter="pinDigit"
                      authentication-failure-url="/Access_Denied"
                      default-target-url="/dashboard"/>
-        <csrf disabled="true"/>
-    </http>
+        <sec:csrf disabled="true"/>
+    </sec:http>
 
-    <authentication-manager >
-        <authentication-provider ref="loginController"/>
-    </authentication-manager>
+    <sec:authentication-manager >
+        <sec:authentication-provider ref="loginController"/>
+    </sec:authentication-manager>
 
-    <beans:bean id="loginController" class="org.pos.coffee.controller.LoginController" />
+    <bean id="loginController" class="org.pos.coffee.controller.LoginController" />
 
-    <beans:bean id="authorities" class="org.springframework.beans.factory.config.MapFactoryBean">
-        <beans:property name="sourceMap">
-            <beans:map>
-                <beans:entry key="ACCESS_DASHBOARD_TAB">
-                    <beans:value>01.00.00.00.00@Access Dashboard Tab</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_ADMIN_TAB">
-                    <beans:value>02.00.00.00.00@Access Administration Tab</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_ACCOUNT_SETTING">
-                    <beans:value>02.01.00.00.00@Access Account Setting Tab</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_USER_PAGE">
-                    <beans:value>02.01.01.00.00@Access User Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ADD_USER">
-                    <beans:value>02.01.01.01.00@Add New User</beans:value>
-                </beans:entry>
-                <beans:entry key="DELETE_USER">
-                    <beans:value>02.01.01.02.00@Delete Existing User</beans:value>
-                </beans:entry>
-                <beans:entry key="UPDATE_USER">
-                    <beans:value>02.01.01.03.00@Update Existing User</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_USER_ROLE">
-                    <beans:value>02.01.02.00.00@Access User Role</beans:value>
-                </beans:entry>
-                <beans:entry key="ADD_USER_ROLE">
-                    <beans:value>02.01.02.01.00@Add New User Role</beans:value>
-                </beans:entry>
-                <beans:entry key="DELETE_USER_ROLE">
-                    <beans:value>02.01.02.02.00@Delete Existing User Role</beans:value>
-                </beans:entry>
-                <beans:entry key="UPDATE_USER_ROLE">
-                    <beans:value>02.01.02.03.00@Update Existing User Role</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_SYSTEM_SETTING">
-                    <beans:value>02.02.00.00.00@Access System Setting Tab</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_ITEM_PAGE">
-                    <beans:value>02.02.01.00.00@Access Item Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ADD_ITEM">
-                    <beans:value>02.02.01.01.00@Add New Item</beans:value>
-                </beans:entry>
-                <beans:entry key="DELETE_ITEM">
-                    <beans:value>02.02.01.02.00@Delete Existing Item</beans:value>
-                </beans:entry>
-                <beans:entry key="UPDATE_ITEM">
-                    <beans:value>02.02.01.03.00@Update Existing Item</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_PRODUCT_PAGE">
-                    <beans:value>02.02.02.00.00@Access Product Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ADD_PRODUCT">
-                    <beans:value>02.02.02.01.00@Add New Product</beans:value>
-                </beans:entry>
-                <beans:entry key="DELETE_PRODUCT">
-                    <beans:value>02.02.02.02.00@Delete Existing Product</beans:value>
-                </beans:entry>
-                <beans:entry key="UPDATE_PRODUCT">
-                    <beans:value>02.02.02.03.00@Update Existing Product</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_PRODUCT_GROUP_PAGE">
-                    <beans:value>02.02.03.00.00@Access Product Group Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_REFERENCE_PAGE">
-                    <beans:value>02.02.04.00.00@Access Reference Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_BRANCH_PAGE">
-                    <beans:value>02.02.05.00.00@Access Branch Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_PRICING_PAGE">
-                    <beans:value>02.02.06.00.00@Access Pricing Tab</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_PRICE_LIST_PAGE">
-                    <beans:value>02.02.06.01.00@Access Price List Page</beans:value>
-                </beans:entry>
-                <beans:entry key="ADD_PRICE_LIST">
-                    <beans:value>02.02.06.01.01@Add New Price List</beans:value>
-                </beans:entry>
-                <beans:entry key="DELETE_PRICE_LIST">
-                    <beans:value>02.02.06.01.02@Delete Existing Price List</beans:value>
-                </beans:entry>
-                <beans:entry key="UPDATE_PRICE_LIST">
-                    <beans:value>02.02.06.01.03@Update Existing Price List</beans:value>
-                </beans:entry>
-                <beans:entry key="ACCESS_PRICE_SET_PAGE">
-                    <beans:value>02.02.06.02.00@Access Price Set Page</beans:value>
-                </beans:entry>
-            </beans:map>
-        </beans:property>
-    </beans:bean>
+    <bean id="authorities" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+            <map>
+                <!--DASHBOARD-->
+                <entry key="ACCESS_DASHBOARD_TAB">
+                    <value>01.00.00.00.00@Access Dashboard Tab</value>
+                </entry>
+                <entry key="ACCESS_DASHBOARD_PAGE">
+                    <value>01.01.00.00.00@Access Dashboard Page</value>
+                </entry>
+                <entry key="ACCESS_DASHBOARD_SUMMARY">
+                    <value>01.01.01.00.00@View Today's Widget</value>
+                </entry>
+                <entry key="ACCESS_DASHBOARD_SALES">
+                    <value>01.01.02.00.00@View Sales Widget</value>
+                </entry>
+                <entry key="ACCESS_DASHBOARD_INVENTORY">
+                    <value>01.01.03.00.00@View Inventory Widget</value>
+                </entry>
+                <entry key="ACCESS_DASHBOARD_CATEGORY">
+                    <value>01.01.04.00.00@View Sales Percentage Widget</value>
+                </entry>
 
-</beans:beans>
+                <!--ADMIN-->
+                <entry key="ACCESS_ADMIN_TAB">
+                    <value>02.00.00.00.00@Access Administration Tab</value>
+                </entry>
+                <entry key="ACCESS_ACCOUNT_SETTING">
+                    <value>02.01.00.00.00@Access Account Setting Tab</value>
+                </entry>
+                <entry key="ACCESS_USER_PAGE">
+                    <value>02.01.01.00.00@Access User Page</value>
+                </entry>
+                <entry key="ADD_USER">
+                    <value>02.01.01.01.00@Add New User</value>
+                </entry>
+                <entry key="DELETE_USER">
+                    <value>02.01.01.02.00@Delete Existing User</value>
+                </entry>
+                <entry key="UPDATE_USER">
+                    <value>02.01.01.03.00@Update Existing User</value>
+                </entry>
+                <entry key="ACCESS_USER_ROLE">
+                    <value>02.01.02.00.00@Access User Role</value>
+                </entry>
+                <entry key="ADD_USER_ROLE">
+                    <value>02.01.02.01.00@Add New User Role</value>
+                </entry>
+                <entry key="DELETE_USER_ROLE">
+                    <value>02.01.02.02.00@Delete Existing User Role</value>
+                </entry>
+                <entry key="UPDATE_USER_ROLE">
+                    <value>02.01.02.03.00@Update Existing User Role</value>
+                </entry>
+                <entry key="ACCESS_SYSTEM_SETTING">
+                    <value>02.02.00.00.00@Access System Setting Tab</value>
+                </entry>
+                <entry key="ACCESS_ITEM_PAGE">
+                    <value>02.02.01.00.00@Access Item Page</value>
+                </entry>
+                <entry key="ADD_ITEM">
+                    <value>02.02.01.01.00@Add New Item</value>
+                </entry>
+                <entry key="DELETE_ITEM">
+                    <value>02.02.01.02.00@Delete Existing Item</value>
+                </entry>
+                <entry key="UPDATE_ITEM">
+                    <value>02.02.01.03.00@Update Existing Item</value>
+                </entry>
+                <entry key="ACCESS_PRODUCT_PAGE">
+                    <value>02.02.02.00.00@Access Product Page</value>
+                </entry>
+                <entry key="ADD_PRODUCT">
+                    <value>02.02.02.01.00@Add New Product</value>
+                </entry>
+                <entry key="DELETE_PRODUCT">
+                    <value>02.02.02.02.00@Delete Existing Product</value>
+                </entry>
+                <entry key="UPDATE_PRODUCT">
+                    <value>02.02.02.03.00@Update Existing Product</value>
+                </entry>
+                <entry key="UPLOAD_PRODUCT_IMAGE">
+                    <value>02.02.02.04.00@Upload Product Image</value>
+                </entry>
+                <entry key="CONTROL_PRODUCT_INGREDIENT">
+                    <value>02.02.02.05.00@Control Product's ingredients</value>
+                </entry>
+                <entry key="ACCESS_PRODUCT_GROUP_PAGE">
+                    <value>02.02.03.00.00@Access Product Group Page</value>
+                </entry>
+                <entry key="ADD_PRODUCT_GROUP">
+                    <value>02.02.03.01.00@Add New Product Group</value>
+                </entry>
+                <entry key="DELETE_PRODUCT_GROUP">
+                    <value>02.02.03.02.00@Delete Existing Product Group</value>
+                </entry>
+                <entry key="UPDATE_PRODUCT_GROUP">
+                    <value>02.02.03.03.00@Update Existing Product Group</value>
+                </entry>
+                <entry key="UPLOAD_PRODUCT_GROUP_IMAGE">
+                    <value>02.02.03.04.00@Upload Product Group Image</value>
+                </entry>
+                <entry key="ACCESS_REFERENCE_PAGE">
+                    <value>02.02.04.00.00@Access Reference Page</value>
+                </entry>
+                <entry key="ADD_REFERENCE">
+                    <value>02.02.04.01.00@Add New Reference</value>
+                </entry>
+                <entry key="DELETE_REFERENCE">
+                    <value>02.02.04.02.00@Delete Existing Reference</value>
+                </entry>
+                <entry key="UPDATE_REFERENCE">
+                    <value>02.02.04.03.00@Update Existing Reference</value>
+                </entry>
+                <entry key="ACCESS_BRANCH_PAGE">
+                    <value>02.02.05.00.00@Access Branch Page</value>
+                </entry>
+                <entry key="ADD_BRANCH">
+                    <value>02.02.05.01.00@Add new Branch</value>
+                </entry>
+                <entry key="DELETE_BRANCH">
+                    <value>02.02.05.02.00@Delete Existing Branch</value>
+                </entry>
+                <entry key="UPDATE_BRANCH">
+                    <value>02.02.05.03.00@Update Existing Branch</value>
+                </entry>
+                <entry key="ACCESS_PRICING_PAGE">
+                    <value>02.02.06.00.00@Access Pricing Tab</value>
+                </entry>
+                <entry key="ACCESS_PRICE_LIST_PAGE">
+                    <value>02.02.06.01.00@Access Price List Page</value>
+                </entry>
+                <entry key="ADD_PRICE_LIST">
+                    <value>02.02.06.01.01@Add New Price List</value>
+                </entry>
+                <entry key="DELETE_PRICE_LIST">
+                    <value>02.02.06.01.02@Delete Existing Price List</value>
+                </entry>
+                <entry key="UPDATE_PRICE_LIST">
+                    <value>02.02.06.01.03@Update Existing Price List</value>
+                </entry>
+                <entry key="ACCESS_PRICE_SET_PAGE">
+                    <value>02.02.06.02.00@Access Price Set Page</value>
+                </entry>
+                <entry key="ADD_PRICE_SET">
+                    <value>02.02.06.02.01@Add new Price Set</value>
+                </entry>
+                <entry key="DELETE_PRICE_SET">
+                    <value>02.02.06.02.02@Delete Existing Price Set</value>
+                </entry>
+                <entry key="UPDATE_PRICE_SET">
+                    <value>02.02.06.02.03@Update Existing Price Set</value>
+                </entry>
+
+                <!--INVENTORY-->
+                <entry key="ACCESS_INVENTORY_TAB">
+                    <value>03.00.00.00.00@Access Inventory Tab</value>
+                </entry>
+                <entry key="ACCESS_INVENTORY_PAGE">
+                    <value>03.01.00.00.00@Access Inventory Page</value>
+                </entry>
+                <entry key="UPDATE_INVENTORY">
+                    <value>03.01.01.00.00@Update Inventory Count</value>
+                </entry>
+                <entry key="RESTOCK_INVENTORY">
+                    <value>03.01.02.00.00@Restock Inventory</value>
+                </entry>
+                <entry key="PLACE_ORDER_INVENTORY">
+                    <value>03.01.02.01.00@Request Inventory Restock</value>
+                </entry>
+                <entry key="PURCHASE_INVENTORY">
+                    <value>03.01.02.02.00@Purchase Inventory Restock</value>
+                </entry>
+
+                <!--PURCHASE-->
+                <entry key="ACCESS_PURCHASE_TAB">
+                    <value>04.00.00.00.00@Access Purchase Tab</value>
+                </entry>
+                <entry key="ACCESS_PURCHASE_PAGE">
+                    <value>04.01.00.00.00@Access Purchase Page</value>
+                </entry>
+                <entry key="ADD_PURCHASE">
+                    <value>04.01.01.00.00@Add New Purchase</value>
+                </entry>
+                <entry key="CONTROL_PURCHASE">
+                    <value>04.01.02.00.00@Control Purchase Stage</value>
+                </entry>
+                <entry key="CONTROL_PURCHASE_PURCHASE">
+                    <value>04.01.02.01.00@Purchase PO Requests</value>
+                </entry>
+                <entry key="CONTROL_PURCHASE_RECEIVE">
+                    <value>04.01.02.02.00@Receive PO Requests</value>
+                </entry>
+
+                <!--REPORTS-->
+                <entry key="ACCESS_REPORTS_TAB">
+                    <value>05.00.00.00.00@Access Reports Tab</value>
+                </entry>
+                <entry key="ACCESS_REPORTS_PAGE">
+                    <value>05.01.00.00.00@Access Reports Page</value>
+                </entry>
+                <entry key="ACCESS_SALE_REPORT">
+                    <value>05.01.01.00.00@Access Sales Report</value>
+                </entry>
+                <entry key="ACCESS_EXPENSE_REPORT">
+                    <value>05.01.02.00.00@Access Expense Report</value>
+                </entry>
+                <entry key="ACCESS_PURCHASE_REPORT">
+                    <value>05.01.03.00.00@Access Purchase Report</value>
+                </entry>
+                <entry key="ACCESS_INVENTORY_REPORT">
+                    <value>05.01.04.00.00@Access Inventory Report</value>
+                </entry>
+
+                <!--ORDER-->
+                <entry key="ACCESS_ORDER_TAB">
+                    <value>06.00.00.00.00@Access Order Tab</value>
+                </entry>
+                <entry key="ACCESS_ORDER_PAGE">
+                    <value>06.01.00.00.00@Access Order Page</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

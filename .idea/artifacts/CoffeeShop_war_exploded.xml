@@ -15,9 +15,9 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.2.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.0.3.RELEASE" />
-          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.0.3.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />

@@ -1,7 +1,7 @@
 /**
  * Created by Laurie on 11/6/2015.
  */
-crudApp.controller("crudController", function ($scope, $http) {
+crudApp.controller("crudController",['$scope','$http','currentUserService',function ($scope, $http, currentUserService) {
 
 
     $scope.cacheEntities = function(url){
@@ -128,6 +128,28 @@ crudApp.controller("crudController", function ($scope, $http) {
         }
     };
 
-});
+    var initUserAccess = function(){
+        $scope.accessList = [];
+        var dataResponse = currentUserService.getLoggedUser();
+        dataResponse.then(function(result){
+            $scope.loggedUser = result.user;
+            var accessMap = {};
+            $.each(currentUserService.getAllAccessOfUser(result.user),function(i,val){
+                accessMap[val] = true;
+            });
+            accessMap['allow'] = true;
+
+            $scope.accessList = accessMap;
+        });
+
+    };
+
+    $scope.checkIfHasAccess = function(lookForThis){
+        return $scope.accessList[lookForThis];
+    };
+
+    initUserAccess();
+
+}]);
 
 

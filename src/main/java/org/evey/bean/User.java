@@ -46,13 +46,6 @@ public class User extends BaseEntity{
 			inverseJoinColumns = { @JoinColumn(name = "USER_ROLE_ID") })
 	private Set<UserRole> userRole;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "USER_AUTHORITY",
-			joinColumns = { @JoinColumn(name = "USER_ID") },
-			inverseJoinColumns = { @JoinColumn(name = "USER_AUTHORITY_ID") })
-	private Set<Authority> authorities;
-
-	//not yet implemented
 //	private Role role;
 //	private Schedule schedule;
 
@@ -101,14 +94,6 @@ public class User extends BaseEntity{
 
 	public void setUserRole(Set<UserRole> userRole) {
 		this.userRole = userRole;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
 	}
 
 	public Person getPerson() {

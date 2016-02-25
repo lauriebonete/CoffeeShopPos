@@ -17,12 +17,13 @@
     <script src="js/angular.js"></script>
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
+    <script src="angular/currentUserService.js"></script>
     <script src="angular/crudApp.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
-<body>
+<body ng-app="crudApp" ng-controller="crudController">
 <div class="row">
     <div>
         <div class="off-canvas-wrap" data-offcanvas>
@@ -48,38 +49,38 @@
                 <aside class="left-off-canvas-menu">
                     <ul class="off-canvas-list">
                         <li><label>Coffee Shop POS</label></li>
-                        <li><a data-url="/dashboard" id="dashboard-off" class="canvas navigation"><i class="navigation-icon fa fa-line-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Dashboard</a></li>
-                        <li><a data-url="/order" id="order-off" class="canvas navigation"><i class="navigation-icon fa fa-shopping-cart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Orders</a></li>
-                        <li><a data-url="/inventory" id="inventory-off" class="canvas navigation"><i class="navigation-icon fa fa-bar-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Inventory</a></li>
-                        <li><a data-url="/purchase" id="purchase-off" class="canvas navigation"><i class="navigation-icon fa fa-money"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Purchase</a></li>
-                        <li><a data-url="/report" id="report-off" class="canvas navigation"><i class="navigation-icon fa fa-pie-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Reports</a></li>
-                        <li class="has-submenu"><a href="#"><i class="fa fa-cogs"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Administration</a>
+                        <li ng-show="checkIfHasAccess('ACCESS_DASHBOARD_TAB')"><a data-url="/dashboard" id="dashboard-off" class="canvas navigation"><i class="navigation-icon fa fa-line-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_ORDER_TAB')"><a data-url="/order" id="order-off" class="canvas navigation"><i class="navigation-icon fa fa-shopping-cart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Orders</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_INVENTORY_TAB')"><a data-url="/inventory" id="inventory-off" class="canvas navigation"><i class="navigation-icon fa fa-bar-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Inventory</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_PURCHASE_TAB')"><a data-url="/purchase" id="purchase-off" class="canvas navigation"><i class="navigation-icon fa fa-money"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Purchase</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_REPORTS_TAB')"><a data-url="/report" id="report-off" class="canvas navigation"><i class="navigation-icon fa fa-pie-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_ADMIN_TAB')"><a href="#"><i class="fa fa-cogs"></i>&nbsp &nbsp Administration</a>
                             <ul class="left-submenu">
                                 <li class="back"><a href="#">Back</a></li>
                                 <li><label>Administration Page</label></li>
-                                <li class="has-submenu"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_ACCOUNT_SETTING')"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>Account Maintenance</label></li>
-                                        <li><a data-url="/user" id="user-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Page</a></li>
-                                        <li><a data-url="/userRole" id="user-role-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Role</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_USER_PAGE')"><a data-url="/user" id="user-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Page</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_USER_ROLE')"><a data-url="/userRole" id="user-role-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Role</a></li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_SYSTEM_SETTING')"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
                                     <ul class="left-submenu">
                                         <li class="back"><a href="#">Back</a></li>
                                         <li><label>System Maintenance</label></li>
-                                        <li><a data-url="/item" id="item-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Item</a></li>
-                                        <li><a data-url="/product" id="product-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product</a></li>
-                                        <li><a data-url="/productGroup" id="product-group-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product Group</a></li>
-                                        <li><a data-url="/reference" id="reference-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Reference</a></li>
-                                        <li><a data-url="/branch" id="branch-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Branch</a></li>
-                                        <li class="has-submenu"><a href="#">Pricing</a>
+                                        <li ng-show="checkIfHasAccess('ACCESS_ITEM_PAGE')"><a data-url="/item" id="item-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Item</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_PRODUCT_PAGE')"><a data-url="/product" id="product-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_PRODUCT_GROUP_PAGE')"><a data-url="/productGroup" id="product-group-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product Group</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_REFERENCE_PAGE')"><a data-url="/reference" id="reference-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Reference</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_BRANCH_PAGE')"><a data-url="/branch" id="branch-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Branch</a></li>
+                                        <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_PRICING_PAGE')"><a href="#">Pricing</a>
                                             <ul class="left-submenu">
                                                 <li class="back"><a href="#">Back</a></li>
                                                 <li><label>Price Maintenance</label></li>
-                                                <li><a data-url="/price" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price List</a></li>
-                                                <li><a data-url="/priceSet" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price Set</a></li>
+                                                <li ng-show="checkIfHasAccess('ACCESS_PRICE_LIST_PAGE')"><a data-url="/price" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price List</a></li>
+                                                <li ng-show="checkIfHasAccess('ACCESS_PRICE_SET_PAGE')"><a data-url="/priceSet" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price Set</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -88,7 +89,7 @@
                         </li>
                     </ul>
                 </aside>
-                <section class="main-section main-body" ng-app="crudApp" ng-controller="crudController">
+                <section class="main-section main-body" ng-show="checkIfHasAccess('ACCESS_BRANCH_PAGE')">
                     <div class="row main-section-row" id="crud-body">
                         <div class="row main-section-row">
                             <div class="small-12 text-align-center">
@@ -137,7 +138,7 @@
                             </div>
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
-                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ng-show="checkIfHasAccess('ADD_BRANCH')"><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
@@ -152,8 +153,8 @@
                                         <tr ng-repeat="record in records">
                                             <td>{{record.branch.value}}</td>
                                             <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-show="checkIfHasAccess('UPDATE_BRANCH')"  ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash has-tip tip-top radius delete-action" ng-show="checkIfHasAccess('DELETE_BRANCH')"  data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>

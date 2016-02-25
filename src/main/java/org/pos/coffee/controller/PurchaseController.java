@@ -75,10 +75,20 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     }
 
     @RequestMapping(value = "/update-status", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Purchase updateStatusPurchase(Long purchaseId, String status) throws Exception{
-        Purchase purchase = purchaseService.load(purchaseId);
-        purchase.setStatus(Purchase.Status.findByString(status).getValue());
-        if ("In Progress".equals(status)) {
+    public @ResponseBody Purchase updateStatusPurchase(@RequestBody Purchase updatePurchase) throws Exception{
+        Purchase purchase = purchaseService.load(updatePurchase.getId());
+        purchase.setStatus(Purchase.Status.findByString(updatePurchase.getStatus()).getValue());
+
+        for(PurchaseOrder po: updatePurchase.getPurchaseOrders()){
+            for(PurchaseOrder originalPo: purchase.getPurchaseOrders()){
+                if(originalPo.getId()==po.getId()){
+                    originalPo.setOrderedQuantity(po.getOrderedQuantity());
+                    break;
+                }
+            }
+        }
+
+        if ("In Progress".equals(updatePurchase.getStatus())) {
             purchase.setPurchaseDate(new Date());
         }
         purchaseService.save(purchase);
