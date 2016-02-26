@@ -271,18 +271,10 @@ var evey = (function(){
 
                             promptSuccess();
                         } else {
-                            $('#crud-modal').foundation('reveal', 'close');
-                            angular.element(".main-body").scope().searchEntity(data.result);
-                            angular.element(".main-body").scope().$apply();
-
                             promptAlert();
                         }
                     },
                     error : function(data) {
-                        $('#crud-modal').foundation('reveal', 'close');
-                        angular.element(".main-body").scope().searchEntity(data.result);
-                        angular.element(".main-body").scope().$apply();
-
                         promptAlert();
                     },
                     complete: function(){
@@ -319,18 +311,10 @@ var evey = (function(){
 
                             promptSuccess();
                         } else {
-                            $('#update-modal').foundation('reveal', 'close');
-                            angular.element(".main-body").scope().searchEntity(data.result);
-                            angular.element(".main-body").scope().$apply();
-
                             promptAlert();
                         }
                     },
                     error : function(data) {
-                        $('#update-modal').foundation('reveal', 'close');
-                        angular.element(".main-body").scope().searchEntity(data.result);
-                        angular.element(".main-body").scope().$apply();
-
                         promptAlert();
                     },
                     complete : function(){
@@ -482,7 +466,7 @@ var evey = (function(){
 
         angular.element(".main-body").scope().loadTable(paginateThis);
         angular.element(".main-body").scope().$apply();
-    }
+    };
 
     var promptSuccess = function() {
         toastr.options.positionClass = 'toast-bottom-full-width';

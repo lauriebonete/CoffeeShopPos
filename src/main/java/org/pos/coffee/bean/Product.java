@@ -8,6 +8,7 @@ import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -82,7 +83,7 @@ public class Product extends BaseEntity {
 
 	private transient String displayProductGroupList;
 
-	private transient String displayPromoGroupList;
+	private transient List<Long> displayPromoGroupList;
 
 
 	public String getProductName() {
@@ -157,20 +158,16 @@ public class Product extends BaseEntity {
 		this.displayProductGroupList = displayProductGroupList;
 	}
 
-	public String getDisplayPromoGroupList() {
-		if(this.promoGroupList!=null){
-			StringBuffer buffer = new StringBuffer();
-			for(ReferenceLookUp group: this.promoGroupList){
-				buffer.append(group.getId()+"|");
+
+	public List<Long> getDisplayPromoGroupList() {
+		if(this.getPromoGroupList()!=null){
+			List<Long> promoGroupIds = new ArrayList<>();
+			for(ReferenceLookUp promo: this.promoGroupList){
+				promoGroupIds.add(promo.getId());
 			}
-			String value = buffer.toString();
-			return value.substring(0, value.length() > 0 ? value.length() - 1 : value.length());
+			return promoGroupIds;
 		}
 		return displayPromoGroupList;
-	}
-
-	public void setDisplayPromoGroupList(String displayPromoGroupList) {
-		this.displayPromoGroupList = displayPromoGroupList;
 	}
 
 	public ReferenceLookUp getSize() {

@@ -342,6 +342,9 @@
                     if(data.success!=null
                         && data.success) {
                         $('#update-modal').foundation('reveal', 'close');
+                        $('#update-modal .correct-quantity').val("");
+                        angular.element(".main-body").scope().updateStock(data.results);
+                        angular.element(".main-body").scope().$apply();
                         promptSuccess();
                     } else {
                         $('#update-modal').foundation('reveal', 'close');

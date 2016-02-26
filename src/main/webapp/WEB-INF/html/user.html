@@ -24,6 +24,7 @@
     <script src="js/toastr.js"></script>
     <script src="angular/currentUserService.js"></script>
     <script src="angular/crudApp.js"></script>
+    <script src="angular/userController.js"></script>
     <script src="angular/crudController.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
@@ -107,18 +108,18 @@
                                 <form>
                                     <div class="small-12 columns">
                                         <label>User Name
-                                            <input id="userName" type="text" placeholder="User Name" name="userName"/>
+                                            <input id="userName" type="text" placeholder="User Name" name="username"/>
                                         </label>
                                         <label>First Name
-                                            <input id="firstName" type="text" placeholder="First Name" name="firstName"/>
+                                            <input id="firstName" type="text" placeholder="First Name" name="person.firstName"/>
                                         </label>
                                         <label>Last Name
-                                            <input id="lastName" type="text" placeholder="Last Name" name="lastName"/>
+                                            <input id="lastName" type="text" placeholder="Last Name" name="person.lastName"/>
                                         </label>
                                         <label>Role
-                                            <select name="userRole" id="userRole" ng-init="loadDropDown('/userRole/findAllCategory')">
+                                            <select name="userRole.id" data-list="true" ng-init="loadDropDown('/userRole/findAll')">
                                                 <option></option>
-                                                <option  ng-repeat="value in dropdown" value="{{value}}">{{value}}</option>
+                                                <option  ng-repeat="role in dropdown.results" value="{{role.id}}">{{role.roleName}}</option>
                                             </select>
                                         </label>
                                         <div class="rows">
@@ -172,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="crud-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
+                    <div id="crud-modal" class="reveal-modal crud-modal user-controller" ng-controller="userController"  data-reveal aria-labelledby="crud-title" aria-hidden="true" role="dialog">
                         <h3 id="crud-title">Create User</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
@@ -223,7 +224,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>User Role <small>required</small>
-                                            <selectize data-list="false" data-attr="id" name="userRole" config='userRoleConfig' options='userRole' ng-model="userRoleModel"></selectize>
+                                            <selectize data-attr="id" name="userRole" config='userRoleConfig' options='userRoleOption' ng-model="userRole"></selectize>
                                         </label>
                                         <small class="error">Please provide desired User Role.</small>
                                     </div>
@@ -234,7 +235,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="update-modal" class="reveal-modal crud-modal" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
+                    <div id="update-modal" class="reveal-modal crud-modal user-controller" ng-controller="userController" data-reveal aria-labelledby="update-title" aria-hidden="true" role="dialog">
                         <h3 id="update-title">Update User</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
@@ -287,6 +288,12 @@
                                             <input type="number" placeholder="Pin Digit" value="{{recordFound.pinDigit}}" name="pinDigit" required></label>
                                         <small class="error">Please provide desired Pin Digit.</small>
                                     </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>User Role <small>required</small>
+                                            <selectize data-attr="id" config='userRoleConfig' name="userRole" options='userRoleOption' ng-model="recordFound.userRoleList"></selectize>
+                                        </label>
+                                        <small class="error">Please provide desired User Role.</small>
+                                    </div>
                                     <div class="rows">
                                         <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update User</span></button>
                                     </div>
@@ -329,7 +336,17 @@
         $(document).EVEYfy();
 
         $(document).ready(function(){
-
+            $.ajax({
+                url: evey.getHome() +"/userRole/findAll",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $.each(angular.element(".user-controller"),function(){
+                        $(this).scope().loadUserRole(data.results);
+                        $(this).scope().$apply();
+                    });
+                }
+            });
         }).on("click",".form-next-btn",function(){
             $(".userDetails").css( "visibility", "hidden" );
             $(".userDetails").css( "z-index", "0" );
