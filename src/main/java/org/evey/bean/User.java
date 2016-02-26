@@ -1,10 +1,13 @@
 package org.evey.bean;
 
+import org.evey.annotation.JoinSet;
 import org.evey.annotation.UniqueField;
 import org.pos.coffee.bean.Person;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,11 +43,14 @@ public class User extends BaseEntity{
 	@UniqueField
 	private String pinDigit;
 
+	@JoinSet
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "USER_USER_ROLE",
 			joinColumns = { @JoinColumn(name = "USER_ID") },
 			inverseJoinColumns = { @JoinColumn(name = "USER_ROLE_ID") })
 	private Set<UserRole> userRole;
+
+	private transient List<Long> userRoleList;
 
 //	private Role role;
 //	private Schedule schedule;
@@ -112,4 +118,14 @@ public class User extends BaseEntity{
 		this.personId = personId;
 	}
 
+	public List<Long> getUserRoleList() {
+		if(this.userRole!=null){
+			List<Long> userRoleIds = new ArrayList<>();
+			for(UserRole userRole: this.userRole){
+				userRoleIds.add(userRole.getId());
+			}
+			return userRoleIds;
+		}
+		return userRoleList;
+	}
 }

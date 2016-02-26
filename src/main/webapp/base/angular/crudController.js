@@ -18,6 +18,7 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
     $scope.loadDropDown = function (url) {
         $http.get(url).then(function successCallback(response) {
             $scope.dropdown = response.data;
+            console.log(response.data);
         }, function errorCallback(response) {
 
         })
@@ -149,7 +150,6 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
     };
 
     initUserAccess();
-
 }]);
 
 
