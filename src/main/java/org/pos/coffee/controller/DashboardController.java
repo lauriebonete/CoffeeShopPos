@@ -69,9 +69,6 @@ public class DashboardController {
             sales.add(thisEntry.getValue().toString());
         }
 
-        Collections.reverse(week);
-        Collections.reverse(sales);
-
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("week",week);
         returnMap.put("sales",sales);
@@ -262,9 +259,6 @@ public class DashboardController {
             purchaseCode.add(thisEntry.getKey().toString());
             purchaseStatus.add(thisEntry.getValue().toString());
         }
-
-        Collections.reverse(purchaseCode);
-        Collections.reverse(purchaseStatus);
 
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("purchaseCode",purchaseCode);
