@@ -85,6 +85,22 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
         }
     };
 
+    $scope.updateStock = function(data) {
+        for(var i=0; i<=$scope.fullRecords.length-1;i++){
+            if($scope.fullRecords[i].item.id==data.item.id){
+                $scope.fullRecords[i] = data;
+                break;
+            }
+        }
+
+        for(var i=0; i<=$scope.records.length-1;i++){
+            if($scope.records[i].item.id==data.item.id){
+                $scope.records[i] = data;
+                break;
+            }
+        }
+    };
+
     $scope.deleteAction = function (id, url) {
         $("#delete-modal .loader").toggleClass("hide");
         $("#delete-modal span.delete-btn").toggleClass("hide");

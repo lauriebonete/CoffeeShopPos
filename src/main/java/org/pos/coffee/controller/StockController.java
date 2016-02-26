@@ -99,6 +99,10 @@ public class StockController extends BaseCrudController<Stock> {
             }
         }
 
+        StockHelper stockHelper = new StockHelper();
+        stockHelper.setItem(item);
+        List<StockHelper> results = stockService.findStockEntity(stockHelper);
+        returnMap.put("results",results!=null ? results.get(0):null);
         returnMap.put("success",true);
         return returnMap;
     }

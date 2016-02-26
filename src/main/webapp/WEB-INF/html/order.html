@@ -977,6 +977,7 @@
         };
 
         var confirmOrderFunc = function(data){
+            $("#confirm-order").unbind("click");
             $("#confirm-order").on("click", function(){
                 var scope = angular.element("body").scope();
                 data["saleCode"] = $("#saleCode").text();

@@ -34,9 +34,11 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
         if(stockHelper.getItem()!= null){
             String itemName = stockHelper.getItem().getItemName();
             String itemCode = stockHelper.getItem().getItemCode();
+            Long id = stockHelper.getItem().getId();
 
             if((itemName!=null && itemName.length()>0)
-                    || (itemCode!=null && itemCode.length()>0)) {
+                    || (itemCode!=null && itemCode.length()>0)
+                    || id!=null) {
 
 
                 queryBuilder.append("where ");
@@ -48,6 +50,12 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
                         whereClause.append("and ");
                     }
                     whereClause.append("lower(item.itemName) like lower(:itemName) ");
+                }
+                if(id!=null){
+                    if(whereClause.toString().length()>0){
+                        whereClause.append("and ");
+                    }
+                    whereClause.append("item.id = :itemId ");
                 }
             }
         }
@@ -100,10 +108,11 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
 
             String itemName = stockHelper.getItem().getItemName();
             String itemCode = stockHelper.getItem().getItemCode();
-            String status = stockHelper.getStatus();
+            Long id = stockHelper.getItem().getId();
 
             if((itemName!=null && itemName.length()>0)
-                    || (itemCode!=null && itemCode.length()>0)) {
+                    || (itemCode!=null && itemCode.length()>0)
+                    || id!=null) {
 
                 if(itemName!=null && itemName.length()>0){
                     query.setParameter("itemName","%"+stockHelper.getItem().getItemName().trim()+"%");
@@ -111,6 +120,10 @@ public class StockDaoJpaImpl extends BaseEntityDaoJpaImpl<Stock,Long> implements
 
                 if(itemCode!=null && itemCode.length()>0){
                     query.setParameter("itemCode","%"+stockHelper.getItem().getItemCode().trim()+"%");
+                }
+
+                if(id!=null){
+                    query.setParameter("itemId",id);
                 }
             }
         }
