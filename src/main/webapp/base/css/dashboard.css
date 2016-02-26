@@ -68,7 +68,7 @@
     position: relative;
     width: 100%;
     background: whitesmoke;
-    height: 50%;
+    height: 40%;
     float: left;
     border: solid 5px white;
     border-radius: 20px 20px 20px 20px;
@@ -97,8 +97,8 @@
 
 .emphasis, #today{
     font-family: Segoe, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    color: #007A08;
+    color: #008CBA;
     font-weight: bold;
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-color: #008CBA;
 }

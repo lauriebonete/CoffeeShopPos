@@ -82,7 +82,7 @@
                             <div class="leftContainer">
                                 <div>
                                     <h4 id="today" class="center">Today</i></h4>
-                                    <h4 class="center"><i class="fa fa-sun-o  fa-4x"></i></h4>
+                                    <h4 class="center"><i class="fa fa-shopping-cart fa-4x" style="color:#008CBA"></i></h4>
                                 </div>
                                 <div class="row">
                                     <div class="small-12 columns">
@@ -98,16 +98,27 @@
                                 </div>
                                 <div class="row">
                                     <div class="small-12 columns">
-                                        <h5>Sales per Category <i class="fa fa-pie-chart=today"></i></h5>
-                                        <div id="chartPieContainerToday">
-                                            <canvas id="chart-pie-area-today"/>
-                                        </div>
+                                        <h5>Sales per Category</h5>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5 class="left">Trending Products</h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div id="trending-products" class="small-12 columns">
 
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="small-12 columns">
                                         <h5 class="left">Pending Purchases</h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div id="pending-purchases" class="small-12 columns">
+
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +138,7 @@
                                     </div>
                                 </div>
                                 <div clas="bottomContainer">
-                                    <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-2">
+                                    <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">
                                         <li>
                                             <div class="bottomContainerContent">
                                                 <div class="chartTitle">
@@ -139,6 +150,20 @@
                                                 </div>
                                                 <div id="chartBarContainer">
                                                     <canvas id="chart-bar-area"/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="bottomContainerContent">
+                                                <div class="chartTitle">
+                                                    <h4>Trending Products <i class="fa fa-bar-chart"></i></h4>
+                                                </div>
+                                                <div class="snap-button-container">
+                                                    <a class="button snap-trending-products-week">Week</a>
+                                                    <a class="button snap-trending-products-month">Month</a>
+                                                </div>
+                                                <div id="trending-products-container">
+                                                    <canvas id="chart-bar-area-trending-products"/>
                                                 </div>
                                             </div>
                                         </li>
@@ -336,6 +361,58 @@
                 }
             });
 
+            $.ajax({
+                url: evey.getHome()+"/dashboard/sale-products-month",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.productName,
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "#008CBA",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.productSales
+                            }]
+                    };
+
+                    $.each($("#chart-bar-area-trending-products"),function(i,bar){
+                        var ctx = document.getElementById("chart-bar-area-trending-products").getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+
+            $.ajax({
+                url: evey.getHome()+"/dashboard/pending-purchase",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    for(var i=0; i<data.purchaseCode.length; i++){
+                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + data.purchaseCode[i] + "</h6><h6 class='right emphasis'>" + data.purchaseStatus[i] + "</h6></div>";
+                        $("#pending-purchases").append(addRow);
+                    }
+                }
+            });
+
+            $.ajax({
+                url: evey.getHome()+"/dashboard/sale-products-day",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    for(var i=0; i<data.productName.length; i++){
+                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + data.productName[i] + "</h6><h6 class='right emphasis'>" + data.productSales[i] + "</h6></div>";
+                        $("#trending-products").append(addRow);
+                    }
+                }
+            });
+
         }).on("click", ".snap-week",function(){
             $("#chart-line-area").remove();
             $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
@@ -526,6 +603,65 @@
                     $.each($("#chart-pie-area"),function(i,pie){
                         var ctx = pie.getContext("2d");
                         var myNewChart = new Chart(ctx).Doughnut(pieData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+        }).on("click", ".snap-trending-products-week",function(){
+            $("#chart-bar-area-trending-products").remove();
+            $("#trending-products-container").append("<canvas id='chart-bar-area-trending-products'></canvas>");
+            $.ajax({
+                url: evey.getHome()+"/dashboard/sale-products-week",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.productName,
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                fillColor: "#008CBA",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.productSales
+                            }]
+                    };
+
+                    $.each($("#chart-bar-area-trending-products"),function(i,bar){
+                        var ctx = bar.getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        });
+                    });
+                }
+            });
+        }).on("click", ".snap-trending-products-month",function(){
+            $("#chart-bar-area-trending-products").remove();
+            $("#trending-products-container").append("<canvas id='chart-bar-area-trending-products'></canvas>");
+            $.ajax({
+                url: evey.getHome()+"/dashboard/sale-products-month",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    var barData = {
+                        labels: data.productName,
+                        datasets: [
+                            {
+                                fillColor: "#008CBA",
+                                strokeColor: "#006666",
+                                highlightFill: "#008080",
+                                highlightStroke: "#006666",
+                                data: data.productSales
+                            }]
+                    };
+
+                    $.each($("#chart-bar-area-trending-products"),function(i,bar){
+                        var ctx = bar.getContext("2d");
+                        var myNewChart = new Chart(ctx).Bar(barData,{
                             responsive: true,
                             maintainAspectRatio: false,
                         });

@@ -38,6 +38,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     private static final StringBuilder GET_PRODUCT_SALE_SUMMARY_DATE = new StringBuilder();
     private static final StringBuilder GET_SALE_COUNT_DAY = new StringBuilder();
     private static final StringBuilder GET_CATEGORY_PERCENTAGE = new StringBuilder();
+    private static final StringBuilder GET_ALL_SALES_PER_PRODUCT_BY_DATE = new StringBuilder();
 
     static {
         GET_TOTAL_SALE.append("SELECT IFNULL(SUM(TOTAL_SALE),0) FROM SALE ")
@@ -153,6 +154,15 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("  ) AS SALE ON R.ID = SALE.CATEGORY ")
                 .append("WHERE R.CATEGORY_   = 'CATEGORY_PROD_CATEGORY' ")
                 .append("ORDER BY R.ID  ");
+
+        GET_ALL_SALES_PER_PRODUCT_BY_DATE.append("SELECT IFNULL(PRODUCT.PARENT, PRODUCT_ID) AS PRODUCT_ID, SUM(ORDER_LINE.QUANTITY) AS QTY ")
+                .append("FROM ORDER_LINE AS ORDER_LINE ")
+                .append("LEFT JOIN PRODUCT AS PRODUCT ")
+                .append("ON ORDER_LINE.PRODUCT_ID = PRODUCT.ID ")
+                .append("WHERE STR_TO_DATE(ORDER_LINE.CREATEDATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("AND STR_TO_DATE(ORDER_LINE.CREATEDATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("GROUP BY PRODUCT.ID ")
+                .append("ORDER BY QTY DESC LIMIT 5");
     }
 
     public static RowMapper<ProductSaleHelper> PRODUCT_HELPER = new RowMapper<ProductSaleHelper>() {
@@ -339,5 +349,22 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
             }
         });
         return productSaleHelperList;
+    }
+
+    @Override
+    public Map getAllSalesByProductPerDate(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+        SqlRowSet salePerMonth = template.queryForRowSet(GET_ALL_SALES_PER_PRODUCT_BY_DATE.toString(), params);
+
+        Map salesPerMonthMap = new HashMap();
+
+        while (salePerMonth.next()) {
+            salesPerMonthMap.put(salePerMonth.getString("PRODUCT_ID"), salePerMonth.getString("QTY"));
+        }
+
+        return salesPerMonthMap;
     }
 }

@@ -6,9 +6,22 @@
 
     <sec:http auto-config="false"  use-expressions="true">
         <sec:intercept-url pattern="/dashboard" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/order" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/item" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/inventory" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/purchase" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/report" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/user" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/userRole" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/product" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/productGroup" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/reference" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/branch" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/price" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/priceSet" access="isAuthenticated()" />
         <sec:form-login  login-page="/login"
                      username-parameter="pinDigit"
-                     authentication-failure-url="/Access_Denied"
+                     authentication-failure-url="/login/Access_Denied"
                      default-target-url="/dashboard"/>
         <sec:csrf disabled="true"/>
     </sec:http>

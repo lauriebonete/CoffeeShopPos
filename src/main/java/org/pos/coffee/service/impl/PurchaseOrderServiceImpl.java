@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Laurie on 1/4/2016.
@@ -72,5 +74,10 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
             totalExpense += purchaseOrder.getPrice();
         }
         return totalExpense;
+    }
+
+    @Override
+    public Map getPendingPurchases() {
+        return purchaseOrderDao.getPendingPurchases();
     }
 }

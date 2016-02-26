@@ -152,4 +152,9 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     public List<ProductSaleHelper> getProductExpensePerDate(Date startDate, Date endDate) {
         return saleDaoJdbc.getProductExpensePerDate(startDate,endDate);
     }
+
+    @Override
+    public Map getAllSalesByProductPerDate(Date startDate, Date endDate) {
+        return saleDaoJdbc.getAllSalesByProductPerDate(startDate,endDate);
+    }
 }

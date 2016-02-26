@@ -1,8 +1,11 @@
 package org.pos.coffee.controller;
 
+import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
+import org.pos.coffee.service.ProductService;
+import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.SaleService;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,12 @@ public class DashboardController {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
+
+    @Autowired
+    private ProductService productService;
+
     @RequestMapping(value = "/sale-per-week", method = RequestMethod.GET, produces = "application/json")
       public @ResponseBody Map<String,Object> getSalePerWeek() throws Exception{
 
@@ -56,7 +65,6 @@ public class DashboardController {
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
             Date daySale = dateFormat.parse(dateTodayString.substring(0,2) + "/" + (String) thisEntry.getKey() + "/" + dateTodayString.substring(6));
-            System.out.println(daySale);
             week.add(new SimpleDateFormat("EE").format(daySale));
             sales.add(thisEntry.getValue().toString());
         }
@@ -96,9 +104,8 @@ public class DashboardController {
         String dateTodayString = dateFormat.format(new Date()).toString();
 
         Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
-        Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
 
-        List<Double> saleList = saleService.getSaleCountPerDay(startDate, endDate);
+        List<Double> saleList = saleService.getSaleCountPerDay(startDate, startDate);
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("salesCount",saleList);
 
@@ -180,10 +187,9 @@ public class DashboardController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String dateTodayString = dateFormat.format(new Date()).toString();
 
-        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
-        Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+        Date today = dateFormat.parse(dateFormat.format(new Date().getTime()));
 
-        List<CategoryHelper> categoryHelperList = saleService.getCategoryPercentage(startDate,endDate);
+        List<CategoryHelper> categoryHelperList = saleService.getCategoryPercentage(today,today);
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("category",categoryHelperList);
 
@@ -198,26 +204,15 @@ public class DashboardController {
 
         stockHelperList.addAll(stockService.findStockEntity(stockHelper));
 
-        if(stockHelperList.size()<5){
-            stockHelper.setStatus("critical");
-            stockHelperList.addAll(stockService.findStockEntity(stockHelper));
-        }
-
         List<Double> returnList = new ArrayList<>();
-        int max = 0;
-        if(stockHelperList.size()>5){
-            max = 5;
-        } else {
-            max = stockHelperList.size();
-        }
-        for(int i=0;i<max;i++){
-            returnList.add(stockHelperList.get(i).getQuantity());
-        }
+        int max = stockHelperList.size();
 
         List<String> label = new ArrayList<>();
-        for(int i=0; i<max;i++){
+
+        for(int i=0; i<max; i++){
             StockHelper stockHelperFound = stockHelperList.get(i);
             label.add(stockHelperFound.getItem().getItemName());
+            returnList.add(stockHelperList.get(i).getQuantity());
         }
 
         Map<String,Object> returnMap = new HashMap<>();
@@ -235,26 +230,15 @@ public class DashboardController {
 
         stockHelperList.addAll(stockService.findStockEntity(stockHelper));
 
-        if(stockHelperList.size()<5){
-            stockHelper.setStatus("critical");
-            stockHelperList.addAll(stockService.findStockEntity(stockHelper));
-        }
-
         List<Double> returnList = new ArrayList<>();
-        int max = 0;
-        if(stockHelperList.size()>5){
-            max = 5;
-        } else {
-            max = stockHelperList.size();
-        }
-        for(int i=0;i<max;i++){
-            returnList.add(stockHelperList.get(i).getQuantity());
-        }
+        int max = stockHelperList.size();
 
         List<String> label = new ArrayList<>();
-        for(int i=0; i<max;i++){
+
+        for(int i=0; i<max; i++){
             StockHelper stockHelperFound = stockHelperList.get(i);
             label.add(stockHelperFound.getItem().getItemName());
+            returnList.add(stockHelperList.get(i).getQuantity());
         }
 
         Map<String,Object> returnMap = new HashMap<>();
@@ -262,6 +246,171 @@ public class DashboardController {
         returnMap.put("results",returnList);
 
         return returnMap;
+    }
+
+    @RequestMapping(value = "/pending-purchase", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getPendingPurchases() throws Exception{
+
+        Map pendingPurchasesMap = purchaseOrderService.getPendingPurchases();
+
+        Iterator entries = pendingPurchasesMap.entrySet().iterator();
+        List<String> purchaseCode = new ArrayList<>();
+        List<String> purchaseStatus = new ArrayList<>();
+
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            purchaseCode.add(thisEntry.getKey().toString());
+            purchaseStatus.add(thisEntry.getValue().toString());
+        }
+
+        Collections.reverse(purchaseCode);
+        Collections.reverse(purchaseStatus);
+
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("purchaseCode",purchaseCode);
+        returnMap.put("purchaseStatus",purchaseStatus);
+
+        return returnMap;
+
+    }
+
+    @RequestMapping(value = "/sale-products-day", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getAllSalesByProductTodayk() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));;
+
+        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(startDate, startDate);
+
+        Iterator entries = salesOfProductsByWeek.entrySet().iterator();
+        List<String> productName = new ArrayList<>();
+        List<String> productSales = new ArrayList<>();
+        Product found = null;
+        Product lookFor = new Product();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            lookFor = new Product();
+            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
+
+            List<Product> results = new ArrayList<>();
+            try {
+                results= productService.findEntity(lookFor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            found = null;
+            if(!results.isEmpty()){
+                found = results.get(0);
+            }
+
+            productName.add(found.getProductName());
+            productSales.add(thisEntry.getValue().toString());
+        }
+
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("productName", productName);
+        returnMap.put("productSales", productSales);
+
+        return returnMap;
+
+    }
+
+    @RequestMapping(value = "/sale-products-week", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getAllSalesByProductPerWeek() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Calendar cal = Calendar.getInstance();
+
+        Calendar first = (Calendar) cal.clone();
+        first.add(Calendar.DAY_OF_WEEK, first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+
+        Calendar last = (Calendar) first.clone();
+        last.add(Calendar.DAY_OF_YEAR, 6);
+
+        Date startDate = dateFormat.parse(dateFormat.format(first.getTime()));
+        Date endDate = dateFormat.parse(dateFormat.format(last.getTime()));
+
+        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(startDate, endDate);
+
+        Iterator entries = salesOfProductsByWeek.entrySet().iterator();
+        List<String> productName = new ArrayList<>();
+        List<String> productSales = new ArrayList<>();
+        Product found = null;
+        Product lookFor = new Product();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            lookFor = new Product();
+            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
+
+            List<Product> results = new ArrayList<>();
+            try {
+                results= productService.findEntity(lookFor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            found = null;
+            if(!results.isEmpty()){
+                found = results.get(0);
+            }
+
+            productName.add(found.getProductName());
+            productSales.add(thisEntry.getValue().toString());
+        }
+
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("productName", productName);
+        returnMap.put("productSales", productSales);
+
+        return returnMap;
+
+    }
+
+    @RequestMapping(value = "/sale-products-month", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> getAllSalesByProductPerMonth() throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayString = dateFormat.format(new Date()).toString();
+
+        Date startDate = dateFormat.parse("01/01/"+dateTodayString.substring(6));
+        Date endDate = dateFormat.parse("12/31/"+dateTodayString.substring(6));
+
+        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(startDate, endDate);
+
+        Iterator entries = salesOfProductsByWeek.entrySet().iterator();
+        List<String> productName = new ArrayList<>();
+        List<String> productSales = new ArrayList<>();
+        Product found = null;
+        Product lookFor = new Product();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            lookFor = new Product();
+            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
+
+            List<Product> results = new ArrayList<>();
+            try {
+                results= productService.findEntity(lookFor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            found = null;
+            if(!results.isEmpty()){
+                found = results.get(0);
+            }
+
+            productName.add(found.getProductName());
+            productSales.add(thisEntry.getValue().toString());
+        }
+
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("productName", productName);
+        returnMap.put("productSales", productSales);
+
+        return returnMap;
+
     }
 
     @RequestMapping
