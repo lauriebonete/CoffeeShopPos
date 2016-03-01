@@ -102,6 +102,11 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div id="sales-per-category" class="small-12 columns">
+
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="small-12 columns">
                                         <h5 class="left">Trending Products</h5>
                                     </div>
@@ -126,7 +131,7 @@
                                 <div class="topContainer">
                                     <div>
                                         <div class="chartTitle">
-                                            <h4>Sales <i class="fa fa-line-chart"></i></h4>
+                                            <h4>Sales <span id="filter-line-sales">(Month) </span><i class="fa fa-line-chart"></i></h4>
                                         </div>
                                         <div class="snap-button-container">
                                             <a class="button snap-week">Week</a>
@@ -142,7 +147,7 @@
                                         <li>
                                             <div class="bottomContainerContent">
                                                 <div class="chartTitle">
-                                                    <h4>Inventory <i class="fa fa-bar-chart"></i></h4>
+                                                    <h4>Inventory <span id="filter-bar-stocks">(Critical) </span><i class="fa fa-bar-chart"></i></h4>
                                                 </div>
                                                 <div class="snap-button-container">
                                                     <a class="button snap-low">Low</a>
@@ -156,7 +161,7 @@
                                         <li>
                                             <div class="bottomContainerContent">
                                                 <div class="chartTitle">
-                                                    <h4>Trending Products <i class="fa fa-bar-chart"></i></h4>
+                                                    <h4>Trending Products <span id="filter-bar-trend">(Month) </span><i class="fa fa-bar-chart"></i></h4>
                                                 </div>
                                                 <div class="snap-button-container">
                                                     <a class="button snap-trending-products-week">Week</a>
@@ -170,7 +175,7 @@
                                         <li>
                                             <div class="bottomContainerContent">
                                                 <div class="chartTitle">
-                                                    <h4>Sales per Category <i class="fa fa-pie-chart"></i></h4>
+                                                    <h4>Sales per Category <span id="filter-chart-category">(Month) </span><i class="fa fa-pie-chart"></i></h4>
                                                 </div>
                                                 <div class="snap-button-container">
                                                     <a class="button snap-category-week">Week</a>
@@ -248,7 +253,7 @@
                         datasets: [
                             {
                                 label: "Monthly Sale",
-                                fillColor: "#99cccc",
+                                fillColor: "#008CBA",
                                 strokeColor: "#329999",
                                 pointColor: "#004c4c",
                                 pointStrokeColor: "#fff",
@@ -305,7 +310,7 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
                     var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
 
                     var pieData = [];
@@ -321,37 +326,6 @@
                         pieData.push(category);
                     }
                     $.each($("#chart-pie-area"),function(i,pie){
-                        var ctx = pie.getContext("2d");
-                        var myNewChart = new Chart(ctx).Doughnut(pieData,{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                        });
-                    });
-                }
-            });
-
-            $.ajax({
-                url: evey.getHome()+"/dashboard/category-percentage-today",
-                type: "GET",
-                dataType: "JSON",
-                success:function(data){
-
-                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
-                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
-
-                    var pieData = [];
-                    var categoryList = data.category;
-                    for(var i=0;i<categoryList.length;i++){
-                        var category = {
-                            value: categoryList[i].quantity,
-                            label: categoryList[i].categoryName,
-                            color: shades[i],
-                            highlight: tints[i]
-                        };
-
-                        pieData.push(category);
-                    }
-                    $.each($("#chart-pie-area-today"),function(i,pie){
                         var ctx = pie.getContext("2d");
                         var myNewChart = new Chart(ctx).Doughnut(pieData,{
                             responsive: true,
@@ -413,7 +387,20 @@
                 }
             });
 
+            $.ajax({
+                url: evey.getHome()+"/dashboard/category-percentage-today",
+                type: "GET",
+                dataType: "JSON",
+                success:function(data){
+                    for(var i=0; i<data.category.length; i++){
+                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + data.category[i].categoryName + "</h6><h6 class='right emphasis'>" + data.category[i].quantity + "</h6></div>";
+                        $("#sales-per-category").append(addRow);
+                    }
+                }
+            });
+
         }).on("click", ".snap-week",function(){
+            $("#filter-line-sales").text('(Week) ');
             $("#chart-line-area").remove();
             $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
             $.ajax({
@@ -426,7 +413,7 @@
                         datasets: [
                             {
                                 label: "Weekly Sale",
-                                fillColor: "#99cccc",
+                                fillColor: "#008CBA",
                                 strokeColor: "#329999",
                                 pointColor: "#004c4c",
                                 pointStrokeColor: "#fff",
@@ -449,6 +436,7 @@
                 }
             });
         }).on("click", ".snap-month",function(){
+            $("#filter-line-sales").text('(Month) ');
             $("#chart-line-area").remove();
             $("#chartLineContainer").append("<canvas id='chart-line-area'></canvas>");
             $.ajax({
@@ -461,7 +449,7 @@
                         datasets: [
                             {
                                 label: "Monthly Sale",
-                                fillColor: "#99cccc",
+                                fillColor: "#008CBA",
                                 strokeColor: "#329999",
                                 pointColor: "#004c4c",
                                 pointStrokeColor: "#fff",
@@ -484,6 +472,7 @@
                 }
             });
         }).on("click", ".snap-low",function(){
+            $("#filter-bar-stocks").text('(Low) ');
             $("#chart-bar-area").remove();
             $("#chartBarContainer").append("<canvas id='chart-bar-area'></canvas>");
             $.ajax({
@@ -514,6 +503,7 @@
                 }
             });
         }).on("click", ".snap-critical",function(){
+            $("#filter-bar-stocks").text('(Critical) ');
             $("#chart-bar-area").remove();
             $("#chartBarContainer").append("<canvas id='chart-bar-area'></canvas>");
             $.ajax({
@@ -544,6 +534,7 @@
                 }
             });
         }).on("click", ".snap-category-week",function(){
+            $("#filter-chart-category").text('(Week) ');
             $("#chart-pie-area").remove();
             $("#chartPieContainer").append("<canvas id='chart-pie-area'></canvas>");
             $.ajax({
@@ -552,7 +543,7 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
                     var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
 
                     var pieData = [];
@@ -577,6 +568,7 @@
                 }
             });
         }).on("click", ".snap-category-month",function(){
+            $("#filter-chart-category").text('(Month) ');
             $("#chart-pie-area").remove();
             $("#chartPieContainer").append("<canvas id='chart-pie-area'></canvas>");
             $.ajax({
@@ -585,7 +577,7 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#004040','#004c4c','#005959','#006666','#007373'];
+                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
                     var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
 
                     var pieData = [];
@@ -610,6 +602,7 @@
                 }
             });
         }).on("click", ".snap-trending-products-week",function(){
+            $("#filter-bar-trend").text('(Week) ');
             $("#chart-bar-area-trending-products").remove();
             $("#trending-products-container").append("<canvas id='chart-bar-area-trending-products'></canvas>");
             $.ajax({
@@ -640,6 +633,7 @@
                 }
             });
         }).on("click", ".snap-trending-products-month",function(){
+            $("#filter-bar-trend").text('(Month) ');
             $("#chart-bar-area-trending-products").remove();
             $("#trending-products-container").append("<canvas id='chart-bar-area-trending-products'></canvas>");
             $.ajax({
