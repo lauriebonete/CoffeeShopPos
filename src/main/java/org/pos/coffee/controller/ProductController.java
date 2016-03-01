@@ -82,4 +82,13 @@ public class ProductController extends BaseCrudController<Product> {
         return product;
     }
 
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody void test() {
+        System.out.println("true && true = " + (Boolean)(true && true));
+        System.out.println("true && false = " + (Boolean)(true && false));
+        System.out.println("false && true = " + (Boolean)(false && true));
+        System.out.println("false and false = " + (Boolean)(false && false));
+    }
+
 }

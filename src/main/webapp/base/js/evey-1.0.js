@@ -97,7 +97,9 @@ var evey = (function(){
                 if($(selectize).attr("name")!= null &&
                     $(selectize).attr("name")!= undefined &&
                     $(selectize).attr("name")!= "" &&
-                    !$(selectize).is(":disabled")) {
+                    !$(selectize).is(":disabled") &&
+                    $(selectize).val() != null &&
+                    $(selectize).val() != "") {
 
                     if($(selectize).data("list") != null && $(selectize).data("list") != undefined && !$(selectize).data("list")){
                         var object = new Object();
@@ -269,21 +271,31 @@ var evey = (function(){
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
+                            $(this).find("i.loader").toggleClass("hide");
+                            $(this).find("span.btn-label").toggleClass("hide");
+
+                            $(this).find(".button").toggleClass("disabled");
+                            $(this).find(".button").removeAttr("disabled",true);
+
                             promptSuccess();
                         } else {
+
+                            $(this).find("i.loader").toggleClass("hide");
+                            $(this).find("span.btn-label").toggleClass("hide");
+
+                            $(this).find(".button").toggleClass("disabled");
+                            $(this).find(".button").removeAttr("disabled",true);
                             promptAlert();
                         }
                     },
                     error : function(data) {
+                        $(this).find("i.loader").toggleClass("hide");
+                        $(this).find("span.btn-label").toggleClass("hide");
+
+                        $(this).find(".button").toggleClass("disabled");
+                        $(this).find(".button").removeAttr("disabled",true);
                         promptAlert();
                     },
-                    complete: function(){
-                        $(crudForm).find("i.loader").toggleClass("hide");
-                        $(crudForm).find("span.btn-label").toggleClass("hide");
-
-                        $(crudForm).find(".button").toggleClass("disabled");
-                        $(crudForm).find(".button").removeAttr("disabled",true);
-                    }
                 });
             });
 
@@ -310,20 +322,29 @@ var evey = (function(){
                             angular.element(".main-body").scope().$apply();
 
                             promptSuccess();
+
+                            $(this).find("i.loader").toggleClass("hide");
+                            $(this).find("span.btn-label").toggleClass("hide");
+
+                            $(this).find(".button").toggleClass("disabled");
+                            $(this).find(".button").removeAttr("disabled",true);
                         } else {
                             promptAlert();
+                            $(this).find("i.loader").toggleClass("hide");
+                            $(this).find("span.btn-label").toggleClass("hide");
+
+                            $(this).find(".button").toggleClass("disabled");
+                            $(this).find(".button").removeAttr("disabled",true);
                         }
                     },
                     error : function(data) {
                         promptAlert();
-                    },
-                    complete : function(){
-                        $(updateForm).find("i.loader").toggleClass("hide");
-                        $(updateForm).find("span.btn-label").toggleClass("hide");
+                        $(this).find("i.loader").toggleClass("hide");
+                        $(this).find("span.btn-label").toggleClass("hide");
 
-                        $(updateForm).find(".button").toggleClass("disabled");
-                        $(updateForm).find(".button").removeAttr("disabled",true);
-                    }
+                        $(this).find(".button").toggleClass("disabled");
+                        $(this).find(".button").removeAttr("disabled",true);
+                    },
                 });
             });
 
