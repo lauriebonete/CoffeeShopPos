@@ -30,4 +30,13 @@
 		</property>
 	</bean>
 
+	<bean id="appProperties"
+		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>${app.properties}</value>
+			</list>
+		</property>
+	</bean>
+
 </beans>

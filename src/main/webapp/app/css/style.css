@@ -172,6 +172,12 @@ input[data-toggle]:checked + label:active {
     height: 100%;
 }
 
+.user-image {
+    height: 2.5rem;
+    max-width: 2.5rem;
+    border-radius: 2rem;
+}
+
 @media only screen and (max-width: 64.0625em) {
     table {
         overflow-x: auto;

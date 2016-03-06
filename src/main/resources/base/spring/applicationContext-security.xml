@@ -19,6 +19,8 @@
         <sec:intercept-url pattern="/branch" access="isAuthenticated()" />
         <sec:intercept-url pattern="/price" access="isAuthenticated()" />
         <sec:intercept-url pattern="/priceSet" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/sale" access="isAuthenticated()" />
+        <sec:intercept-url pattern="/about" access="isAuthenticated()" />
         <sec:form-login  login-page="/login"
                      username-parameter="pinDigit"
                      authentication-failure-url="/login/Access_Denied"

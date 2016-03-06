@@ -26,7 +26,16 @@ public class Person extends BaseEntity {
 	@JoinColumn(name="ADDRESS", referencedColumnName = "ID")
 	private Address address;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "IMAGE", referencedColumnName = "ID")
+	private FileDetail personImage;
+
+	@Column(name = "IMAGE", insertable = false, updatable = false)
+	private Long personImageId;
+
 	private transient String completeName;
+
+	private transient String fullName;
 
 	public String getFirstName() {
 		return firstName;
@@ -59,12 +68,28 @@ public class Person extends BaseEntity {
 		this.address = address;
 	}
 
-	public void setCompleteName(String completeName) {
-		this.completeName = completeName;
+	public FileDetail getPersonImage() {
+		return personImage;
+	}
+
+	public void setPersonImage(FileDetail personImage) {
+		this.personImage = personImage;
+	}
+
+	public Long getPersonImageId() {
+		return personImageId;
+	}
+
+	public void setPersonImageId(Long personImageId) {
+		this.personImageId = personImageId;
+	}
+
+	public String getFullName() {
+		return this.lastName+", "+this.firstName;
 	}
 
 	public String getCompleteName(){
-		return this.lastName+", "+this.firstName;
+		return this.firstName+" "+this.lastName;
 	}
 	
 }

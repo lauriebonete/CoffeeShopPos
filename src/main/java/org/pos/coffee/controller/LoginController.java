@@ -83,7 +83,7 @@ public class LoginController implements AuthenticationProvider {
         }
         if(user!=null
                 && user.getPerson()!=null){
-            user.getPerson().getFirstName();
+            user.getPerson().getPersonImage();
         }
         returnMap.put("user",user);
         return returnMap;

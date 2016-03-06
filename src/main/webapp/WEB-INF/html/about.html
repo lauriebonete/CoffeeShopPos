@@ -3,26 +3,25 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="mobile-web-app-capable" content="yes">
     <title>Foundation | Welcome</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
-    <link rel="stylesheet" href="css/foundation-datepicker.min.css">
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
-    <script src="js/foundation-datepicker.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
-    <script src="angular/reportAngular.js"></script>
-    <script src="js/angular-resource.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="angular/currentUserService.js"></script>
+    <script src="angular/aboutAngular.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
-<body ng-app="reportApp" ng-controller="reportController">
+<body ng-app="aboutApp" ng-controller="aboutController">
 <div class="row">
     <div>
         <div class="off-canvas-wrap" data-offcanvas>
@@ -97,75 +96,23 @@
                     </ul>
                 </aside>
                 <section class="main-section main-body">
-                    <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" ng-show="checkIfHasAccess('ACCESS_REPORTS_PAGE')">
-                        <li>
-                            <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_SALE_REPORT')">
-                                <li class="title">Sales</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                        <input class="fcalendar start-date" type="text" readonly>
-                                        <!--<input type="date" class="start-date">-->
-                                    </label>
-
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                        <input class="fcalendar end-date" type="text" readonly>
-                                        <!--<input class="end-date" type="date">-->
-                                    </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary sales">Generate Report</button>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_PURCHASE_REPORT')">
-                                <li class="title">Purchase</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                    <input class="fcalendar start-date-purchase" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                    <input class="fcalendar end-date-purchase" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary purchase">Generate Report</button>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_EXPENSE_REPORT')">
-                                <li class="title">Expense</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                    <input class="fcalendar start-date-expense" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                    <input class="fcalendar end-date-expense" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary expense">Generate Report</button>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_INVENTORY_REPORT')">
-                                <li class="title">Inventory</li>
-                                <li class="cta-button">
-                                    <button class="button secondary inventory">Generate Report</button>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-
+                    <div class="row main-section-row" ng-init="getAboutDetails()">
+                        <div>
+                            <label> Build Version
+                                <span>{{about.build}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label> Product Version
+                                <span>{{about.product}}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label> Framework Version
+                                <span>{{about.framework}}</span>
+                            </label>
+                        </div>
+                    </div>
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -177,24 +124,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
-        $(document).ready({
-
-        }).on("click", ".sales", function(){
-            window.location.href = evey.getHome()+"/report/export-sales?startDateString="+$(".start-date").val()+"&endDateString="+$(".end-date").val();
-        }).on("click", ".inventory", function(){
-            window.location.href = evey.getHome()+"/report/download-inventory";
-        }).on("click", ".purchase", function(){
-            window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
-        }).on("click", ".expense", function(){
-            window.location.href = evey.getHome()+"/report/create-expense?startDateString="+$(".start-date-expense").val()+"&endDateString="+$(".end-date-expense").val();
-        });
-
-        $(".fcalendar").fdatepicker({
-            format: 'mm-dd-yyyy',
-            disableDblClickSelection: true,
-            closeButton: true
-        });
     </script>
 </footer>
 </html>

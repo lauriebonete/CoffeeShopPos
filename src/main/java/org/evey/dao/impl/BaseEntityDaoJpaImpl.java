@@ -11,6 +11,7 @@ import org.evey.utility.CrudUtil;
 import org.evey.utility.NamingUtil;
 import org.evey.utility.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -29,6 +30,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     protected static Logger _log = Logger.getLogger(BaseEntityDaoJpaImpl.class);
 
     @Autowired
+    @Qualifier("queryProperties")
     private Properties queryProperties;
 
     @PersistenceContext
