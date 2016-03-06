@@ -67,7 +67,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
 
     @Override
     public List<T> findEntity(T entity) throws IllegalAccessException{
-        StringBuffer queryBuilder = new StringBuffer();
+        StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append(buildSelectQuery());
         queryBuilder.append(buildJoinQuery(getEntityBeanType(),entity));
         List<QueryHelper> fieldAndValueList = getFields(getEntityBeanType(),entity);
@@ -86,7 +86,19 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
 
     @Override
     public List<T> findAll() {
-        Query query = getEntityManager().createQuery("select obj from "+ getEntityBeanType().getName()+" obj");
+        return findAll(null);
+    }
+
+    @Override
+    public List<T> findAll(T entity) {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("select obj from "+ getEntityBeanType().getName()+" obj");
+
+        if(entity != null){
+            queryBuilder.append(appendOrderClause(entity));
+        }
+
+        Query query = getEntityManager().createQuery(queryBuilder.toString());
         return query.getResultList();
     }
 
@@ -335,7 +347,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
         if(entity.getOrderBy()!=null){
             orderClauseBuilder.append(" ORDER BY ");
             for(Map.Entry<String,String> entry: entity.getOrderBy().entrySet()){
-                if(orderClauseBuilder.toString().length()>9){
+                if(orderClauseBuilder.toString().length()>10){
                     orderClauseBuilder.append(", ");
                 }
                 orderClauseBuilder.append(entry.getKey()+" "+entry.getValue());

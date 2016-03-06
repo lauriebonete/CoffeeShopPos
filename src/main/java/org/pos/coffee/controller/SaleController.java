@@ -2,6 +2,7 @@ package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Branch;
+import org.pos.coffee.bean.Order;
 import org.pos.coffee.bean.Sale;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
@@ -39,6 +40,21 @@ public class SaleController extends BaseCrudController<Sale> {
         Sale saleCreated = saleService.confirmSaleTransaction(sale);
 
         returnMap.put("result", saleCreated);
+        returnMap.put("success", true);
+
+        return returnMap;
+    }
+
+    @RequestMapping(value = "/display-summary", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Map<String,Object> displaySummary(Long id){
+        Map<String,Object> returnMap = new HashMap<>();
+        Sale sale = saleService.load(id);
+        for(Order order: sale.getOrders()){
+            //bypass lazy
+            order.getId();
+        }
+
+        returnMap.put("result", sale);
         returnMap.put("success", true);
 
         return returnMap;

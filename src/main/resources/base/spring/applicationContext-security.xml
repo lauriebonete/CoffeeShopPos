@@ -253,6 +253,20 @@
                 <entry key="ACCESS_ORDER_PAGE">
                     <value>06.01.00.00.00@Access Order Page</value>
                 </entry>
+
+                <!--SALE-->
+                <entry key="ACCESS_SALE_TAB">
+                    <value>07.00.00.00.00@Access Sale Tab</value>
+                </entry>
+                <entry key="ACCESS_SALE_PAGE">
+                    <value>07.01.00.00.00@Access Order Page</value>
+                </entry>
+                <entry key="ACCESS_SHOW_SALE">
+                    <value>07.01.01.00.00@View Sale Summary</value>
+                </entry>
+                <entry key="ACCESS_PRINT_SALE">
+                    <value>07.01.02.00.00@Print Sale Summary</value>
+                </entry>
             </map>
         </property>
     </bean>

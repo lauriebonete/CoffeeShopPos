@@ -131,6 +131,19 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         return map;
     }
 
+    @RequestMapping(value = "/findAllSort", method = RequestMethod.GET, produces = "application/json")
+    public final @ResponseBody Map<String, Object> findAllSort(T entity) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<T> results = new ArrayList<T>();
+        results = baseCrudService.findAll(entity);
+        map.put("message", "success");
+        map.put("status", true);
+        map.put("results", results);
+        map.put("size", results.size());
+        map.put("listSize", entityListSize);
+        return map;
+    }
+
     @RequestMapping(value = "/findAllActive", method = RequestMethod.GET, produces = "application/json")
     public final @ResponseBody Map<String, Object> findAllActive() {
         Map<String, Object> map = new HashMap<String, Object>();

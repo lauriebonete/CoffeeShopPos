@@ -31,6 +31,10 @@ var evey = (function(){
             return window.location.protocol;
         },
 
+        closeParentModal : function(parent){
+            $(parent).foundation('reveal', 'close');
+        },
+
         getMapping : function(){
             return window.location.pathname.replace(/\/$/, '');
         },
@@ -230,7 +234,8 @@ var evey = (function(){
             'search-action': '#search-search-crud-btn',
             'pagination': '.pagination',
             'crud-table': '#crud-table',
-            'search-clear': "#search-clr-crud-btn"
+            'search-clear': "#search-clr-crud-btn",
+            'close-parent-modal': '.close-parent-modal'
         }, options);
 
         return this.each(function(){
@@ -246,6 +251,8 @@ var evey = (function(){
             var mainBody = $(this).find(settings['mainBody']);
 
             var deleteAction = $(this).find(settings['remove']);
+
+            var closeModal = $(this).find(settings["close-parent-modal"]);
 
             var home = evey.getHome();
 
@@ -375,6 +382,10 @@ var evey = (function(){
                         paginate(paginateThis, settings["pagination"]);
                     }
                 })
+            });
+
+            $(closeModal).on("click", function(){
+                evey.closeParentModal($(this).parents("div.reveal-modal"));
             });
 
             $(this).on("click",settings["clear"], function(){

@@ -1,5 +1,6 @@
 package org.pos.coffee.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.evey.annotation.JoinList;
 import org.evey.annotation.UniqueField;
@@ -7,8 +8,11 @@ import org.evey.bean.BaseEntity;
 import org.evey.bean.User;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="SALE")
@@ -35,6 +39,7 @@ public class Sale extends BaseEntity {
 
 	@Column(name="SALE_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM-dd-yyyy")
 	private Date saleDate;
 
 	@Column(name="TOTAL_SALE")
@@ -68,6 +73,8 @@ public class Sale extends BaseEntity {
 			inverseJoinColumns = @JoinColumn(name="PRICE_SET_ID", referencedColumnName = "ID")
 	)
 	private List<PriceSet> appliedPriceSet;
+
+	private transient String displaySaleDate;
 
 	public List<Order> getOrders() {
 		return orders;
@@ -172,5 +179,19 @@ public class Sale extends BaseEntity {
 
 	public void setTaxRate(String taxRate) {
 		this.taxRate = taxRate;
+	}
+
+	@Override
+	public Map<String, String> getOrderBy() {
+		Map<String, String> orderMap = new HashMap<>();
+		orderMap.put("id","DESC");
+		return orderMap;
+	}
+
+	public String getDisplaySaleDate() {
+		if(this.saleDate!=null){
+			return new SimpleDateFormat("MM/dd/yyyy '-' hh:mma").format(this.saleDate);
+		}
+		return displaySaleDate;
 	}
 }

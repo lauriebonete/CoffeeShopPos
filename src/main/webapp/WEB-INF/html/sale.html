@@ -1,0 +1,501 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Maestro Fedeli | References</title>
+    <link rel="stylesheet" href="css/foundation.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/toastr.css"/>
+    <link rel="stylesheet" href="css/foundation-datepicker.min.css">
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/responsive-tables.js"></script>
+    <script src="js/foundation-datepicker.min.js"></script>
+    <script src="js/evey-1.0.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-selectize.js"></script>
+    <script src="js/toastr.js"></script>
+    <script src="angular/currentUserService.js"></script>
+    <script src="angular/crudApp.js"></script>
+    <script src="angular/crudController.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body ng-app="crudApp" ng-controller="crudController">
+<div class="row">
+    <div>
+        <div class="off-canvas-wrap" data-offcanvas>
+            <div class="inner-wrap">
+                <nav class="tab-bar">
+                    <section class="left-small">
+                        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                    <section class="middle tab-bar-section">
+                        <h1 class="title">Maestro Fedeli | References</h1>
+                    </section>
+                    <section class="right-small">
+                        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+                    </section>
+                </nav>
+                <aside class="right-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Logged In User</label></li>
+                        <li><a href="/user/profile" class="canvas navigation"><i class="navigation-icon fa fa-user"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp User Profile</a></li>
+                        <li><a href="/user/logout" class="canvas navigation"><i class="navigation-icon fa fa-sign-out"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Logout</a></li>
+                    </ul>
+                </aside>
+                <aside class="left-off-canvas-menu">
+                    <ul class="off-canvas-list">
+                        <li><label>Coffee Shop POS</label></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_DASHBOARD_TAB')"><a data-url="/dashboard" id="dashboard-off" class="canvas navigation"><i class="navigation-icon fa fa-line-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Dashboard</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_ORDER_TAB')"><a data-url="/order" id="order-off" class="canvas navigation"><i class="navigation-icon fa fa-shopping-cart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Orders</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_SALE_TAB')"><a data-url="/sale" id="sale-off" class="canvas navigation"><i class="navigation-icon fa fa-briefcase"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Sales</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_INVENTORY_TAB')"><a data-url="/inventory" id="inventory-off" class="canvas navigation"><i class="navigation-icon fa fa-bar-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Inventory</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_PURCHASE_TAB')"><a data-url="/purchase" id="purchase-off" class="canvas navigation"><i class="navigation-icon fa fa-money"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Purchase</a></li>
+                        <li ng-show="checkIfHasAccess('ACCESS_REPORTS_TAB')"><a data-url="/report" id="report-off" class="canvas navigation"><i class="navigation-icon fa fa-pie-chart"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp &nbsp Reports</a></li>
+                        <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_ADMIN_TAB')"><a href="#"><i class="fa fa-cogs"></i>&nbsp &nbsp Administration</a>
+                            <ul class="left-submenu">
+                                <li class="back"><a href="#">Back</a></li>
+                                <li><label>Administration Page</label></li>
+                                <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_ACCOUNT_SETTING')"><a href="#"><i class="fa fa-users"></i>&nbsp &nbsp Accounts</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>Account Maintenance</label></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_USER_PAGE')"><a data-url="/user" id="user-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Page</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_USER_ROLE')"><a data-url="/userRole" id="user-role-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp User Role</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_SYSTEM_SETTING')"><a href="#"><i class="fa fa-cog"></i>&nbsp &nbsp System Settings</a>
+                                    <ul class="left-submenu">
+                                        <li class="back"><a href="#">Back</a></li>
+                                        <li><label>System Maintenance</label></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_ITEM_PAGE')"><a data-url="/item" id="item-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Item</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_PRODUCT_PAGE')"><a data-url="/product" id="product-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_PRODUCT_GROUP_PAGE')"><a data-url="/productGroup" id="product-group-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Product Group</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_REFERENCE_PAGE')"><a data-url="/reference" id="reference-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Reference</a></li>
+                                        <li ng-show="checkIfHasAccess('ACCESS_BRANCH_PAGE')"><a data-url="/branch" id="branch-off" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Branch</a></li>
+                                        <li class="has-submenu" ng-show="checkIfHasAccess('ACCESS_PRICING_PAGE')"><a href="#">Pricing</a>
+                                            <ul class="left-submenu">
+                                                <li class="back"><a href="#">Back</a></li>
+                                                <li><label>Price Maintenance</label></li>
+                                                <li ng-show="checkIfHasAccess('ACCESS_PRICE_LIST_PAGE')"><a data-url="/price" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price List</a></li>
+                                                <li ng-show="checkIfHasAccess('ACCESS_PRICE_SET_PAGE')"><a data-url="/priceSet" class="canvas navigation"><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp &nbsp Price Set</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <section class="main-section main-body">
+                    <div class="row main-section-row" id="crud-body" ng-show="checkIfHasAccess('ACCESS_SALE_PAGE')">
+                        <div class="small-4 large-3  columns search-panel" id="crud-search" >
+                            <div class="row">
+                                <div class="small-12 columns bar">
+                                    <h4><i class="fa fa-search"></i>&nbsp Search</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="small-12 columns">
+                                        <label>Sale Code
+                                            <input id="sale-code" type="text" placeholder="Sale Code" name="saleCode"/>
+                                        </label>
+                                        <label>Sale Date
+                                            <input class="fcalendar" type="text" name="saleDate" placeholder="Sale Date">
+                                        </label>
+                                        <div class="rows">
+                                            <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
+                                            <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="small-8 large-9 columns crud-result">
+                            <div class="rows">
+                                <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
+                            </div>
+                            <div class="rows">
+                                <div class="small-12 columns">
+                                    <table class="max-width" id="crud-table" data-url="/sale/findAllSort">
+                                        <thead>
+                                        <tr>
+                                            <th>Sale Code</th>
+                                            <th>Sale Date</th>
+                                            <th>Entered By</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="record in records">
+                                            <td>{{record.saleCode}}</td>
+                                            <td>{{record.displaySaleDate}}</td>
+                                            <td>{{record.server.person.completeName}}</td>
+                                            <td>
+                                                <i class="fa fa-file-text-o edit-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="summary-modal" ng-show="checkIfHasAccess('ACCESS_SHOW_SALE')"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                            <div class="rows">
+                                <div class="pagination-centered">
+                                    <ul class="pagination" role="menubar" aria-label="Pagination">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="summary-modal" class="half-modal reveal-modal crud-modal reveal-modal-absolute" data-reveal aria-labelledby="summary-title" aria-hidden="true" role="dialog">
+                        <h3 id="summary-title">Order Summary</h3>
+                        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                        <div class="columns small-12">
+                            <div class="row">
+                                <div class="small-12 columns receipt" id="receipt">
+                                    <div class="row">
+                                        <div class="small-12 columns">
+                                            <div class="panel-flat">
+                                                <div class="row">
+                                                    <div class="column small-12 center">
+                                                        <h3>Maestro Fedeli</h3>
+                                                        <p id="sale-code"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row header">
+                                                    <div class="columns small-2">
+                                                        <h4 class="center">Quantity</h4>
+                                                    </div>
+                                                    <div class="columns small-4">
+                                                        <h4 class="center">Product Name</h4>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <h4 class="center">Price</h4>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <h4 class="center">Total</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="cart-holder">
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="columns small-2">
+                                                        <p class="center"></p>
+                                                    </div>
+                                                    <div class="columns small-4">
+                                                        <p class="center"></p>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <p class="center">Total:</p>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <p class="center payment-summary-total">90.00</p>
+                                                    </div>
+                                                </div>
+                                                <div class="sale-price-holder">
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="columns small-2">
+                                                        <h4 class="center"></h4>
+                                                    </div>
+                                                    <div class="columns small-4">
+                                                        <h4 class="center"></h4>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <h4 class="center">Grand Total:</h4>
+                                                    </div>
+                                                    <div class="columns small-3">
+                                                        <h4 class="center"><h4 class="total-sale center"></h4></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button class="button expand success" ng-show="checkIfHasAccess('ACCESS_PRINT_SALE')">
+                                    <i class="loader hide fa fa-spinner fa-pulse fa-lg"></i>
+                                    <i class="fa fa-print fa-lg"></i>
+                                    <span class="btn-label">Print</span>
+                                </button>
+                                <button class="button expand secondary close-parent-modal">
+                                    <span class="btn-label">Cancel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <a class="exit-off-canvas"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer>
+
+    <script type="text/html" id="payment-summary-cart">
+        <div class="row header payment-summary-row">
+            <div class="columns small-12">
+                <div class="row header">
+                    <div class="columns small-2">
+                        <p class="center payment-summary-cart-quantity"></p>
+                    </div>
+                    <div class="columns small-4">
+                        <p class="center payment-summary-cart-product"></p>
+                    </div>
+                    <div class="columns small-3">
+                        <p class="center payment-summary-cart-price"></p>
+                    </div>
+                    <div class="columns small-3">
+                        <p class="center payment-summary-cart-total-price"></p>
+                    </div>
+                </div>
+                <div class="row header">
+                    <div class="columns small-12">
+                        <div class="add-summary-cart-holder">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row header">
+                    <div class="columns small-12">
+                        <div class="payment-summary-cart-price-sets">
+
+                        </div>
+                        <div class="payment-summary-price-set-total">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="add-cart-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center add-summary-cart-quantity"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center add-summary-cart-product"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center add-summary-cart-price"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center add-summary-cart-total-price"></p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="price-set-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center price-set-template-discount"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center price-set-template-effect"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center"></p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="price-set-total-template">
+        <div class="row header">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center">Sub-total:</p>
+            </div>
+            <div class="columns small-3">
+                <p class="center price-set-total-template-amount"></p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="sale-level-pricing-template">
+        <div class="row">
+            <div class="columns small-2">
+                <p class="center"></p>
+            </div>
+            <div class="columns small-4">
+                <p class="center sale-level-pricing-name"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center sale-level-pricing-effect"></p>
+            </div>
+            <div class="columns small-3">
+                <p class="center sale-level-pricing-amount"></p>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(document).foundation();
+        $(document).EVEYfy();
+
+        $(".fcalendar").fdatepicker({
+            format: 'mm-dd-yyyy',
+            disableDblClickSelection: true,
+            closeButton: true
+        });
+
+        $(document).ready(function(){
+
+        }).on("click",".edit-action", function(){
+            var id = $(this).attr("data-id");
+            $.ajax({
+                url: evey.getPath()+"/display-summary",
+                data: {"id":id},
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    if(data.success){
+                        console.log(data.result);
+                        displayData(data.result);
+                        $('#summary-modal').foundation('reveal', 'open');
+                    }
+                }
+            });
+        });
+
+        var displayData = function(data){
+            $("#receipt .payment-summary-row").remove();
+            $("#receipt .sale-price-holder .row").remove();
+
+            $("#receipt #sale-code").text(data.saleCode);
+
+            $.each(data.orders,function(i,order){
+                var cartHolder = $("#receipt .cart-holder");
+                $(cartHolder).append($("#payment-summary-cart").html());
+                var cartTemplate = $(cartHolder).find(".payment-summary-row").last();
+                $(cartTemplate).find(".payment-summary-cart-product").text(order.product.productName);
+                $(cartTemplate).find(".payment-summary-cart-quantity").text(order.quantity);
+
+                if(order.listPrice !=null &&
+                        order.listPrice != null &&
+                        order.listPrice.price != null &&
+                        order.listPrice.price != undefined) {
+                    $(cartTemplate).find(".payment-summary-cart-price").text(order.listPrice.price);
+                } else {
+                    $(cartTemplate).find(".payment-summary-cart-price").text(0);
+                }
+
+                if(order.addOnList != null &&
+                        order.addOnList != undefined &&
+                        order.addOnList.length >0){
+
+                    var addOnHolder = $(cartTemplate).find(".add-summary-cart-holder");
+                    $.each(order.addOnList, function(i,addOn){
+                        $(addOnHolder).append($("#add-cart-template").html());
+                        var addOnHolderTemplate = $(addOnHolder).find(".row").last();
+                        $(addOnHolderTemplate).find(".add-summary-cart-quantity").text(addOn.quantity);
+                        $(addOnHolderTemplate).find(".add-summary-cart-product").text(addOn.product.productCode);
+                        $(addOnHolderTemplate).find(".add-summary-cart-price").text(addOn.price);
+                        $(addOnHolderTemplate).find(".add-summary-cart-total-price").text(Number(addOn.price)*Number(addOn.quantity));
+                    });
+                }
+
+                $(cartTemplate).find(".payment-summary-cart-total-price").text(order.totalLinePrice);
+
+                if(order.appliedPriceSet != null &&
+                        order.appliedPriceSet != undefined &&
+                        order.appliedPriceSet.length > 0){
+
+                    var priceSetHolder = $(cartTemplate).find(".payment-summary-cart-price-sets");
+                    $.each(order.appliedPriceSet, function(i, priceSet){
+                        $(priceSetHolder).append($("#price-set-template").html());
+                        var priceSetTemplate = $(priceSetHolder).find(".row").last();
+                        $(priceSetTemplate).find(".price-set-template-discount").text(priceSet.priceSetName);
+
+                        var effect = priceSetEffectDisplay(priceSet);
+                        $(priceSetTemplate).find(".price-set-template-effect").text(effect);
+                        /*$(priceSetTemplate).find(".gross").text(order.grossLinePrice);*/
+                    });
+
+
+                    var grossHolder = $(cartTemplate).find(".payment-summary-price-set-total");
+                    $(grossHolder).append($("#price-set-total-template").html());
+                    var grossTemplate = $(grossHolder).find(".row").last();
+                    $(grossTemplate).find(".price-set-total-template-amount").text(order.grossLinePrice);
+                }
+            });
+
+            if(data.appliedPriceSet!=null
+                    && data.appliedPriceSet != undefined
+                    && data.appliedPriceSet.length>0){
+
+                var saleLevelPrice = $(".sale-price-holder");
+                $.each(data.appliedPriceSet, function(i, priceSet){
+                    $(saleLevelPrice).append($("#sale-level-pricing-template").html());
+                    var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
+                    $(saleLevelTemplate).find(".sale-level-pricing-name").text(priceSet.priceSetName);
+
+                    var effect = priceSetEffectDisplay(priceSet);
+                    $(saleLevelTemplate).find(".sale-level-pricing-effect").text(effect);
+
+                });
+            }
+
+            if(data.tax !=null &&
+                    data.tax >0){
+                var saleLevelPrice = $(".sale-price-holder");
+                $(saleLevelPrice).append($("#sale-level-pricing-template").html());
+                var saleLevelTemplate = $(saleLevelPrice).find(".row").last();
+                $(saleLevelTemplate).find(".sale-level-pricing-name").text("TAX");
+                $(saleLevelTemplate).find(".sale-level-pricing-effect").text(data.taxRate);
+                $(saleLevelTemplate).find(".sale-level-pricing-amount").text(data.tax);
+                $(".tax-summary").text("PHP "+data.tax);
+            }
+
+            $(".payment-summary-total").text(data.grossTotalLinePrice);
+            $(".total-sale").text(data.totalSale);
+            $(".summary-total-balance").text("PHP "+data.totalSale);
+            $(".summary-total-balance").attr("data-balance",data.totalSale);
+        };
+
+        var priceSetEffectDisplay = function(priceSet){
+            var moreOrLess = null;
+            if(priceSet.isDiscount!= null &&
+                    priceSet.isDiscount!= undefined &&
+                    priceSet.isDiscount){
+                moreOrLess = "LESS";
+            } else {
+                moreOrLess = "ADD";
+            }
+
+            var percentOrPhp = null;
+            if(priceSet.isPercentage!= null &&
+                    priceSet.isPercentage!= undefined &&
+                    priceSet.isPercentage){
+                percentOrPhp = "%";
+            } else {
+                percentOrPhp = "php"
+            }
+
+            return moreOrLess+" "+priceSet.priceSetModifier+percentOrPhp;
+        };
+
+    </script>
+</footer>
+</html>
