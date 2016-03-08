@@ -79,6 +79,8 @@ public class Purchase extends BaseEntity {
 
     private transient Boolean isForReceival;
 
+    private transient Boolean isCanBeCancelled;
+
     private transient String displayRequestDate;
 
     private transient String displayPurchaseDate;
@@ -89,6 +91,13 @@ public class Purchase extends BaseEntity {
         if(Status.IN_TRANSIT.equals(Status.findByString(this.status))
                 || Status.IN_PROGRESS.equals(Status.findByString(this.status))
                 || Status.RECEIVED.equals(Status.findByString(this.status))) {
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean getIsCanBeCancelled() {
+        if(!Status.RECEIVED.equals(Status.findByString(this.status))) {
             return true;
         }
         return false;

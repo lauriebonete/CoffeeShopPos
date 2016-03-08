@@ -26,6 +26,7 @@
                      authentication-failure-url="/login/Access_Denied"
                      default-target-url="/dashboard"/>
         <sec:csrf disabled="true"/>
+        <sec:logout logout-url="/logout" logout-success-url="/"></sec:logout>
     </sec:http>
 
     <sec:authentication-manager >
@@ -227,6 +228,9 @@
                 <entry key="CONTROL_PURCHASE_RECEIVE">
                     <value>04.01.02.02.00@Receive PO Requests</value>
                 </entry>
+                <entry key="CONTROL_PURCHASE_CANCEL">
+                    <value>04.01.02.03.00@Cancel PO Requests</value>
+                </entry>
 
                 <!--REPORTS-->
                 <entry key="ACCESS_REPORTS_TAB">
@@ -261,7 +265,7 @@
                     <value>07.00.00.00.00@Access Sale Tab</value>
                 </entry>
                 <entry key="ACCESS_SALE_PAGE">
-                    <value>07.01.00.00.00@Access Order Page</value>
+                    <value>07.01.00.00.00@Access Sale Page</value>
                 </entry>
                 <entry key="ACCESS_SHOW_SALE">
                     <value>07.01.01.00.00@View Sale Summary</value>

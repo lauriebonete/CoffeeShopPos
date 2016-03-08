@@ -55,7 +55,7 @@
                                 <i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>
                                 &nbsp {{loggedUser.person.completeName}}</a>
                         </li>
-                        <li><a href="/user/logout" class="canvas navigation"><i class="navigation-icon fa fa-sign-out"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp Logout</a></li>
+                        <li><a href="/logout" class="canvas navigation"><i class="navigation-icon fa fa-sign-out"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i> &nbsp Logout</a></li>
                     </ul>
                 </aside>
                 <aside class="left-off-canvas-menu">
@@ -262,8 +262,8 @@
                                     <div class="rows" ng-if="recordFound.isForReceival">
                                         <button class="button expand success" ng-show="checkIfHasAccess('CONTROL_PURCHASE_RECEIVE')" id="restock-receive-btn">Receive</button>
                                     </div>
-                                    <div class="rows">
-                                        <button class="button expand alert restock-action-btn" data-status="Cancelled">Cancel Purchase Request</button>
+                                    <div class="rows" ng-if="recordFound.isCanBeCancelled">
+                                        <button class="button expand alert restock-action-btn" ng-show="checkIfHasAccess('CONTROL_PURCHASE_CANCEL')" data-status="Cancelled">Cancel Purchase Request</button>
                                     </div>
                                 </div>
                             </div>
