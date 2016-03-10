@@ -32,8 +32,17 @@
 }
 
 .main-section {
-    margin-top: 1vh;
-    height: 92vh;
+    /* Firefox */
+    height: -moz-calc(100vh - 2.8125rem);
+    /* WebKit */
+    height: -webkit-calc(100vh - 2.8125rem);
+    /* Opera */
+    height: -o-calc(100vh - 2.8125rem);
+    /* Standard */
+    height: calc(100vh - 2.8125rem);
+    padding-top: 5px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .main-section-row {
@@ -200,7 +209,9 @@ input[data-toggle]:checked + label:active {
     }
 
     .reveal-modal {
-        min-height: 0;
+        height: 100vh;
+        overflow: hidden;
+        overflow-y: auto;
     }
 }
 
@@ -212,15 +223,17 @@ input[data-toggle]:checked + label:active {
     }
 
     .half-modal{
-        width: 100%;
+        width: 80%;
     }
 
     .reveal-modal.crud-modal {
-        width:100%;
+        width:80%;
     }
 
     .reveal-modal {
-        min-height: 0;
+        height: 80vh;
+        overflow: hidden;
+        overflow-y: auto;
     }
 }
 
@@ -236,7 +249,13 @@ input[data-toggle]:checked + label:active {
     }
 
     .reveal-modal.crud-modal {
-        width:40%;
+        width:60%;
+    }
+
+    .reveal-modal {
+        height: 72vh;
+        overflow: hidden;
+        overflow-y: auto;
     }
 }
 

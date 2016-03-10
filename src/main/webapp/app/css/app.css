@@ -1,3 +1,8 @@
+body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 .icon-bar {
     height: 70vh;
     overflow: hidden;
@@ -17,18 +22,32 @@
 }
 
 .side-nav {
+    /* Firefox */
+    height: -moz-calc(100vh - 2.8125rem);
+    /* WebKit */
+    height: -webkit-calc(100vh - 2.8125rem);
+    /* Opera */
+    height: -o-calc(100vh - 2.8125rem);
+    /* Standard */
+    height: calc(100vh - 2.8125rem);
     float: left;
-    height: 100vh;
     margin: 0;
     padding: 0;
     border-right: solid 4px white;
 }
 
 .content {
+    /* Firefox */
+    height: -moz-calc(100vh - 2.8125rem);
+    /* WebKit */
+    height: -webkit-calc(100vh - 2.8125rem);
+    /* Opera */
+    height: -o-calc(100vh - 2.8125rem);
+    /* Standard */
+    height: calc(100vh - 2.8125rem);
     width: 60vw;
     float: left;
     display: block;
-    max-height: 95vh;
     overflow: hidden;
     overflow-y: auto;
     position: relative;
@@ -282,4 +301,27 @@
     max-height: 25vh;
     overflow: hidden;
     overflow-y: auto;
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 50px;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: grey;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: grey;
 }
