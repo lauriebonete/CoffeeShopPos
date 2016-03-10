@@ -105,7 +105,7 @@ public class InventoryReport extends Report {
 
             cell = row.createCell(5);
             cell.setCellStyle(cellStyle);
-            cell.setCellValue("");
+            cell.setCellValue(stockHelper.getStatus().toUpperCase());
         }
 
         sheet.autoSizeColumn(0);

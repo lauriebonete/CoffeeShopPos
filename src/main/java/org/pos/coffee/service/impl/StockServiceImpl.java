@@ -41,18 +41,6 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
     @Override
     public void createInventoryForReceivingPO(List<PurchaseOrder> purchaseOrderList) throws Exception{
         for(PurchaseOrder purchaseOrder: purchaseOrderList){
-            if(purchaseOrder.getReceivedQuantity()!=null){
-
-                Item item = itemService.load(purchaseOrder.getOrderedItem().getId());
-
-                Stock stock = new Stock();
-                stock.setItem(purchaseOrder.getOrderedItem());
-                stock.setQuantity(purchaseOrder.getReceivedQuantity());
-                stock.setPrice(item.getUnitPrice());
-                stock.setIsActive(true);
-                stockDao.save(stock);
-            }
-
             List<Stock> stockList = new ArrayList<>();
 
             Stock lookFor = new Stock();
@@ -75,6 +63,27 @@ public class StockServiceImpl extends BaseCrudServiceImpl<Stock> implements Stoc
             for (Stock inactive: stockList){
                 inactive.setIsActive(false);
                 stockDao.save(inactive);
+            }
+
+            List<Stock> resultNegative = this.findEntityByNamedQuery("jpql.stock.retrieve-negative-stocks",params);
+            Double remainingBalance = purchaseOrder.getReceivedQuantity();
+            for(Stock negative: resultNegative){
+                remainingBalance -= Math.abs(negative.getQuantity());
+                negative.setQuantity(0D);
+                negative.setIsActive(false);
+                stockDao.save(negative);
+            }
+
+            if(purchaseOrder.getReceivedQuantity()!=null){
+
+                Item itemLoad = itemService.load(purchaseOrder.getOrderedItem().getId());
+
+                Stock stock = new Stock();
+                stock.setItem(purchaseOrder.getOrderedItem());
+                stock.setQuantity(remainingBalance);
+                stock.setPrice(itemLoad.getUnitPrice());
+                stock.setIsActive(true);
+                stockDao.save(stock);
             }
         }
     }

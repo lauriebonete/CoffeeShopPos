@@ -4,7 +4,9 @@ import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.bean.helper.report.ConsumptionHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,4 +15,5 @@ import java.util.Map;
  */
 public interface ItemService extends BaseCrudService<Item> {
     public List<OrderExpenseHelper> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception;
+    public List<ConsumptionHelper> oountConsumedItem(Date startDate, Date endDate);
 }

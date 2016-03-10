@@ -7,10 +7,7 @@ import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.*;
-import org.pos.coffee.bean.poi.format.ExpenseReport;
-import org.pos.coffee.bean.poi.format.InventoryReport;
-import org.pos.coffee.bean.poi.format.PurchaseReport;
-import org.pos.coffee.bean.poi.format.SalesReport;
+import org.pos.coffee.bean.poi.format.*;
 import org.pos.coffee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +47,9 @@ public class ReportController {
 
     @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(value = "/export-sales", method = RequestMethod.GET)
     public void exportSales(HttpServletRequest request, HttpServletResponse response, @RequestParam String startDateString, @RequestParam String endDateString) throws Exception{
@@ -96,6 +96,28 @@ public class ReportController {
                 out.close();
         }
 
+    }
+
+    @RequestMapping(value = "/create-consumption", method = RequestMethod.GET)
+    public void createConsumptionExcel(HttpServletRequest request, HttpServletResponse response, @RequestParam String startDateString, @RequestParam String endDateString) throws Exception{
+        Date startDate = new SimpleDateFormat("MM-dd-yyyy").parse(startDateString);
+        Date endDate = new SimpleDateFormat("MM-dd-yyyy").parse(endDateString);
+
+        String fileName = "Consumption_Report_for_"+startDateString+"_to_"+endDateString;
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+fileName+".xlsx");
+
+        List<ConsumptionHelper> consumptionHelperList = itemService.oountConsumedItem(startDate,endDate);
+
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            new ConsumptionReport(consumptionHelperList).publishReport(out);
+            out.flush();
+        } finally {
+            if(out != null)
+                out.close();
+        }
     }
 
     @RequestMapping(value = "/download-inventory", method = RequestMethod.GET)

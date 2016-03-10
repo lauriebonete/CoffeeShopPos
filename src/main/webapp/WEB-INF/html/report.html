@@ -92,7 +92,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a data-url="/about" class="canvas navigation"><i class="fa fa-code"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp Propeller</a></li>
+                                <li><a data-url="/about" class="canvas navigation"><i class="navigation-icon fa fa-code"></i><i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>&nbsp Propeller</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -164,6 +164,24 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <ul class="pricing-table">
+                                <li class="title">Consumption</li>
+                                <li class="bullet-item">
+                                    <label>Start Date
+                                        <input class="fcalendar start-date-consumption" type="text" readonly>
+                                    </label>
+                                </li>
+                                <li class="bullet-item">
+                                    <label>End Date
+                                        <input class="fcalendar end-date-consumption" type="text" readonly>
+                                    </label>
+                                </li>
+                                <li class="cta-button">
+                                    <button class="button secondary consumption">Generate Report</button>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
 
 
@@ -189,6 +207,8 @@
             window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
         }).on("click", ".expense", function(){
             window.location.href = evey.getHome()+"/report/create-expense?startDateString="+$(".start-date-expense").val()+"&endDateString="+$(".end-date-expense").val();
+        }).on("click", ".consumption", function(){
+            window.location.href = evey.getHome()+"/report/create-consumption?startDateString="+$(".start-date-consumption").val()+"&endDateString="+$(".end-date-consumption").val();
         });
 
         $(".fcalendar").fdatepicker({

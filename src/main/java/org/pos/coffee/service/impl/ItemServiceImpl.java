@@ -5,12 +5,15 @@ import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Stock;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.bean.helper.report.ConsumptionHelper;
+import org.pos.coffee.dao.ItemDaoJdbc;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,9 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private ItemDaoJdbc itemDaoJdbc;
 
     @Override
     public List<OrderExpenseHelper> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception{
@@ -45,7 +51,52 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
 
                     List<Stock> stockList = stockService.findActiveEntity(stock);
 
-                    for(Stock foundStock: stockList){
+                    for(int i=0; i<=stockList.size()-1;i++){
+                        Stock foundStock = stockList.get(i);
+
+                        if(foundStock.getQuantity()!=null) {
+                            if(foundStock.getQuantity()>=deductAmount){
+                                foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
+                                totalExpense += deductAmount * foundStock.getPrice();
+                                if(foundStock.getQuantity()<=0){
+                                    foundStock.setIsActive(false);
+                                }
+                                deductAmount = 0D;
+                            } else if(foundStock.getQuantity()>0) {
+                                deductAmount -= foundStock.getQuantity();
+                                totalExpense += foundStock.getQuantity() * foundStock.getPrice();
+                                if(i==stockList.size()-1){
+                                    foundStock.setQuantity(0-deductAmount);
+                                    deductAmount = 0D;
+                                } else {
+                                    foundStock.setQuantity(0D);
+                                    foundStock.setIsActive(false);
+                                }
+                            } else {
+                                //if the foundStock is already negative and there are still foundStock on the list, don't do anything
+                                //let the loop continue
+                                if(i==stockList.size()-1){
+                                    foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
+                                    deductAmount = 0D;
+                                }
+                            }
+                            if(deductAmount<=0){
+                                break;
+                            }
+                        } else {
+                            if(i==stockList.size()-1){
+                                foundStock.setQuantity(0-deductAmount);
+                                deductAmount = 0D;
+                            } else {
+                                foundStock.setIsActive(false);
+                            }
+                        }
+
+
+                        stockService.save(foundStock);
+                    }
+
+                    /*for(Stock foundStock: stockList){
                         if(foundStock.getQuantity()!=null){
                             if(foundStock.getQuantity()>=deductAmount){
                                 foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
@@ -67,12 +118,17 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
                             foundStock.setIsActive(false);
                         }
                         stockService.save(foundStock);
-                    }
+                    }*/
                 }
             }
             orderExpenseHelper.setExpense(totalExpense);
             orderExpenseHelpers.add(orderExpenseHelper);
         }
         return orderExpenseHelpers;
+    }
+
+    @Override
+    public List<ConsumptionHelper> oountConsumedItem(Date startDate, Date endDate) {
+        return itemDaoJdbc.oountConsumedItem(startDate,endDate);
     }
 }
