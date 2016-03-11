@@ -1,0 +1,10 @@
+#user-profile-details {
+    background: green;
+}
+
+#user-profile-picture-container {
+    width:250px;
+    height:250px;
+    border-radius: 50%;
+    background: yellow;
+}
