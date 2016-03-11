@@ -333,25 +333,10 @@ public class DashboardController {
         Iterator entries = salesOfProductsByWeek.entrySet().iterator();
         List<String> productName = new ArrayList<>();
         List<String> productSales = new ArrayList<>();
-        Product found = null;
-        Product lookFor = new Product();
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
-            lookFor = new Product();
-            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
 
-            List<Product> results = new ArrayList<>();
-            try {
-                results= productService.findEntity(lookFor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            found = null;
-            if(!results.isEmpty()){
-                found = results.get(0);
-            }
-
-            productName.add(found.getProductName());
+            productName.add(thisEntry.getKey().toString());
             productSales.add(thisEntry.getValue().toString());
         }
 
@@ -366,36 +351,21 @@ public class DashboardController {
     @RequestMapping(value = "/sale-products-month", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Map<String,Object> getAllSalesByProductPerMonth() throws Exception{
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        String dateTodayString = dateFormat.format(new Date()).toString();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        Date lastDayOfMonth = cal.getTime();
+        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
+        Date firstDayOfMonth = cal.getTime();
 
-        Date startDate = dateFormat.parse("01/01/"+dateTodayString.substring(6));
-        Date endDate = dateFormat.parse("12/31/"+dateTodayString.substring(6));
-
-        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(startDate, endDate);
+        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(firstDayOfMonth, lastDayOfMonth);
 
         Iterator entries = salesOfProductsByWeek.entrySet().iterator();
         List<String> productName = new ArrayList<>();
         List<String> productSales = new ArrayList<>();
-        Product found = null;
-        Product lookFor = new Product();
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
-            lookFor = new Product();
-            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
 
-            List<Product> results = new ArrayList<>();
-            try {
-                results= productService.findEntity(lookFor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            found = null;
-            if(!results.isEmpty()){
-                found = results.get(0);
-            }
-
-            productName.add(found.getProductName());
+            productName.add(thisEntry.getKey().toString());
             productSales.add(thisEntry.getValue().toString());
         }
 
