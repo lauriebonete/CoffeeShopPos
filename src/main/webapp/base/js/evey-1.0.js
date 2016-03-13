@@ -39,6 +39,23 @@ var evey = (function(){
             return window.location.pathname.replace(/\/$/, '');
         },
 
+        promptSuccess : function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.success('Transaction Successful!');
+
+        },
+
+        promptAlert : function() {
+            toastr.options.positionClass = 'toast-bottom-full-width';
+            toastr.options.closeMethod = 'fadeOut';
+            toastr.options.closeDuration = 300;
+            toastr.options.closeEasing = 'swing';
+            toastr.error('Transaction Failed! Double check your inputs and try again.');
+        },
+
         JSONnify : function(form) {
             var jsonObject = new Object();
             $.each($(form).find("input"),function(i,input){
@@ -235,7 +252,8 @@ var evey = (function(){
             'pagination': '.pagination',
             'crud-table': '#crud-table',
             'search-clear': "#search-clr-crud-btn",
-            'close-parent-modal': '.close-parent-modal'
+            'close-parent-modal': '.close-parent-modal',
+            'ajax-loader': '.ajax-loader'
         }, options);
 
         return this.each(function(){
@@ -254,7 +272,28 @@ var evey = (function(){
 
             var closeModal = $(this).find(settings["close-parent-modal"]);
 
+            var ajaxLoad = $(this).find(settings["ajax-loader"]);
+
             var home = evey.getHome();
+
+            $(ajaxLoad).on("click", function(){
+                console.log($(this));
+
+                var clickLoader = $(this);
+
+                $(clickLoader).find(".loader").toggleClass("hide");
+                $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
+
+                $(document).ready(function(){
+
+                }).on("ajaxStop.ajaxLoader",function(){
+                    console.log($(clickLoader));
+                    $(clickLoader).find(".loader").toggleClass("hide");
+                    $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
+
+                    $(document).off("ajaxStop.ajaxLoader");
+                });
+            });
 
             $(crudForm).on("valid.fndtn.abide",function(){
                 $(this).find("i.loader").toggleClass("hide");

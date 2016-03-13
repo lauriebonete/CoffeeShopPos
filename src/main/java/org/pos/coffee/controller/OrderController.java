@@ -133,7 +133,9 @@ public class OrderController extends BaseCrudController<Order> {
                     if(priceSet.getIsDiscount()){
                         double discount = 0;
                         if(priceSet.getIsPercentage()){
-                            discount = subtotal * (priceSet.getPriceSetModifier()/100);
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            df.setRoundingMode(RoundingMode.DOWN);
+                            discount = Double.valueOf(df.format(subtotal * (priceSet.getPriceSetModifier()/100)));
                             gross -= discount;
                         } else {
                             discount = priceSet.getPriceSetModifier();
@@ -144,7 +146,9 @@ public class OrderController extends BaseCrudController<Order> {
                     } else {
                         double surcharge = 0;
                         if(priceSet.getIsPercentage()){
-                            surcharge = subtotal * (priceSet.getPriceSetModifier()/100);
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            df.setRoundingMode(RoundingMode.UP);
+                            surcharge = Double.valueOf(df.format(subtotal * (priceSet.getPriceSetModifier()/100)));
                             gross += surcharge;
                         } else {
                             surcharge = priceSet.getPriceSetModifier();
@@ -198,7 +202,7 @@ public class OrderController extends BaseCrudController<Order> {
         if(applyTax!=null &&
                 "TRUE".equals(applyTax.getValue())){
 
-            DecimalFormat df = new DecimalFormat("#.###");
+            DecimalFormat df = new DecimalFormat("#.##");
             df.setRoundingMode(RoundingMode.HALF_EVEN);
 
             double taxRate = applyTax.getNumberValue().doubleValue()/100;

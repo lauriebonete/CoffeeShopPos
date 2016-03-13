@@ -8,6 +8,8 @@ import org.pos.coffee.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -125,7 +127,9 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
                         double discount = 0;
                         if(priceSet.getIsPercentage() != null &&
                                 priceSet.getIsPercentage()){
-                            discount = total  * (priceSet.getPriceSetModifier()/100);
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            df.setRoundingMode(RoundingMode.DOWN);
+                            discount = Double.valueOf(df.format(total  * (priceSet.getPriceSetModifier()/100)));
                             total -= discount;
                         } else {
                             discount = priceSet.getPriceSetModifier();
@@ -136,7 +140,9 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
                         double surcharge = 0;
                         if(priceSet.getIsPercentage() != null &&
                                 priceSet.getIsPercentage()){
-                            surcharge = total  * (priceSet.getPriceSetModifier()/100);
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            df.setRoundingMode(RoundingMode.UP);
+                            surcharge = Double.valueOf(df.format(total  * (priceSet.getPriceSetModifier()/100)));
                             total += surcharge;
                         } else {
                             surcharge = priceSet.getPriceSetModifier();
@@ -156,7 +162,7 @@ public class PriceSetServiceImpl extends BaseCrudServiceImpl<PriceSet> implement
         sale.setTotalSurcharge(totalSurcharge);
         sale.setTotalDiscount(totalDiscount);
         sale.setAppliedPriceSet(appliedPriceSet);
-        sale.setTotalSale(total);
+        sale.setTotalSale(Double.valueOf(new DecimalFormat("#.##").format(total)));
         return sale;
     }
 

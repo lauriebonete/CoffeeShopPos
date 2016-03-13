@@ -64,9 +64,6 @@ public class LoginController implements AuthenticationProvider {
         }
         returnMap.put("user",user);
         Branch branch = branchService.getBranchUsingMac(loginService.getMacAddress());
-        if(branch==null){
-            branch = new Branch();
-        }
         returnMap.put("branch",branch);
 
 
@@ -93,9 +90,6 @@ public class LoginController implements AuthenticationProvider {
     public @ResponseBody Map<String, Object> getDeviceBranch() throws Exception{
         Map<String,Object> returnMap = new HashMap<>();
         Branch branch = branchService.getBranchUsingMac(loginService.getMacAddress());
-        if(branch==null){
-            branch = new Branch();
-        }
         returnMap.put("branch",branch);
         return returnMap;
     }

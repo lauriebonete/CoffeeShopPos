@@ -1,7 +1,9 @@
 package org.evey.utility;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by Laurie on 11/27/2015.
@@ -54,5 +56,29 @@ public class FileUtil {
                 return FileUtil.class.getClassLoader().getResourceAsStream(name);
             }
         }
+    }
+
+    public static String generateFilePath(String fileName, String filePath){
+        Date date = new Date();
+        String dateFormat = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+
+        Random randomGenerator = new Random();
+        int random = randomGenerator.nextInt(100);
+
+        File directory = createDirectory(filePath);
+        String subdir = (new StringBuilder())
+                .append(directory.getAbsoluteFile())
+                .append(File.separator)
+                .append(createSubdirectory()).toString();
+        File subDirectory = createDirectory(subdir);
+
+        String path = (new StringBuilder())
+                .append(subDirectory.getAbsoluteFile())
+                .append(File.separator)
+                .append(dateFormat+"_")
+                .append(Integer.toString(random)+"_")
+                .append(fileName).toString();
+
+        return path;
     }
 }

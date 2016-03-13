@@ -23,7 +23,11 @@ public class BranchDaoJpaImpl extends BaseEntityDaoJpaImpl<Branch,Long> implemen
         List<String> list = new ArrayList<>();
         list.add(macAddress);
         queryObj.setParameter("macAddresses", list);
-        Branch object = (Branch) queryObj.getSingleResult();
+        List<Branch> branchList = queryObj.getResultList();
+        Branch object = new Branch();
+        if(!branchList.isEmpty()) {
+            object = branchList.get(0);
+        }
         return object;
     }
 }

@@ -40,6 +40,17 @@ public abstract class BaseCrudController<T extends BaseEntity> {
 
     protected Integer entityListSize = 10;
 
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody Map<String,Object> handleException(Exception e){
+        Map<String,Object> returnMap = new HashMap<>();
+
+        e.printStackTrace();
+
+        returnMap.put("status", false);
+        returnMap.put("message", "Ooopppsie. Something went wrong, but don't worry we're still awesome as ever.");
+        return returnMap;
+    }
+
     @PostConstruct
     public void setProperties() {
         this.entityBeanType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];

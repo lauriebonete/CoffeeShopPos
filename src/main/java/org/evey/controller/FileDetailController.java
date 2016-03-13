@@ -48,7 +48,7 @@ public class FileDetailController extends BaseCrudController<FileDetail> {
         // Iterate through the map
         for (MultipartFile multipartFile : fileMap.values()) {
 
-            String path = generateFilePath(multipartFile.getOriginalFilename());
+            String path = FileUtil.generateFilePath(multipartFile.getOriginalFilename(), filePath);
             createFileFromBytes(multipartFile, path);
 
             FileDetail uploadFile = new FileDetail();

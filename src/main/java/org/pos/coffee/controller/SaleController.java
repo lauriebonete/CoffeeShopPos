@@ -1,6 +1,7 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
+import org.evey.service.ReceiptPDFService;
 import org.pos.coffee.bean.Branch;
 import org.pos.coffee.bean.Order;
 import org.pos.coffee.bean.Sale;
@@ -34,10 +35,14 @@ public class SaleController extends BaseCrudController<Sale> {
     @Autowired
     private BranchService branchService;
 
+    @Autowired
+    private ReceiptPDFService receiptPDFService;
+
     @RequestMapping(value = "/confirm", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody Map<String,Object> confirmOrder(@RequestBody Sale sale) throws Exception{
         Map<String, Object> returnMap = new HashMap<>();
         Sale saleCreated = saleService.confirmSaleTransaction(sale);
+        receiptPDFService.generateReceiptPDF(saleCreated);
 
         returnMap.put("result", saleCreated);
         returnMap.put("success", true);

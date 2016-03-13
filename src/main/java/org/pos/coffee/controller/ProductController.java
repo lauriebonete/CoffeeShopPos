@@ -1,9 +1,11 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
+import org.evey.service.ReceiptPDFService;
 import org.pos.coffee.bean.FileDetail;
 import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.ProductGroup;
+import org.pos.coffee.bean.Sale;
 import org.pos.coffee.service.FileDetailService;
 import org.pos.coffee.service.ProductGroupService;
 import org.pos.coffee.service.ProductService;
@@ -35,6 +37,9 @@ public class ProductController extends BaseCrudController<Product> {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReceiptPDFService receiptPDFService;
 
     @RequestMapping(value = "/ingredient", method = RequestMethod.POST, produces = "application/json")
     public void addIngredients(@RequestBody Product product){
@@ -85,10 +90,7 @@ public class ProductController extends BaseCrudController<Product> {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody void test() {
-        System.out.println("true && true = " + (Boolean)(true && true));
-        System.out.println("true && false = " + (Boolean)(true && false));
-        System.out.println("false && true = " + (Boolean)(false && true));
-        System.out.println("false and false = " + (Boolean)(false && false));
+        receiptPDFService.generateReceiptPDF(new Sale());
     }
 
 }
