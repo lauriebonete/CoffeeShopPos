@@ -1,10 +1,21 @@
+#user-profile-container {
+}
+
 #user-profile-details {
-    background: green;
+    text-align: center;
 }
 
 #user-profile-picture-container {
     width:250px;
     height:250px;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#user-profile-image {
+    width:250px;
+    height:250px;
     border-radius: 50%;
-    background: yellow;
 }

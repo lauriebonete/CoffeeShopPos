@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
+    <link rel="stylesheet" href="css/userprofile.css"/>
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -41,7 +42,7 @@
                     <ul class="off-canvas-list">
                         <li><label>Logged In User</label></li>
                         <li>
-                            <a href="/user/profile" class="canvas navigation">
+                            <a href="/userprofile" class="canvas navigation">
                                 <i class="navigation-icon fa fa-user" ng-if="loggedUser.person.personImageId == null"></i>
                                 <img ng-if="loggedUser.person.personImageId != null" ng-src="file/viewImage/{{loggedUser.person.personImageId}}" alt="" class="navigation-icon user-image"/>
                                 <i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>
@@ -99,10 +100,11 @@
                     <div class="row main-section-row">
                         <div id="user-profile-container">
                             <div id="user-profile-picture-container">
-
+                                <img ng-if="loggedUser.person.personImageId != null" ng-src="file/viewImage/{{loggedUser.person.personImageId}}" alt="" class="navigation-icon" id="user-profile-image"/>
                             </div>
                             <div id="user-profile-details">
-                                Test
+                                <h3>{{loggedUser.username}}</h3>
+                                <h5>I'm thinking that it would be nice to add the "Activity" section in this page....</h5>
                             </div>
                         </div>
                     </div>

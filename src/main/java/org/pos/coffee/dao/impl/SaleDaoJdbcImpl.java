@@ -155,14 +155,20 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("WHERE R.CATEGORY_   = 'CATEGORY_PROD_CATEGORY' ")
                 .append("ORDER BY R.ID  ");
 
-        GET_ALL_SALES_PER_PRODUCT_BY_DATE.append("SELECT IFNULL(PRODUCT.PARENT, PRODUCT_ID) AS PRODUCT_ID, SUM(ORDER_LINE.QUANTITY) AS QTY ")
-                .append("FROM ORDER_LINE AS ORDER_LINE ")
-                .append("LEFT JOIN PRODUCT AS PRODUCT ")
-                .append("ON ORDER_LINE.PRODUCT_ID = PRODUCT.ID ")
-                .append("WHERE STR_TO_DATE(ORDER_LINE.CREATEDATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
-                .append("AND STR_TO_DATE(ORDER_LINE.CREATEDATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
-                .append("GROUP BY PRODUCT.ID ")
-                .append("ORDER BY QTY DESC LIMIT 5");
+        GET_ALL_SALES_PER_PRODUCT_BY_DATE.append("SELECT P_.PRODUCT_NAME as PRODUCT, SUM(P_LINE.QUANTITY) as QTY ")
+                .append("FROM PRODUCT P_ ")
+                .append("LEFT JOIN ")
+                .append("  (SELECT IFNULL(P.PARENT,P.ID) AS ID, P.PRODUCT_NAME, OL.QUANTITY ")
+                .append("  FROM SALE S ")
+                .append("  JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
+                .append("  JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
+                .append("  WHERE DATE_FORMAT(S.SALE_DATE,'%Y-%m-%d') >= DATE_FORMAT(:START_DATE,'%Y-%m-%d') ")
+                .append("  AND DATE_FORMAT(S.SALE_DATE,'%Y-%m-%d')   <= DATE_FORMAT(:END_DATE,'%Y-%m-%d') ")
+                .append("  ) AS P_LINE ON P_.ID = P_LINE.ID ")
+                .append("GROUP BY P_.ID ")
+                .append("HAVING SUM(P_LINE.QUANTITY) IS NOT NULL ")
+                .append("ORDER BY CASE WHEN 2 IS NULL THEN 1 ELSE 0 END, 2 DESC ")
+                .append("LIMIT 5;");
     }
 
     public static RowMapper<ProductSaleHelper> PRODUCT_HELPER = new RowMapper<ProductSaleHelper>() {
@@ -362,7 +368,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         Map salesPerMonthMap = new HashMap();
 
         while (salePerMonth.next()) {
-            salesPerMonthMap.put(salePerMonth.getString("PRODUCT_ID"), salePerMonth.getString("QTY"));
+            salesPerMonthMap.put(salePerMonth.getString("PRODUCT"), salePerMonth.getString("QTY"));
         }
 
         return salesPerMonthMap;
