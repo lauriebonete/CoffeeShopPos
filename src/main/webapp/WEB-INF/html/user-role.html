@@ -321,10 +321,11 @@
                 data: JSON.stringify(userRole),
                 contentType: "application/json",
                 success : function(data) {
-                    evey.promptSuccess();
-                },
-                error : function(data){
-                  evey.promptAlert();
+                    if(data.status){
+                        evey.promptSuccess(data.message);
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 },
                 complete: function () {
                     $("#save-access").find("i.loader").toggleClass("hide");

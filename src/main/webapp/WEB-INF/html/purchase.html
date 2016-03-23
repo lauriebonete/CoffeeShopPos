@@ -446,12 +446,14 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success:function(data){
-                    angular.element(".main-body").scope().updateEntity(data);
-                    angular.element(".main-body").scope().$apply();
-                    $('#update-modal').foundation('reveal', 'close');
-                    promptSuccess();
-                },error : function(data) {
-                    promptAlert();
+                    if(data.status){
+                        angular.element(".main-body").scope().updateEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+                        $('#update-modal').foundation('reveal', 'close');
+                        evey.promptSuccess(data.message);
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 }
             });
         }).on("click", "#restock-receive-btn",function(){
@@ -476,12 +478,14 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success:function(data){
-                    angular.element(".main-body").scope().updateEntity(data.result);
-                    angular.element(".main-body").scope().$apply();
-                    $('#update-modal').foundation('reveal', 'close');
-                    promptSuccess();
-                },error : function(data) {
-                    promptAlert();
+                    if(data.status){
+                        angular.element(".main-body").scope().updateEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+                        $('#update-modal').foundation('reveal', 'close');
+                        evey.promptSuccess(data.message);
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 }
             });
         }).on("click", ".add-item", function(){
@@ -554,12 +558,14 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success: function(data){
-                    angular.element(".main-body").scope().searchEntity(data.result);
-                    angular.element(".main-body").scope().$apply();
-                    $('#crud-modal').foundation('reveal', 'close');
-                    promptSuccess();
-                },error : function(data) {
-                    promptAlert();
+                    if(data.status){
+                        angular.element(".main-body").scope().searchEntity(data.result);
+                        angular.element(".main-body").scope().$apply();
+                        $('#crud-modal').foundation('reveal', 'close');
+                        evey.promptSuccess(data.message);
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 }
             });
 
@@ -570,23 +576,6 @@
             disableDblClickSelection: true,
             closeButton: true
         });
-
-        var promptSuccess = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.success('Transaction Successful!');
-
-        };
-
-        var promptAlert = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.error('Transaction Failed! Double check your inputs and try again.');
-        };
     </script>
 </footer>
 </html>

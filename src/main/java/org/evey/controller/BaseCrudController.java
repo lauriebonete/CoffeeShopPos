@@ -44,10 +44,11 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     public @ResponseBody Map<String,Object> handleException(Exception e){
         Map<String,Object> returnMap = new HashMap<>();
 
-        e.printStackTrace();
+        _log.error(e.getMessage());
 
         returnMap.put("status", false);
-        returnMap.put("message", "Ooopppsie. Something went wrong, but don't worry we're still awesome as ever.");
+        returnMap.put("message", "Ooopppsie! Something went wrong, but you're still awesome.");
+        returnMap.put("error",e.getMessage());
         return returnMap;
     }
 
@@ -66,7 +67,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         if (StringUtil.isEmpty(htmlPage)) {
             this.htmlPage = "html/" + NamingUtil.toCreatePath(attributeName) + ".html";
         }
-        _log.warn("Initiating HTML page "+this.htmlPage);
+        _log.info("Initiating HTML page "+this.htmlPage);
 
         PlatformTransactionManager txManager = (PlatformTransactionManager) beanFactory.getBean("transactionManager");
         this.transactionTemplate = new TransactionTemplate(txManager);
@@ -77,7 +78,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         Map<String, Object> map = new HashMap<String, Object>();
         _log.info(entity);
         createEntity(entity);
-        map.put("message", "success");
+        map.put("message", "Transaction is successfully saved.");
         map.put("status", true);
         map.put("result", entity);
 
@@ -92,7 +93,8 @@ public abstract class BaseCrudController<T extends BaseEntity> {
             deleteEntity(id);
         }
 
-        map.put("message", "success");
+        map.put("message", "That thing is now gone for good.");
+        map.put("status",true);
         return map;
     }
 
@@ -109,7 +111,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
             createEntity(entity);
         }
 
-        returnMap.put("message", "success");
+        returnMap.put("message", "List is now successfully added.");
         returnMap.put("status", true);
 
         return returnMap;

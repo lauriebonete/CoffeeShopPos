@@ -42,10 +42,10 @@ public class SaleController extends BaseCrudController<Sale> {
     public @ResponseBody Map<String,Object> confirmOrder(@RequestBody Sale sale) throws Exception{
         Map<String, Object> returnMap = new HashMap<>();
         Sale saleCreated = saleService.confirmSaleTransaction(sale);
-        receiptPDFService.generateReceiptPDF(saleCreated);
 
         returnMap.put("result", saleCreated);
-        returnMap.put("success", true);
+        returnMap.put("status", true);
+        returnMap.put("message", "Order successfully saved.");
 
         return returnMap;
     }

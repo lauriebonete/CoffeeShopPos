@@ -66,8 +66,7 @@ public class FileDetailController extends BaseCrudController<FileDetail> {
 
     @RequestMapping(value = "/viewImage/{id}", method = RequestMethod.GET, produces = "image/png")
     public String imageViewer(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws IOException{
-
-        byte[] barray = null;
+        byte[] barray;
         OutputStream outputStream = response.getOutputStream();
         try {
 
@@ -89,6 +88,47 @@ public class FileDetailController extends BaseCrudController<FileDetail> {
             outputStream.close();
         }
         return null;
+    }
+
+    @RequestMapping(value = "/download/{id}", method = RequestMethod.GET)
+    public void downloadFile(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Map<String, String> contentTypes = new HashMap<>();
+        contentTypes.put("pdf", "application/pdf");
+        contentTypes.put("doc", "application/msword");
+        contentTypes.put("docs","application/msword");
+        contentTypes.put("odt", "application/vnd.oasis.opendocument.text");
+        contentTypes.put("xls", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        contentTypes.put("xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        contentTypes.put("png", "image/png");
+        contentTypes.put("gif", "image/gif");
+        contentTypes.put("jpeg","image/jpeg");
+        contentTypes.put("jpg", "image/jpeg");
+        contentTypes.put("gz",  "application/x-gzip");
+        contentTypes.put("zip", "application/zip");
+
+        byte[] barray;
+        OutputStream outputStream = response.getOutputStream();
+        try {
+
+            FileDetail fileDetail = fileDetailService.load(id);
+            File file = FileUtil.createFile(fileDetail.getFilePath());
+            barray = FileUtil.createByteFromFile(file);
+
+            if (barray != null) {
+                response.setContentType(contentTypes.get(fileDetail.getFileType()));
+                response.setHeader("Content-disposition", "attachment; filename = \"" + fileDetail.getFileName() + "\"");
+                outputStream.write(barray);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            outputStream.flush();
+            outputStream.close();
+        }
+
     }
 
     private void createFileFromBytes(MultipartFile multipartFile, String path) throws IOException{

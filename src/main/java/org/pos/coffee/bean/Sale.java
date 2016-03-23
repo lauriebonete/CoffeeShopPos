@@ -74,6 +74,13 @@ public class Sale extends BaseEntity {
 	)
 	private List<PriceSet> appliedPriceSet;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="RECEIPT_ID", referencedColumnName = "ID")
+	private FileDetail receipt;
+
+	@Column(name = "RECEIPT_ID", insertable = false, updatable = false)
+	private Long receiptId;
+
 	private transient String displaySaleDate;
 
 	public List<Order> getOrders() {
@@ -179,6 +186,22 @@ public class Sale extends BaseEntity {
 
 	public void setTaxRate(String taxRate) {
 		this.taxRate = taxRate;
+	}
+
+	public FileDetail getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(FileDetail receipt) {
+		this.receipt = receipt;
+	}
+
+	public Long getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(Long receiptId) {
+		this.receiptId = receiptId;
 	}
 
 	@Override

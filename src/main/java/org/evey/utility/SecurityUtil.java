@@ -20,7 +20,7 @@ public class SecurityUtil {
         } catch (NullPointerException npe){
             _log.warn("No Security Context Found!");
         } catch (Exception e){
-            _log.warn(e.getMessage());
+            _log.error(e.getMessage());
         }
 
         return null;

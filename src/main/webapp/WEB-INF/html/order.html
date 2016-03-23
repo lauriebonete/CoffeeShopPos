@@ -1019,11 +1019,11 @@
                         $(".payment-page").toggleClass("hide");
                         $(".order-page").toggleClass("hide");
 
-                        promptSuccess();
-                    },
-                    error : function(data) {
-
-                        promptAlert();
+                        if(data.status){
+                            evey.promptSuccess(data.message);
+                        } else {
+                            evey.promptAlert(data.message);
+                        }
                     }
                 });
             });
@@ -1195,24 +1195,6 @@
 
             return returnThis;
         };
-
-        var promptSuccess = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.success('Transaction Successful!');
-
-        };
-
-        var promptAlert = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.error('Transaction Failed! Double check your inputs and try again.');
-        };
-
     </script>
 </footer>
 </html>

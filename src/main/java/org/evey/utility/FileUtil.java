@@ -24,6 +24,11 @@ public class FileUtil {
         return subDir;
     }
 
+    public static File createFile(String path){
+        File file = new File(path);
+        return file;
+    }
+
     public static byte[] createByteFromFile(File file){
         try {
             InputStream is = FileUtil.getFileStream(file.getAbsolutePath());

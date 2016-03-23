@@ -146,6 +146,7 @@
                                             <td>{{record.server.person.completeName}}</td>
                                             <td>
                                                 <i class="fa fa-file-text-o edit-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-reveal-id="summary-modal" ng-show="checkIfHasAccess('ACCESS_SHOW_SALE')"></i>
+                                                <i class="fa fa-cloud-download download-action fa-2x-for-small fa-lg" data-id="{{record.receiptId}}" ng-show="checkIfHasAccess('ACCESS_SHOW_SALE')"></i>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -384,6 +385,8 @@
                     }
                 }
             });
+        }).on("click",".download-action",function(){
+            window.location.href = evey.getHome()+"/file/download/"+$(this).attr("data-id");
         });
 
         var displayData = function(data){

@@ -39,21 +39,21 @@ var evey = (function(){
             return window.location.pathname.replace(/\/$/, '');
         },
 
-        promptSuccess : function() {
+        promptSuccess : function(message) {
             toastr.options.positionClass = 'toast-bottom-full-width';
             toastr.options.closeMethod = 'fadeOut';
             toastr.options.closeDuration = 300;
             toastr.options.closeEasing = 'swing';
-            toastr.success('Transaction Successful!');
+            toastr.success(message);
 
         },
 
-        promptAlert : function() {
+        promptAlert : function(message) {
             toastr.options.positionClass = 'toast-bottom-full-width';
             toastr.options.closeMethod = 'fadeOut';
             toastr.options.closeDuration = 300;
             toastr.options.closeEasing = 'swing';
-            toastr.error('Transaction Failed! Double check your inputs and try again.');
+            toastr.error(message);
         },
 
         JSONnify : function(form) {
@@ -296,11 +296,13 @@ var evey = (function(){
             });
 
             $(crudForm).on("valid.fndtn.abide",function(){
-                $(this).find("i.loader").toggleClass("hide");
-                $(this).find("span.btn-label").toggleClass("hide");
 
-                $(this).find(".button").toggleClass("disabled");
-                $(this).find(".button").attr("disabled",true);
+                var crudForm = $(this);
+                $(crudForm).find("i.loader").toggleClass("hide");
+                $(crudForm).find("span.btn-label").toggleClass("hide");
+
+                $(crudForm).find(".button").toggleClass("disabled");
+                $(crudForm).find(".button").attr("disabled",true);
 
                 var path = evey.getPath();
 
@@ -316,41 +318,29 @@ var evey = (function(){
                             $('#crud-modal').foundation('reveal', 'close');
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
-
-                            $(this).find("i.loader").toggleClass("hide");
-                            $(this).find("span.btn-label").toggleClass("hide");
-
-                            $(this).find(".button").toggleClass("disabled");
-                            $(this).find(".button").removeAttr("disabled",true);
-
-                            promptSuccess();
+                            evey.promptSuccess(data.message);
                         } else {
-
-                            $(this).find("i.loader").toggleClass("hide");
-                            $(this).find("span.btn-label").toggleClass("hide");
-
-                            $(this).find(".button").toggleClass("disabled");
-                            $(this).find(".button").removeAttr("disabled",true);
-                            promptAlert();
+                            evey.promptAlert(data.message);
                         }
-                    },
-                    error : function(data) {
-                        $(this).find("i.loader").toggleClass("hide");
-                        $(this).find("span.btn-label").toggleClass("hide");
 
-                        $(this).find(".button").toggleClass("disabled");
-                        $(this).find(".button").removeAttr("disabled",true);
-                        promptAlert();
-                    },
+                        $(crudForm).find("i.loader").toggleClass("hide");
+                        $(crudForm).find("span.btn-label").toggleClass("hide");
+
+                        $(crudForm).find(".button").toggleClass("disabled");
+                        $(crudForm).find(".button").removeAttr("disabled",true);
+                    }
                 });
             });
 
             $(updateForm).on("valid.fndtn.abide",function(){
-                $(this).find("i.loader").toggleClass("hide");
-                $(this).find("span.btn-label").toggleClass("hide");
 
-                $(this).find(".button").toggleClass("disabled");
-                $(this).find(".button").attr("disabled",true);
+                var updateForm = $(this);
+
+                $(updateForm).find("i.loader").toggleClass("hide");
+                $(updateForm).find("span.btn-label").toggleClass("hide");
+
+                $(updateForm).find(".button").toggleClass("disabled");
+                $(updateForm).find(".button").attr("disabled",true);
 
                 var path = evey.getPath();
 
@@ -367,30 +357,16 @@ var evey = (function(){
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
-                            promptSuccess();
-
-                            $(this).find("i.loader").toggleClass("hide");
-                            $(this).find("span.btn-label").toggleClass("hide");
-
-                            $(this).find(".button").toggleClass("disabled");
-                            $(this).find(".button").removeAttr("disabled",true);
+                            evey.promptSuccess(data.message);
                         } else {
-                            promptAlert();
-                            $(this).find("i.loader").toggleClass("hide");
-                            $(this).find("span.btn-label").toggleClass("hide");
-
-                            $(this).find(".button").toggleClass("disabled");
-                            $(this).find(".button").removeAttr("disabled",true);
+                            evey.promptAlert(data.message);
                         }
-                    },
-                    error : function(data) {
-                        promptAlert();
-                        $(this).find("i.loader").toggleClass("hide");
-                        $(this).find("span.btn-label").toggleClass("hide");
+                        $(updateForm).find("i.loader").toggleClass("hide");
+                        $(updateForm).find("span.btn-label").toggleClass("hide");
 
-                        $(this).find(".button").toggleClass("disabled");
-                        $(this).find(".button").removeAttr("disabled",true);
-                    },
+                        $(updateForm).find(".button").toggleClass("disabled");
+                        $(updateForm).find(".button").removeAttr("disabled",true);
+                    }
                 });
             });
 
@@ -402,8 +378,6 @@ var evey = (function(){
             $(".remove-record").on('click',function(){
                 angular.element(".main-body").scope().deleteAction(selectedDelete,evey.getMapping());
                 angular.element(".main-body").scope().$apply();
-
-                promptSuccess();
             });
 
             $(this).on("click", settings['search-action'], function () {
@@ -538,23 +512,5 @@ var evey = (function(){
         angular.element(".main-body").scope().loadTable(paginateThis);
         angular.element(".main-body").scope().$apply();
     };
-
-    var promptSuccess = function() {
-        toastr.options.positionClass = 'toast-bottom-full-width';
-        toastr.options.closeMethod = 'fadeOut';
-        toastr.options.closeDuration = 300;
-        toastr.options.closeEasing = 'swing';
-        toastr.success('Transaction Successful!');
-
-    };
-
-    var promptAlert = function() {
-        toastr.options.positionClass = 'toast-bottom-full-width';
-        toastr.options.closeMethod = 'fadeOut';
-        toastr.options.closeDuration = 300;
-        toastr.options.closeEasing = 'swing';
-        toastr.error('Transaction Failed! Double check your inputs and try again.');
-    };
-
 })(jQuery);
 

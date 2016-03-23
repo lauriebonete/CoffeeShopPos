@@ -2,8 +2,12 @@ package org.pos.coffee.service.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.evey.bean.User;
 import org.evey.dao.SequenceDao;
+import org.evey.security.SessionUser;
+import org.evey.service.ReceiptPDFService;
 import org.evey.service.impl.BaseCrudServiceImpl;
+import org.evey.utility.SecurityUtil;
 import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
@@ -11,10 +15,7 @@ import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDao;
 import org.pos.coffee.dao.SaleDaoJdbc;
-import org.pos.coffee.service.AddOnService;
-import org.pos.coffee.service.ItemService;
-import org.pos.coffee.service.OrderService;
-import org.pos.coffee.service.SaleService;
+import org.pos.coffee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,6 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
 
     private static Logger logger = Logger.getLogger(SaleServiceImpl.class);
 
-
-
     @Autowired
     private SaleDao saleDao;
 
@@ -52,6 +51,12 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
 
     @Autowired
     private AddOnService addOnService;
+
+    @Autowired
+    private ReceiptPDFService receiptPDFService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional
@@ -82,11 +87,13 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Sale confirmSaleTransaction(Sale sale) throws Exception{
-
+        User server = userService.getCurrentUser();
+        sale.setServer(server);
         this.createSaleAndOrders(sale);
         List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
         List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
         saleDao.updateTotalCost(sale.getId(),this.countExpensePerOrder(orderExpenseHelperList));
+        sale.setReceipt(receiptPDFService.generateReceiptPDF(sale));
         return sale;
     }
 

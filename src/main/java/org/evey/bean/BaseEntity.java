@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.log4j.Logger;
 import org.evey.annotation.UniqueField;
 import org.evey.persistence.EntityListener;
+import org.evey.security.SessionUser;
+import org.evey.utility.SecurityUtil;
 
 /*
  * Base class for all objects contains basic attributes
@@ -54,6 +56,8 @@ public class BaseEntity implements Serializable{
 
 	@Transient
 	private Map<String,String> orderBy;
+
+	private transient String auditUsername;
 	
 	public Long getId() {
 		return id;
@@ -106,6 +110,15 @@ public class BaseEntity implements Serializable{
 
 	public void setOrderBy(Map<String, String> orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public String getAuditUsername() {
+		SessionUser user = SecurityUtil.getSessionUser();
+		return user.getUsername();
+	}
+
+	public void setAuditUsername(String auditUsername) {
+		this.auditUsername = auditUsername;
 	}
 
 	@Override

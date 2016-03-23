@@ -116,7 +116,11 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
             $("#delete-modal span.delete-btn").toggleClass("hide");
             $("#delete-modal .button").toggleClass("disabled");
             $("#delete-modal .button").removeAttr("disabled");
-
+            if(response.data.status){
+                evey.promptSuccess(response.data.message);
+            } else {
+                evey.promptAlert(response.data.message);
+            }
             $('#delete-modal').foundation('reveal', 'close');
             $scope.records.splice($.inArray(id, $scope.records), 1);
 

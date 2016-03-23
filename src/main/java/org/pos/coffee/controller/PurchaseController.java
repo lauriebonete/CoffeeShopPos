@@ -75,7 +75,7 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     }
 
     @RequestMapping(value = "/update-status", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Purchase updateStatusPurchase(@RequestBody Purchase updatePurchase) throws Exception{
+    public @ResponseBody Map<String,Object> updateStatusPurchase(@RequestBody Purchase updatePurchase) throws Exception{
         Purchase purchase = purchaseService.load(updatePurchase.getId());
         purchase.setStatus(Purchase.Status.findByString(updatePurchase.getStatus()).getValue());
 
@@ -93,7 +93,11 @@ public class PurchaseController extends BaseCrudController<Purchase> {
         }
         purchaseService.save(purchase);
 
-        return purchase;
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("result", purchase);
+        returnMap.put("status",true);
+        returnMap.put("message","Purchase Order is now in-progress");
+        return returnMap;
     }
 
     @RequestMapping(value = "/receive-purchase", method = RequestMethod.POST, produces = "application/json")
@@ -102,7 +106,8 @@ public class PurchaseController extends BaseCrudController<Purchase> {
         Purchase updated = purchaseService.receivedPurchaseOrder(purchase);
 
         returnMap.put("result", updated);
-        returnMap.put("success", true);
+        returnMap.put("status", true);
+        returnMap.put("message","Purchase Order is successfully received.");
 
         return returnMap;
     }
@@ -112,7 +117,8 @@ public class PurchaseController extends BaseCrudController<Purchase> {
         Map<String, Object> returnMap = new HashMap<>();
         Purchase saved = purchaseService.createPurchase(purchase);
         returnMap.put("result", saved);
-        returnMap.put("success", true);
+        returnMap.put("status", true);
+        returnMap.put("message", "Purchase is successfully made.");
 
         return returnMap;
     }

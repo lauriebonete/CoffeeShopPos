@@ -328,12 +328,12 @@
                 dataType: "JSON",
                 contentType: "application/json",
                 success: function(data){
-                    console.log(data.result.purchaseCode);
                     $('#restock-modal').foundation('reveal', 'close');
-                    promptSuccess();
-                },
-                error : function(data) {
-                    promptAlert();
+                    if(data.status){
+                        evey.promptSuccess(data.message);
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 }
             });
         }).on("click","#form-update-btn",function(){
@@ -353,14 +353,10 @@
                         $('#update-modal .correct-quantity').val("");
                         angular.element(".main-body").scope().updateStock(data.results);
                         angular.element(".main-body").scope().$apply();
-                        promptSuccess();
+                        evey.promptSuccess(data.message);
                     } else {
-                        $('#update-modal').foundation('reveal', 'close');
-                        promptAlert();
+                        evey.promptAlert(data.message);
                     }
-                },
-                error : function(data) {
-                    promptAlert();
                 }
             });
         });
@@ -442,24 +438,6 @@
             angular.element(".main-body").scope().loadTable(paginateThis);
             angular.element(".main-body").scope().$apply();
         }
-
-        var promptSuccess = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.success('Transaction Successful!');
-
-        };
-
-        var promptAlert = function() {
-            toastr.options.positionClass = 'toast-bottom-full-width';
-            toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
-            toastr.options.closeEasing = 'swing';
-            toastr.error('Transaction Failed! Double check your inputs and try again.');
-        };
-
     </script>
 </footer>
 </html>

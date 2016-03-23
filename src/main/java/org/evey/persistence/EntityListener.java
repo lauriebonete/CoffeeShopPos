@@ -17,6 +17,7 @@ public class EntityListener {
 			entity.setCreateDate(now);
 		}
 		entity.setUpdateDate(now);
+		entity.setCreatedByUsername(entity.getAuditUsername());
 	}
 
 	@PreUpdate

@@ -8,10 +8,9 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.evey.service.ReceiptPDFService;
 import org.evey.utility.FileUtil;
-import org.pos.coffee.bean.AddOn;
-import org.pos.coffee.bean.Order;
-import org.pos.coffee.bean.PriceSet;
-import org.pos.coffee.bean.Sale;
+import org.pos.coffee.bean.*;
+import org.pos.coffee.service.FileDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,11 @@ public class ReceiptPDFServicePDFBoxImpl implements ReceiptPDFService {
     @Value("${receipt.folder}")
     private String filePath;
 
+    @Autowired
+    private FileDetailService fileDetailService;
+
     @Override
-    public void generateReceiptPDF(Sale sale){
+    public FileDetail generateReceiptPDF(Sale sale){
         PDRectangle rec = new PDRectangle(200, 630);
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(rec);
@@ -39,14 +41,26 @@ public class ReceiptPDFServicePDFBoxImpl implements ReceiptPDFService {
         try {
             contentStream = new PDPageContentStream(document, page,true,true);
 
+            String fileName = FileUtil.generateFilePath(sale.getSaleCode() + ".pdf", filePath);
             drawTable(page, contentStream, sale);
             contentStream.close();
             /*document.save(filePath+"/"+sale.getSaleCode()+".pdf");*/
-            document.save(FileUtil.generateFilePath(sale.getSaleCode()+".pdf",filePath));
+            document.save(fileName);
             document.close();
+
+            FileDetail receipt = new FileDetail();
+            receipt.setFileName(sale.getSaleCode());
+            receipt.setFilePath(fileName);
+            receipt.setIsActive(true);
+            receipt.setFileType("pdf");
+            fileDetailService.save(receipt);
+            return  receipt;
+
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        return new FileDetail();
     }
 
     private static void drawTable(PDPage page, PDPageContentStream contentStream, Sale sale) {
@@ -89,79 +103,81 @@ public class ReceiptPDFServicePDFBoxImpl implements ReceiptPDFService {
 
             y-= rowHeight;
 
-            for(Order order: sale.getOrders()){
+            if(sale.getOrders()!=null){
+                for(Order order: sale.getOrders()){
 
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(15, y);
-                contentStream.drawString(order.getQuantity().toString());
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(30, y);
-                contentStream.drawString(order.getProduct().getProductName());
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(145, y);
-                contentStream.drawString(order.getListPrice().getPrice().toString());
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(175, y);
-                contentStream.drawString(order.getTotalLinePrice().toString());
-                contentStream.endText();
-
-                for(AddOn addOn: order.getAddOnList()){
-                    y-=rowHeight;
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(15, y);
-                    contentStream.drawString(addOn.getQuantity().toString());
+                    contentStream.drawString(order.getQuantity().toString());
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(30, y);
-                    contentStream.drawString(addOn.getProduct().getProductName());
+                    contentStream.drawString(order.getProduct().getProductName());
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(145, y);
-                    contentStream.drawString(addOn.getPrice().toString());
+                    contentStream.drawString(order.getListPrice().getPrice().toString());
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(175, y);
-                    contentStream.drawString(Double.valueOf(addOn.getPrice() * addOn.getQuantity()).toString());
+                    contentStream.drawString(order.getTotalLinePrice().toString());
                     contentStream.endText();
-                }
 
-                for(PriceSet priceSet: order.getAppliedPriceSet()){
+                    for(AddOn addOn: order.getAddOnList()){
+                        y-=rowHeight;
+                        contentStream.beginText();
+                        contentStream.moveTextPositionByAmount(15, y);
+                        contentStream.drawString(addOn.getQuantity().toString());
+                        contentStream.endText();
+
+                        contentStream.beginText();
+                        contentStream.moveTextPositionByAmount(30, y);
+                        contentStream.drawString(addOn.getProduct().getProductName());
+                        contentStream.endText();
+
+                        contentStream.beginText();
+                        contentStream.moveTextPositionByAmount(145, y);
+                        contentStream.drawString(addOn.getPrice().toString());
+                        contentStream.endText();
+
+                        contentStream.beginText();
+                        contentStream.moveTextPositionByAmount(175, y);
+                        contentStream.drawString(Double.valueOf(addOn.getPrice() * addOn.getQuantity()).toString());
+                        contentStream.endText();
+                    }
+
+                    if(order.getAppliedPriceSet() != null){
+                        for(PriceSet priceSet: order.getAppliedPriceSet()){
+                            y-=rowHeight;
+
+                            contentStream.beginText();
+                            contentStream.moveTextPositionByAmount(30, y);
+                            contentStream.drawString(priceSet.getPriceSetName());
+                            contentStream.endText();
+
+                            contentStream.beginText();
+                            contentStream.moveTextPositionByAmount(145, y);
+                            contentStream.drawString(getPriceSetEffect(priceSet));
+                            contentStream.endText();
+
+                            y-=rowHeight;
+
+                            contentStream.beginText();
+                            contentStream.moveTextPositionByAmount(145, y);
+                            contentStream.drawString("Sub-total");
+                            contentStream.endText();
+
+                            contentStream.beginText();
+                            contentStream.moveTextPositionByAmount(175, y);
+                            contentStream.drawString(order.getGrossLinePrice().toString());
+                            contentStream.endText();
+                        }
+                    }
                     y-=rowHeight;
-
-                    contentStream.beginText();
-                    contentStream.moveTextPositionByAmount(30, y);
-                    contentStream.drawString(priceSet.getPriceSetName());
-                    contentStream.endText();
-
-                    contentStream.beginText();
-                    contentStream.moveTextPositionByAmount(145, y);
-                    contentStream.drawString(getPriceSetEffect(priceSet));
-                    contentStream.endText();
-
-                    y-=rowHeight;
-
-                    contentStream.beginText();
-                    contentStream.moveTextPositionByAmount(145, y);
-                    contentStream.drawString("Sub-total");
-                    contentStream.endText();
-
-                    contentStream.beginText();
-                    contentStream.moveTextPositionByAmount(175, y);
-                    contentStream.drawString(order.getGrossLinePrice().toString());
-                    contentStream.endText();
                 }
-
-
-                y-=rowHeight;
             }
 
             contentStream.beginText();
@@ -176,18 +192,20 @@ public class ReceiptPDFServicePDFBoxImpl implements ReceiptPDFService {
 
             y-=rowHeight;
 
-            for(PriceSet priceSet: sale.getAppliedPriceSet()){
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(30, y);
-                contentStream.drawString(priceSet.getPriceSetName());
-                contentStream.endText();
+            if(sale.getAppliedPriceSet() != null){
+                for(PriceSet priceSet: sale.getAppliedPriceSet()){
+                    contentStream.beginText();
+                    contentStream.moveTextPositionByAmount(30, y);
+                    contentStream.drawString(priceSet.getPriceSetName());
+                    contentStream.endText();
 
-                contentStream.beginText();
-                contentStream.moveTextPositionByAmount(145, y);
-                contentStream.drawString(getPriceSetEffect(priceSet));
-                contentStream.endText();
+                    contentStream.beginText();
+                    contentStream.moveTextPositionByAmount(145, y);
+                    contentStream.drawString(getPriceSetEffect(priceSet));
+                    contentStream.endText();
 
-                y-=rowHeight;
+                    y-=rowHeight;
+                }
             }
 
             if(sale.getTaxRate()!=null){
