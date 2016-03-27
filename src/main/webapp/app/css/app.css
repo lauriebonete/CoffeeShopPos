@@ -292,10 +292,6 @@ body {
     display: none !important;
 }
 
-.alert-box {
-    display: none;
-}
-
 #add-ons {
     display: none;
     max-height: 25vh;

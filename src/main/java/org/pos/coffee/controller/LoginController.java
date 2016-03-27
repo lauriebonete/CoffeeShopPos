@@ -99,9 +99,9 @@ public class LoginController implements AuthenticationProvider {
         return loginService.getMacAddress();
     }
 
-    @RequestMapping(value="/Access_Denied", method = RequestMethod.GET)
+    @RequestMapping(value="/access-denied", method = RequestMethod.GET)
     public String accessDenied(){
-        return "redirect:/login";
+        return "redirect:/login?login_response=access_denied&error=true";
     }
 
 }

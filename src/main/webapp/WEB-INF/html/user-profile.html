@@ -18,11 +18,11 @@
     <script src="js/selectize.min.js"></script>
     <script src="js/angular-selectize.js"></script>
     <script src="angular/currentUserService.js"></script>
-    <script src="angular/aboutAngular.js"></script>
+    <script src="angular/userProfileAngular.js"></script>
     <script src="js/vendor/modernizr.js"></script>
 
 </head>
-<body ng-app="aboutApp" ng-controller="aboutController">
+<body ng-app="userProfileApp" ng-controller="userProfileController">
 <div class="row">
     <div>
         <div class="off-canvas-wrap" data-offcanvas>
@@ -100,11 +100,13 @@
                     <div class="row main-section-row">
                         <div id="user-profile-container">
                             <div id="user-profile-picture-container">
+                                <img ng-if="loggedUser.person.personImageId == null" src="img/caffe_latte.jpg" class="navigation-icon" />
                                 <img ng-if="loggedUser.person.personImageId != null" ng-src="file/viewImage/{{loggedUser.person.personImageId}}" alt="" class="navigation-icon" id="user-profile-image"/>
                             </div>
                             <div id="user-profile-details">
                                 <h3>{{loggedUser.username}}</h3>
-                                <h5>I'm thinking that it would be nice to add the "Activity" section in this page....</h5>
+                                <h3>{{loggedUser.person.completeName}}</h3>
+                                <h4 ng-repeat="role in userRole">{{role}}</h4>
                             </div>
                         </div>
                     </div>

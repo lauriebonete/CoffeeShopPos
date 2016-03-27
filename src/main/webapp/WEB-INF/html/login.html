@@ -17,20 +17,21 @@
 	<script src="js/responsive-tables.js"></script>
 	<script src="js/evey-1.0.js"></script>
 	<script src="js/angular.js"></script>
+	<script src="angular/loginAngular.js"></script>
 	<script src="js/angular-selectize.js"></script>
-	<script src="angular/crudApp.js"></script>
-	<script src="angular/crudController.js"></script>
 	<script src="js/vendor/modernizr.js"></script>
 </head>
-<div>
-<br>
-<div id="loginContainer">
-	<div id="loginBackground">
+<body ng-app="loginApp" ng-controller="loginController">
+	<div id="loginContainer">
+		<div id="loginBackground">
 		</div>
 	</div>
 	<div id="loginForm">
 		<div>
 			<img class="maestroLogo show-for-medium-up" src="img/maestroFedeliLogo.png"/>
+		</div>
+		<div class="alert-box radius" ng-class="status == 'true' ? 'alert':'success'" ng-if="show == true">
+			{{response}}
 		</div>
 		<form action="/login" method="POST">
 			<div class="row">
@@ -78,7 +79,7 @@
 			</div>
 		</form>
 	</div>
-</div>
+</body>
 <script>
 	$(document).foundation();
 

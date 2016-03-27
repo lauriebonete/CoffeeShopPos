@@ -11,6 +11,20 @@ var evey = (function(){
             return window.location.protocol + '//' + window.location.host + path;
         },
 
+        getUrlParams : function(){
+            var path = window.location.search;
+            if(path.indexOf("?")>=0){
+                var urlParams = path.substring(path.indexOf("?")+1);
+                var paramList = urlParams.split("&");
+                var params = {};
+                $.each(paramList,function(i,val){
+                    var splitted = val.split("=");
+                    params[splitted[0]] = splitted[1];
+                });
+                return params;
+            }
+        },
+
         getDate : function(){
             var d = new Date();
 

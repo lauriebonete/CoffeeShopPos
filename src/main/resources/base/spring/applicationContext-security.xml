@@ -23,10 +23,10 @@
         <sec:intercept-url pattern="/about" access="isAuthenticated()" />
         <sec:form-login  login-page="/login"
                      username-parameter="pinDigit"
-                     authentication-failure-url="/login/Access_Denied"
+                     authentication-failure-url="/login/access-denied"
                      default-target-url="/dashboard"/>
         <sec:csrf disabled="true"/>
-        <sec:logout logout-url="/logout" logout-success-url="/"></sec:logout>
+        <sec:logout logout-url="/logout" logout-success-url="/login?login_response=success_logout&amp;error=false"></sec:logout>
     </sec:http>
 
     <sec:authentication-manager >
