@@ -290,25 +290,6 @@ var evey = (function(){
 
             var home = evey.getHome();
 
-            $(ajaxLoad).on("click", function(){
-                console.log($(this));
-
-                var clickLoader = $(this);
-
-                $(clickLoader).find(".loader").toggleClass("hide");
-                $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
-
-                $(document).ready(function(){
-
-                }).on("ajaxStop.ajaxLoader",function(){
-                    console.log($(clickLoader));
-                    $(clickLoader).find(".loader").toggleClass("hide");
-                    $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
-
-                    $(document).off("ajaxStop.ajaxLoader");
-                });
-            });
-
             $(crudForm).on("valid.fndtn.abide",function(){
 
                 var crudForm = $(this);
@@ -420,6 +401,26 @@ var evey = (function(){
             });
             $(this).on("click",settings["search-clear"], function(){
                 evey.clearForm($(this).parents("form"));
+            });
+            $(this).on("click",settings["ajax-loader"],function(){
+                if(!$(this).hasClass("disabled")){
+                    var clickLoader = $(this);
+                    $(clickLoader).find(".loader").toggleClass("hide");
+                    $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
+                    $(clickLoader).toggleClass("disabled");
+                    $(clickLoader).attr("disabled",true);
+
+                    $(document).ready(function(){
+
+                    }).on("ajaxStop.ajaxLoader",function(){
+                        $(clickLoader).find(".loader").toggleClass("hide");
+                        $(clickLoader).toggleClass("disabled");
+                        $(clickLoader).find(".ajax-loader-label").toggleClass("hide");
+                        $(clickLoader).removeAttr("disabled");
+
+                        $(document).off("ajaxStop.ajaxLoader");
+                    });
+                }
             });
 
             $("a.navigation").on("click", function(){

@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="button expand continue disabled ajax-loader"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="ajax-loader-label">Continue</span></a>
+                        <button class="button expand continue disabled ajax-loader"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="ajax-loader-label">Continue</span></button>
                     </div>
                     <div class="cartSmall">
                         <div class="cartSmall-icon show-for-medium-down">
@@ -320,12 +320,12 @@
                                     </a>
                                 </div>
                                 <div class="small-6 columns">
-                                    <a class="button right disabled ajax-loader" id="confirm-order">
+                                    <button class="button right disabled ajax-loader" id="confirm-order">
                                         <i class="loader hide fa fa-spinner fa-pulse fa-lg"></i>
-                                        <span class="ajax-loader-label">Punch Order
+                                        <span> Punch Order
                                             <i class="fa fa-arrow-circle-right"></i>
                                         </span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -905,16 +905,13 @@
 
             countQty();
 
-            var hasItems = $(".order-holder").has("div").length ? "Yes" : "No" ;
-
-            if(hasItems == "No"){
+            if($(".order-holder").children().length<=0){
                 $(".continue").addClass("disabled");
             }
 
         }).on("click", ".continue",function(){
-            if ( $(".continue").hasClass("disabled")) {
-                return false;
-            } else {
+
+            if($(".order-holder").children().length>0){
                 var detail = getCartDetail();
                 $.ajax({
                     url: evey.getHome()+"/order/getPriceSet",
