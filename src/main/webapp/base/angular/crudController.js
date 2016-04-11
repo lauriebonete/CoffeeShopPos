@@ -69,6 +69,8 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
 
     $scope.searchEntity = function (data) {
         $scope.records.push(data);
+        $scope.fullRecords.push(data);
+        $scope.listSize++;
     };
 
     $scope.updateEntity = function(data) {

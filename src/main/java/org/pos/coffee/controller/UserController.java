@@ -49,7 +49,7 @@ public class UserController extends BaseCrudController<User> {
         userService.save(saveToThis);
 
         returnMap.put("status", true);
-        returnMap.put("message", "success");
+        returnMap.put("message", "User image was successfully saved. "+person.getFirstName()+" looks awesome in this photo!");
         returnMap.put("result", saveToThis);
 
         return returnMap;

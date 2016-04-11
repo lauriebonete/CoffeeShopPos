@@ -51,6 +51,7 @@ public class User extends BaseEntity{
 	private Set<UserRole> userRole;
 
 	private transient List<Long> userRoleList;
+	private transient String userRoleDisplay;
 
 //	private Role role;
 //	private Schedule schedule;
@@ -127,5 +128,19 @@ public class User extends BaseEntity{
 			return userRoleIds;
 		}
 		return userRoleList;
+	}
+
+	public String getUserRoleDisplay() {
+		if(this.userRole!=null){
+			StringBuilder roleDisplayBuilder = new StringBuilder();
+			for(UserRole userRole: this.userRole){
+				if(roleDisplayBuilder.length()>0){
+					roleDisplayBuilder.append(", ");
+				}
+				roleDisplayBuilder.append(userRole.getRoleName());
+			}
+			return roleDisplayBuilder.toString();
+		}
+		return userRoleDisplay;
 	}
 }

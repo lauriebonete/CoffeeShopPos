@@ -75,7 +75,7 @@ public class ProductController extends BaseCrudController<Product> {
         productService.save(saveToThis);
 
         returnMap.put("status", true);
-        returnMap.put("message", "success");
+        returnMap.put("message", "Product image was successfully saved.");
         returnMap.put("result", saveToThis);
 
         return returnMap;

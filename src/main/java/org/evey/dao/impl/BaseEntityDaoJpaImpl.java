@@ -198,33 +198,35 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
     }
 
     private String buildWhereQuery(List<QueryHelper> queryHelper) throws IllegalAccessException{
+
         StringBuffer queryBuffer = new StringBuffer();
+        if(!queryHelper.isEmpty()){
+            queryBuffer.append(" where ");
+            boolean first = true;
+            for(QueryHelper query:queryHelper){
+                if(!first){
+                    queryBuffer.append(" and ");
+                } else {
+                    first = false;
+                }
 
-        queryBuffer.append(" where ");
-        boolean first = true;
-        for(QueryHelper query:queryHelper){
-            if(!first){
-                queryBuffer.append(" and ");
-            } else {
-                first = false;
-            }
+                if(List.class.isAssignableFrom(query.getEntityType()) ||
+                        Set.class.isAssignableFrom(query.getEntityType())){
+                    queryBuffer.append(query.getFieldName()+" in (:"+NamingUtil.toParamName(query.getFieldName()) + ") ");
+                } else if(
+                        (Boolean.class.isAssignableFrom(query.getEntityType()) ||
+                                Long.class.isAssignableFrom(query.getEntityType()) ||
+                                Double.class.isAssignableFrom(query.getEntityType()) ||
+                                Integer.class.isAssignableFrom(query.getEntityType())
 
-            if(List.class.isAssignableFrom(query.getEntityType()) ||
-                    Set.class.isAssignableFrom(query.getEntityType())){
-                queryBuffer.append(query.getFieldName()+" in (:"+NamingUtil.toParamName(query.getFieldName()) + ") ");
-            } else if(
-                    (Boolean.class.isAssignableFrom(query.getEntityType()) ||
-                            Long.class.isAssignableFrom(query.getEntityType()) ||
-                            Double.class.isAssignableFrom(query.getEntityType()) ||
-                            Integer.class.isAssignableFrom(query.getEntityType())
-
-            ) || (query.getIsUnique()!=null &&
-                    query.getIsUnique() )){
-                queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
-            } else if(Date.class.isAssignableFrom(query.getEntityType())){
-                queryBuffer.append("date(obj."+query.getFieldName()+") = date(:"+NamingUtil.toParamName(query.getFieldName())+")");
-            } else {
-                queryBuffer.append("lower(obj."+query.getFieldName()+") like :"+NamingUtil.toParamName(query.getFieldName()));
+                        ) || (query.getIsUnique()!=null &&
+                                query.getIsUnique() )){
+                    queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
+                } else if(Date.class.isAssignableFrom(query.getEntityType())){
+                    queryBuffer.append("date(obj."+query.getFieldName()+") = date(:"+NamingUtil.toParamName(query.getFieldName())+")");
+                } else {
+                    queryBuffer.append("lower(obj."+query.getFieldName()+") like :"+NamingUtil.toParamName(query.getFieldName()));
+                }
             }
         }
 

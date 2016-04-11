@@ -108,22 +108,22 @@ public class ReceiptPDFServicePDFBoxImpl implements ReceiptPDFService {
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(15, y);
-                    contentStream.drawString(order.getQuantity().toString());
+                    contentStream.drawString(order.getQuantity()!=null ? order.getQuantity().toString():"");
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(30, y);
-                    contentStream.drawString(order.getProduct().getProductName());
+                    contentStream.drawString(order.getProduct() != null ? order.getProduct().getProductName():"");
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(145, y);
-                    contentStream.drawString(order.getListPrice().getPrice().toString());
+                    contentStream.drawString(order.getListPrice()!=null ? order.getListPrice().getPrice().toString():"");
                     contentStream.endText();
 
                     contentStream.beginText();
                     contentStream.moveTextPositionByAmount(175, y);
-                    contentStream.drawString(order.getTotalLinePrice().toString());
+                    contentStream.drawString(order.getTotalLinePrice()!=null ? order.getTotalLinePrice().toString():"");
                     contentStream.endText();
 
                     for(AddOn addOn: order.getAddOnList()){

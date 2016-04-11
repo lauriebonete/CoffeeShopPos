@@ -33,46 +33,47 @@
 		<div class="alert-box radius" ng-class="status == 'true' ? 'alert':'success'" ng-if="show == true">
 			{{response}}
 		</div>
-		<form action="/login" method="POST">
+		<form action="/login" method="POST" data-abide>
 			<div class="row">
-				<input type="password" id="pinDigit" name="pinDigit"/>
+				<input type="password" id="pinDigit" name="pinDigit" required/>
+				<small class="error">Please enter your PIN</small>
 			</div>
 			<div class="row">
 				<ul class="addOnList small-block-grid-3 medium-block-grid-3 large-block-3">
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="7">
 						<h5>7</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="8">
 						<h5>8</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="9">
 						<h5>9</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="4">
 						<h5>4</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="5">
 						<h5>5</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="6">
 						<h5>6</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="1">
 						<h5>1</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="2">
 						<h5>2</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="3">
 						<h5>3</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber" id="clear">
 						<h5>Clear</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber pin" data-digit="0">
 						<h5>0</h5>
 					</li>
-					<li class="numpadNumber">
+					<li class="numpadNumber" id="enter">
 						<h5>Enter</h5>
 					</li>
 				</ul>
@@ -83,26 +84,25 @@
 <script>
 	$(document).foundation();
 
-	$(".numpadNumber").on("click",function(){
-		var pressed = $(this).find("h5").text();
-		if(pressed == "Clear"){
-			$("#pinDigit").removeAttr("value");
-			return false;
-		} else if (pressed == "Enter"){
+	$(document).ready(function(){
+
+		$(".pin").on("click", function(){
+			var digit = $(this).attr("data-digit");
+			var value = $("#pinDigit").val();
+			if(value.length<6){
+				$("#pinDigit").val(value+digit);
+			}
+		});
+
+		$("#enter").on("click", function(){
 			$("form").submit();
-		}
-		var pin;
-		if($("#pinDigit").val() != ""){
-			pin = $("#pinDigit").val();
-		} else {
-			pin = "";
-		}
-		if(pin.length > 5){
-			return false;
-		}
-		$("#pinDigit").attr("value", pin + pressed);
+		});
+
+		$("#clear").on("click",function(){
+			$("#pinDigit").val("");
+		});
+
 	});
 
 </script>
-</body>
 </html>

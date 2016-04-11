@@ -33,14 +33,14 @@
     position: fixed;
     width:100%;
     height:100%;
-    background-image: url("../img/caffe_latte.jpg");
+    background-image: url("../img/maestro.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-    -webkit-filter: blur(30px);
-    -moz-filter: blur(30px);
-    -o-filter: blur(30px);
-    -ms-filter: blur(30px);
-    filter: blur(30px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
 }
 
 #loginForm {

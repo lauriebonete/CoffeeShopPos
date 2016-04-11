@@ -49,7 +49,7 @@
                     <ul class="off-canvas-list">
                         <li><label>Logged In User</label></li>
                         <li>
-                            <a href="/userprofile" class="canvas navigation">
+                            <a href="/user-profile" class="canvas navigation">
                                 <i class="navigation-icon fa fa-user" ng-if="loggedUser.person.personImageId == null"></i>
                                 <img ng-if="loggedUser.person.personImageId != null" ng-src="file/viewImage/{{loggedUser.person.personImageId}}" alt="" class="navigation-icon user-image"/>
                                 <i class="navigation-spinner hide fa fa-spinner fa-pulse fa-lg"></i>
@@ -161,7 +161,7 @@
                                             <td>{{record.person.firstName}}</td>
                                             <td>{{record.username}}</td>
                                             <td>{{record.pinDigit}}</td>
-                                            <td></td>
+                                            <td>{{record.userRoleDisplay}}</td>
                                             <td>
                                                 <i class="fa fa-camera image-action fa-2x-for-small fa-lg" data-id="{{record.id}}" data-image="{{record.person.personImageId}}"></i>
                                                 <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-show="checkIfHasAccess('UPDATE_USER')" ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
@@ -217,13 +217,13 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Password <small>required</small>
-                                            <input type="text" placeholder="Password" name="passwordTemp" required></label>
+                                            <input type="text" placeholder="Password" name="passwordTemp" id="password" required></label>
                                         <small class="error">Please provide desired Password.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Confirm Password <small>required</small>
-                                            <input type="text" placeholder="Password Confirm" name="password" required></label>
-                                        <small class="error">Please provide desired Password.</small>
+                                            <input type="text" placeholder="Password Confirm" name="password" required data-equalto="password"></label>
+                                        <small class="error">Password did not match.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Pin Digit <small>required</small>
@@ -236,10 +236,10 @@
                                         </label>
                                         <small class="error">Please provide desired User Role.</small>
                                     </div>
-                                    <div class="row">
-                                        <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <button type="submit" class="button expand success" id="form-add-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Create User</span></button>
                             </div>
                         </form>
                     </div>
@@ -342,6 +342,14 @@
         $(document).foundation();
         $(document).EVEYfy();
 
+        $(document).foundation({
+            tab: {
+                callback: function (tab) {
+                    $(document).foundation('abide', 'reflow');
+                }
+            }
+        });
+
         $(document).ready(function(){
             $.ajax({
                 url: evey.getHome() +"/userRole/findAll",
@@ -423,16 +431,23 @@
                 contentType: "application/json",
                 success:function(data){
                     if(data.status) {
+                        evey.promptSuccess(data.message);
                         $('#image-modal').foundation('reveal', 'close');
                         $(".picked").attr("data-image", data.result.person.personImage.id);
+                    } else {
+                        evey.promptAlert(data.message);
                     }
                 }
             });
+        }).on("invalid.fndtn.abide","#crud-modal",function(){
+            console.log("x");
         });
 
         var userImage = null;
         Dropzone.options.dropZone = {
             maxFiles: 1,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            addRemoveLinks: true,
             accept: function(file, done) {
                 done();
             },

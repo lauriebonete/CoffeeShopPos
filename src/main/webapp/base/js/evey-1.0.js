@@ -17,10 +17,14 @@ var evey = (function(){
                 var urlParams = path.substring(path.indexOf("?")+1);
                 var paramList = urlParams.split("&");
                 var params = {};
-                $.each(paramList,function(i,val){
-                    var splitted = val.split("=");
-                    params[splitted[0]] = splitted[1];
-                });
+                console.log(paramList,"here");
+                if(paramList!=undefined
+                    && paramList!=null){
+                    $.each(paramList,function(i,val){
+                        var splitted = val.split("=");
+                        params[splitted[0]] = splitted[1];
+                    });
+                }
                 return params;
             }
         },
