@@ -81,6 +81,21 @@ public class ProductController extends BaseCrudController<Product> {
         return returnMap;
     }
 
+    @RequestMapping(value = "/remove-image", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Map<String,Object> removeProductImage(@RequestBody Product product){
+        Map<String, Object> returnMap = new HashMap<>();
+
+        Product saveToThis = productService.load(product.getId());
+        saveToThis.setProductImage(null);
+        productService.save(saveToThis);
+
+        returnMap.put("status", true);
+        returnMap.put("message", "Product image was successfully removed.");
+        returnMap.put("result", saveToThis);
+
+        return returnMap;
+    }
+
     @RequestMapping(value = "/findParent", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Product findParent(Long id) {
         Product product = productService.load(id);

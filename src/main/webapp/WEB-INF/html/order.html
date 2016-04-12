@@ -99,7 +99,7 @@
                         <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
                             <li ng-repeat="product in productFound">
                                 <div style="background: #333333" class="contentHolder product" data-id="{{product.id}}">
-                                    <img ng-if="product.productImageId == null" src="img/caffe_latte.jpg" alt="" class="contentImg"/>
+                                    <img ng-if="product.productImageId == null" src="img/default.png" alt="" class="contentImg"/>
                                     <img ng-if="product.productImageId != null" ng-src="file/viewImage/{{product.productImageId}}" alt="" class="contentImg"/>
                                     <h5 style="color:white">{{product.productName}}</h5>
                                 </div>

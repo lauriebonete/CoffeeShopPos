@@ -42,16 +42,29 @@ public class UserController extends BaseCrudController<User> {
         Map<String, Object> returnMap = new HashMap<>();
 
         User saveToThis = userService.load(user.getId());
-        Person person = saveToThis.getPerson();
         FileDetail personImage = fileDetailService.load(user.getPerson().getPersonImage().getId());
         saveToThis.getPerson().setPersonImage(personImage);
-        saveToThis.setPerson(person);
         userService.save(saveToThis);
 
         returnMap.put("status", true);
-        returnMap.put("message", "User image was successfully saved. "+person.getFirstName()+" looks awesome in this photo!");
+        returnMap.put("message", "User image was successfully saved. "+saveToThis.getPerson().getFirstName()+" looks awesome in this photo!");
         returnMap.put("result", saveToThis);
 
         return returnMap;
+    }
+
+    @RequestMapping(value = "/remove-image", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody Map<String,Object> removeUserImage(@RequestBody User user){
+        Map<String, Object> returnMap = new HashMap<>();
+
+        User saveToThis = userService.load(user.getId());
+        saveToThis.getPerson().setPersonImage(null);
+        userService.save(saveToThis);
+
+        returnMap.put("status", true);
+        returnMap.put("message", "That awesome photo of "+saveToThis.getPerson().getFirstName()+" is now removed.");
+        returnMap.put("result", saveToThis);
+
+        return  returnMap;
     }
 }

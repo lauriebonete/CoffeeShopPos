@@ -26,8 +26,8 @@ public interface SaleService extends BaseCrudService<Sale> {
     public Map getProductSaleSummaryPerDate(Date startDate, Date endDate);
     public Map getSalePerMonth(Date startDate, Date endDate);
     public Map getSalePerWeek(Date startDate, Date endDate);
-    public List<Double> getSalePerDay(Date startDate, Date endDate);
-    public List<Double> getSaleCountPerDay(Date startDate, Date endDate);
+    public Double getSalePerDay(Date startDate, Date endDate);
+    public Double getSaleCountPerDay(Date startDate, Date endDate);
     public List<CategoryHelper> getCategoryPercentage(Date startDate, Date endDate);
     public Map getAllSalesByProductPerDate(Date startDate, Date endDate);
 }

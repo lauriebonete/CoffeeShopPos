@@ -86,8 +86,9 @@ public class DashboardController {
         Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
         Date endDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
 
-        List<Double> saleList = saleService.getSalePerDay(startDate, endDate);
+        Double saleList = saleService.getSalePerDay(startDate, endDate);
         Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("status", true);
         returnMap.put("sale",saleList);
 
         return returnMap;
@@ -102,7 +103,7 @@ public class DashboardController {
 
         Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
 
-        List<Double> saleList = saleService.getSaleCountPerDay(startDate, startDate);
+        Double saleList = saleService.getSaleCountPerDay(startDate, startDate);
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("salesCount",saleList);
 

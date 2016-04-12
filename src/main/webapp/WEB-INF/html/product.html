@@ -538,7 +538,7 @@
 
                         mockFile.upload = upload;
                         mockFile.kind = "file";
-                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile);
+                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile, true);
                         Dropzone.forElement("#dropZone").files.push(mockFile);
                         Dropzone.forElement("#dropZone").emit("thumbnail", mockFile, "/file/viewImage/"+data.id);
                         Dropzone.forElement("#dropZone").emit("complete", mockFile)
@@ -720,7 +720,43 @@
                     $(".dz-preview").attr("data-file", $(response).attr("id"));
                 });
 
-                this.on("addedfile", function (file) {
+                this.on("addedfile", function (file, isPreloaded) {
+
+                    if(isPreloaded){
+                        var removeButton = Dropzone.createElement("<a><i class='fa fa-times fa-2x'></i></a>");
+                        var _this = this;
+
+                        removeButton.addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            _this.removeFile(file);
+
+                            var productId = $("#image-modal").attr("data-product");
+
+                            var product = new Object;
+                            product["id"] = productId;
+
+                            $.ajax({
+                                url: evey.getHome()+"/product/remove-image",
+                                data: JSON.stringify(product),
+                                type: "POST",
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success:function(data){
+                                    if(data.status) {
+                                        evey.promptSuccess(data.message);
+                                        $('#image-modal').foundation('reveal', 'close');
+                                        $(".picked").removeAttr("data-image");
+                                    } else {
+                                        evey.promptAlert(data.message);
+                                    }
+                                }
+                            });
+                        });
+
+                        file.previewElement.appendChild(removeButton);
+                    }
+
                     var img = $(file.previewTemplate).find("img");
                     img[0].onload = function () {
                         img.css({

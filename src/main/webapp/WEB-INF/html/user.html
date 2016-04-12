@@ -185,31 +185,23 @@
                         <h3 id="crud-title">Create User</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="crud-form">
-                            <ul class="tabs" data-tab>
-                                <li class="tab-title active"><a href="#createPanel1">Personal Information</a></li>
-                                <li class="tab-title"><a href="#createPanel2">Credentials</a></li>
-                            </ul>
-                            <div class="tabs-content">
-                                <div class="content active" id="createPanel1">
-                                    <div class="small-12 columns">
-                                        <div class="row collapse prefix-radius">
-                                            <label>First Name <small>required</small>
-                                                <input type="text" placeholder="First Name" name="person.firstName" required></label>
-                                            <small class="error">Please provide First Name.</small>
-                                        </div>
-                                        <div class="row collapse prefix-radius">
-                                            <label>Middle Name <small>required</small>
-                                                <input type="text" placeholder="Middle Name" name="person.middleName" required></label>
-                                            <small class="error">Please provide Middle Name.</small>
-                                        </div>
-                                        <div class="row collapse prefix-radius">
-                                            <label>Last Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" name="person.lastName" required></label>
-                                            <small class="error">Please provide Last Name.</small>
-                                        </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row collapse prefix-radius">
+                                        <label>First Name <small>required</small>
+                                            <input type="text" placeholder="First Name" name="person.firstName" required></label>
+                                        <small class="error">Please provide First Name.</small>
                                     </div>
-                                </div>
-                                <div class="content" id="createPanel2">
+                                    <div class="row collapse prefix-radius">
+                                        <label>Middle Name <small>required</small>
+                                            <input type="text" placeholder="Middle Name" name="person.middleName" required></label>
+                                        <small class="error">Please provide Middle Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Last Name <small>required</small>
+                                            <input type="text" placeholder="Last Name" name="person.lastName" required></label>
+                                        <small class="error">Please provide Last Name.</small>
+                                    </div>
                                     <div class="row collapse prefix-radius">
                                         <label>User Name <small>required</small>
                                             <input type="text" placeholder="User Name" name="username" required></label>
@@ -247,35 +239,27 @@
                         <h3 id="update-title">Update User</h3>
                         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
                         <form data-abide="ajax" id="update-form">
-                            <ul class="tabs" data-tab>
-                                <li class="tab-title active"><a href="#updatePanel1">Personal Information</a></li>
-                                <li class="tab-title"><a href="#updatePanel2">Credentials</a></li>
-                            </ul>
-                            <div class="tabs-content">
-                                <div class="content active" id="updatePanel1">
-                                    <div class="small-12 columns">
-                                        <div class="row">
-                                            <input type="hidden" value="{{recordFound.id}}" name="id">
-                                            <input type="hidden" value="{{recordFound.person.id}}" name="person.id">
-                                        </div>
-                                        <div class="row collapse prefix-radius">
-                                            <label>First Name <small>required</small>
-                                                <input type="text" placeholder="First Name" value="{{recordFound.person.firstName}}" name="person.firstName" required></label>
-                                            <small class="error">Please provide First Name.</small>
-                                        </div>
-                                        <div class="row collapse prefix-radius">
-                                            <label>Middle Name <small>required</small>
-                                                <input type="text" placeholder="Middle Name" value="{{recordFound.person.middleName}}" name="person.middleName" required></label>
-                                            <small class="error">Please provide Middle Name.</small>
-                                        </div>
-                                        <div class="row collapse prefix-radius">
-                                            <label>Last Name <small>required</small>
-                                                <input type="text" placeholder="Last Name" value="{{recordFound.person.lastName}}" name="person.lastName" required></label>
-                                            <small class="error">Please provide Last Name.</small>
-                                        </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <div class="row">
+                                        <input type="hidden" value="{{recordFound.id}}" name="id">
+                                        <input type="hidden" value="{{recordFound.person.id}}" name="person.id">
                                     </div>
-                                </div>
-                                <div class="content" id="updatePanel2">
+                                    <div class="row collapse prefix-radius">
+                                        <label>First Name <small>required</small>
+                                            <input type="text" placeholder="First Name" value="{{recordFound.person.firstName}}" name="person.firstName" required></label>
+                                        <small class="error">Please provide First Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Middle Name <small>required</small>
+                                            <input type="text" placeholder="Middle Name" value="{{recordFound.person.middleName}}" name="person.middleName" required></label>
+                                        <small class="error">Please provide Middle Name.</small>
+                                    </div>
+                                    <div class="row collapse prefix-radius">
+                                        <label>Last Name <small>required</small>
+                                            <input type="text" placeholder="Last Name" value="{{recordFound.person.lastName}}" name="person.lastName" required></label>
+                                        <small class="error">Please provide Last Name.</small>
+                                    </div>
                                     <div class="row collapse prefix-radius">
                                         <label>User Name <small>required</small>
                                             <input type="text" placeholder="User Name" value="{{recordFound.username}}" name="username" required></label>
@@ -302,10 +286,10 @@
                                         </label>
                                         <small class="error">Please provide desired User Role.</small>
                                     </div>
-                                    <div class="rows">
-                                        <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update User</span></button>
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="rows">
+                                <button type="submit" class="button expand success" id="form-update-btn"><i class="loader hide fa fa-spinner fa-pulse fa-3x"></i><span class="btn-label">Update User</span></button>
                             </div>
                         </form>
                     </div>
@@ -399,7 +383,7 @@
 
                         mockFile.upload = upload;
                         mockFile.kind = "file";
-                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile);
+                        Dropzone.forElement("#dropZone").emit("addedfile", mockFile,true);
                         Dropzone.forElement("#dropZone").files.push(mockFile);
                         Dropzone.forElement("#dropZone").emit("thumbnail", mockFile, "/file/viewImage/"+data.id);
                         Dropzone.forElement("#dropZone").emit("complete", mockFile)
@@ -447,7 +431,7 @@
         Dropzone.options.dropZone = {
             maxFiles: 1,
             acceptedFiles: "image/jpeg,image/png,image/gif",
-            addRemoveLinks: true,
+            /*addRemoveLinks: true,*/
             accept: function(file, done) {
                 done();
             },
@@ -462,7 +446,41 @@
                     $(".dz-preview").attr("data-file", $(response).attr("id"));
                 });
 
-                this.on("addedfile", function (file) {
+                this.on("addedfile", function (file,isPreloaded) {
+                    if(isPreloaded){
+                        var removeButton = Dropzone.createElement("<a><i class='fa fa-times fa-2x'></i></a>");
+                        var _this = this;
+
+                        removeButton.addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            _this.removeFile(file);
+
+                            var userId = $("#image-modal").attr("data-user");
+
+                            var user = new Object;
+                            user["id"] = userId;
+
+                            $.ajax({
+                                url: evey.getHome()+"/user/remove-image",
+                                data: JSON.stringify(user),
+                                type: "POST",
+                                dataType: "JSON",
+                                contentType: "application/json",
+                                success:function(data){
+                                    if(data.status) {
+                                        evey.promptSuccess(data.message);
+                                        $('#image-modal').foundation('reveal', 'close');
+                                        $(".picked").removeAttr("data-image");
+                                    } else {
+                                        evey.promptAlert(data.message);
+                                    }
+                                }
+                            });
+                        });
+
+                        file.previewElement.appendChild(removeButton);
+                    }
                     var img = $(file.previewTemplate).find("img");
                     img[0].onload = function () {
                         img.css({

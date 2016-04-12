@@ -237,8 +237,11 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    var saleToday = parseFloat(data.sale);
-                    $("#salesToday").text(saleToday + " PHP");
+                    if(data.status){
+                        $("#salesToday").text(data.sale + " PHP");
+                    } else {
+                        evey.promptAlert(data.message);
+                    }
                 }
             });
 

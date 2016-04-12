@@ -4,6 +4,7 @@ import org.pos.coffee.bean.helper.report.CategoryHelper;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDaoJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -124,7 +125,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("FROM SALE ")
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
-                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m-%d') ");
 
         GET_PRODUCT_SALE_SUMMARY_DATE.append("select b.PRODUCT_NAME, SUM(GROSS_PRICE) AS TOTAL_SALE from order_line as a left join product as b ")
                 .append("on a.PRODUCT_ID = b.ID ")
@@ -293,23 +294,33 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     }
 
     @Override
-    public List<Double> getSalePerDay(Date startDate, Date endDate) {
+    public Double getSalePerDay(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<Double> salePerDay = template.queryForList(GET_SALE_DAY.toString(),params,Double.class);
-        return salePerDay;
+        Double sale;
+        try {
+            sale = template.queryForObject(GET_SALE_DAY.toString(),params,Double.class);
+        } catch (EmptyResultDataAccessException e){
+            sale = 0D;
+        }
+        return sale;
     }
 
     @Override
-    public List<Double> getSaleCountPerDay(Date startDate, Date endDate) {
+    public Double getSaleCountPerDay(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        List<Double> saleCountPerDay = template.queryForList(GET_SALE_COUNT_DAY.toString(),params,Double.class);
-        return saleCountPerDay;
+        Double saleCount;
+        try {
+            saleCount = template.queryForObject(GET_SALE_COUNT_DAY.toString(),params,Double.class);
+        } catch (EmptyResultDataAccessException e){
+            saleCount = 0D;
+        }
+        return saleCount;
     }
 
     @Override

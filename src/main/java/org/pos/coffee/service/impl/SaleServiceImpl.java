@@ -141,12 +141,12 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     }
 
     @Override
-    public List<Double> getSalePerDay(Date startDate, Date endDate) {
+    public Double getSalePerDay(Date startDate, Date endDate) {
         return saleDaoJdbc.getSalePerDay(startDate,endDate);
     }
 
     @Override
-    public List<Double> getSaleCountPerDay(Date startDate, Date endDate) {
+    public Double getSaleCountPerDay(Date startDate, Date endDate) {
         return saleDaoJdbc.getSaleCountPerDay(startDate,endDate);
     }
 
