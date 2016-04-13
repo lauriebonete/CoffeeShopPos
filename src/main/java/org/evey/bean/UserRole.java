@@ -2,6 +2,7 @@ package org.evey.bean;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.evey.annotation.UniqueField;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.Set;
 @Table(name = "USER_ROLE")
 public class UserRole extends BaseEntity {
 
-    @Column(name="ROLE_NAME")
+    @Column(name="ROLE_NAME", unique=true, nullable=false)
+    @UniqueField
     private String roleName;
 
     @Column(name="ROLE_DESCRIPTION")

@@ -305,6 +305,8 @@ var evey = (function(){
 
                 var path = evey.getPath();
 
+                console.log("x");
+
                 var jsonForm = evey.JSONnify(crudForm);
                 $.ajax({
                     url: path,
@@ -314,7 +316,7 @@ var evey = (function(){
                     contentType: "application/json",
                     success : function(data) {
                         if(data.status) {
-                            $('#crud-modal').foundation('reveal', 'close');
+                            $('#crud-modal').foundation('reveal', 'close', {animation:'none'});
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
                             evey.promptSuccess(data.message);
@@ -326,7 +328,7 @@ var evey = (function(){
                         $(crudForm).find("span.btn-label").toggleClass("hide");
 
                         $(crudForm).find(".button").toggleClass("disabled");
-                        $(crudForm).find(".button").removeAttr("disabled",true);
+                        $(crudForm).find(".button").removeAttr("disabled");
                     }
                 });
             });
@@ -352,7 +354,7 @@ var evey = (function(){
                     contentType: "application/json",
                     success : function(data) {
                         if(data.status){
-                            $('#update-modal').foundation('reveal', 'close');
+                            $('#update-modal').foundation('reveal', 'close', {animation:'none'});
                             angular.element(".main-body").scope().updateEntity(data.result);
                             angular.element(".main-body").scope().$apply();
 
