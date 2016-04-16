@@ -222,8 +222,8 @@ var evey = (function(){
                     if (!$(input).is(":checked")) {
                         $(input).click();
                     }
-                } else {
-                    $(input).val("");
+                } else if ($(input).attr("name")!="isBypassUnique"){
+                   $(input).val("");
                 }
             });
 
@@ -243,6 +243,14 @@ var evey = (function(){
             json["slice"] = data.results.slice(0,data.listSize);
             json["maxItem"] = data.listSize;
             return json;
+        },
+
+        sanitizeErrorContainer: function(form){
+            $.each($(form).find("small.error"),function(i,small){
+                var defaultError = $(small).attr("data-default-error");
+                $(small).text(defaultError);
+                $(small).removeAttr("data-default-error");
+            });
         }
     }
 })();
@@ -258,6 +266,7 @@ var evey = (function(){
             'status'     : '.status',
             'pagination' : '.pagination',
             'add'        : '#form-add-btn',
+            'update'    : '#form-update-btn',
             'edit'       : '.edit-action',
             'display'    : '.display-action',
             'remove'     : '.delete-action',
@@ -279,20 +288,20 @@ var evey = (function(){
             Object.getPrototypeOf(document.createComment('')).getAttribute = function() {}
 
             var crudForm = $(this).find(settings['form']);
-
             var updateForm = $(this).find(settings['updateForm'])
-
             var offCanvas = $(this).find(settings['offCanvas'])
-
             var mainBody = $(this).find(settings['mainBody']);
-
-            var deleteAction = $(this).find(settings['remove']);
-
             var closeModal = $(this).find(settings["close-parent-modal"]);
+            var add = $(this).find(settings["add"]);
+            var update = $(this).find(settings["update"]);
 
-            var ajaxLoad = $(this).find(settings["ajax-loader"]);
+            $(add).on("click",function(){
+                evey.sanitizeErrorContainer(crudForm);
+            });
 
-            var home = evey.getHome();
+            $(update).on("click",function(){
+                evey.sanitizeErrorContainer(updateForm);
+            });
 
             $(crudForm).on("valid.fndtn.abide",function(){
 
@@ -304,8 +313,6 @@ var evey = (function(){
                 $(crudForm).find(".button").attr("disabled",true);
 
                 var path = evey.getPath();
-
-                console.log("x");
 
                 var jsonForm = evey.JSONnify(crudForm);
                 $.ajax({
@@ -320,10 +327,19 @@ var evey = (function(){
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
                             evey.promptSuccess(data.message);
+                        } else if (data.validatorError) {
+                            $.each(data.errors,function(i,error){
+                                var errorField = $('#crud-modal').find("[name='"+error.field+"']");
+                                var errorDiv = $(errorField).parent().parent();
+                                var errorContainer = $(errorDiv).find("small.error");
+                                var defaultErrorMsg = $(errorContainer).text();
+                                $(errorContainer).attr("data-default-error",defaultErrorMsg);
+                                $(errorContainer).text(error.defaultMessage);
+                                $(errorDiv).addClass("error");
+                            });
                         } else {
                             evey.promptAlert(data.message);
                         }
-
                         $(crudForm).find("i.loader").toggleClass("hide");
                         $(crudForm).find("span.btn-label").toggleClass("hide");
 
@@ -359,6 +375,16 @@ var evey = (function(){
                             angular.element(".main-body").scope().$apply();
 
                             evey.promptSuccess(data.message);
+                        } else if (data.validatorError) {
+                            $.each(data.errors,function(i,error){
+                                var errorField = $('#update-modal').find("[name='"+error.field+"']");
+                                var errorDiv = $(errorField).parent().parent();
+                                var errorContainer = $(errorDiv).find("small.error");
+                                var defaultErrorMsg = $(errorContainer).text();
+                                $(errorContainer).attr("data-default-error",defaultErrorMsg);
+                                $(errorContainer).text(error.defaultMessage);
+                                $(errorDiv).addClass("error");
+                            });
                         } else {
                             evey.promptAlert(data.message);
                         }

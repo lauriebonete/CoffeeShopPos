@@ -8,4 +8,6 @@ import org.evey.bean.User;
  */
 public interface UserDao extends BaseEntityDao<User,Long> {
     public User loadUserByUsername(String username);
+    public Boolean checkIfPinIsUnique(String pin);
+    public Boolean checkIfUsernameIsUnique(String username);
 }

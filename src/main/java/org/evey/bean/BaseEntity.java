@@ -58,6 +58,8 @@ public class BaseEntity implements Serializable{
 	private Map<String,String> orderBy;
 
 	private transient String auditUsername;
+
+	private transient Boolean isBypassUnique;
 	
 	public Long getId() {
 		return id;
@@ -110,6 +112,14 @@ public class BaseEntity implements Serializable{
 
 	public void setOrderBy(Map<String, String> orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public Boolean getIsBypassUnique() {
+		return isBypassUnique;
+	}
+
+	public void setIsBypassUnique(Boolean isBypassUnique) {
+		this.isBypassUnique = isBypassUnique;
 	}
 
 	public String getAuditUsername() {

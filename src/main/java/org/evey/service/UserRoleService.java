@@ -9,4 +9,5 @@ import java.util.Map;
  */
 public interface UserRoleService extends BaseCrudService<UserRole> {
     public Map<String,String> getAllDeclaredAuthorites();
+    public Boolean checkIfUserRoleIsUnique(String roleName);
 }

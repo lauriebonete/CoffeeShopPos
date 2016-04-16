@@ -20,4 +20,34 @@ public class UserDaoJpaImpl extends BaseEntityDaoJpaImpl<User,Long> implements U
         query.setParameter("username", username);
         return (User) query.getSingleResult();
     }
+
+    @Override
+    public Boolean checkIfPinIsUnique(String pin) {
+        String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.pinDigit = :pin";
+        Query query = getEntityManager().createQuery(queryString);
+        query.setParameter("pin", pin);
+
+        Long count = (Long) query.getSingleResult();
+        if(count!=null &&
+                count>0){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean checkIfUsernameIsUnique(String username) {
+        String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.username = :username";
+        Query query = getEntityManager().createQuery(queryString);
+        query.setParameter("username", username);
+
+        Long count = (Long) query.getSingleResult();
+        if(count!=null &&
+                count>0){
+            return false;
+        }
+
+        return true;
+    }
 }

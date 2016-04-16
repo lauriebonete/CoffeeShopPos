@@ -220,7 +220,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                                 Integer.class.isAssignableFrom(query.getEntityType())
 
                         ) || (query.getIsUnique()!=null &&
-                                query.getIsUnique() )){
+                                query.getIsUnique())){
                     queryBuffer.append("obj."+query.getFieldName()+" = :"+NamingUtil.toParamName(query.getFieldName()));
                 } else if(Date.class.isAssignableFrom(query.getEntityType())){
                     queryBuffer.append("date(obj."+query.getFieldName()+") = date(:"+NamingUtil.toParamName(query.getFieldName())+")");
@@ -240,6 +240,15 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
             List<QueryHelper> parentValues = getFields(type.getSuperclass(), entity);
             queryHelper.addAll(parentValues);
         }
+
+        Boolean bypass=null;
+        try {
+            Method bypassUnique = entity.getClass().getMethod(NamingUtil.toGetterName("isBypassUnique"));
+            bypass = (Boolean) bypassUnique.invoke(entity);
+        } catch (NoSuchMethodException | InvocationTargetException e ){
+            _log.error(e.getMessage());
+        }
+
 
         for(Field field : type.getDeclaredFields()) {
             field.setAccessible(true);
@@ -291,7 +300,7 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                         }
                         query.setValue(value);
 
-                        if(field.isAnnotationPresent(UniqueField.class)) {
+                        if((bypass==null || !bypass) && field.isAnnotationPresent(UniqueField.class)) {
                             query.setIsUnique(true);
                         }
 

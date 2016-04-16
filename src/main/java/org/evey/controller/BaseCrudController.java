@@ -5,16 +5,21 @@ import org.evey.bean.BaseEntity;
 import org.evey.service.BaseCrudService;
 import org.evey.utility.NamingUtil;
 import org.evey.utility.StringUtil;
+import org.evey.validator.BaseValidator;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
@@ -31,6 +36,8 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     protected Class<T> entityBeanType;
 
     protected BaseCrudService<T> baseCrudService;
+
+    protected BaseValidator baseValidator;
 
     protected String htmlPage = "";
 
@@ -58,11 +65,16 @@ public abstract class BaseCrudController<T extends BaseEntity> {
 
         attributeName = NamingUtil.toAttributeName(this.entityBeanType.getSimpleName());
         String serviceBean = attributeName + "Service";
+        String validatorBean = attributeName + "Validator";
 
         _log.warn("Initiating controller's service "+serviceBean);
         if (this.baseCrudService == null
                 && beanFactory.containsBean(serviceBean)) {
             this.baseCrudService = (BaseCrudService<T>) beanFactory.getBean(serviceBean);
+        }
+        if(this.baseValidator == null
+                && beanFactory.containsBean(validatorBean)){
+            this.baseValidator = (BaseValidator)beanFactory.getBean(validatorBean);
         }
         if (StringUtil.isEmpty(htmlPage)) {
             this.htmlPage = "html/" + NamingUtil.toCreatePath(attributeName) + ".html";
@@ -73,15 +85,27 @@ public abstract class BaseCrudController<T extends BaseEntity> {
         this.transactionTemplate = new TransactionTemplate(txManager);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public final @ResponseBody Map<String, Object> create(@RequestBody T entity) throws Exception {
-        Map<String, Object> map = new HashMap<String, Object>();
-        _log.info(entity);
-        createEntity(entity);
-        map.put("message", "Transaction is successfully saved.");
-        map.put("status", true);
-        map.put("result", entity);
+    @InitBinder
+    private void setValidator(WebDataBinder binder){
+        if(baseValidator!=null){
+            binder.addValidators(baseValidator);
+        }
+    }
 
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    public final @ResponseBody Map<String, Object> create(@RequestBody @Valid T entity, BindingResult errors) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        if(errors.hasErrors()){
+            map.put("validatorError",true);
+            map.put("errors",errors.getAllErrors());
+        } else {
+            _log.info(entity);
+            createEntity(entity);
+            map.put("message", "Transaction is successfully saved.");
+            map.put("status", true);
+            map.put("result", entity);
+        }
         return map;
     }
 
