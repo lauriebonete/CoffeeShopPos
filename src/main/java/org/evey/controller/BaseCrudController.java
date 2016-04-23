@@ -51,7 +51,7 @@ public abstract class BaseCrudController<T extends BaseEntity> {
     public @ResponseBody Map<String,Object> handleException(Exception e){
         Map<String,Object> returnMap = new HashMap<>();
 
-        _log.error(e.getMessage());
+        _log.error("ERROR LOGGER:", e);
 
         returnMap.put("status", false);
         returnMap.put("message", "Ooopppsie! Something went wrong, but you're still awesome.");

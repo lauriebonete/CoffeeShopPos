@@ -38,11 +38,21 @@ public class UserServiceImpl extends BaseCrudServiceImpl<User> implements UserSe
 
     @Override
     public Boolean checkIfPinIsUnique(String pin) {
-        return userDao.checkIfPinIsUnique(pin);
+        return userDao.checkIfPinIsUnique(pin, null);
     }
 
     @Override
     public Boolean checkIfUsernameIsUnique(String username) {
-        return userDao.checkIfUsernameIsUnique(username);
+        return userDao.checkIfUsernameIsUnique(username, null);
+    }
+
+    @Override
+    public Boolean checkIfPinIsUnique(String pin, Long userId) {
+        return userDao.checkIfPinIsUnique(pin, userId);
+    }
+
+    @Override
+    public Boolean checkIfUsernameIsUnique(String username, Long userId) {
+        return userDao.checkIfUsernameIsUnique(username, userId);
     }
 }

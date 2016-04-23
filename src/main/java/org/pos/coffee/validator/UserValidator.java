@@ -25,12 +25,28 @@ public class UserValidator extends BaseValidator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        if(!userService.checkIfPinIsUnique(user.getPinDigit())){
-            errors.rejectValue("pinDigit","pinDigit","Pin Digit is already taken");
+
+
+        if(user.isNew()){
+            if(!userService.checkIfPinIsUnique(user.getPinDigit())){
+                errors.rejectValue("pinDigit","pinDigit","Pin Digit is already taken");
+            }
+
+            if(!userService.checkIfUsernameIsUnique(user.getUsername())){
+                errors.rejectValue("username","username","Username is already taken");
+            }
+        } else {
+            if(!userService.checkIfPinIsUnique(user.getPinDigit(), user.getId())){
+                errors.rejectValue("pinDigit","pinDigit","Pin Digit is already taken");
+            }
+
+            if(!userService.checkIfUsernameIsUnique(user.getUsername(), user.getId())){
+                errors.rejectValue("username","username","Username is already taken");
+            }
         }
 
-        if(!userService.checkIfUsernameIsUnique(user.getUsername())){
-            errors.rejectValue("username","username","Username is already taken");
+        if(user.getUserRole() == null || user.getUserRole().isEmpty()){
+            errors.rejectValue("userRole","userRole","User Role is required.");
         }
 
     }
