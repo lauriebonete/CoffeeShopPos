@@ -1,4 +1,4 @@
-@media screen and (max-width: 640px) {
+/*@media screen and (max-width: 640px) {
     .maestroLogo {
         height: 35vh;
         width: 80vw;
@@ -23,27 +23,29 @@
         display:block;
         margin:auto;
     }
+}*/
+
+.login-logo {
+    width: 90%;
+    height: 90%;
+    margin: auto;
 }
+
 
 #loginContainer {
     position: relative;
 }
 
-#loginBackground {
+#login-background {
     position: fixed;
     width:100%;
     height:100%;
     background-image: url("../img/maestro.png");
     background-size: cover;
     background-repeat: no-repeat;
-    /*-webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);*/
 }
 
-#loginForm {
+.login-form{
     position: fixed;
     right: 0;
     left: 0;
@@ -52,11 +54,15 @@
     width: 300px;
 }
 
-@media screen and (max-height: 320px) {
-    #loginForm {
-        max-height: 100vh;
-        overflow: hidden;
-        overflow-y: auto;
+@media screen and (max-height: 500px) {
+    .numpadNumber {
+        display: none !important;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .numpadNumber {
+        display: none !important;
     }
 }
 
@@ -67,6 +73,7 @@
     background: #00887D;
     transition: all .03s ease-in-out;
     -webkit-transition: all .03s ease-in-out;
+    opacity: 0.8;
 }
 
 .numpadNumber:active {

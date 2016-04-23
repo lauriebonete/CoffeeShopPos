@@ -187,7 +187,7 @@ input[data-toggle]:checked + label:active {
     border-radius: 2rem;
 }
 
-@media only screen and (max-width: 64.0625em) {
+@media only screen and (max-width: 40.0625em) {
     table {
         overflow-x: auto;
         display: block;

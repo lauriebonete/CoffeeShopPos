@@ -320,7 +320,7 @@
                                     </a>
                                 </div>
                                 <div class="small-6 columns">
-                                    <button class="button right disabled ajax-loader" id="confirm-order">
+                                    <button class="button right disabled ajax-loader" id="confirm-order" disabled="true">
                                         <i class="loader hide fa fa-spinner fa-pulse fa-lg"></i>
                                         <span> Punch Order
                                             <i class="fa fa-arrow-circle-right"></i>
@@ -933,8 +933,10 @@
                                 angular.element("body").scope().setDateTime(evey.getDate());
                                 angular.element("body").scope().$apply();
 
+                                $("#payment-amount").val("");
                                 $(".payment-page").toggleClass("hide");
                                 $(".order-page").toggleClass("hide");
+                                $("#confirm-order").addClass("disabled").attr("disabled",true);
                             }
                         });
                     },
@@ -954,10 +956,12 @@
                 $(".change-due").text("PHP "+change);
                 $(".change-due-row").removeClass("hide");
                 $("#confirm-order").removeClass("disabled");
+                $("#confirm-order").removeAttr("disabled");
             } else {
                 $(".change-due").text("PHP 0");
                 $(".change-due-row").addClass("hide");
                 $("#confirm-order").addClass("disabled");
+                $("#confirm-order").attr("disabled",true);
             }
         }).on("click", "#reset-default", function () {
             $("span#modify-quantity").text("1");
@@ -1004,19 +1008,22 @@
                     dataType: "JSON",
                     contentType: "application/json",
                     success: function(data){
+                        if(data.status) {
+                            $(".order-holder").children().remove();
+                            $(".continue").addClass("disabled");
+                            $(".total-price").text("");
 
-                        $(".order-holder").children().remove();
-                        $(".total-price").text("");
-                        $(".change-due").text("PHP 0");
-                        $(".tax-summary").text("PHP 0");
-                        $(".change-due-row").addClass("hide");
-                        angular.element("body").scope().setOrderedCount();
-                        angular.element("body").scope().$apply();
+                            $(".change-due").text("PHP 0");
+                            $(".tax-summary").text("PHP 0");
+                            $(".change-due-row").addClass("hide");
+                            angular.element("body").scope().setOrderedCount();
+                            angular.element("body").scope().$apply();
 
-                        $(".payment-page").toggleClass("hide");
-                        $(".order-page").toggleClass("hide");
+                            $(".payment-page").toggleClass("hide");
+                            $(".order-page").toggleClass("hide");
+                            $("#confirm-order").addClass("disabled").attr("disabled",true);
 
-                        if(data.status){
+
                             evey.promptSuccess(data.message);
                         } else {
                             evey.promptAlert(data.message);
