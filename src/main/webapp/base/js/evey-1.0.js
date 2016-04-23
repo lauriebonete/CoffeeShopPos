@@ -250,6 +250,7 @@ var evey = (function(){
                 var defaultError = $(small).attr("data-default-error");
                 $(small).text(defaultError);
                 $(small).removeAttr("data-default-error");
+                $(small).parent().removeClass("error");
             });
         }
     }
@@ -488,10 +489,10 @@ var evey = (function(){
 
         var previous = $('<li>');
         $(previous).append($('<a>&laquo; Previous</a>'));
-        $(previous).addClass("arrow");
+        $(previous).addClass("arrow previous");
 
         var next = $('<li>');
-        $(next).addClass("arrow");
+        $(next).addClass("arrow next");
         $(next).append($('<a>Next &raquo;</a>'));
 
         if(paginateThis.currentPage == 1) {
@@ -508,37 +509,42 @@ var evey = (function(){
                 var newPage = $('<li>').append($('<a class="pages" data-page='+i+' data-max='+paginateThis.maxItem+'>').text(i));
             }
 
-            $(newPage).find("a").on("click",function(){
-
-                $(this).parents("ul").find("li.current").removeClass("current");
-                $(this).parent("li").addClass("current");
-
-                var page = $(this).data("page");
-                var max = $(this).data("max");
-
-                if(Number(page) != 1) {
-                    $(previous).removeClass("unavailable");
-                    $(previous).attr("aria-disabled", false);
-                } else {
-                    $(previous).addClass("unavailable");
-                    $(previous).attr("aria-disabled", true);
-                }
-
-                if(Number(page) != Number(paginateThis.numberOfPage)) {
-                    $(next).removeClass("unavailable");
-                    $(next).attr("aria-disabled", false);
-                } else {
-                    $(next).addClass("unavailable");
-                    $(next).attr("aria-disabled", true);
-                }
-
-                angular.element(".main-body").scope().changePage(page, max);
-                angular.element(".main-body").scope().$apply();
-
-            });
-
             $(pagination).append($(newPage));
         }
+
+        $(document).ready(function(){
+
+        }).on("click","a.pages",function(){
+
+            var previous = $("ul.pagination li.previous");
+            var next = $("ul.pagination li.next");
+
+            $(this).parents("ul").find("li.current").removeClass("current");
+            $(this).parent("li").addClass("current");
+
+            var page = $(this).data("page");
+            var max = $(this).data("max");
+
+            if(Number(page) != 1) {
+                $(previous).removeClass("unavailable");
+                $(previous).attr("aria-disabled", false);
+            } else {
+                $(previous).addClass("unavailable");
+                $(previous).attr("aria-disabled", true);
+            }
+
+            if(Number(page) != Number(paginateThis.numberOfPage)) {
+                $(next).removeClass("unavailable");
+                $(next).attr("aria-disabled", false);
+            } else {
+                $(next).addClass("unavailable");
+                $(next).attr("aria-disabled", true);
+            }
+
+            angular.element(".main-body").scope().changePage(page, max);
+            angular.element(".main-body").scope().$apply();
+        });
+
 
         if(paginateThis.currentPage == paginateThis.numberOfPage) {
             $(next).addClass("unavailable");

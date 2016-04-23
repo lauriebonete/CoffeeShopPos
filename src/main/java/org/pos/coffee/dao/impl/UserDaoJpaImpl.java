@@ -22,9 +22,17 @@ public class UserDaoJpaImpl extends BaseEntityDaoJpaImpl<User,Long> implements U
     }
 
     @Override
-    public Boolean checkIfPinIsUnique(String pin) {
-        String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.pinDigit = :pin";
-        Query query = getEntityManager().createQuery(queryString);
+    public Boolean checkIfPinIsUnique(String pin, Long userId) {
+        Query query = null;
+
+        if(userId != null){
+            String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.pinDigit = :pin AND obj.id != :userId";
+            query = getEntityManager().createQuery(queryString);
+            query.setParameter("userId", userId);
+        } else {
+            String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.pinDigit = :pin";
+            query = getEntityManager().createQuery(queryString);
+        }
         query.setParameter("pin", pin);
 
         Long count = (Long) query.getSingleResult();
@@ -37,9 +45,18 @@ public class UserDaoJpaImpl extends BaseEntityDaoJpaImpl<User,Long> implements U
     }
 
     @Override
-    public Boolean checkIfUsernameIsUnique(String username) {
-        String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.username = :username";
-        Query query = getEntityManager().createQuery(queryString);
+    public Boolean checkIfUsernameIsUnique(String username, Long userId) {
+
+        Query query = null;
+
+        if(userId != null){
+            String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.username = :username AND obj.id != :userId";
+            query = getEntityManager().createQuery(queryString);
+            query.setParameter("userId", userId);
+        } else {
+            String queryString = "SELECT COUNT(obj.id) FROM User obj where obj.username = :username";
+            query = getEntityManager().createQuery(queryString);
+        }
         query.setParameter("username", username);
 
         Long count = (Long) query.getSingleResult();

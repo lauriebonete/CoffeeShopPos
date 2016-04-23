@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>User Role <small>required</small>
-                                            <selectize data-attr="id" name="userRole" config='userRoleConfig' options='userRoleOption' ng-model="userRole"></selectize>
+                                            <selectize data-attr="id" name="userRole" config='userRoleConfig' options='userRoleOption' ng-model="userRole" ng-required="true"></selectize>
                                         </label>
                                         <small class="error">Please provide desired User Role.</small>
                                     </div>
@@ -325,14 +325,6 @@
     <script>
         $(document).foundation();
         $(document).EVEYfy();
-
-        $(document).foundation({
-            tab: {
-                callback: function (tab) {
-                    $(document).foundation('abide', 'reflow');
-                }
-            }
-        });
 
         $(document).ready(function(){
             $.ajax({

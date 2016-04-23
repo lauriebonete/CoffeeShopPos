@@ -30,6 +30,8 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
         $scope.listSize = data.completeList.length;
         $scope.startIndex = 1;
         $scope.maxItem = data.slice.length;
+        $scope.tableLimit = data.slice.length;
+        $scope.numberOfPage = data.numberOfPage;
     };
 
     $scope.changePage = function (page, max) {
@@ -71,6 +73,22 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
         $scope.records.push(data);
         $scope.fullRecords.push(data);
         $scope.listSize++;
+
+        if(isNewPageNeeded($scope.fullRecords)){
+            var page= $scope.numberOfPage+1;
+            var newPage = $('<li>').append($('<a class="pages" data-page='+page+' data-max='+$scope.tableLimit+'>').text(page));
+            $(newPage).insertBefore($("ul.pagination .arrow.next"));
+        }
+    };
+
+    var isNewPageNeeded = function(fullRecords){
+        var numberOfPage = fullRecords.length/$scope.tableLimit;
+        numberOfPage = Math.ceil(numberOfPage);
+        console.log(numberOfPage,$scope.numberOfPage);
+        if($scope.numberOfPage<numberOfPage){
+            return true;
+        }
+        return false;
     };
 
     $scope.updateEntity = function(data) {
@@ -124,7 +142,16 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
                 evey.promptAlert(response.data.message);
             }
             $('#delete-modal').foundation('reveal', 'close');
-            $scope.records.splice($.inArray(id, $scope.records), 1);
+            /*$scope.records.splice($.inArray(id, $scope.records), 1);
+            $scope.fullRecords.splice($.inArray(id, $scope.fullRecords), 1);*/
+
+            $scope.records = $.grep($scope.records, function(value) {
+                return value.id != id;
+            });
+
+            $scope.fullRecords = $.grep($scope.fullRecords, function(value) {
+                return value.id != id;
+            });
 
         }, function errorCallback(response) {
             $("#delete-modal .loader").toggleClass("hide");

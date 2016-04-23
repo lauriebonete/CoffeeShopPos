@@ -8,6 +8,10 @@ import org.evey.bean.User;
  */
 public interface UserService extends BaseCrudService<User> {
     public User getCurrentUser();
+
     public Boolean checkIfPinIsUnique(String pin);
     public Boolean checkIfUsernameIsUnique(String username);
+
+    public Boolean checkIfPinIsUnique(String pin, Long userId);
+    public Boolean checkIfUsernameIsUnique(String username, Long userId);
 }
