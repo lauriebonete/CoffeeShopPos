@@ -23,62 +23,68 @@
 </head>
 <body ng-app="loginApp" ng-controller="loginController">
 	<div id="loginContainer">
-		<div id="loginBackground">
+		<div id="login-background">
+			<form action="/login" method="POST" data-abide class="login-form">
+				<div class="login-logo">
+					<img src="img/maestroFedeliLogo.png"/>
+				</div>
+				<div class="alert-box radius" ng-class="status == 'true' ? 'alert':'success'" ng-if="show == true">
+					{{response}}
+				</div>
+
+				<div class="row">
+					<input type="password" id="pinDigit" name="pinDigit" required/>
+					<small class="error">Please enter your PIN</small>
+				</div>
+				<div class="row">
+					<ul class="addOnList small-block-grid-3 medium-block-grid-3 large-block-3">
+						<li class="numpadNumber pin" data-digit="7">
+							<h5>7</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="8">
+							<h5>8</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="9">
+							<h5>9</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="4">
+							<h5>4</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="5">
+							<h5>5</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="6">
+							<h5>6</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="1">
+							<h5>1</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="2">
+							<h5>2</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="3">
+							<h5>3</h5>
+						</li>
+						<li class="numpadNumber" id="clear">
+							<h5>Clear</h5>
+						</li>
+						<li class="numpadNumber pin" data-digit="0">
+							<h5>0</h5>
+						</li>
+						<li class="numpadNumber" id="enter">
+							<h5>Enter</h5>
+						</li>
+					</ul>
+				</div>
+			</form>
 		</div>
-	</div>
-	<div id="loginForm">
-		<div>
-			<img class="maestroLogo show-for-medium-up" src="img/maestroFedeliLogo.png"/>
-		</div>
-		<div class="alert-box radius" ng-class="status == 'true' ? 'alert':'success'" ng-if="show == true">
-			{{response}}
-		</div>
-		<form action="/login" method="POST" data-abide>
-			<div class="row">
-				<input type="password" id="pinDigit" name="pinDigit" required/>
-				<small class="error">Please enter your PIN</small>
+		<!--<div id="loginForm">
+			<div>
+				<img class="maestroLogo show-for-medium-up" src="img/maestroFedeliLogo.png"/>
 			</div>
-			<div class="row">
-				<ul class="addOnList small-block-grid-3 medium-block-grid-3 large-block-3">
-					<li class="numpadNumber pin" data-digit="7">
-						<h5>7</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="8">
-						<h5>8</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="9">
-						<h5>9</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="4">
-						<h5>4</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="5">
-						<h5>5</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="6">
-						<h5>6</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="1">
-						<h5>1</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="2">
-						<h5>2</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="3">
-						<h5>3</h5>
-					</li>
-					<li class="numpadNumber" id="clear">
-						<h5>Clear</h5>
-					</li>
-					<li class="numpadNumber pin" data-digit="0">
-						<h5>0</h5>
-					</li>
-					<li class="numpadNumber" id="enter">
-						<h5>Enter</h5>
-					</li>
-				</ul>
-			</div>
-		</form>
+
+
+		</div>-->
 	</div>
 </body>
 <script>

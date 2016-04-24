@@ -321,3 +321,11 @@ body {
 ::-webkit-scrollbar-thumb:window-inactive {
     background: grey;
 }
+
+table#crud-table {
+    table-layout: fixed !important;
+}
+
+table#crud-table td {
+    word-wrap: break-word;
+}
