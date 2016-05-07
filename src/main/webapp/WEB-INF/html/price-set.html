@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/foundation-datepicker.min.css">
     <link rel="stylesheet" href="css/toastr.css"/>
@@ -134,14 +133,6 @@
                             </div>
                         </div>
                         <div class="small-8 large-9 columns crud-result">
-                            <div data-alert class="alert-box success radius">
-                                Transaction Completed.
-                                <a href="#" class="close">&times;</a>
-                            </div>
-                            <div data-alert class="alert-box alert radius">
-                                Transaction Failed. Please review your inputs or contact your system administrator.
-                                <a href="#" class="close">&times;</a>
-                            </div>
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
                                 <a href="#" class="button right success small" data-reveal-id="crud-modal" ng-show="checkIfHasAccess('ADD_PRICE_SET')"><i class="fa fa-plus-circle"></i> &nbsp Add</a>
@@ -192,19 +183,23 @@
                                         <small class="error">Please provide name for the price set.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
+                                        <label> <small>required</small> </label>
                                         <div class="small-3 columns">
                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="Start Date" name="startDate">
+                                            <input class="fcalendar" type="text" placeholder="Start Date" name="startDate" required>
+                                            <small class="error">Please provide a valid start date.</small>
                                         </div>
                                     </div>
                                     <div class="row collapse prefix-radius">
+                                        <label> <small>required</small></label>
                                         <div class="small-3 columns">
-                                            <span class="prefix"><i class="fa fa-calendar"></i></span>
+                                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <div class="small-9 columns">
-                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate">
+                                            <input class="fcalendar" type="text" placeholder="End Date" name="endDate" required>
+                                            <small class="error">Please provide a valid end date.</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -266,8 +261,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Modifier <small>required</small>
-                                                <selectize data-attr="id" name="product" config='productConfig' options='productOption' ng-model="product"></selectize></label>
+                                            <label>Product
+                                                <selectize data-attr="id" name="product" config='productConfig' options='productOption' ng-model="product"></selectize>
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                     <div class="row panel-flat margin-panel-flat">
@@ -282,8 +279,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Promo Group <small>required</small>
-                                                <selectize data-attr="id" name="promoGroup" config='selectizeConfig' options='promoGroupOption' ng-model="promoGroup"></selectize></label>
+                                            <label>Promo Group
+                                                <selectize data-attr="id" name="promoGroup" config='selectizeConfig' options='promoGroupOption' ng-model="promoGroup"></selectize>
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                     <div class="row panel-flat margin-panel-flat">
@@ -298,8 +297,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Modifier <small>required</small>
-                                                <input type="text" placeholder="New Price/Percentage" name="minQuantity"></label>
+                                            <label>Minimum Quantity
+                                                <input type="number" placeholder="Minimum Quantity" name="minQuantity">
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -316,8 +317,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Modifier <small>required</small>
-                                                <input type="text" placeholder="New Price/Percentage" name="minPrice"></label>
+                                            <label>Minimum Price
+                                                <input type="number" placeholder="Minimum Price" name="minPrice">
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                     <div class="row panel-flat margin-panel-flat">
@@ -332,8 +335,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Modifier <small>required</small>
-                                                <input type="text" placeholder="New Price/Percentage" name="voucherCode"></label>
+                                            <label>Voucher Code
+                                                <input type="text" placeholder="Voucher Code" name="voucherCode">
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                     <div class="row panel-flat margin-panel-flat">
@@ -348,9 +353,10 @@
                                             </div>
                                         </div>
                                         <div class="columns small-8">
-                                            <label>Modifier <small>required</small>
-                                                <input type="text" placeholder="New Price/Percentage" name="priceSetModifier"></label>
-                                            <small class="error">Please provide modifier for the price set.</small>
+                                            <label>Modifier
+                                                <input type="number" placeholder="New Price/Percentage" name="priceSetModifier">
+                                            </label>
+                                            <small class="error"></small>
                                         </div>
                                     </div>
                                 </div>

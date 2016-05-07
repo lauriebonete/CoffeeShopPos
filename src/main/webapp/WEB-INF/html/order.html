@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <ul class="contentList small-block-grid-1 medium-block-grid-3 large-block-grid-3">
+                        <ul class="contentList small-block-grid-1 medium-block-grid-2 large-block-grid-3">
                             <li ng-repeat="product in productFound">
                                 <div style="background: #333333" class="contentHolder product" data-id="{{product.id}}">
                                     <img ng-if="product.productImageId == null" src="img/default.png" alt="" class="contentImg"/>
@@ -106,7 +106,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="cartBig show-for-large-up" ng-init="setOrderedCount()">
+                    <div class="cartBig" ng-init="setOrderedCount()">
                         <h3 class="center">Order Summary ({{orderedCount}})</h3>
                         <div class="orderSummary">
                             <span></span>
@@ -147,10 +147,10 @@
                         <button class="button expand continue disabled ajax-loader"><i class="loader hide fa fa-spinner fa-pulse fa-lg"></i><span class="ajax-loader-label">Continue</span></button>
                     </div>
                     <div class="cartSmall">
-                        <div class="cartSmall-icon show-for-medium-down">
+                        <div class="cartSmall-icon">
                             <i class="fa fa-shopping-cart fa-2x"></i>
                         </div>
-                        <div class="cartSmall-content show-for-medium-down">
+                        <div class="cartSmall-content">
                             <h5 class="left">Order Summary</h5>
                             <h5 class="right">({{orderedCount}})</h5>
                             <div class="orderSummary">
@@ -864,12 +864,13 @@
             $(classQuantityPrice).attr("data-quantity",quantity);
             $(classQuantityPrice).attr("data-price",price);
             var subtotal = (Number(quantity)*price);
-            $(addedTemplate).attr("data-subtotal", subtotal);
             $(addedTemplate).find(".subtotal").text(subtotal+"php");
 
 
             var totalPrice = Number($(".cartBig .total-price").text());
             totalPrice += subtotal+totalAddOnPrice;
+
+            $(addedTemplate).attr("data-subtotal", totalPrice);
 
             var classTotalPrice = $(".total-price");
             $(classTotalPrice).text(totalPrice);
