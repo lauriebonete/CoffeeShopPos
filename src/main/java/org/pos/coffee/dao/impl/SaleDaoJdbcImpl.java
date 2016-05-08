@@ -1,6 +1,8 @@
 package org.pos.coffee.dao.impl;
 
+import org.pos.coffee.bean.helper.TrendingProductDTO;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.LineChartDTO;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDaoJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,11 +111,12 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
 
 
 
-        GET_SALE_MONTH.append("SELECT EXTRACT(MONTH FROM SALE_DATE) AS MONTH, SUM(TOTAL_SALE) AS TOTAL_SALE ")
+        GET_SALE_MONTH.append("SELECT MONTHNAME(SALE_DATE) AS MONTH, SUM(TOTAL_SALE) AS TOTAL_SALE ")
                 .append("FROM SALE ")
                 .append("WHERE STR_TO_DATE(SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
-                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ");
+                .append("GROUP BY DATE_FORMAT(SALE_DATE, '%Y-%m') ")
+                .append("ORDER BY MONTH(SALE_DATE) ");
 
         GET_SALE_WEEK.append("SELECT EXTRACT(DAY FROM SALE_DATE) AS DAY, SUM(TOTAL_SALE) AS TOTAL_SALE ")
                 .append("FROM SALE ")
@@ -172,7 +175,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("LIMIT 5;");
     }
 
-    public static RowMapper<ProductSaleHelper> PRODUCT_HELPER = new RowMapper<ProductSaleHelper>() {
+    private static RowMapper<ProductSaleHelper> PRODUCT_HELPER = new RowMapper<ProductSaleHelper>() {
         @Override
         public ProductSaleHelper mapRow(ResultSet resultSet, int i) throws SQLException {
             final ProductSaleHelper productSaleHelper = new ProductSaleHelper();
@@ -188,6 +191,16 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
             productSaleHelper.setPrice(resultSet.getDouble("PRICE"));
             productSaleHelper.setLinePrice(resultSet.getDouble("LINE_PRICE"));
             return productSaleHelper;
+        }
+    };
+
+    private static RowMapper<TrendingProductDTO> TRENDING_PRODUCT = new RowMapper<TrendingProductDTO>() {
+        @Override
+        public TrendingProductDTO mapRow(ResultSet resultSet, int i) throws SQLException {
+            final TrendingProductDTO trendingProductDTO = new TrendingProductDTO();
+            trendingProductDTO.setProductName(resultSet.getString("PRODUCT"));
+            trendingProductDTO.setCount(resultSet.getLong("QTY"));
+            return trendingProductDTO;
         }
     };
 
@@ -260,20 +273,22 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
     }
 
     @Override
-    public Map getSalePerMonth(Date startDate, Date endDate) {
+    public List<LineChartDTO> getSalePerMonth(Date startDate, Date endDate) {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
         params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
         params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
-        SqlRowSet salePerMonth = template.queryForRowSet(GET_SALE_MONTH.toString(), params);
 
-        Map salesPerMonthMap = new HashMap();
-
-        while (salePerMonth.next()) {
-            salesPerMonthMap.put(salePerMonth.getString("MONTH"), salePerMonth.getString("TOTAL_SALE"));
-        }
-
-        return salesPerMonthMap;
+        List<LineChartDTO> results = template.query(GET_SALE_MONTH.toString(), params, new RowMapper<LineChartDTO>() {
+            @Override
+            public LineChartDTO mapRow(ResultSet resultSet, int i) throws SQLException {
+                LineChartDTO lineChartDTO = new LineChartDTO();
+                lineChartDTO.setLabelName(resultSet.getString("MONTH"));
+                lineChartDTO.setSaleTotal(resultSet.getDouble("TOTAL_SALE"));
+                return lineChartDTO;
+            }
+        });
+        return results;
     }
 
     @Override
@@ -383,5 +398,16 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
         }
 
         return salesPerMonthMap;
+    }
+
+    @Override
+    public List<TrendingProductDTO> getTrendingProduct(Date startDate, Date endDate) {
+        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
+        final Map<String, Object> params = new HashMap<>();
+        params.put("START_DATE", new SimpleDateFormat("yyyy-MM-dd").format(startDate));
+        params.put("END_DATE", new SimpleDateFormat("yyyy-MM-dd").format(endDate));
+
+        List<TrendingProductDTO> results = template.query(GET_ALL_SALES_PER_PRODUCT_BY_DATE.toString(), params, TRENDING_PRODUCT);
+        return results;
     }
 }

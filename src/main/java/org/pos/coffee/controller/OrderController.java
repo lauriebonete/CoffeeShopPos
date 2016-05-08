@@ -26,22 +26,13 @@ public class OrderController extends BaseCrudController<Order> {
     private ProductService productService;
 
     @Autowired
-    private FileDetailService fileDetailService;
-
-    @Autowired
     private ReferenceLookUpService referenceLookUpService;
-
-    @Autowired
-    private ItemService itemService;
 
     @Autowired
     private ListPriceService listPriceService;
 
     @Autowired
     private PriceSetService priceSetService;
-
-    @Autowired
-    private OrderService orderService;
 
     @Autowired
     private IngredientService ingredientService;

@@ -392,10 +392,10 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    for(var i=0; i<data.productName.length; i++){
-                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + data.productName[i] + "</h6><h6 class='right emphasis'>" + data.productSales[i] + "</h6></div>";
+                    $.each(data, function(i,val){
+                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + val.productName + "</h6><h6 class='right emphasis'>" + val.count + "</h6></div>";
                         $("#trending-products").append(addRow);
-                    }
+                    });
                 }
             });
 
