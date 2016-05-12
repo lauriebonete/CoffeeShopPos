@@ -17,7 +17,6 @@ var evey = (function(){
                 var urlParams = path.substring(path.indexOf("?")+1);
                 var paramList = urlParams.split("&");
                 var params = {};
-                console.log(paramList,"here");
                 if(paramList!=undefined
                     && paramList!=null){
                     $.each(paramList,function(i,val){
@@ -60,7 +59,7 @@ var evey = (function(){
         promptSuccess : function(message) {
             toastr.options.positionClass = 'toast-bottom-full-width';
             toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
+            toastr.options.closeDuration = 200;
             toastr.options.closeEasing = 'swing';
             toastr.success(message);
 
@@ -69,7 +68,7 @@ var evey = (function(){
         promptAlert : function(message) {
             toastr.options.positionClass = 'toast-bottom-full-width';
             toastr.options.closeMethod = 'fadeOut';
-            toastr.options.closeDuration = 300;
+            toastr.options.closeDuration = 200;
             toastr.options.closeEasing = 'swing';
             toastr.error(message);
         },
@@ -281,7 +280,9 @@ var evey = (function(){
             'crud-table': '#crud-table',
             'search-clear': "#search-clr-crud-btn",
             'close-parent-modal': '.close-parent-modal',
-            'ajax-loader': '.ajax-loader'
+            'ajax-loader': '.ajax-loader',
+            'clear-form': '#form-clr-btn',
+            'clear-update': '#update-clr-btn'
         }, options);
 
         return this.each(function(){
@@ -295,6 +296,17 @@ var evey = (function(){
             var closeModal = $(this).find(settings["close-parent-modal"]);
             var add = $(this).find(settings["add"]);
             var update = $(this).find(settings["update"]);
+            var clearForm = $(this).find(settings['clear-form']);
+            var clearFormUpdate = $(this).find(settings['clear-update']);
+
+            $(clearForm).on("click",function(){
+                evey.clearForm($(crudForm));
+                evey.clearForm($(updateForm));
+            });
+
+            $(clearFormUpdate).on("click",function(){
+                evey.clearForm($(updateForm));
+            });
 
             $(add).on("click",function(){
                 evey.sanitizeErrorContainer(crudForm);
@@ -328,6 +340,7 @@ var evey = (function(){
                             angular.element(".main-body").scope().searchEntity(data.result);
                             angular.element(".main-body").scope().$apply();
                             evey.promptSuccess(data.message);
+                            evey.clearForm($(crudForm));
                         } else if (data.validatorError) {
                             $.each(data.errors,function(i,error){
                                 var errorField = $('#crud-modal').find("[name='"+error.field+"']");
@@ -376,6 +389,7 @@ var evey = (function(){
                             angular.element(".main-body").scope().$apply();
 
                             evey.promptSuccess(data.message);
+                            evey.clearForm($(updateForm));
                         } else if (data.validatorError) {
                             $.each(data.errors,function(i,error){
                                 var errorField = $('#update-modal').find("[name='"+error.field+"']");

@@ -2,7 +2,9 @@ package org.pos.coffee.controller;
 
 import org.pos.coffee.bean.Product;
 import org.pos.coffee.bean.helper.StockHelper;
+import org.pos.coffee.bean.helper.TrendingProductDTO;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.LineChartDTO;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.service.ProductService;
 import org.pos.coffee.service.PurchaseOrderService;
@@ -98,10 +100,7 @@ public class DashboardController {
     @RequestMapping(value = "/sale-count-per-day", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Map<String,Object> getSaleCountPerDay() throws Exception{
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        String dateTodayString = dateFormat.format(new Date()).toString();
-
-        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));
+        Date startDate = new Date();
 
         Double saleList = saleService.getSaleCountPerDay(startDate, startDate);
         Map<String,Object> returnMap = new HashMap<>();
@@ -120,19 +119,14 @@ public class DashboardController {
         Date startDate = dateFormat.parse("01/01/"+dateTodayString.substring(6));
         Date endDate = dateFormat.parse("12/31/"+dateTodayString.substring(6));
 
-        Map salesPerMonthMap = saleService.getSalePerMonth(startDate, endDate);
-        List<String> month = new ArrayList<>();
-        List<String> sales = new ArrayList<>();
+        List<LineChartDTO> results = saleService.getSalePerMonth(startDate, endDate);
+        List<String> month = new LinkedList<>();
+        List<Double> sales = new LinkedList<>();
 
-        Iterator entries = salesPerMonthMap.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            month.add(new DateFormatSymbols().getMonths()[Integer.parseInt((String) thisEntry.getKey())-1]);
-            sales.add(thisEntry.getValue().toString());
+        for(LineChartDTO lineChartDTO: results){
+            month.add(lineChartDTO.getLabelName());
+            sales.add(lineChartDTO.getSaleTotal());
         }
-
-        Collections.reverse(month);
-        Collections.reverse(sales);
 
         Map<String,Object> returnMap = new HashMap<>();
         returnMap.put("month",month);
@@ -270,45 +264,11 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/sale-products-day", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Map<String,Object> getAllSalesByProductTodayk() throws Exception{
+    public @ResponseBody List<TrendingProductDTO> getAllSalesByProductTodayk() throws Exception{
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        String dateTodayString = dateFormat.format(new Date()).toString();
-
-        Date startDate = dateFormat.parse(dateFormat.format(new Date().getTime()));;
-
-        Map salesOfProductsByWeek = saleService.getAllSalesByProductPerDate(startDate, startDate);
-
-        Iterator entries = salesOfProductsByWeek.entrySet().iterator();
-        List<String> productName = new ArrayList<>();
-        List<String> productSales = new ArrayList<>();
-        Product found = null;
-        Product lookFor = new Product();
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            lookFor = new Product();
-            lookFor.setId(Long.valueOf(thisEntry.getKey().toString()));
-
-            List<Product> results = new ArrayList<>();
-            try {
-                results= productService.findEntity(lookFor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            found = null;
-            if(!results.isEmpty()){
-                found = results.get(0);
-            }
-
-            productName.add(found.getProductName());
-            productSales.add(thisEntry.getValue().toString());
-        }
-
-        Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("productName", productName);
-        returnMap.put("productSales", productSales);
-
-        return returnMap;
+        Date startDate = new Date();
+        List<TrendingProductDTO> results = saleService.getTrendingProduct(startDate,startDate);
+        return results;
 
     }
 

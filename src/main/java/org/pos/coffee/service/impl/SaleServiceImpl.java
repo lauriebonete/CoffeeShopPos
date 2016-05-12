@@ -11,7 +11,9 @@ import org.evey.utility.SecurityUtil;
 import org.pos.coffee.bean.*;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
+import org.pos.coffee.bean.helper.TrendingProductDTO;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
+import org.pos.coffee.bean.helper.report.LineChartDTO;
 import org.pos.coffee.bean.helper.report.ProductSaleHelper;
 import org.pos.coffee.dao.SaleDao;
 import org.pos.coffee.dao.SaleDaoJdbc;
@@ -131,7 +133,7 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     }
 
     @Override
-      public Map getSalePerMonth(Date startDate, Date endDate) {
+      public List<LineChartDTO> getSalePerMonth(Date startDate, Date endDate) {
         return saleDaoJdbc.getSalePerMonth(startDate,endDate);
     }
 
@@ -163,5 +165,10 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Override
     public Map getAllSalesByProductPerDate(Date startDate, Date endDate) {
         return saleDaoJdbc.getAllSalesByProductPerDate(startDate,endDate);
+    }
+
+    @Override
+    public List<TrendingProductDTO> getTrendingProduct(Date startDate, Date endDate) {
+        return saleDaoJdbc.getTrendingProduct(startDate,endDate);
     }
 }

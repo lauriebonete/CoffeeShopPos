@@ -41,6 +41,11 @@ public class CrudUtil {
                 returnFieldList.add(field);
             }
         }
+
+        if(type.getSuperclass() != null){
+            returnFieldList.addAll(getFields(type.getSuperclass(),source));
+        }
+
         return returnFieldList;
     }
 }

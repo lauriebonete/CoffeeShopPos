@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/foundation-datepicker.min.css">
     <link rel="stylesheet" href="css/toastr.css"/>
@@ -187,16 +186,14 @@
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius" ng-init="loadProducts()">
                                         <label>Product Name <small>required</small>
-                                            <div ng-if='products.length'>
-                                                <selectize id="product" config='productsConfig' options='products' ng-model="productSelected" name="product" data-attr="id" data-list="false"></selectize>
-                                            </div>
+                                            <selectize ng-if='products.length' id="product" config='productsConfig' options='products' ng-model="productSelected" name="product" data-attr="id" data-list="false"></selectize>
                                         </label>
                                         <small class="error">Please provide the name of Product</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <label>Price <small>required</small>
-                                            <input type="text" placeholder="Price" name="price" pattern="number"></label>
-                                        <small class="error">Please provide pricing.</small>
+                                            <input type="number" placeholder="Price" name="price" pattern="number" required></label>
+                                        <small class="error">Please provide valid pricing.</small>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <div class="small-3 columns">

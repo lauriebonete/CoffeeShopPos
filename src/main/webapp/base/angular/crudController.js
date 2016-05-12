@@ -138,21 +138,20 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
             $("#delete-modal .button").removeAttr("disabled");
             if(response.data.status){
                 evey.promptSuccess(response.data.message);
+
+                $scope.records = $.grep($scope.records, function(value) {
+                    return value.id != id;
+                });
+
+                $scope.fullRecords = $.grep($scope.fullRecords, function(value) {
+                    return value.id != id;
+                });
             } else {
                 evey.promptAlert(response.data.message);
             }
             $('#delete-modal').foundation('reveal', 'close');
             /*$scope.records.splice($.inArray(id, $scope.records), 1);
             $scope.fullRecords.splice($.inArray(id, $scope.fullRecords), 1);*/
-
-            $scope.records = $.grep($scope.records, function(value) {
-                return value.id != id;
-            });
-
-            $scope.fullRecords = $.grep($scope.fullRecords, function(value) {
-                return value.id != id;
-            });
-
         }, function errorCallback(response) {
             $("#delete-modal .loader").toggleClass("hide");
             $("#delete-modal span.delete-btn").toggleClass("hide");

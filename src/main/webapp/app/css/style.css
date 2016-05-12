@@ -208,10 +208,8 @@ input[data-toggle]:checked + label:active {
         width:100%;
     }
 
-    .reveal-modal {
-        height: 100vh;
-        overflow: hidden;
-        overflow-y: auto;
+    #delete-modal {
+        height: auto !important;
     }
 }
 
@@ -230,10 +228,8 @@ input[data-toggle]:checked + label:active {
         width:80%;
     }
 
-    .reveal-modal {
-        height: 80vh;
-        overflow: hidden;
-        overflow-y: auto;
+    #delete-modal {
+        height: auto !important;
     }
 }
 
@@ -252,10 +248,8 @@ input[data-toggle]:checked + label:active {
         width:60%;
     }
 
-    .reveal-modal {
-        height: 72vh;
-        overflow: hidden;
-        overflow-y: auto;
+    #delete-modal {
+        height: auto !important;
     }
 }
 
@@ -289,4 +283,10 @@ input[data-toggle]:checked + label:active {
     .reveal-modal.crud-modal {
         width:40%;
     }
+}
+
+.reveal-modal {
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
 }

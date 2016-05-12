@@ -51,7 +51,7 @@ body {
     overflow: hidden;
     overflow-y: auto;
     position: relative;
-    margin: 0 auto;
+    margin: 0 1.5em 0 0;
 }
 
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -63,7 +63,25 @@ body {
         overflow: hidden;
         overflow-y: auto;
         position: relative;
-        margin: 0 2px 0 0;
+        margin: 0 1em 0 0;
+    }
+}
+
+@media only screen and (min-width: 78em) {
+    .cartBig {
+        display: block;
+    }
+    .cartSmall{
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 78em) {
+    .cartSmall {
+        display: block;
+    }
+    .cartBig {
+        display: none !important;
     }
 }
 
@@ -87,7 +105,6 @@ body {
     overflow: hidden;
     overflow-y: auto;
     position: relative;
-    margin: 0 auto;
 }
 
 .cartSmall {
