@@ -5,6 +5,7 @@ import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.PurchaseOrder;
 import org.pos.coffee.dao.PurchaseDao;
 import org.pos.coffee.dao.PurchaseOrderDao;
+import org.pos.coffee.dao.PurchaseOrderDaoJdbc;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
     private ItemService itemService;
 
     @Autowired
-    private PurchaseOrderDao purchaseOrderDao;
+    private PurchaseOrderDaoJdbc purchaseOrderDaoJdbc;
 
     @Override
     public Double countTotalExpense(List<PurchaseOrder> purchaseOrderList) {
@@ -78,6 +79,6 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
 
     @Override
     public Map getPendingPurchases() {
-        return purchaseOrderDao.getPendingPurchases();
+        return purchaseOrderDaoJdbc.getPendingPurchases();
     }
 }

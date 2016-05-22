@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Maestro Fedeli | References</title>
+    <title>Sales</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
@@ -35,7 +35,7 @@
                         <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                     </section>
                     <section class="middle tab-bar-section">
-                        <h1 class="title">Maestro Fedeli | References</h1>
+                        <h1 class="title">Maestro Fedeli | Sales</h1>
                     </section>
                     <section class="right-small">
                         <a class="right-off-canvas-toggle menu-icon"><span></span></a>
@@ -111,11 +111,12 @@
                                 <form>
                                     <div class="small-12 columns">
                                         <label>Sale Code
-                                            <input id="sale-code" type="text" placeholder="Sale Code" name="saleCode"/>
+                                            <input type="text" placeholder="Sale Code" name="saleCode"/>
                                         </label>
                                         <label>Sale Date
                                             <input class="fcalendar" type="text" name="saleDate" placeholder="Sale Date">
                                         </label>
+                                        <input type="hidden" name="isBypassUnique" value="true">
                                         <div class="rows">
                                             <a href="#" class="button expand" id="search-search-crud-btn" ng-click="test()">Search</a>
                                             <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>

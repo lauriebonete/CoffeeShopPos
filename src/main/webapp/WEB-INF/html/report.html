@@ -4,12 +4,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="mobile-web-app-capable" content="yes">
-    <title>Foundation | Welcome</title>
+    <title>Reports</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/foundation-datepicker.min.css">
 
     <script src="js/vendor/jquery.js"></script>
@@ -33,7 +32,7 @@
                         <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                     </section>
                     <section class="middle tab-bar-section">
-                        <h1 class="title">Maestro Fedeli</h1>
+                        <h1 class="title">Maestro Fedeli | Reports</h1>
                     </section>
                     <section class="right-small">
                         <a class="right-off-canvas-toggle menu-icon"><span></span></a>
@@ -101,58 +100,73 @@
                     <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" ng-show="checkIfHasAccess('ACCESS_REPORTS_PAGE')">
                         <li>
                             <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_SALE_REPORT')">
-                                <li class="title">Sales</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                        <input class="fcalendar start-date" type="text" readonly>
-                                        <!--<input type="date" class="start-date">-->
-                                    </label>
-
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                        <input class="fcalendar end-date" type="text" readonly>
-                                        <!--<input class="end-date" type="date">-->
-                                    </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary sales">Generate Report</button>
+                                <li>
+                                    <form data-abide="ajax" id="sales-form">
+                                        <div class="title row">Sales</div>
+                                        <div class="bullet-item row">
+                                            <label>Start Date
+                                                <input class="fcalendar start-date from-date" type="text" required data-abide-validator="futureDated">
+                                                <small class="error">Please provide a valid Start date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="bullet-item row">
+                                            <label>End Date
+                                                <input class="fcalendar end-date" type="text" required data-abide-validator="endDate">
+                                                <small class="error">Please provide a valid End date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="cta-button row">
+                                            <button type="submit" class="button sales">Generate Report</button>
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_PURCHASE_REPORT')">
-                                <li class="title">Purchase</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                    <input class="fcalendar start-date-purchase" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                    <input class="fcalendar end-date-purchase" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary purchase">Generate Report</button>
+                                <li>
+                                    <form data-abide="ajax" id="purchase-form">
+                                        <div class="title row">Purchase</div>
+                                        <div class="bullet-item row">
+                                            <label>Start Date
+                                                <input class="fcalendar start-date-purchase from-date" type="text" required data-abide-validator="futureDated">
+                                                <small class="error">Please provide a valid Start date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="bullet-item row">
+                                            <label>End Date
+                                                <input class="fcalendar end-date-purchase" type="text" required data-abide-validator="endDate">
+                                                <small class="error">Please provide a valid End date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="cta-button row">
+                                            <button type="submit" class="button purchase">Generate Report</button>
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <ul class="pricing-table" ng-show="checkIfHasAccess('ACCESS_EXPENSE_REPORT')">
-                                <li class="title">Expense</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                    <input class="fcalendar start-date-expense" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                    <input class="fcalendar end-date-expense" type="text" readonly>
-                                        </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary expense">Generate Report</button>
+                                <li>
+                                    <form data-abide="ajax" id="expense-form">
+                                        <div class="title row">Expense</div>
+                                        <div class="bullet-item row">
+                                            <label>Start Date
+                                                <input class="fcalendar start-date-expense from-date" type="text" required data-abide-validator="futureDated">
+                                                <small class="error">Please provide a valid Start date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="bullet-item row">
+                                            <label>End Date
+                                                <input class="fcalendar end-date-expense from-date" type="text" required data-abide-validator="endDate">
+                                                <small class="error">Please provide a valid End date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="cta-button row">
+                                            <button type="submit" class="button expense">Generate Report</button>
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -166,25 +180,29 @@
                         </li>
                         <li>
                             <ul class="pricing-table">
-                                <li class="title">Consumption</li>
-                                <li class="bullet-item">
-                                    <label>Start Date
-                                        <input class="fcalendar start-date-consumption" type="text" readonly>
-                                    </label>
-                                </li>
-                                <li class="bullet-item">
-                                    <label>End Date
-                                        <input class="fcalendar end-date-consumption" type="text" readonly>
-                                    </label>
-                                </li>
-                                <li class="cta-button">
-                                    <button class="button secondary consumption">Generate Report</button>
+                                <li>
+                                    <form data-abide="ajax" id="consumption-form">
+                                        <div class="title row">Consumption</div>
+                                        <div class="bullet-item row">
+                                            <label>Start Date
+                                                <input class="fcalendar start-date-consumption from-date" type="text" required data-abide-validator="futureDated">
+                                                <small class="error">Please provide a valid Start date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="bullet-item row">
+                                            <label>End Date
+                                                <input class="fcalendar end-date-consumption" type="text" required data-abide-validator="endDate">
+                                                <small class="error">Please provide a valid End date.</small>
+                                            </label>
+                                        </div>
+                                        <div class="cta-button row">
+                                            <button type="submit" class="button consumption">Generate Report</button>
+                                        </div>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-
-
                 </section>
                 <a class="exit-off-canvas"></a>
             </div>
@@ -194,21 +212,70 @@
 </body>
 <footer>
     <script>
-        $(document).foundation();
+        $(document).foundation({
+            abide : {
+                validate_on_blur : false,
+                focus_on_invalid : false,
+                validators: {
+                    futureDated : function (el, required, parent){
+                        if(el.value!=null && el.value!=""){
+                            var dateString = el.value.split("-");
+                            var date = new Date(dateString[2], dateString[0]-1, dateString[1]);
+
+                            var d = new Date();
+                            var curDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+                            if(date.getTime() <= curDate.getTime()){
+                                return true;
+                            }
+                        }
+                        return false;
+                    },
+                    endDate : function(el, required, parent){
+                        console.log(parent,el,$(el).parents("form").find(".from-date").val());
+
+                        var startDate = $(el).parents("form").find(".from-date").val();
+
+                        if(el.value!=null && el.value!="" && startDate !=null && startDate != "" && startDate != undefined){
+                            var dateString = el.value.split("-");
+                            var date = new Date(dateString[2], dateString[0]-1, dateString[1]);
+
+                            var start = startDate.split("-");
+                            var dateStart = new Date(start[2], start[0]-1, start[1]);
+
+                            console.log(date,dateStart);
+                            if(date.getTime() >= dateStart.getTime()){
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        });
         $(document).EVEYfy();
 
-        $(document).ready({
+        $(document).ready(function(){
 
-        }).on("click", ".sales", function(){
-            window.location.href = evey.getHome()+"/report/export-sales?startDateString="+$(".start-date").val()+"&endDateString="+$(".end-date").val();
+
+            $("#sales-form").on("valid.fndtn.abide",function(){
+                window.location.href = evey.getHome()+"/report/export-sales?startDateString="+$(".start-date").val()+"&endDateString="+$(".end-date").val();
+            });
+
+            $("#purchase-form").on("valid.fndtn.abide",function(){
+                window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
+            });
+
+            $("#expense-form").on("valid.fndtn.abide",function(){
+                window.location.href = evey.getHome()+"/report/create-expense?startDateString="+$(".start-date-expense").val()+"&endDateString="+$(".end-date-expense").val();
+            });
+
+            $("#consumption-form").on("valid.fndtn.abide",function(){
+                window.location.href = evey.getHome()+"/report/create-consumption?startDateString="+$(".start-date-consumption").val()+"&endDateString="+$(".end-date-consumption").val();
+            });
+
         }).on("click", ".inventory", function(){
             window.location.href = evey.getHome()+"/report/download-inventory";
-        }).on("click", ".purchase", function(){
-            window.location.href = evey.getHome()+"/report/create-purchase?startDateString="+$(".start-date-purchase").val()+"&endDateString="+$(".end-date-purchase").val();
-        }).on("click", ".expense", function(){
-            window.location.href = evey.getHome()+"/report/create-expense?startDateString="+$(".start-date-expense").val()+"&endDateString="+$(".end-date-expense").val();
-        }).on("click", ".consumption", function(){
-            window.location.href = evey.getHome()+"/report/create-consumption?startDateString="+$(".start-date-consumption").val()+"&endDateString="+$(".end-date-consumption").val();
         });
 
         $(".fcalendar").fdatepicker({

@@ -20,29 +20,4 @@ import java.util.Map;
  */
 @Repository("purchaseOrderDao")
 public class PurchaseOrderDaoJpaImpl extends BaseEntityDaoJpaImpl<PurchaseOrder,Long> implements PurchaseOrderDao {
-
-    @Autowired
-    private DataSource dataSource;
-
-    private static final StringBuilder GET_PENDING_PURCHASES = new StringBuilder();
-
-    static {
-        GET_PENDING_PURCHASES.append("SELECT PURCHASE_CODE, STATUS FROM purchase where STATUS != 'Received';");
-    }
-
-    @Override
-    public Map getPendingPurchases() {
-        final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
-        final Map<String, Object> params = new HashMap<>();
-        SqlRowSet pendingPurchases = template.queryForRowSet(GET_PENDING_PURCHASES.toString(), params);
-
-        Map pendingPurchasesMap = new HashMap();
-
-        while (pendingPurchases.next()) {
-            pendingPurchasesMap.put(pendingPurchases.getString("PURCHASE_CODE"), pendingPurchases.getString("STATUS"));
-        }
-
-        return pendingPurchasesMap;
-    }
-
 }

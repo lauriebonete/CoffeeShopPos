@@ -37,4 +37,14 @@ public class ReferenceLookUpServiceImpl extends BaseCrudServiceImpl<ReferenceLoo
     public ReferenceLookUp getReferenceLookUpByKey(String key) {
         return referenceLookUpDao.getReferenceLookUpByKey(key);
     }
+
+    @Override
+    public Boolean validateUniqueKey(String key) {
+        return referenceLookUpDao.validateUniqueKey(key,null);
+    }
+
+    @Override
+    public Boolean validateUniqueKey(String key, Long id) {
+        return referenceLookUpDao.validateUniqueKey(key, id);
+    }
 }

@@ -6,6 +6,7 @@ import org.pos.coffee.bean.Stock;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.bean.helper.report.ConsumptionHelper;
+import org.pos.coffee.dao.ItemDao;
 import org.pos.coffee.dao.ItemDaoJdbc;
 import org.pos.coffee.service.ItemService;
 import org.pos.coffee.service.StockService;
@@ -28,6 +29,9 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
 
     @Autowired
     private ItemDaoJdbc itemDaoJdbc;
+
+    @Autowired
+    private ItemDao itemDao;
 
     @Override
     public List<OrderExpenseHelper> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception{
@@ -95,30 +99,6 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
 
                         stockService.save(foundStock);
                     }
-
-                    /*for(Stock foundStock: stockList){
-                        if(foundStock.getQuantity()!=null){
-                            if(foundStock.getQuantity()>=deductAmount){
-                                foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
-                                totalExpense += deductAmount * foundStock.getPrice();
-                                if(foundStock.getQuantity()<=0){
-                                    foundStock.setIsActive(false);
-                                }
-                                deductAmount = 0D;
-                            } else {
-                                deductAmount -= foundStock.getQuantity();
-                                totalExpense += foundStock.getQuantity() * foundStock.getPrice();
-                                foundStock.setQuantity(0D);
-                                foundStock.setIsActive(false);
-                            }
-                            if(deductAmount<=0){
-                                break;
-                            }
-                        } else {
-                            foundStock.setIsActive(false);
-                        }
-                        stockService.save(foundStock);
-                    }*/
                 }
             }
             orderExpenseHelper.setExpense(totalExpense);
@@ -130,5 +110,15 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
     @Override
     public List<ConsumptionHelper> oountConsumedItem(Date startDate, Date endDate) {
         return itemDaoJdbc.oountConsumedItem(startDate,endDate);
+    }
+
+    @Override
+    public Boolean validateItemCode(String itemCode) {
+        return validateItemCode(itemCode,null);
+    }
+
+    @Override
+    public Boolean validateItemCode(String itemCode, Long id) {
+        return itemDao.validateItemCode(itemCode,id);
     }
 }

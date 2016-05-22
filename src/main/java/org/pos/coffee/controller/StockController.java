@@ -104,6 +104,7 @@ public class StockController extends BaseCrudController<Stock> {
         List<StockHelper> results = stockService.findStockEntity(stockHelper);
         returnMap.put("results",results!=null ? results.get(0):null);
         returnMap.put("success",true);
+        returnMap.put("message","Inventory is successfully updated.");
         return returnMap;
     }
 

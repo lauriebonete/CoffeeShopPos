@@ -1,5 +1,6 @@
 package org.pos.coffee.service;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.service.BaseCrudService;
 import org.pos.coffee.bean.ReferenceLookUp;
 
@@ -14,4 +15,6 @@ public interface ReferenceLookUpService extends BaseCrudService<ReferenceLookUp>
     public List<ReferenceLookUp> getReferenceLookUpByCategory(String category);
     public List<ReferenceLookUp> getActiveReferenceLookUpByCategory(String category);
     public ReferenceLookUp getReferenceLookUpByKey(String key);
+    public Boolean validateUniqueKey(String key);
+    public Boolean validateUniqueKey(String key, Long id);
 }

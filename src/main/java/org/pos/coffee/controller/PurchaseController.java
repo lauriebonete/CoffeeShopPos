@@ -9,11 +9,13 @@ import org.pos.coffee.service.PurchaseService;
 import org.pos.coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -113,13 +115,18 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     }
 
     @RequestMapping(value = "/create-purchase", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Map<String, Object> createPurchase(@RequestBody Purchase purchase) {
+    public @ResponseBody Map<String, Object> createPurchase(@RequestBody @Valid Purchase purchase,BindingResult errors) {
         Map<String, Object> returnMap = new HashMap<>();
-        Purchase saved = purchaseService.createPurchase(purchase);
-        returnMap.put("result", saved);
-        returnMap.put("status", true);
-        returnMap.put("message", "Purchase is successfully made.");
 
+        if(errors.hasErrors()){
+            returnMap.put("validatorError",true);
+            returnMap.put("errors",errors.getAllErrors());
+        } else {
+            Purchase saved = purchaseService.createPurchase(purchase);
+            returnMap.put("result", saved);
+            returnMap.put("status", true);
+            returnMap.put("message", "Purchase is successfully made.");
+        }
         return returnMap;
     }
 }

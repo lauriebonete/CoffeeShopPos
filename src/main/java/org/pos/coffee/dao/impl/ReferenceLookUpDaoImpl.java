@@ -41,4 +41,27 @@ public class ReferenceLookUpDaoImpl extends BaseEntityDaoJpaImpl<ReferenceLookUp
         ReferenceLookUp found = (ReferenceLookUp) query.getSingleResult();
         return found;
     }
+
+    @Override
+    public Boolean validateUniqueKey(String key, Long id) {
+        Query query = null;
+
+        if(id != null){
+            String queryString = "SELECT COUNT(obj.id) FROM ReferenceLookUp obj where obj.key = :key AND obj.id != :id";
+            query = getEntityManager().createQuery(queryString);
+            query.setParameter("id", id);
+        } else {
+            String queryString = "SELECT COUNT(obj.id) FROM ReferenceLookUp obj where obj.key = :key";
+            query = getEntityManager().createQuery(queryString);
+        }
+        query.setParameter("key", key);
+
+        Long count = (Long) query.getSingleResult();
+        if(count!=null &&
+                count>0){
+            return false;
+        }
+
+        return true;
+    }
 }
