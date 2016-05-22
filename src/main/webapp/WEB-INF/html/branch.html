@@ -35,7 +35,7 @@
                         <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                     </section>
                     <section class="middle tab-bar-section">
-                        <h1 class="title">Maestro Fedeli</h1>
+                        <h1 class="title">Maestro Fedeli | Branch</h1>
                     </section>
                     <section class="right-small">
                         <a class="right-off-canvas-toggle menu-icon"><span></span></a>
@@ -101,11 +101,6 @@
                 </aside>
                 <section class="main-section main-body" ng-show="checkIfHasAccess('ACCESS_BRANCH_PAGE')">
                     <div class="row main-section-row" id="crud-body">
-                        <div class="row main-section-row">
-                            <div class="small-12 text-align-center">
-                                <h4>Branch</h4>
-                            </div>
-                        </div>
                         <div class="small-4 large-3  columns search-panel" id="crud-search" >
                             <div class="row">
                                 <div class="small-12 columns bar">
@@ -140,7 +135,7 @@
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
-                                <a href="#" class="button right success small" data-reveal-id="crud-modal" ng-show="checkIfHasAccess('ADD_BRANCH')"><i class="fa fa-plus-circle"></i> &nbsp Add</a>
+                                <a href="#" class="button right success small" id="crud-add-button" data-reveal-id="crud-modal" ng-show="checkIfHasAccess('ADD_BRANCH')"><i class="fa fa-plus-circle"></i> &nbsp Add</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
@@ -155,8 +150,8 @@
                                         <tr ng-repeat="record in records">
                                             <td>{{record.branch.value}}</td>
                                             <td>
-                                                <i class="fa fa-pencil has-tip tip-top radius edit-action" ng-show="checkIfHasAccess('UPDATE_BRANCH')"  ng-click = "editAction(record.id)" ng-class="id" data-tooltip aria-haspopup="true" title="Edit" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
-                                                <i class="fa fa-trash has-tip tip-top radius delete-action" ng-show="checkIfHasAccess('DELETE_BRANCH')"  data-tooltip aria-haspopup="true" title="Delete" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
+                                                <i class="fa fa-pencil edit-action fa-2x-for-small fa-lg" ng-show="checkIfHasAccess('UPDATE_BRANCH')"  ng-click = "editAction(record.id)" ng-class="id" data-id="{{record.id}}" data-reveal-id="update-modal"></i>
+                                                <i class="fa fa-trash delete-action fa-2x-for-small fa-lg" ng-show="checkIfHasAccess('DELETE_BRANCH')" data-id="{{record.id}}" data-reveal-id="delete-modal"></i>
                                             </td>
                                         </tr>
                                         </tbody>

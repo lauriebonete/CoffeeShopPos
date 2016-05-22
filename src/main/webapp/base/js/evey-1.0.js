@@ -210,11 +210,6 @@ var evey = (function(){
             return JSON.stringify(jsonObject);
         },
 
-        buildJson: function(name){
-            var object = new Object();
-            return object[name]
-        },
-
         clearForm: function (form) {
             $.each($(form).find("input"), function (i, input) {
                 if ($(input).is(":checkbox")) {
@@ -245,6 +240,7 @@ var evey = (function(){
         },
 
         sanitizeErrorContainer: function(form){
+            console.log(form);
             $.each($(form).find("small.error"),function(i,small){
                 var defaultError = $(small).attr("data-default-error");
                 $(small).text(defaultError);
@@ -282,7 +278,8 @@ var evey = (function(){
             'close-parent-modal': '.close-parent-modal',
             'ajax-loader': '.ajax-loader',
             'clear-form': '#form-clr-btn',
-            'clear-update': '#update-clr-btn'
+            'clear-update': '#update-clr-btn',
+            'crud-add-button': "#crud-add-button"
         }, options);
 
         return this.each(function(){
@@ -290,11 +287,12 @@ var evey = (function(){
             Object.getPrototypeOf(document.createComment('')).getAttribute = function() {}
 
             var crudForm = $(this).find(settings['form']);
-            var updateForm = $(this).find(settings['updateForm'])
-            var offCanvas = $(this).find(settings['offCanvas'])
+            var updateForm = $(this).find(settings['updateForm']);
+            var offCanvas = $(this).find(settings['offCanvas']);
             var mainBody = $(this).find(settings['mainBody']);
             var closeModal = $(this).find(settings["close-parent-modal"]);
             var add = $(this).find(settings["add"]);
+            var crudAdd = $(this).find(settings["crud-add-button"]);
             var update = $(this).find(settings["update"]);
             var clearForm = $(this).find(settings['clear-form']);
             var clearFormUpdate = $(this).find(settings['clear-update']);
@@ -309,6 +307,10 @@ var evey = (function(){
             });
 
             $(add).on("click",function(){
+                evey.sanitizeErrorContainer(crudForm);
+            });
+
+            $(crudAdd).on("click",function(){
                 evey.sanitizeErrorContainer(crudForm);
             });
 
@@ -432,9 +434,13 @@ var evey = (function(){
                     dataType:"JSON",
                     contentType: "application/json",
                     success: function(data) {
-                        var paginateThis = evey.paginatePage(data);
-                        paginateThis["currentPage"] = 1;
-                        paginate(paginateThis, settings["pagination"]);
+                        if(data.status){
+                            var paginateThis = evey.paginatePage(data);
+                            paginateThis["currentPage"] = 1;
+                            paginate(paginateThis, settings["pagination"]);
+                        } else {
+                            evey.promptAlert(data.message);
+                        }
                     }
                 })
             });

@@ -16,4 +16,6 @@ import java.util.Map;
 public interface ItemService extends BaseCrudService<Item> {
     public List<OrderExpenseHelper> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception;
     public List<ConsumptionHelper> oountConsumedItem(Date startDate, Date endDate);
+    public Boolean validateItemCode(String itemCode);
+    public Boolean validateItemCode(String itemCode, Long id);
 }

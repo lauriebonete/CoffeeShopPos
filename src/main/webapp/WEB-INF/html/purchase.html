@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/selectize.default.css">
     <link rel="stylesheet" href="css/foundation-datepicker.min.css">
     <link rel="stylesheet" href="css/toastr.css"/>
@@ -123,9 +122,10 @@
                                         <label>Purchase Date
                                             <input class="fcalendar" type="text" name="purchaseDate" placeholder="Purchase Date">
                                         </label>
-                                        <label>Receive Datex
+                                        <label>Receive Date
                                             <input class="fcalendar" type="text" name="receiveDate" placeholder="Receive Date">
                                         </label>
+                                        <input type="hidden" name="isBypassUnique" value="true">
                                         <div class="rows">
                                             <a href="#" class="button expand" id="search-search-crud-btn">Search</a>
                                             <a href="#" class="button secondary expand" id="search-clr-crud-btn">Clear</a>
@@ -137,7 +137,7 @@
                         <div class="small-8 large-9 columns crud-result">
                             <div class="rows">
                                 <span> <small>Displaying {{startIndex}} to {{maxItem}} of {{listSize}} records.</small></span>
-                                <a href="#" class="button right success small add-purchase-modal" ng-show="checkIfHasAccess('ADD_PURCHASE')"><i class="fa fa-plus-circle"></i> &nbsp Purchase</a>
+                                <a href="#" class="button right success small add-purchase-modal" id="crud-add-button" ng-show="checkIfHasAccess('ADD_PURCHASE')"><i class="fa fa-plus-circle"></i> &nbsp Purchase</a>
                             </div>
                             <div class="rows">
                                 <div class="small-12 columns">
@@ -204,6 +204,12 @@
 
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div>
+                                                    <input type="hidden" name="purchaseOrderHolder">
+                                                </div>
+                                                <small class="error"></small>
+                                            </div>
                                             <div class="row margin-top-one-rem">
                                                 <a aria-label="Add" class="add-item"><i class="fa fa-plus-circle"></i> Add Item</a>
                                             </div>
@@ -212,7 +218,7 @@
                                     <div class="rows">
                                         <button class="button expand success purchase-crud ajax-loader">
                                             <i class="loader hide fa fa-spinner fa-pulse fa-lg"></i>
-                                            <span class="ajax-loader-label">Purchase</span>
+                                            <span class="ajax-loader-label">Request Purchase</span>
                                         </button>
                                     </div>
                                 </div>
@@ -530,8 +536,11 @@
         }).on("click", ".add-purchase-modal", function(){
             $("#crud-modal .add-purchase").children().remove();
             $("#crud-modal .added-purchase").children().remove();
+
+            evey.sanitizeErrorContainer($("#crud-modal"));
             $('#crud-modal').foundation('reveal', 'open');
         }).on("click", ".purchase-crud", function(){
+            evey.sanitizeErrorContainer($("#crud-modal"));
             var purchaseOrderList = [];
             var purchase = new Object();
             $.each($("#crud-modal .added-purchase .item-added"),function(i,row){
@@ -564,7 +573,19 @@
                         $('#crud-modal').foundation('reveal', 'close');
                         evey.promptSuccess(data.message);
                     } else {
-                        evey.promptAlert(data.message);
+                        if(data.validatorError){
+                            $.each(data.errors,function(i,error){
+                                var errorField = $('#crud-modal').find("[name='"+error.code+"']");
+                                var errorDiv = $(errorField).parent().parent();
+                                var errorContainer = $(errorDiv).find("small.error");
+                                var defaultErrorMsg = $(errorContainer).text();
+                                $(errorContainer).attr("data-default-error",defaultErrorMsg);
+                                $(errorContainer).text(error.defaultMessage);
+                                $(errorDiv).addClass("error");
+                            });
+                        } else {
+                            evey.promptAlert(data.message);
+                        }
                     }
                 }
             });

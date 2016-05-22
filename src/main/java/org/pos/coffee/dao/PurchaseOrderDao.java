@@ -9,7 +9,4 @@ import java.util.Map;
  * Created by Laurie on 1/4/2016.
  */
 public interface PurchaseOrderDao extends BaseEntityDao<PurchaseOrder, Long> {
-
-    public Map getPendingPurchases();
-
 }

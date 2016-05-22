@@ -7,4 +7,5 @@ import org.pos.coffee.bean.Item;
  * Created by Laurie on 11/16/2015.
  */
 public interface ItemDao extends BaseEntityDao<Item, Long> {
+    public Boolean validateItemCode(String itemCode, Long id);
 }

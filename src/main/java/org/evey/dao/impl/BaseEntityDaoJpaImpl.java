@@ -363,7 +363,11 @@ public class BaseEntityDaoJpaImpl<T extends BaseEntity, Id extends Serializable>
                 if(orderClauseBuilder.toString().length()>10){
                     orderClauseBuilder.append(", ");
                 }
-                orderClauseBuilder.append(entry.getKey()+" "+entry.getValue());
+                if(entry.getKey().contains(".")){
+                    orderClauseBuilder.append(entry.getKey()+" "+entry.getValue());
+                } else {
+                    orderClauseBuilder.append("obj."+entry.getKey()+" "+entry.getValue());
+                }
             }
         }
         return orderClauseBuilder.toString();

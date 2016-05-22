@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "PURCHASE")
 public class Purchase extends BaseEntity {
 
-    public static enum Status {
+    public enum Status {
         FOR_APPROVAL("For Approval"),
         IN_TRANSIT("In Transit"),
         IN_PROGRESS("In Progress"),
@@ -27,7 +27,7 @@ public class Purchase extends BaseEntity {
 
         private String status;
 
-        private Status(String status){
+        Status(String status){
             this.status = status;
         }
 

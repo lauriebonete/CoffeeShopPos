@@ -865,12 +865,12 @@
             $(classQuantityPrice).attr("data-price",price);
             var subtotal = (Number(quantity)*price);
             $(addedTemplate).find(".subtotal").text(subtotal+"php");
-
+            $(addedTemplate).attr("data-subtotal", subtotal+totalAddOnPrice);
 
             var totalPrice = Number($(".cartBig .total-price").text());
             totalPrice += subtotal+totalAddOnPrice;
 
-            $(addedTemplate).attr("data-subtotal", totalPrice);
+
 
             var classTotalPrice = $(".total-price");
             $(classTotalPrice).text(totalPrice);
