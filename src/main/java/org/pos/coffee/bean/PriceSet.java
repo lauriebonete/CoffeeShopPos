@@ -8,7 +8,9 @@ import org.evey.bean.BaseEntity;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,7 +46,7 @@ public class PriceSet extends BaseEntity{
     private Boolean isTriggeredByProduct;
 
     @JoinSet
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="PRICE_SET_PRODUCT",
             joinColumns = {@JoinColumn(name="PRICE_SET", referencedColumnName = "ID")},
             inverseJoinColumns = @JoinColumn(name="PRODUCT", referencedColumnName = "ID")
@@ -56,7 +58,7 @@ public class PriceSet extends BaseEntity{
     private Boolean isTriggeredByPromoGroup;
 
     @JoinSet
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="PRICE_SET_GROUP",
             joinColumns = {@JoinColumn(name="PRICE_SET", referencedColumnName = "ID")},
             inverseJoinColumns = @JoinColumn(name="PROMO_GROUP", referencedColumnName = "ID")
@@ -92,6 +94,9 @@ public class PriceSet extends BaseEntity{
 
     @Transient
     private Date lookForEndDate;
+
+    private transient List<Long> displayProducts;
+    private transient List<Long> displayPromoGroups;
 
     public String getPriceSetName() {
         return priceSetName;
@@ -270,6 +275,28 @@ public class PriceSet extends BaseEntity{
         }
 
         return "";
+    }
+
+    public List<Long> getDisplayProducts() {
+        if(this.product!=null){
+            List<Long> productIds = new ArrayList<>();
+            for(Product product: this.product){
+                productIds.add(product.getId());
+            }
+            return productIds;
+        }
+        return displayProducts;
+    }
+
+    public List<Long> getDisplayPromoGroups() {
+        if(this.promoGroup!=null){
+            List<Long> promoIds = new ArrayList<>();
+            for(ReferenceLookUp promoGroup: this.promoGroup){
+                promoIds.add(promoGroup.getId());
+            }
+            return promoIds;
+        }
+        return displayPromoGroups;
     }
 
     @PrePersist
