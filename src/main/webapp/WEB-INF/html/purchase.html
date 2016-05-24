@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Maestro Fedeli | Purchase</title>
+    <title>Purchase</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
@@ -15,7 +15,6 @@
 
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
-    <script src="js/responsive-tables.js"></script>
     <script src="js/foundation-datepicker.min.js"></script>
     <script src="js/evey-1.0.js"></script>
     <script src="js/angular.js"></script>
@@ -129,7 +128,6 @@
                                             <select name="status">
                                                 <option></option>
                                                 <option value="For Approval">For Approval</option>
-                                                <option value="In Transit">In Transit</option>
                                                 <option value="In Progress">In Progress</option>
                                                 <option value="Received">Received</option>
                                                 <option value="Cancelled">Cancelled</option>
@@ -200,7 +198,8 @@
                                 <div class="small-12 columns">
                                     <div class="row collapse prefix-radius">
                                         <label>Supplier Name
-                                            <input class="supplier-name" type="text" placeholder="Supplier Name" name="supplierName"></label>
+                                            <input class="supplier-name" type="text" placeholder="Supplier Name" name="supplierName">
+                                        </label>
                                     </div>
                                     <div class="row collapse prefix-radius">
                                         <div class="columns small-12">
@@ -226,7 +225,7 @@
                                         </div>
                                     </div>
                                     <div class="rows">
-                                        <button class="button expand success purchase-crud ajax-loader">
+                                        <button type="submit" class="button expand success purchase-crud ajax-loader">
                                             <i class="loader hide fa fa-spinner fa-pulse fa-lg"></i>
                                             <span class="ajax-loader-label">Request Purchase</span>
                                         </button>
@@ -274,6 +273,12 @@
 
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div>
+                                            <input type="hidden" name="purchaseOrderHolder">
+                                        </div>
+                                        <small class="error"></small>
                                     </div>
                                     <div class="rows" ng-if="!recordFound.isForReceival">
                                         <button class="button expand success restock-action-btn ajax-loader" ng-show="checkIfHasAccess('CONTROL_PURCHASE_PURCHASE')" data-status="In Progress">
@@ -374,10 +379,10 @@
                     items = data;
                 }
             });
-
         }).on("click", ".restock-btn", function(){
             var purchaseId = $(this).data("id");
             $("#restock-receive-btn").removeClass("hide");
+            evey.sanitizeErrorContainer($("#update-modal"));
 
             var location = $(".ordered-item-location");
             $(location).children("div.row").remove();
@@ -468,7 +473,19 @@
                         $('#update-modal').foundation('reveal', 'close');
                         evey.promptSuccess(data.message);
                     } else {
-                        evey.promptAlert(data.message);
+                        if (data.validatorError) {
+                            $.each(data.errors, function (i, error) {
+                                var errorField = $('#update-modal').find("[name='" + error.code + "']");
+                                var errorDiv = $(errorField).parent().parent();
+                                var errorContainer = $(errorDiv).find("small.error");
+                                var defaultErrorMsg = $(errorContainer).text();
+                                $(errorContainer).attr("data-default-error", defaultErrorMsg);
+                                $(errorContainer).text(error.defaultMessage);
+                                $(errorDiv).addClass("error");
+                            });
+                        } else {
+                            evey.promptAlert(data.message);
+                        }
                     }
                 }
             });
@@ -486,6 +503,7 @@
 
             purchase["id"] = purchaseId;
             purchase["purchaseOrders"] = pos;
+            purchase["status"] = "Received";
 
             $.ajax({
                 url: evey.getHome()+"/purchase/receive-purchase",
@@ -500,7 +518,19 @@
                         $('#update-modal').foundation('reveal', 'close');
                         evey.promptSuccess(data.message);
                     } else {
-                        evey.promptAlert(data.message);
+                        if (data.validatorError) {
+                            $.each(data.errors, function (i, error) {
+                                var errorField = $('#update-modal').find("[name='" + error.code + "']");
+                                var errorDiv = $(errorField).parent().parent();
+                                var errorContainer = $(errorDiv).find("small.error");
+                                var defaultErrorMsg = $(errorContainer).text();
+                                $(errorContainer).attr("data-default-error", defaultErrorMsg);
+                                $(errorContainer).text(error.defaultMessage);
+                                $(errorDiv).addClass("error");
+                            });
+                        } else {
+                            evey.promptAlert(data.message);
+                        }
                     }
                 }
             });
@@ -546,14 +576,15 @@
         }).on("click", ".add-purchase-modal", function(){
             $("#crud-modal .add-purchase").children().remove();
             $("#crud-modal .added-purchase").children().remove();
-
+            $(".supplier-name").val("");
             evey.sanitizeErrorContainer($("#crud-modal"));
             $('#crud-modal').foundation('reveal', 'open');
-        }).on("click", ".purchase-crud", function(){
+
+        }).on("click",".purchase-crud", function() {
             evey.sanitizeErrorContainer($("#crud-modal"));
             var purchaseOrderList = [];
             var purchase = new Object();
-            $.each($("#crud-modal .added-purchase .item-added"),function(i,row){
+            $.each($("#crud-modal .added-purchase .item-added"), function (i, row) {
                 var purchaseOrder = new Object();
                 var item = new Object();
                 var itemId = $(row).attr("data-itemid");
@@ -571,25 +602,25 @@
             purchase["purchaseOrders"] = purchaseOrderList;
 
             $.ajax({
-                url: evey.getHome()+"/purchase/create-purchase",
+                url: evey.getHome() + "/purchase/create-purchase",
                 data: JSON.stringify(purchase),
                 type: "POST",
                 dataType: "JSON",
                 contentType: "application/json",
-                success: function(data){
-                    if(data.status){
+                success: function (data) {
+                    if (data.status) {
                         angular.element(".main-body").scope().searchEntity(data.result);
                         angular.element(".main-body").scope().$apply();
                         $('#crud-modal').foundation('reveal', 'close');
                         evey.promptSuccess(data.message);
                     } else {
-                        if(data.validatorError){
-                            $.each(data.errors,function(i,error){
-                                var errorField = $('#crud-modal').find("[name='"+error.code+"']");
+                        if (data.validatorError) {
+                            $.each(data.errors, function (i, error) {
+                                var errorField = $('#crud-modal').find("[name='" + error.code + "']");
                                 var errorDiv = $(errorField).parent().parent();
                                 var errorContainer = $(errorDiv).find("small.error");
                                 var defaultErrorMsg = $(errorContainer).text();
-                                $(errorContainer).attr("data-default-error",defaultErrorMsg);
+                                $(errorContainer).attr("data-default-error", defaultErrorMsg);
                                 $(errorContainer).text(error.defaultMessage);
                                 $(errorDiv).addClass("error");
                             });
@@ -599,7 +630,6 @@
                     }
                 }
             });
-
         });
 
         $(".fcalendar").fdatepicker({

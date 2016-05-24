@@ -227,7 +227,6 @@ var evey = (function(){
         },
 
         paginatePage: function(data) {
-
             var numberOfPage = data.size/data.listSize;
             numberOfPage = Math.ceil(numberOfPage);
 
@@ -240,7 +239,6 @@ var evey = (function(){
         },
 
         sanitizeErrorContainer: function(form){
-            console.log(form);
             $.each($(form).find("small.error"),function(i,small){
                 var defaultError = $(small).attr("data-default-error");
                 $(small).text(defaultError);

@@ -142,7 +142,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("AND STR_TO_DATE(SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("GROUP BY DATE_FORMAT(SALE_DATE, '%d') ");
 
-        GET_CATEGORY_PERCENTAGE.append("SELECT IFNULL(SALE.TOTAL_QUANTITY,0) AS TOTAL_QUANTITY, R.VALUE_ AS CATEGORY_NAME ")
+        GET_CATEGORY_PERCENTAGE.append("SELECT IFNULL(SALE.TOTAL_QUANTITY,0)+IFNULL(ADDON.TOTAL_QUANTITY,0) AS TOTAL_QUANTITY, R.VALUE_ AS CATEGORY_NAME ")
                 .append("FROM REFERENCE_LOOKUP R ")
                 .append("LEFT JOIN ")
                 .append("  (SELECT CATEGORY, ")
@@ -156,6 +156,19 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("                AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')  <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
                 .append("  GROUP BY CATEGORY ")
                 .append("  ) AS SALE ON R.ID = SALE.CATEGORY ")
+                .append("LEFT JOIN ")
+                .append("  (SELECT CATEGORY, ")
+                .append("    SUM(AO.QUANTITY) AS TOTAL_QUANTITY ")
+                .append("  FROM SALE S ")
+                .append("  JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
+                .append("  JOIN ADD_ON AO ON OL.ID = AO.ORDER_ID")
+                .append("  JOIN PRODUCT P ON AO.PRODUCT_ID = P.ID ")
+                .append("  JOIN P_GROUP PG ON P.PROD_GROUP_ID = PG.ID ")
+                .append("  WHERE ( S.SALE_DATE IS NULL ")
+                .append("          OR ( STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("                AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')  <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
+                .append("  GROUP BY CATEGORY ")
+                .append("  ) AS ADDON ON R.ID = ADDON.CATEGORY ")
                 .append("WHERE R.CATEGORY_   = 'CATEGORY_PROD_CATEGORY' ")
                 .append("ORDER BY R.ID  ");
 

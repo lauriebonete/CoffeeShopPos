@@ -232,8 +232,6 @@
                         return false;
                     },
                     endDate : function(el, required, parent){
-                        console.log(parent,el,$(el).parents("form").find(".from-date").val());
-
                         var startDate = $(el).parents("form").find(".from-date").val();
 
                         if(el.value!=null && el.value!="" && startDate !=null && startDate != "" && startDate != undefined){
@@ -243,7 +241,6 @@
                             var start = startDate.split("-");
                             var dateStart = new Date(start[2], start[0]-1, start[1]);
 
-                            console.log(date,dateStart);
                             if(date.getTime() >= dateStart.getTime()){
                                 return true;
                             }

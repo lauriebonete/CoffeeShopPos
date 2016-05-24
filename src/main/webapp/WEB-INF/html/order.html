@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Maestro Fedeli | Take Order</title>
+    <title>Take Order</title>
     <link rel="stylesheet" href="css/foundation.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/toastr.css"/>
 </head>
 <body ng-app="orderApp" ng-controller="orderController" ng-init="cacheUser()">
@@ -334,10 +333,6 @@
             </section>
             <a class="exit-off-canvas"></a>
         </div>
-        <!--<div id="display-modal" data-alert class="alert-box success radius display-message hide">
-            <span class="message"></span>
-            <a href="#" class="close">&#215;</a>
-        </div>-->
     </div>
 </div>
 <div id="modifyOrder" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" data-pid="{{selectedProduct.id}}" data-pname="{{selectedProduct.productName}}">
