@@ -77,40 +77,50 @@ public class PurchaseController extends BaseCrudController<Purchase> {
     }
 
     @RequestMapping(value = "/update-status", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Map<String,Object> updateStatusPurchase(@RequestBody Purchase updatePurchase) throws Exception{
-        Purchase purchase = purchaseService.load(updatePurchase.getId());
-        purchase.setStatus(Purchase.Status.findByString(updatePurchase.getStatus()).getValue());
+    public @ResponseBody Map<String,Object> updateStatusPurchase(@RequestBody @Valid Purchase updatePurchase, BindingResult errors) throws Exception{
+        Map<String,Object> returnMap = new HashMap<>();
+        if(errors.hasErrors()){
+            returnMap.put("validatorError",true);
+            returnMap.put("errors",errors.getAllErrors());
+        } else {
+            Purchase purchase = purchaseService.load(updatePurchase.getId());
+            purchase.setStatus(Purchase.Status.findByString(updatePurchase.getStatus()).getValue());
 
-        for(PurchaseOrder po: updatePurchase.getPurchaseOrders()){
-            for(PurchaseOrder originalPo: purchase.getPurchaseOrders()){
-                if(originalPo.getId()==po.getId()){
-                    originalPo.setOrderedQuantity(po.getOrderedQuantity());
-                    break;
+            for(PurchaseOrder po: updatePurchase.getPurchaseOrders()){
+                for(PurchaseOrder originalPo: purchase.getPurchaseOrders()){
+                    if(originalPo.getId()==po.getId()){
+                        originalPo.setOrderedQuantity(po.getOrderedQuantity());
+                        break;
+                    }
                 }
             }
-        }
 
-        if ("In Progress".equals(updatePurchase.getStatus())) {
-            purchase.setPurchaseDate(new Date());
-        }
-        purchaseService.save(purchase);
+            if ("In Progress".equals(updatePurchase.getStatus())) {
+                purchase.setPurchaseDate(new Date());
+            }
+            purchaseService.save(purchase);
 
-        Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("result", purchase);
-        returnMap.put("status",true);
-        returnMap.put("message","Purchase Order is now in-progress");
+            returnMap.put("result", purchase);
+            returnMap.put("status",true);
+            returnMap.put("message","Purchase Order is now in-progress");
+        }
         return returnMap;
     }
 
     @RequestMapping(value = "/receive-purchase", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Map<String, Object> receivePurchase(@RequestBody Purchase purchase) throws Exception{
+    public @ResponseBody Map<String, Object> receivePurchase(@RequestBody @Valid Purchase purchase, BindingResult errors) throws Exception{
         Map<String, Object> returnMap = new HashMap<>();
-        Purchase updated = purchaseService.receivedPurchaseOrder(purchase);
 
-        returnMap.put("result", updated);
-        returnMap.put("status", true);
-        returnMap.put("message","Purchase Order is successfully received.");
+        if(errors.hasErrors()){
+            returnMap.put("validatorError",true);
+            returnMap.put("errors",errors.getAllErrors());
+        } else {
+            Purchase updated = purchaseService.receivedPurchaseOrder(purchase);
 
+            returnMap.put("result", updated);
+            returnMap.put("status", true);
+            returnMap.put("message","Purchase Order is successfully received.");
+        }
         return returnMap;
     }
 
