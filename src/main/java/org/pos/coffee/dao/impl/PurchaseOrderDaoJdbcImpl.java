@@ -1,13 +1,18 @@
 package org.pos.coffee.dao.impl;
 
+import org.pos.coffee.bean.helper.PendingPurchaseDTO;
 import org.pos.coffee.dao.PurchaseOrderDaoJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,21 +27,23 @@ public class PurchaseOrderDaoJdbcImpl implements PurchaseOrderDaoJdbc {
     private static final StringBuilder GET_PENDING_PURCHASES = new StringBuilder();
 
     static {
-        GET_PENDING_PURCHASES.append("SELECT PURCHASE_CODE, STATUS FROM purchase where STATUS NOT IN ('Received','Cancelled');");
+        GET_PENDING_PURCHASES.append("SELECT PURCHASE_CODE, STATUS FROM purchase where STATUS NOT IN ('Received','Cancelled') ORDER BY ID ASC LIMIT 5;");
     }
 
     @Override
-    public Map getPendingPurchases() {
+    public List<PendingPurchaseDTO> getPendingPurchases() {
         final NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(dataSource);
         final Map<String, Object> params = new HashMap<>();
-        SqlRowSet pendingPurchases = template.queryForRowSet(GET_PENDING_PURCHASES.toString(), params);
+        List<PendingPurchaseDTO> results = template.query(GET_PENDING_PURCHASES.toString(), params, new RowMapper<PendingPurchaseDTO>() {
+            @Override
+            public PendingPurchaseDTO mapRow(ResultSet resultSet, int i) throws SQLException {
+                PendingPurchaseDTO pendingPurchaseDTO = new PendingPurchaseDTO();
+                pendingPurchaseDTO.setPurchaseCode(resultSet.getString("PURCHASE_CODE"));
+                pendingPurchaseDTO.setStatus(resultSet.getString("STATUS"));
+                return pendingPurchaseDTO;
+            }
+        });
 
-        Map pendingPurchasesMap = new HashMap();
-
-        while (pendingPurchases.next()) {
-            pendingPurchasesMap.put(pendingPurchases.getString("PURCHASE_CODE"), pendingPurchases.getString("STATUS"));
-        }
-
-        return pendingPurchasesMap;
+        return results;
     }
 }

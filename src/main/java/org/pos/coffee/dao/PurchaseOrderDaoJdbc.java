@@ -1,5 +1,8 @@
 package org.pos.coffee.dao;
 
+import org.pos.coffee.bean.helper.PendingPurchaseDTO;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -7,5 +10,5 @@ import java.util.Map;
  */
 public interface PurchaseOrderDaoJdbc {
 
-    public Map getPendingPurchases();
+    public List<PendingPurchaseDTO> getPendingPurchases();
 }
