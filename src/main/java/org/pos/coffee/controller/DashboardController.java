@@ -195,14 +195,16 @@ public class DashboardController {
         stockHelperList.addAll(stockService.findStockEntity(stockHelper));
 
         List<Double> returnList = new ArrayList<>();
-        int max = stockHelperList.size();
+        int max = 5;
 
         List<String> label = new ArrayList<>();
 
-        for(int i=0; i<max; i++){
-            StockHelper stockHelperFound = stockHelperList.get(i);
-            label.add(stockHelperFound.getItem().getItemName());
-            returnList.add(stockHelperList.get(i).getQuantity());
+        if(stockHelperList!=null && !stockHelperList.isEmpty()){
+            for(int i=0; i<max; i++){
+                StockHelper stockHelperFound = stockHelperList.get(i);
+                label.add(stockHelperFound.getItem().getItemName());
+                returnList.add(stockHelperList.get(i).getQuantity());
+            }
         }
 
         Map<String,Object> returnMap = new HashMap<>();
@@ -221,14 +223,16 @@ public class DashboardController {
         stockHelperList.addAll(stockService.findStockEntity(stockHelper));
 
         List<Double> returnList = new ArrayList<>();
-        int max = stockHelperList.size();
+        int max = 5;
 
         List<String> label = new ArrayList<>();
 
-        for(int i=0; i<max; i++){
-            StockHelper stockHelperFound = stockHelperList.get(i);
-            label.add(stockHelperFound.getItem().getItemName());
-            returnList.add(stockHelperList.get(i).getQuantity());
+        if(stockHelperList!=null && !stockHelperList.isEmpty()){
+            for(int i=0; i<max; i++){
+                StockHelper stockHelperFound = stockHelperList.get(i);
+                label.add(stockHelperFound.getItem().getItemName());
+                returnList.add(stockHelperList.get(i).getQuantity());
+            }
         }
 
         Map<String,Object> returnMap = new HashMap<>();

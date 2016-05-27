@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/app.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/responsive-tables.css">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body ng-app="dashboardApp" ng-controller="dashboardController">
@@ -283,6 +282,7 @@
                             pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
+                            animation:false
                         });
                     });
                 }
@@ -297,11 +297,10 @@
                         labels: data.label,
                         datasets: [
                             {
-                                label: "My First dataset",
-                                fillColor: "#e60000",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
+                                fillColor: "#ed4c4c",
+                                strokeColor: "#eb3232",
+                                highlightFill: "#f49393",
+                                highlightStroke: "#f06f6f",
                                 data: data.results
                             }]
                     };
@@ -311,6 +310,7 @@
                         var myNewChart = new Chart(ctx).Bar(barData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -322,8 +322,8 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
-                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+                    var shades = ['#008cba','#1997c0','#32a3c7','#4caece','#66bad5'];
+                    var tints = ['#007ea7','#007094','#006282','#00546f','#00465d'];
 
                     var pieData = [];
                     var categoryList = data.category;
@@ -342,6 +342,7 @@
                         var myNewChart = new Chart(ctx).Doughnut(pieData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -356,11 +357,10 @@
                         labels: data.productName,
                         datasets: [
                             {
-                                label: "My First dataset",
                                 fillColor: "#008CBA",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
+                                strokeColor: "#007ea7",
+                                highlightFill: "#32a3c7",
+                                highlightStroke: "#1997c0",
                                 data: data.productSales
                             }]
                     };
@@ -370,6 +370,7 @@
                         var myNewChart = new Chart(ctx).Bar(barData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -443,6 +444,7 @@
                             pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
+                            animation:false
                         });
                     });
                 }
@@ -479,6 +481,7 @@
                             pointDotRadius: 5,
                             maintainAspectRatio: false,
                             bezierCurve : false,
+                            animation:false
                         });
                     });
                 }
@@ -492,26 +495,29 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    var barData = {
-                        labels: data.label,
-                        datasets: [
-                            {
-                                label: "My First dataset",
-                                fillColor: "#ff8c1a",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
-                                data: data.results
-                            }]
-                    };
+                    if(data.label!=null && data.label!=""){
+                        var barData = {
+                            labels: data.label,
+                            datasets: [
+                                {
+                                    label: "My First dataset",
+                                    fillColor: "#ff9730",
+                                    strokeColor: "#ff8c1a",
+                                    highlightFill: "#ffba75",
+                                    highlightStroke: "#ffae5e",
+                                    data: data.results
+                                }]
+                        };
 
-                    $.each($("#chart-bar-area"),function(i,bar){
-                        var ctx = bar.getContext("2d");
-                        var myNewChart = new Chart(ctx).Bar(barData,{
-                            responsive: true,
-                            maintainAspectRatio: false,
+                        $.each($("#chart-bar-area"),function(i,bar){
+                            var ctx = bar.getContext("2d");
+                            var myNewChart = new Chart(ctx).Bar(barData,{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                animation:false
+                            });
                         });
-                    });
+                    }
                 }
             });
         }).on("click", ".snap-critical",function(){
@@ -523,26 +529,29 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    var barData = {
-                        labels: data.label,
-                        datasets: [
-                            {
-                                label: "My First dataset",
-                                fillColor: "#e60000",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
-                                data: data.results
-                            }]
-                    };
+                    if(data.label!=null && data.label!=""){
+                        var barData = {
+                            labels: data.label,
+                            datasets: [
+                                {
+                                    label: "My First dataset",
+                                    fillColor: "#ed4c4c",
+                                    strokeColor: "#eb3232",
+                                    highlightFill: "#f49393",
+                                    highlightStroke: "#f06f6f",
+                                    data: data.results
+                                }]
+                        };
 
-                    $.each($("#chart-bar-area"),function(i,bar){
-                        var ctx = bar.getContext("2d");
-                        var myNewChart = new Chart(ctx).Bar(barData,{
-                            responsive: true,
-                            maintainAspectRatio: false,
+                        $.each($("#chart-bar-area"),function(i,bar){
+                            var ctx = bar.getContext("2d");
+                            var myNewChart = new Chart(ctx).Bar(barData,{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                animation:false
+                            });
                         });
-                    });
+                    }
                 }
             });
         }).on("click", ".snap-category-week",function(){
@@ -555,8 +564,8 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
-                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+                    var shades = ['#008cba','#1997c0','#32a3c7','#4caece','#66bad5'];
+                    var tints = ['#007ea7','#007094','#006282','#00546f','#00465d'];
 
                     var pieData = [];
                     var categoryList = data.category;
@@ -575,6 +584,7 @@
                         var myNewChart = new Chart(ctx).Doughnut(pieData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -589,8 +599,8 @@
                 dataType: "JSON",
                 success:function(data){
 
-                    var shades = ['#008CBA','#004c4c','#005959','#006666','#007373'];
-                    var tints = ['#329999','#4ca6a6','#66b2b2','#7fbfbf','#99cccc'];
+                    var shades = ['#008cba','#1997c0','#32a3c7','#4caece','#66bad5'];
+                    var tints = ['#007ea7','#007094','#006282','#00546f','#00465d'];
 
                     var pieData = [];
                     var categoryList = data.category;
@@ -609,6 +619,7 @@
                         var myNewChart = new Chart(ctx).Doughnut(pieData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -626,11 +637,10 @@
                         labels: data.productName,
                         datasets: [
                             {
-                                label: "My First dataset",
                                 fillColor: "#008CBA",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
+                                strokeColor: "#007ea7",
+                                highlightFill: "#32a3c7",
+                                highlightStroke: "#1997c0",
                                 data: data.productSales
                             }]
                     };
@@ -640,6 +650,7 @@
                         var myNewChart = new Chart(ctx).Bar(barData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
@@ -658,9 +669,9 @@
                         datasets: [
                             {
                                 fillColor: "#008CBA",
-                                strokeColor: "#006666",
-                                highlightFill: "#008080",
-                                highlightStroke: "#006666",
+                                strokeColor: "#007ea7",
+                                highlightFill: "#32a3c7",
+                                highlightStroke: "#1997c0",
                                 data: data.productSales
                             }]
                     };
@@ -670,6 +681,7 @@
                         var myNewChart = new Chart(ctx).Bar(barData,{
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation:false
                         });
                     });
                 }
