@@ -61,14 +61,14 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
                         if(foundStock.getQuantity()!=null) {
                             if(foundStock.getQuantity()>=deductAmount){
                                 foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
-                                totalExpense += deductAmount * foundStock.getPrice();
+                                totalExpense += deductAmount * (foundStock.getPrice()!=null?foundStock.getPrice():0);
                                 if(foundStock.getQuantity()<=0){
                                     foundStock.setIsActive(false);
                                 }
                                 deductAmount = 0D;
                             } else if(foundStock.getQuantity()>0) {
                                 deductAmount -= foundStock.getQuantity();
-                                totalExpense += foundStock.getQuantity() * foundStock.getPrice();
+                                totalExpense += foundStock.getQuantity() * (foundStock.getPrice()!=null?foundStock.getPrice():0);
                                 if(i==stockList.size()-1){
                                     foundStock.setQuantity(0-deductAmount);
                                     deductAmount = 0D;

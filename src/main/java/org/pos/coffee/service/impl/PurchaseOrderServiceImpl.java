@@ -3,6 +3,7 @@ package org.pos.coffee.service.impl;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.PurchaseOrder;
+import org.pos.coffee.bean.helper.PendingPurchaseDTO;
 import org.pos.coffee.dao.PurchaseDao;
 import org.pos.coffee.dao.PurchaseOrderDao;
 import org.pos.coffee.dao.PurchaseOrderDaoJdbc;
@@ -78,7 +79,7 @@ public class PurchaseOrderServiceImpl extends BaseCrudServiceImpl<PurchaseOrder>
     }
 
     @Override
-    public Map getPendingPurchases() {
+    public List<PendingPurchaseDTO> getPendingPurchases() {
         return purchaseOrderDaoJdbc.getPendingPurchases();
     }
 }

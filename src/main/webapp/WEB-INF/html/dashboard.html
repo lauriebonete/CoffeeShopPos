@@ -380,10 +380,10 @@
                 type: "GET",
                 dataType: "JSON",
                 success:function(data){
-                    for(var i=0; i<data.purchaseCode.length; i++){
-                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + data.purchaseCode[i] + "</h6><h6 class='right emphasis'>" + data.purchaseStatus[i] + "</h6></div>";
+                    $.each(data.results,function(i,val){
+                        var addRow = "<div class='small-12 columns'><h6 class='left'>" + val.purchaseCode + "</h6><h6 class='right emphasis'>" + val.status + "</h6></div>";
                         $("#pending-purchases").append(addRow);
-                    }
+                    });
                 }
             });
 

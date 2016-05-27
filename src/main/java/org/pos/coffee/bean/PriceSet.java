@@ -92,9 +92,10 @@ public class PriceSet extends BaseEntity{
     @Transient
     private Date lookForStartDate;
 
-    @Transient
     private Date lookForEndDate;
 
+    private transient String displayEndDate;
+    private transient String displayStartDate;
     private transient List<Long> displayProducts;
     private transient List<Long> displayPromoGroups;
 
@@ -258,23 +259,20 @@ public class PriceSet extends BaseEntity{
         this.stopOtherPriceSet = stopOtherPriceSet;
     }
 
-    @JsonView
-    public String displayStartDate(){
-        if(this.startDate != null){
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            return formatter.format(this.startDate);
+    public String getDisplayEndDate() {
+        if(this.endDate!=null){
+            return new SimpleDateFormat("MM-dd-yyyy").format(this.endDate);
         }
-        return "";
+
+        return displayEndDate;
     }
 
-    @JsonView
-    public String displayEndDate(){
-        if(this.endDate != null){
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            return formatter.format(this.endDate);
+    public String getDisplayStartDate() {
+        if(this.startDate!=null){
+            return new SimpleDateFormat("MM-dd-yyyy").format(this.startDate);
         }
 
-        return "";
+        return displayStartDate;
     }
 
     public List<Long> getDisplayProducts() {

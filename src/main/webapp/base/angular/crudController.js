@@ -1,7 +1,7 @@
 /**
  * Created by Laurie on 11/6/2015.
  */
-crudApp.controller("crudController",['$scope','$http','currentUserService',function ($scope, $http, currentUserService) {
+crudApp.controller("crudController",['$scope','$timeout','$http','currentUserService',function ($scope,$timeout, $http, currentUserService) {
 
 
     $scope.cacheEntities = function(url){
@@ -47,15 +47,18 @@ crudApp.controller("crudController",['$scope','$http','currentUserService',funct
     };
 
     $scope.editAction = function (id) {
+        editFunction(id);
+    };
+
+    function editFunction (id){
         angular.forEach($scope.records, function (value, key) {
             if (value.id == id) {
-                $scope.recordFound = value;
                 console.log(value);
+                $scope.recordFound = value;
                 return;
             }
         });
     };
-
     $scope.restock = function(id){
         angular.forEach($scope.records, function (value, key) {
             if (value.item.id == id) {

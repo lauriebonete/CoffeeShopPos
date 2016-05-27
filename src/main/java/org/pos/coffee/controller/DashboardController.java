@@ -1,6 +1,7 @@
 package org.pos.coffee.controller;
 
 import org.pos.coffee.bean.Product;
+import org.pos.coffee.bean.helper.PendingPurchaseDTO;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.TrendingProductDTO;
 import org.pos.coffee.bean.helper.report.CategoryHelper;
@@ -37,9 +38,6 @@ public class DashboardController {
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
-
-    @Autowired
-    private ProductService productService;
 
     @RequestMapping(value = "/sale-per-week", method = RequestMethod.GET, produces = "application/json")
       public @ResponseBody Map<String,Object> getSalePerWeek() throws Exception{
@@ -243,21 +241,11 @@ public class DashboardController {
     @RequestMapping(value = "/pending-purchase", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Map<String,Object> getPendingPurchases() throws Exception{
 
-        Map pendingPurchasesMap = purchaseOrderService.getPendingPurchases();
+        List<PendingPurchaseDTO> pendingPurchasesMap = purchaseOrderService.getPendingPurchases();
 
-        Iterator entries = pendingPurchasesMap.entrySet().iterator();
-        List<String> purchaseCode = new ArrayList<>();
-        List<String> purchaseStatus = new ArrayList<>();
-
-        while (entries.hasNext()) {
-            Map.Entry thisEntry = (Map.Entry) entries.next();
-            purchaseCode.add(thisEntry.getKey().toString());
-            purchaseStatus.add(thisEntry.getValue().toString());
-        }
 
         Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("purchaseCode",purchaseCode);
-        returnMap.put("purchaseStatus",purchaseStatus);
+        returnMap.put("results",pendingPurchasesMap);
 
         return returnMap;
 
