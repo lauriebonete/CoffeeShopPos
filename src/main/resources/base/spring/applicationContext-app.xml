@@ -22,8 +22,7 @@
 		<property name="persistenceUnitName" value="${persistence.name}" />
 		<property name="persistenceXmlLocation" value="${persistence.location}"/>
 		<property name="jpaVendorAdapter">
-			<bean
-				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="showSql" value="${jpa.show_sql}" />
 				<property name="generateDdl" value="${jpa.generate_ddl}" />
 			</bean>

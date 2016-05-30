@@ -95,5 +95,7 @@
     <orderEntry type="library" name="Maven: org.apache.pdfbox:fontbox:1.8.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pdfbox:jempbox:1.8.11" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.6.11" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-ehcache:4.3.5.Final" level="project" />
   </component>
 </module>

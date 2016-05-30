@@ -2,17 +2,22 @@ package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.evey.annotation.JoinList;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="PRODUCT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Product extends BaseEntity {
 
 	@Column(name = "PRODUCT_CODE", unique = true, nullable = false)
