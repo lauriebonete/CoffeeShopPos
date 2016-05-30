@@ -65,6 +65,8 @@
           <element id="library" level="project" name="Maven: org.apache.pdfbox:fontbox:1.8.11" />
           <element id="library" level="project" name="Maven: org.apache.pdfbox:jempbox:1.8.11" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.6.11" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:4.3.5.Final" />
         </element>
       </element>
       <element id="directory" name="META-INF">

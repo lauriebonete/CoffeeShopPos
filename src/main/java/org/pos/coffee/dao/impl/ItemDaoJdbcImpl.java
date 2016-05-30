@@ -36,8 +36,8 @@ public class ItemDaoJdbcImpl implements ItemDaoJdbc {
                 .append("JOIN INGREDIENT I ON P.ID = I.PRODUCT_ID ")
                 .append("JOIN ITEM IT ON I.ITEM = IT.ID ")
                 .append("JOIN REFERENCE_LOOKUP UOM ON IT.UOM = UOM.ID ")
-                .append("WHERE SALE_DATE >= :START_DATE ")
-                .append("AND SALE_DATE <= :END_DATE ")
+                .append("WHERE DATE_FORMAT(SALE_DATE,'%Y-%m-%d') >= DATE_FORMAT(:START_DATE,'%Y-%m-%d') ")
+                .append("AND DATE_FORMAT(SALE_DATE,'%Y-%m-%d') <= DATE_FORMAT(:END_DATE,'%Y-%m-%d') ")
                 .append("GROUP BY IT.ID ");
 
     }

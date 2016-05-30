@@ -18,6 +18,7 @@ public class UserDaoJpaImpl extends BaseEntityDaoJpaImpl<User,Long> implements U
         String queryString = "SELECT obj FROM User obj where obj.username = :username";
         Query query = getEntityManager().createQuery(queryString);
         query.setParameter("username", username);
+        query.setHint("org.hibernate.cacheable", true);
         return (User) query.getSingleResult();
     }
 

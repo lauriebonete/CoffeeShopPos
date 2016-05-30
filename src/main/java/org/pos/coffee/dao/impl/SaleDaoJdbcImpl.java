@@ -49,8 +49,8 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("AND STR_TO_DATE(DATE(SALE_DATE), '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ");
 
 
-        GET_CATEGORY_SALE.append("SELECT IFNULL(SALE.TOTAL_SALE,0) FROM   REFERENCE_LOOKUP R ")
-                .append("       LEFT JOIN (SELECT CATEGORY, SUM(TOTAL_SALE) AS TOTAL_SALE ")
+        GET_CATEGORY_SALE.append("SELECT IFNULL(SALE.TOTAL_SALE,0)+IFNULL(ADDON.TOTAL_SALE,0) FROM   REFERENCE_LOOKUP R ")
+                .append("       LEFT JOIN (SELECT CATEGORY, SUM(OL.LINE_PRICE) AS TOTAL_SALE ")
                 .append("                  FROM   SALE S ")
                 .append("                         JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
                 .append("                         JOIN PRODUCT P ON OL.PRODUCT_ID = P.ID ")
@@ -60,6 +60,17 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("                                 AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
                 .append("                   GROUP BY CATEGORY) ")
                 .append("                 AS SALE ON R.ID = SALE.CATEGORY ")
+                .append("       LEFT JOIN (SELECT CATEGORY, SUM(AO.PRICE * AO.QUANTITY) AS TOTAL_SALE ")
+                .append("                  FROM   SALE S ")
+                .append("                         JOIN ORDER_LINE OL ON S.ID = OL.SALE_ID ")
+                .append("                         JOIN ADD_ON AO ON AO.ORDER_ID = OL.ID ")
+                .append("                         JOIN PRODUCT P ON AO.PRODUCT_ID = P.ID ")
+                .append("                         JOIN P_GROUP PG ON P.PROD_GROUP_ID = PG.ID ")
+                .append("                  WHERE  ( S.SALE_DATE IS NULL ")
+                .append("                            OR ( STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("                                 AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ) ) ")
+                .append("                   GROUP BY CATEGORY) ")
+                .append("                 AS ADDON ON R.ID = ADDON.CATEGORY ")
                 .append("WHERE  R.CATEGORY_ = 'CATEGORY_PROD_CATEGORY' ")
                 .append("ORDER BY R.ID ");
 
@@ -85,7 +96,15 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("  WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("  AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("  GROUP BY OL.PRODUCT_ID ")
-                .append("  ) AS S ON S.PRODUCT_ID                      = C.ID ")
+                .append(" UNION ")
+                .append(" SELECT AO.PRODUCT_ID AS PRODUCT_ID, SUM(AO.QUANTITY) AS QUANTITY, SUM(AO.PRICE * AO.QUANTITY) AS LINE_PRICE ")
+                .append(" FROM SALE S ")
+                .append(" JOIN ORDER_LINE OL ON OL.SALE_ID = S.ID ")
+                .append(" JOIN ADD_ON AO ON AO.ORDER_ID = OL.ID ")
+                .append("  WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
+                .append("  AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
+                .append("  GROUP BY OL.PRODUCT_ID ")
+                .append("  ) AS S ON (S.PRODUCT_ID = C.ID OR S.PRODUCT_ID = P.ID) ")
                 .append("WHERE R.CATEGORY_                             = 'CATEGORY_PROD_CATEGORY' ")
                 .append("AND P.SHOW_PRODUCT                            = 1 ")
                 .append("ORDER BY R.ID, PG.ID, P.ID ");
@@ -104,7 +123,7 @@ public class SaleDaoJdbcImpl implements SaleDaoJdbc {
                 .append("  WHERE STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d') >= STR_TO_DATE(:START_DATE, '%Y-%m-%d') ")
                 .append("  AND STR_TO_DATE(S.SALE_DATE, '%Y-%m-%d')   <= STR_TO_DATE(:END_DATE, '%Y-%m-%d') ")
                 .append("  GROUP BY OL.PRODUCT_ID ")
-                .append("  ) AS S ON S.PRODUCT_ID = C.ID ")
+                .append("  ) AS S ON (S.PRODUCT_ID = C.ID OR S.PRODUCT_ID = P.ID) ")
                 .append("WHERE R.CATEGORY_        = 'CATEGORY_PROD_CATEGORY' ")
                 .append("AND P.SHOW_PRODUCT       = 1 ")
                 .append("ORDER BY R.ID, PG.ID, P.ID ");
