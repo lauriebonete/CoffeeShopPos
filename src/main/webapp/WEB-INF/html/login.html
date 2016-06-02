@@ -6,19 +6,13 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<title>Maestro Fedeli | Login</title>
 	<link rel="stylesheet" href="css/foundation.css"/>
-	<link rel="stylesheet" href="css/style.css"/>
 	<link rel="stylesheet" href="css/app.css"/>
-	<link rel="stylesheet" href="css/login.css"/>
-	<link rel="stylesheet" href="css/font-awesome.css"/>
-	<link rel="stylesheet" href="css/responsive-tables.css">
 
 	<script src="js/vendor/jquery.js"></script>
 	<script src="js/foundation.min.js"></script>
-	<script src="js/responsive-tables.js"></script>
 	<script src="js/evey-1.0.js"></script>
 	<script src="js/angular.js"></script>
 	<script src="angular/loginAngular.js"></script>
-	<script src="js/angular-selectize.js"></script>
 	<script src="js/vendor/modernizr.js"></script>
 </head>
 <body ng-app="loginApp" ng-controller="loginController">
@@ -33,7 +27,7 @@
 				</div>
 
 				<div class="row">
-					<input type="password" id="pinDigit" name="pinDigit" required/>
+					<input type="password" id="pinDigit" name="pinDigit" class="text-align-center" required/>
 					<small class="error">Please enter your PIN</small>
 				</div>
 				<div class="row">
@@ -78,13 +72,6 @@
 				</div>
 			</form>
 		</div>
-		<!--<div id="loginForm">
-			<div>
-				<img class="maestroLogo show-for-medium-up" src="img/maestroFedeliLogo.png"/>
-			</div>
-
-
-		</div>-->
 	</div>
 </body>
 <script>

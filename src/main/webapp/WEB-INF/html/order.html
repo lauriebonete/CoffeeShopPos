@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Take Order</title>
     <link rel="stylesheet" href="css/foundation.css"/>
-    <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/app.css"/>
-    <link rel="stylesheet" href="css/font-awesome.css"/>
-    <link rel="stylesheet" href="css/toastr.css"/>
 </head>
 <body ng-app="orderApp" ng-controller="orderController" ng-init="cacheUser()">
 <div class="row height-full">
@@ -88,7 +85,7 @@
                     <div class="side-nav">
                         <div class="icon-bar vertical five-up height-full margin-top-side max-height-none" ng-init="loadSideNav('/productGroup/getProductGroups')">
                             <a class="item group" ng-repeat="group in sideNav" ng-class="{active:$first}" data-id="{{group.id}}">
-                                <img ng-if="group.groupImageId == null" src="img/hot51.png" alt=""/>
+                                <img ng-if="group.groupImageId == null" src="img/coffee-cup.png" alt=""/>
                                 <img ng-if="group.groupImageId != null" ng-src="file/viewImage/{{group.groupImageId}}" alt=""/>
                                 <label class="show-for-medium-up">{{group.productGroupName}}</label>
                             </a>

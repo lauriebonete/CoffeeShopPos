@@ -56,6 +56,7 @@ public class ItemController extends BaseCrudController<Item> {
         Stock stock = new Stock();
         stock.setItem(command);
         stock.setIsActive(true);
+        stock.setPrice(command.getUnitPrice());
         stockService.save(stock);
     }
 }
