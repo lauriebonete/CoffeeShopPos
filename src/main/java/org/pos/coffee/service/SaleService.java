@@ -16,7 +16,6 @@ import java.util.Map;
  * Created by Laurie on 12/14/2015.
  */
 public interface SaleService extends BaseCrudService<Sale> {
-    public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList);
     public void createSaleAndOrders(Sale sale);
     public String generatePurchaseCode(String key, int increment, int retryCount, int maxRetry);
     public Sale confirmSaleTransaction(Sale sale) throws Exception;

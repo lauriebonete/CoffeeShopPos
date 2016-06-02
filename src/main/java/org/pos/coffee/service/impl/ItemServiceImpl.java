@@ -3,6 +3,8 @@ package org.pos.coffee.service.impl;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Stock;
+import org.pos.coffee.bean.helper.AddOnExpenseHelper;
+import org.pos.coffee.bean.helper.AddOnUsedHelper;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.bean.helper.report.ConsumptionHelper;
@@ -13,10 +15,7 @@ import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Laurie on 11/16/2015.
@@ -34,9 +33,12 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
     private ItemDao itemDao;
 
     @Override
-    public List<OrderExpenseHelper> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception{
+    public Map<String,Object> deductItemInventory(List<ItemUsedHelper> itemUsedHelperList) throws Exception{
+
+        Map<String,Object> returnMap = new HashMap<>();
 
         List<OrderExpenseHelper> orderExpenseHelpers = new ArrayList<>();
+        List<AddOnExpenseHelper> addOnExpenseHelperList = new ArrayList<>();
         for(ItemUsedHelper itemUsedHelper: itemUsedHelperList){
             OrderExpenseHelper orderExpenseHelper = new OrderExpenseHelper();
             orderExpenseHelper.setOrderId(itemUsedHelper.getOrderId());
@@ -102,9 +104,76 @@ public class ItemServiceImpl extends BaseCrudServiceImpl<Item> implements ItemSe
                 }
             }
             orderExpenseHelper.setExpense(totalExpense);
+            if(itemUsedHelper.getAddOnUsedHelperList()!=null && !itemUsedHelper.getAddOnUsedHelperList().isEmpty()){
+                for(AddOnUsedHelper addOnUsedHelper:itemUsedHelper.getAddOnUsedHelperList()){
+                    Double addOnExpense = 0D;
+                    AddOnExpenseHelper addOnExpenseHelper = new AddOnExpenseHelper();
+                    addOnExpenseHelper.setAddOnId(addOnUsedHelper.getAddOnId());
+                    for(Map.Entry<Long,Double> entry: addOnUsedHelper.getItemUsed().entrySet()){
+                        Long itemId = entry.getKey();
+                        Double deductAmount = entry.getValue();
+
+                        Item item = new Item();
+                        item.setId(itemId);
+
+                        Stock stock = new Stock();
+                        stock.setItem(item);
+
+                        List<Stock> stockList = stockService.findActiveEntity(stock);
+
+                        for(int i=0; i<=stockList.size()-1;i++){
+                            Stock foundStock = stockList.get(i);
+                            if(foundStock.getQuantity()!=null) {
+                                if(foundStock.getQuantity()>=deductAmount){
+                                    foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
+                                    addOnExpense += deductAmount * (foundStock.getPrice()!=null?foundStock.getPrice():0);
+                                    if(foundStock.getQuantity()<=0){
+                                        foundStock.setIsActive(false);
+                                    }
+                                    deductAmount = 0D;
+                                } else if(foundStock.getQuantity()>0) {
+                                    deductAmount -= foundStock.getQuantity();
+                                    addOnExpense += foundStock.getQuantity() * (foundStock.getPrice()!=null?foundStock.getPrice():0);
+                                    if(i==stockList.size()-1){
+                                        foundStock.setQuantity(0-deductAmount);
+                                        deductAmount = 0D;
+                                    } else {
+                                        foundStock.setQuantity(0D);
+                                        foundStock.setIsActive(false);
+                                    }
+                                } else {
+                                    //if the foundStock is already negative and there are still foundStock on the list, don't do anything
+                                    //let the loop continue
+                                    if(i==stockList.size()-1){
+                                        foundStock.setQuantity(foundStock.getQuantity()-deductAmount);
+                                        deductAmount = 0D;
+                                    }
+                                }
+                                if(deductAmount<=0){
+                                    break;
+                                }
+                            } else {
+                                if(i==stockList.size()-1){
+                                    foundStock.setQuantity(0-deductAmount);
+                                    deductAmount = 0D;
+                                } else {
+                                    foundStock.setIsActive(false);
+                                }
+                            }
+                            stockService.save(foundStock);
+                        }
+                    }
+                    addOnExpenseHelper.setExpense(addOnExpense);
+                    addOnExpenseHelperList.add(addOnExpenseHelper);
+                }
+            }
             orderExpenseHelpers.add(orderExpenseHelper);
         }
-        return orderExpenseHelpers;
+
+        returnMap.put("orderHelpers",orderExpenseHelpers);
+        returnMap.put("addOnHelpers",addOnExpenseHelperList);
+
+        return returnMap;
     }
 
     @Override

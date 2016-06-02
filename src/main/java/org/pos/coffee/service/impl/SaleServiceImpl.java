@@ -9,6 +9,7 @@ import org.evey.service.ReceiptPDFService;
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.evey.utility.SecurityUtil;
 import org.pos.coffee.bean.*;
+import org.pos.coffee.bean.helper.AddOnExpenseHelper;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.bean.helper.TrendingProductDTO;
@@ -60,13 +61,17 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
     @Autowired
     private UserService userService;
 
-    @Override
     @Transactional
-    public Double countExpensePerOrder(List<OrderExpenseHelper> orderExpenseHelperList) {
+    private Double countExpensePerOrder(Map<String,Object> results) {
         Double totalExpense = 0D;
-        for(OrderExpenseHelper orderExpenseHelper: orderExpenseHelperList){
+        for(OrderExpenseHelper orderExpenseHelper: (List<OrderExpenseHelper>)results.get("orderHelpers")){
             totalExpense += orderExpenseHelper.getExpense();
             orderService.updateTotalExpense(orderExpenseHelper.getOrderId(),orderExpenseHelper.getExpense());
+        }
+
+        for(AddOnExpenseHelper addOnExpenseHelper: (List<AddOnExpenseHelper>)results.get("addOnHelpers")){
+            totalExpense += addOnExpenseHelper.getExpense();
+            addOnService.updateAddOnCost(addOnExpenseHelper.getAddOnId(),addOnExpenseHelper.getExpense());
         }
         return totalExpense;
     }
@@ -93,8 +98,10 @@ public class SaleServiceImpl extends BaseCrudServiceImpl<Sale> implements SaleSe
         sale.setServer(server);
         this.createSaleAndOrders(sale);
         List<ItemUsedHelper> itemUsed = orderService.countUseItems(sale.getOrders());
-        List<OrderExpenseHelper> orderExpenseHelperList = itemService.deductItemInventory(itemUsed);
-        saleDao.updateTotalCost(sale.getId(),this.countExpensePerOrder(orderExpenseHelperList));
+        Map<String,Object> results = itemService.deductItemInventory(itemUsed);
+
+        Double totalCost = this.countExpensePerOrder(results);
+        sale.setTotalCost(totalCost);
         sale.setReceipt(receiptPDFService.generateReceiptPDF(sale));
         return sale;
     }

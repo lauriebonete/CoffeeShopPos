@@ -1,29 +1,3 @@
-/*@media screen and (max-width: 640px) {
-    .maestroLogo {
-        height: 35vh;
-        width: 80vw;
-        display:block;
-        margin:auto;
-    }
-}
-
-@media screen and (min-width: 641px) and (max-width: 1024px) {
-    .maestroLogo {
-        height: 45vh;
-        width: 30vw;
-        display:block;
-        margin:auto;
-    }
-}
-
-@media screen and (min-width: 1025px) {
-    .maestroLogo {
-        height: 35vh;
-        width: 20vw;
-        display:block;
-        margin:auto;
-    }
-}*/
 
 .login-logo {
     width: 90%;

@@ -7,9 +7,7 @@ angular.module("loginApp",[])
         var url = function(){
             var paramList = loginService.getUrlPattern();
             var response = "";
-            console.log(paramList);
-            if(paramList!=undefined && paramList!=null){
-                console.log("why");
+            if(paramList!=undefined && paramList!=null && paramList!=""){
                 switch (paramList["login_response"]){
                     case "access_denied":
                         response= "Please check your credentials.";
@@ -23,13 +21,12 @@ angular.module("loginApp",[])
                     case "success_logout":
                         response="You have successfully logout.";
                         break;
-
                 }
-            }
 
-            $scope.response = response;
-            $scope.status = paramList["error"];
-            $scope.show = true;
+                $scope.status = paramList["error"];
+                $scope.response = response;
+                $scope.show = true;
+            }
         };
 
         url();

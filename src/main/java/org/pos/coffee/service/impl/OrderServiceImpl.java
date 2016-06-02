@@ -2,6 +2,7 @@ package org.pos.coffee.service.impl;
 
 import org.evey.service.impl.BaseCrudServiceImpl;
 import org.pos.coffee.bean.*;
+import org.pos.coffee.bean.helper.AddOnUsedHelper;
 import org.pos.coffee.bean.helper.ItemUsedHelper;
 import org.pos.coffee.dao.OrderDao;
 import org.pos.coffee.service.OrderService;
@@ -51,22 +52,30 @@ public class OrderServiceImpl extends BaseCrudServiceImpl<Order> implements Orde
 
                 if(order.getAddOnList()!=null
                         && order.getAddOnList().size()>0){
+                    List<AddOnUsedHelper> addOnUsedHelperList = new ArrayList<>();
                     for(AddOn addOn:order.getAddOnList()){
+                        Map<Long,Double> addOnItemUsedMap = new HashMap<>();
+                        AddOnUsedHelper addOnUsedHelper = new AddOnUsedHelper();
+                        addOnUsedHelper.setAddOnId(addOn.getId());
+
                         Product productAddon = addOn.getProduct();
                         List<Ingredient> ingredientListAddon = productAddon.getIngredientList();
                         if(ingredientListAddon!=null){
                             for(Ingredient ingredient: ingredientListAddon){
 
-                                if(itemUsedMap.get(ingredient.getItem().getId())!=null){
-                                    double quantityUsed = itemUsedMap.get(ingredient.getItem().getId());
+                                if(addOnItemUsedMap.get(ingredient.getItem().getId())!=null){
+                                    double quantityUsed = addOnItemUsedMap.get(ingredient.getItem().getId());
                                     quantityUsed += ingredient.getQuantity()*addOn.getQuantity();
-                                    itemUsedMap.put(ingredient.getItem().getId(),quantityUsed);
+                                    addOnItemUsedMap.put(ingredient.getItem().getId(),quantityUsed);
                                 } else {
-                                    itemUsedMap.put(ingredient.getItem().getId(),ingredient.getQuantity()*addOn.getQuantity());
+                                    addOnItemUsedMap.put(ingredient.getItem().getId(),ingredient.getQuantity()*addOn.getQuantity());
                                 }
                             }
                         }
+                        addOnUsedHelper.setItemUsed(addOnItemUsedMap);
+                        addOnUsedHelperList.add(addOnUsedHelper);
                     }
+                    itemUsedHelper.setAddOnUsedHelperList(addOnUsedHelperList);
                 }
                 itemUsedHelper.setItemUsedAndQuantity(itemUsedMap);
             }

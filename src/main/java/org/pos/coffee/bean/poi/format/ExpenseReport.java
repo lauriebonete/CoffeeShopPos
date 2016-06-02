@@ -45,6 +45,13 @@ public class ExpenseReport extends Report {
         int categoryRow = 1;
         int groupRow = 1;
         int parentRow = 1;
+        Double categoryQuantity = 0D;
+        Double categoryTotal= 0D;
+        Double groupQuantity = 0D;
+        Double groupTotal= 0D;
+        Double parentQuantity = 0D;
+        Double parentTotal= 0D;
+
 
         XSSFCellStyle alignStyle = workbook.createCellStyle();
         alignStyle.setAlignment(XSSFCellStyle.ALIGN_RIGHT);
@@ -69,6 +76,17 @@ public class ExpenseReport extends Report {
 
 
             if(productSaleHelper.getCategoryId()!=categoryId) {
+                createCategoryTotal(categoryRow, categoryQuantity, categoryTotal);
+                createGroupTotal(groupRow,groupQuantity,groupTotal);
+                createParentTotal(parentRow,parentQuantity,parentTotal);
+                categoryQuantity = 0D;
+                categoryTotal = 0D;
+                groupQuantity = 0D;
+                groupTotal = 0D;
+                parentQuantity = 0D;
+                parentTotal = 0D;
+
+
                 sheet.groupRow(categoryRow+1,indexRow-1);
                 sheet.setRowGroupCollapsed(categoryRow+1,true);
                 sheet.groupRow(groupRow+1,indexRow-1);
@@ -95,10 +113,17 @@ public class ExpenseReport extends Report {
 
                 if(productSaleHelper.getProductName()==null ||
                         productSaleHelper.getProductName()==""){
-                    cell = row.createCell(++indexCell);
-                    cell.setCellValue(productSaleHelper.getQuantity());
-                    cell = row.createCell(++indexCell);
-                    cell.setCellValue(productSaleHelper.getLinePrice());
+                    createCell(cell, row, indexCell, productSaleHelper);
+
+                    categoryQuantity+=productSaleHelper.getQuantity();
+                    categoryTotal+=productSaleHelper.getLinePrice();
+
+                    groupQuantity+=productSaleHelper.getQuantity();
+                    groupTotal+=productSaleHelper.getLinePrice();
+
+                    parentQuantity+=productSaleHelper.getQuantity();
+                    parentTotal+=productSaleHelper.getLinePrice();
+
                 } else {
                     row = sheet.createRow(++indexRow);
                     indexCell = 0;
@@ -106,14 +131,24 @@ public class ExpenseReport extends Report {
                     cell.setCellValue(productSaleHelper.getProductName());
                     cell.setCellStyle(alignStyle);
 
-                    cell = row.createCell(++indexCell);
-                    cell.setCellValue(productSaleHelper.getQuantity());
-                    cell = row.createCell(++indexCell);
-                    cell.setCellValue(productSaleHelper.getLinePrice());
+                    createCell(cell, row, indexCell, productSaleHelper);
+
+                    categoryQuantity+=productSaleHelper.getQuantity();
+                    categoryTotal+=productSaleHelper.getLinePrice();
+
+                    groupQuantity+=productSaleHelper.getQuantity();
+                    groupTotal+=productSaleHelper.getLinePrice();
+
+                    parentQuantity+=productSaleHelper.getQuantity();
+                    parentTotal+=productSaleHelper.getLinePrice();
                 }
 
             } else {
                 if(productSaleHelper.getGroupId()!=groupId){
+                    createGroupTotal(groupRow,groupQuantity,groupTotal);
+                    groupQuantity = 0D;
+                    groupTotal = 0D;
+
                     sheet.groupRow(groupRow+1,indexRow-1);
                     groupRow = indexRow;
 
@@ -138,10 +173,17 @@ public class ExpenseReport extends Report {
 
                     if(productSaleHelper.getProductName()==null ||
                             productSaleHelper.getProductName()==""){
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getQuantity());
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getLinePrice());
+                        createCell(cell, row, indexCell, productSaleHelper);
+
+                        categoryQuantity+=productSaleHelper.getQuantity();
+                        categoryTotal+=productSaleHelper.getLinePrice();
+
+                        groupQuantity+=productSaleHelper.getQuantity();
+                        groupTotal+=productSaleHelper.getLinePrice();
+
+                        parentQuantity+=productSaleHelper.getQuantity();
+                        parentTotal+=productSaleHelper.getLinePrice();
+
                     } else {
                         row = sheet.createRow(++indexRow);
                         indexCell = 0;
@@ -149,13 +191,23 @@ public class ExpenseReport extends Report {
                         cell.setCellValue(productSaleHelper.getProductName());
                         cell.setCellStyle(alignStyle);
 
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getQuantity());
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getLinePrice());
+                        createCell(cell, row, indexCell, productSaleHelper);
+
+                        categoryQuantity+=productSaleHelper.getQuantity();
+                        categoryTotal+=productSaleHelper.getLinePrice();
+
+                        groupQuantity+=productSaleHelper.getQuantity();
+                        groupTotal+=productSaleHelper.getLinePrice();
+
+                        parentQuantity+=productSaleHelper.getQuantity();
+                        parentTotal+=productSaleHelper.getLinePrice();
                     }
                 } else {
                     if(productSaleHelper.getParentId()!=parentId){
+                        createParentTotal(parentRow,parentQuantity,parentTotal);
+                        parentQuantity = 0D;
+                        parentTotal = 0D;
+
                         row = sheet.createRow(indexRow);
                         sheet.groupRow(parentRow+1,indexRow-1);
                         parentRow = indexRow;
@@ -167,10 +219,17 @@ public class ExpenseReport extends Report {
 
                         if(productSaleHelper.getProductName()==null
                                 || productSaleHelper.getProductName() == ""){
-                            cell = row.createCell(++indexCell);
-                            cell.setCellValue(productSaleHelper.getQuantity());
-                            cell = row.createCell(++indexCell);
-                            cell.setCellValue(productSaleHelper.getLinePrice());
+                            createCell(cell, row, indexCell, productSaleHelper);
+
+                            categoryQuantity+=productSaleHelper.getQuantity();
+                            categoryTotal+=productSaleHelper.getLinePrice();
+
+                            groupQuantity+=productSaleHelper.getQuantity();
+                            groupTotal+=productSaleHelper.getLinePrice();
+
+                            parentQuantity+=productSaleHelper.getQuantity();
+                            parentTotal+=productSaleHelper.getLinePrice();
+
                         } else {
                             row = sheet.createRow(++indexRow);
                             indexCell = 0;
@@ -178,10 +237,16 @@ public class ExpenseReport extends Report {
                             cell.setCellValue(productSaleHelper.getProductName());
                             cell.setCellStyle(alignStyle);
 
-                            cell = row.createCell(++indexCell);
-                            cell.setCellValue(productSaleHelper.getQuantity());
-                            cell = row.createCell(++indexCell);
-                            cell.setCellValue(productSaleHelper.getLinePrice());
+                            createCell(cell, row, indexCell, productSaleHelper);
+
+                            categoryQuantity+=productSaleHelper.getQuantity();
+                            categoryTotal+=productSaleHelper.getLinePrice();
+
+                            groupQuantity+=productSaleHelper.getQuantity();
+                            groupTotal+=productSaleHelper.getLinePrice();
+
+                            parentQuantity+=productSaleHelper.getQuantity();
+                            parentTotal+=productSaleHelper.getLinePrice();
                         }
                     } else {
                         row = sheet.createRow(indexRow);
@@ -190,10 +255,16 @@ public class ExpenseReport extends Report {
                         cell.setCellValue(productSaleHelper.getProductName());
                         cell.setCellStyle(alignStyle);
 
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getQuantity());
-                        cell = row.createCell(++indexCell);
-                        cell.setCellValue(productSaleHelper.getLinePrice());
+                        createCell(cell, row, indexCell, productSaleHelper);
+
+                        categoryQuantity+=productSaleHelper.getQuantity();
+                        categoryTotal+=productSaleHelper.getLinePrice();
+
+                        groupQuantity+=productSaleHelper.getQuantity();
+                        groupTotal+=productSaleHelper.getLinePrice();
+
+                        parentQuantity+=productSaleHelper.getQuantity();
+                        parentTotal+=productSaleHelper.getLinePrice();
                     }
                 }
             }
@@ -204,6 +275,17 @@ public class ExpenseReport extends Report {
         if(parentRow+1<indexRow-1){
             sheet.groupRow(parentRow+1,indexRow-1);
         }
+
+        createCategoryTotal(categoryRow, categoryQuantity, categoryTotal);
+        createGroupTotal(groupRow,groupQuantity,groupTotal);
+        createParentTotal(parentRow,parentQuantity,parentTotal);
+        categoryQuantity = 0D;
+        categoryTotal = 0D;
+        parentQuantity = 0D;
+        parentTotal = 0D;
+        groupQuantity = 0D;
+        groupTotal = 0D;
+
         sheet.setRowGroupCollapsed(categoryRow+1,true);
         sheet.autoSizeColumn(0);
 
@@ -227,5 +309,33 @@ public class ExpenseReport extends Report {
         cell = row.createCell(++indexCell);
         cell.setCellValue("Total");
         cell.setCellStyle(alignStyle);
+    }
+
+    private void createCategoryTotal(int categoryRow, Double categoryQuantity, Double categoryTotal){
+        XSSFCell categoryCellQuantity = sheet.getRow(categoryRow).createCell(1);
+        categoryCellQuantity.setCellValue(categoryQuantity);
+        XSSFCell categoryCellTotal = sheet.getRow(categoryRow).createCell(2);
+        categoryCellTotal.setCellValue(categoryTotal);
+    }
+
+    private void createParentTotal(int parentRow, Double parentQuantity, Double parentTotal){
+        XSSFCell parentCellQuantity = sheet.getRow(parentRow).createCell(1);
+        parentCellQuantity.setCellValue(parentQuantity);
+        XSSFCell parentCellTotal = sheet.getRow(parentRow).createCell(2);
+        parentCellTotal.setCellValue(parentTotal);
+    }
+
+    private void createGroupTotal(int groupRow, Double groupQuantity, Double groupTotal){
+        XSSFCell groupCellQuantity = sheet.getRow(groupRow).createCell(1);
+        groupCellQuantity.setCellValue(groupQuantity);
+        XSSFCell groupCellTotal = sheet.getRow(groupRow).createCell(2);
+        groupCellTotal.setCellValue(groupTotal);
+    }
+
+    private void createCell(XSSFCell cell, XSSFRow row, int indexCell, ProductSaleHelper productSaleHelper){
+        cell = row.createCell(++indexCell);
+        cell.setCellValue(productSaleHelper.getQuantity());
+        cell = row.createCell(++indexCell);
+        cell.setCellValue(productSaleHelper.getLinePrice());
     }
 }
