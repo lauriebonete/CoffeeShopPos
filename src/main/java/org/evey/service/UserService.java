@@ -1,4 +1,4 @@
-package org.pos.coffee.service;
+package org.evey.service;
 
 import org.evey.service.BaseCrudService;
 import org.evey.bean.User;

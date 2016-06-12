@@ -1,8 +1,8 @@
-package org.pos.coffee.dao.impl;
+package org.evey.dao.impl;
 
 import org.evey.dao.impl.BaseEntityDaoJpaImpl;
 import org.evey.bean.User;
-import org.pos.coffee.dao.UserDao;
+import org.evey.dao.UserDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

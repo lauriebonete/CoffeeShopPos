@@ -2,7 +2,6 @@ package org.evey.bean;
 
 import org.evey.annotation.JoinSet;
 import org.evey.annotation.UniqueField;
-import org.pos.coffee.bean.Person;
 
 import javax.persistence.*;
 import java.util.ArrayList;

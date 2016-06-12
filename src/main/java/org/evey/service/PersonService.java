@@ -1,8 +1,7 @@
-package org.pos.coffee.service;
+package org.evey.service;
 
 import org.evey.service.BaseCrudService;
-import org.pos.coffee.bean.AddOn;
-import org.pos.coffee.bean.Person;
+import org.evey.bean.Person;
 
 /**
  * Created by Laurie on 1/20/2016.

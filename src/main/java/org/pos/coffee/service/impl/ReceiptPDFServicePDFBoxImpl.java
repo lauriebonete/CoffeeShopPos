@@ -1,4 +1,4 @@
-package org.evey.service.impl;
+package org.pos.coffee.service.impl;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -6,10 +6,11 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.evey.service.ReceiptPDFService;
+import org.evey.bean.FileDetail;
+import org.pos.coffee.service.ReceiptPDFService;
 import org.evey.utility.FileUtil;
 import org.pos.coffee.bean.*;
-import org.pos.coffee.service.FileDetailService;
+import org.evey.service.FileDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

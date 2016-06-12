@@ -6,7 +6,7 @@ import org.pos.coffee.bean.PurchaseOrder;
 import org.evey.bean.User;
 import org.pos.coffee.service.PurchaseOrderService;
 import org.pos.coffee.service.PurchaseService;
-import org.pos.coffee.service.UserService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

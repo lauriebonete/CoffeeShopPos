@@ -1,15 +1,10 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
-import org.evey.service.ReceiptPDFService;
-import org.pos.coffee.bean.Branch;
+import org.pos.coffee.service.ReceiptPDFService;
 import org.pos.coffee.bean.Order;
 import org.pos.coffee.bean.Sale;
-import org.pos.coffee.bean.helper.ItemUsedHelper;
-import org.pos.coffee.bean.helper.OrderExpenseHelper;
 import org.pos.coffee.service.BranchService;
-import org.pos.coffee.service.ItemService;
-import org.pos.coffee.service.OrderService;
 import org.pos.coffee.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

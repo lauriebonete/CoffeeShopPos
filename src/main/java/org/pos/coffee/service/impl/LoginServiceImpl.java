@@ -2,9 +2,8 @@ package org.pos.coffee.service.impl;
 
 import org.evey.security.SessionUser;
 import org.evey.bean.User;
-import org.evey.bean.UserRole;
 import org.pos.coffee.service.LoginService;
-import org.pos.coffee.service.UserService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

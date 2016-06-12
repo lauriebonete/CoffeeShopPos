@@ -1,6 +1,6 @@
-package org.evey.service;
+package org.pos.coffee.service;
 
-import org.pos.coffee.bean.FileDetail;
+import org.evey.bean.FileDetail;
 import org.pos.coffee.bean.Sale;
 
 /**

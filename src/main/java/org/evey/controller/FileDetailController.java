@@ -2,8 +2,8 @@ package org.evey.controller;
 
 import org.evey.utility.FileUtil;
 import org.evey.utility.ImageUtil;
-import org.pos.coffee.bean.FileDetail;
-import org.pos.coffee.service.FileDetailService;
+import org.evey.bean.FileDetail;
+import org.evey.service.FileDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

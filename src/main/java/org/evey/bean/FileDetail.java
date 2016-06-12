@@ -1,4 +1,4 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 import org.evey.bean.BaseEntity;
 

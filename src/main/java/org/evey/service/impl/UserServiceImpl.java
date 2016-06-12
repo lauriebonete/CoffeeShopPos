@@ -1,12 +1,11 @@
-package org.pos.coffee.service.impl;
+package org.evey.service.impl;
 
 import org.apache.log4j.Logger;
 import org.evey.security.SessionUser;
-import org.evey.service.impl.BaseCrudServiceImpl;
 import org.evey.utility.SecurityUtil;
 import org.evey.bean.User;
-import org.pos.coffee.dao.UserDao;
-import org.pos.coffee.service.UserService;
+import org.evey.dao.UserDao;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

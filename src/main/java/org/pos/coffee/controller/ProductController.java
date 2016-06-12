@@ -1,15 +1,13 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
-import org.evey.service.ReceiptPDFService;
-import org.pos.coffee.bean.FileDetail;
+import org.pos.coffee.service.ReceiptPDFService;
+import org.evey.bean.FileDetail;
 import org.pos.coffee.bean.Product;
-import org.pos.coffee.bean.ProductGroup;
 import org.pos.coffee.bean.Sale;
-import org.pos.coffee.service.FileDetailService;
-import org.pos.coffee.service.ProductGroupService;
+import org.evey.service.FileDetailService;
 import org.pos.coffee.service.ProductService;
-import org.pos.coffee.service.UserService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

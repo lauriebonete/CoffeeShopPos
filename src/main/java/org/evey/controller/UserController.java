@@ -1,27 +1,17 @@
-package org.pos.coffee.controller;
+package org.evey.controller;
 
 import org.evey.bean.User;
-import org.evey.controller.BaseCrudController;
-import org.pos.coffee.bean.FileDetail;
-import org.pos.coffee.bean.Person;
-import org.pos.coffee.bean.Product;
-import org.pos.coffee.bean.ProductGroup;
-import org.pos.coffee.service.FileDetailService;
-import org.pos.coffee.service.PersonService;
-import org.pos.coffee.service.ProductGroupService;
-import org.pos.coffee.service.UserService;
+import org.evey.bean.FileDetail;
+import org.evey.service.FileDetailService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

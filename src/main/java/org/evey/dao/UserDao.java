@@ -1,4 +1,4 @@
-package org.pos.coffee.dao;
+package org.evey.dao;
 
 import org.evey.dao.BaseEntityDao;
 import org.evey.bean.User;

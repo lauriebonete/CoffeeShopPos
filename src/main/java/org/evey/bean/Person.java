@@ -1,6 +1,8 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 import org.evey.bean.BaseEntity;
+import org.evey.bean.FileDetail;
+import org.pos.coffee.bean.Address;
 
 import javax.persistence.*;
 import java.util.Date;

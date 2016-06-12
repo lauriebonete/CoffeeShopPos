@@ -2,7 +2,7 @@ package org.pos.coffee.validator;
 
 import org.evey.bean.User;
 import org.evey.validator.BaseValidator;
-import org.pos.coffee.service.UserService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

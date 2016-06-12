@@ -5,7 +5,7 @@ import org.pos.coffee.bean.Branch;
 import org.evey.bean.User;
 import org.pos.coffee.service.BranchService;
 import org.pos.coffee.service.LoginService;
-import org.pos.coffee.service.UserService;
+import org.evey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
