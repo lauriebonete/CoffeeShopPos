@@ -1,8 +1,8 @@
 package org.pos.coffee.controller;
 
 import org.evey.controller.BaseCrudController;
-import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.service.ReferenceLookUpService;
+import org.evey.bean.ReferenceLookUp;
+import org.evey.service.ReferenceLookUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

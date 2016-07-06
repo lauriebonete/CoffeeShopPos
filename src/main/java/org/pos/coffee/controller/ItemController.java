@@ -4,7 +4,7 @@ import org.evey.controller.BaseCrudController;
 import org.pos.coffee.bean.Item;
 import org.pos.coffee.bean.Stock;
 import org.pos.coffee.service.ItemService;
-import org.pos.coffee.service.ReferenceLookUpService;
+import org.evey.service.ReferenceLookUpService;
 import org.pos.coffee.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

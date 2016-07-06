@@ -1,6 +1,5 @@
-package org.pos.coffee.dao.impl;
+package org.evey.dao.impl;
 
-import org.evey.dao.impl.BaseEntityDaoJpaImpl;
 import org.evey.bean.ReferenceLookUp;
 import org.evey.dao.ReferenceLookUpDao;
 import org.springframework.stereotype.Repository;

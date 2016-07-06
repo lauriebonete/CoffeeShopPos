@@ -1,8 +1,8 @@
 package org.pos.coffee.validator;
 
 import org.evey.validator.BaseValidator;
-import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.service.ReferenceLookUpService;
+import org.evey.bean.ReferenceLookUp;
+import org.evey.service.ReferenceLookUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

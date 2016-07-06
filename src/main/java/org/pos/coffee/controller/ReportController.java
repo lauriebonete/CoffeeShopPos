@@ -1,10 +1,9 @@
 package org.pos.coffee.controller;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.evey.service.ReferenceLookUpService;
 import org.evey.utility.DateUtil;
-import org.pos.coffee.bean.Product;
-import org.pos.coffee.bean.ProductGroup;
-import org.pos.coffee.bean.ReferenceLookUp;
+import org.evey.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.StockHelper;
 import org.pos.coffee.bean.helper.report.*;
 import org.pos.coffee.bean.poi.format.*;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

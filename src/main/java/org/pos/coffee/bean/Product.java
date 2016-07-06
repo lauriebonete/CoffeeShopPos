@@ -7,6 +7,7 @@ import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
 
 import org.evey.bean.FileDetail;
+import org.evey.bean.ReferenceLookUp;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

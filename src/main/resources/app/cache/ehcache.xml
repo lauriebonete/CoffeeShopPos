@@ -34,7 +34,7 @@
             overflowToDisk="true"
             />
 
-    <cache name="org.pos.coffee.bean.ReferenceLookUp"
+    <cache name="org.evey.bean.ReferenceLookUp"
            maxElementsInMemory="10000"
            eternal="false"
            timeToIdleSeconds="3000"

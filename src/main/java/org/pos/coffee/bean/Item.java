@@ -1,9 +1,9 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.annotation.UniqueField;
 import org.evey.bean.BaseEntity;
+import org.evey.bean.ReferenceLookUp;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,9 +1,8 @@
-package org.pos.coffee.service.impl;
+package org.evey.service.impl;
 
-import org.evey.service.impl.BaseCrudServiceImpl;
-import org.pos.coffee.bean.ReferenceLookUp;
-import org.pos.coffee.dao.ReferenceLookUpDao;
-import org.pos.coffee.service.ReferenceLookUpService;
+import org.evey.bean.ReferenceLookUp;
+import org.evey.dao.ReferenceLookUpDao;
+import org.evey.service.ReferenceLookUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

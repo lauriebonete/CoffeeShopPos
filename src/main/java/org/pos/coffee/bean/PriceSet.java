@@ -1,10 +1,9 @@
 package org.pos.coffee.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
-import org.evey.annotation.JoinList;
 import org.evey.annotation.JoinSet;
 import org.evey.bean.BaseEntity;
+import org.evey.bean.ReferenceLookUp;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;

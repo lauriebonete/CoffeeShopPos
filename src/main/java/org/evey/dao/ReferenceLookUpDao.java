@@ -1,7 +1,7 @@
-package org.pos.coffee.dao;
+package org.evey.dao;
 
 import org.evey.dao.BaseEntityDao;
-import org.pos.coffee.bean.ReferenceLookUp;
+import org.evey.bean.ReferenceLookUp;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package org.pos.coffee.bean;
+package org.evey.bean;
 
 import org.evey.annotation.Auditable;
 import org.evey.annotation.UniqueField;
-import org.evey.bean.BaseEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

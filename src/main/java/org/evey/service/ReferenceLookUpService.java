@@ -1,8 +1,7 @@
-package org.pos.coffee.service;
+package org.evey.service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.evey.service.BaseCrudService;
-import org.pos.coffee.bean.ReferenceLookUp;
+import org.evey.bean.ReferenceLookUp;
 
 import java.util.List;
 

@@ -1,15 +1,11 @@
 package org.pos.coffee.bean.poi.format;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.pos.coffee.bean.ProductGroup;
-import org.pos.coffee.bean.ReferenceLookUp;
 import org.pos.coffee.bean.helper.report.*;
 import org.pos.coffee.bean.poi.Report;
 import org.pos.coffee.service.SaleService;

@@ -2,6 +2,7 @@ package org.pos.coffee.bean;
 
 import org.evey.bean.BaseEntity;
 import org.evey.bean.FileDetail;
+import org.evey.bean.ReferenceLookUp;
 
 import javax.persistence.*;
 

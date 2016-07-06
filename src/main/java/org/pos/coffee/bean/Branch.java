@@ -1,7 +1,7 @@
 package org.pos.coffee.bean;
 
-import org.evey.annotation.JoinList;
 import org.evey.bean.BaseEntity;
+import org.evey.bean.ReferenceLookUp;
 
 import javax.persistence.*;
 import java.util.List;
